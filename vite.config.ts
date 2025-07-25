@@ -22,6 +22,9 @@ function spaFallbackPlugin() {
 
 export default defineConfig({
   base: "/xenora_website/",
+  server: {
+    port: 8080
+  },
   resolve: {
     alias: {
       "@": resolve(__dirname, "src"), // 👈 Add this
