@@ -6,6 +6,7 @@
   "homepage": "https://saadixsd.github.io/xenora_website",
   "scripts": {
     "dev": "vite",
+    "build:dev": "vite build --mode"
     "build": "vite build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
