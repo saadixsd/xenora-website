@@ -105,19 +105,26 @@ const Navigation = () => {
                 >
                   {item.name}
                 </Link>
-              ))}
-              <div className="pt-4 space-y-2">
-                <Button variant="ghost" className="w-full justify-start" asChild>
-                  <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
-                    Sign In
-                  </Link>
-                </Button>
-                <Button className="w-full justify-start bg-primary-gradient" asChild>
-                  <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
-                    Get Started
-                  </Link>
-                </Button>
-              </div>
+               ))}
+               
+               {/* Mobile Controls */}
+               <div className="flex items-center justify-center space-x-4 pt-4 border-t border-border mt-4">
+                 <LanguageToggle />
+                 <DarkModeToggle />
+               </div>
+               
+               <div className="pt-4 space-y-2">
+                 <Button variant="ghost" className="w-full justify-start" asChild>
+                   <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                     Sign In
+                   </Link>
+                 </Button>
+                 <Button className="w-full justify-start bg-primary-gradient" asChild>
+                   <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                     Get Started
+                   </Link>
+                 </Button>
+               </div>
             </div>
           </div>
         )}
