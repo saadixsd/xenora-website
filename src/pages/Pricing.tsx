@@ -150,7 +150,7 @@ const Pricing = () => {
           <h1 className="text-7xl font-bold text-foreground mb-12 animate-fade-in-up">
             Choose Your
             <br />
-            <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+            <span className="bg-primary-gradient bg-clip-text text-transparent">
               XenoraAI Plan
             </span>
           </h1>
