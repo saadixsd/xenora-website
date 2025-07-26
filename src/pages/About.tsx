@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { 
-  Brain, 
+  Bot, 
   Shield, 
   Target, 
   Users, 
@@ -96,8 +96,8 @@ const About = () => {
       description: "Making legal information and assistance accessible to everyone, regardless of their background or resources."
     },
     {
-      icon: Brain,
-      title: "AI-Powered Solutions",
+      icon: Bot,
+      title: "AI-Powered Innovation",
       description: "Leveraging cutting-edge artificial intelligence to enhance legal research, document analysis, and case preparation."
     },
     {
@@ -266,7 +266,7 @@ const About = () => {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <ScheduleDemoButton size="lg" className="border-white/20 text-black hover:bg-white/10" />
+              <ScheduleDemoButton size="lg" className="border-white/20 text-white hover:bg-white/10" />
             </div>
           </div>
         </div>

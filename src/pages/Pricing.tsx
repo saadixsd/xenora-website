@@ -3,14 +3,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { 
-  Brain, 
+  Bot, 
   Building, 
   CheckCircle, 
   ArrowRight,
   Sparkles,
   Users,
   Mail,
-  Crown
+  Crown,
+  Zap
 } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import ScheduleDemoButton from "@/components/ScheduleDemoButton";
@@ -19,6 +20,7 @@ const Pricing = () => {
   const heroRef = useScrollAnimation();
   const featuresRef = useScrollAnimation();
   const plansRef = useScrollAnimation();
+  const faqRef = useScrollAnimation();
   const userTypes = [
     {
       name: "Lawyers",
@@ -81,6 +83,20 @@ const Pricing = () => {
       description: "Paralegals, legal assistants, and other professionals",
       plans: [
         {
+          name: "Free Plan",
+          price: "$0",
+          period: "/month",
+          description: "Get started with basic legal AI", 
+          features: [
+            "5 searches every 10 hours",
+            "Basic document analysis",
+            "Educational case law access",
+            "Standard support",
+            "Non-commercial use only"
+          ],
+          cta: "Start Free"
+        },
+        {
           name: "Nora AI Pro",
           price: "$60",
           period: "/month",
@@ -123,9 +139,14 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="min-h-screen pt-20">
+    <div className="min-h-screen pt-20 page-fade-in">
       {/* Header */}
-      <section className="py-16 bg-hero-gradient">
+      <section 
+        ref={heroRef.ref}
+        className={`py-16 bg-hero-gradient transition-all duration-700 ${
+          heroRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <Badge variant="outline" className="mb-4">
             <Sparkles className="h-3 w-3 mr-1" />
@@ -142,7 +163,12 @@ const Pricing = () => {
       </section>
 
       {/* Pricing by User Type */}
-      <section className="py-20 bg-background">
+      <section 
+        ref={plansRef.ref}
+        className={`py-20 bg-background transition-all duration-700 delay-200 ${
+          plansRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
           {userTypes.map((userType, typeIndex) => (
             <div key={typeIndex} className="space-y-8">
@@ -202,12 +228,8 @@ const Pricing = () => {
                       
                       <Button 
                         asChild 
-                        className={`w-full ${
-                          plan.popular 
-                            ? 'bg-primary-gradient hover:shadow-glow' 
-                            : ''
-                        }`}
-                        variant={plan.popular ? 'default' : 'outline'}
+                        className="w-full"
+                        variant={plan.popular ? 'gradient' : 'outline'}
                       >
                         <Link to="/login">
                           {plan.cta}
@@ -223,44 +245,35 @@ const Pricing = () => {
         </div>
       </section>
 
-      {/* Additional Pricing Info */}
+      {/* Free Trial Info */}
       <section className="py-16 bg-accent/30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl font-bold text-foreground mb-8">Additional User Pricing</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="bg-card-gradient">
-              <CardHeader>
-                <CardTitle className="text-xl">Sub-Users</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground mb-4">
-                  Each plan includes 1 free sub-user (assistant). Additional sub-users are $30/month 
-                  if assistant-to-lawyer ratio exceeds 1:1.
-                </p>
-                <div className="text-2xl font-bold text-primary">$30/month</div>
-                <p className="text-sm text-muted-foreground">per additional sub-user</p>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-card-gradient">
-              <CardHeader>
-                <CardTitle className="text-xl">Free Trial</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground mb-4">
-                  Start with a 7-day full trial. After trial, enjoy a free limited version of Nora 
-                  with 5 searches every 10 hours.
-                </p>
-                <div className="text-2xl font-bold text-primary">7 Days Free</div>
-                <p className="text-sm text-muted-foreground">then limited free access</p>
-              </CardContent>
-            </Card>
-          </div>
+          <Card className="bg-card-gradient max-w-md mx-auto">
+            <CardHeader>
+              <CardTitle className="text-xl flex items-center justify-center">
+                <Zap className="h-5 w-5 mr-2 text-primary" />
+                Free Trial
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground mb-4">
+                Start with a 7-day full trial. After trial, enjoy a free limited version of Nora 
+                with 5 searches every 10 hours.
+              </p>
+              <div className="text-2xl font-bold text-primary">7 Days Free</div>
+              <p className="text-sm text-muted-foreground">then limited free access</p>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 bg-accent/30">
+      <section 
+        ref={faqRef.ref}
+        className={`py-20 bg-accent/30 transition-all duration-700 delay-400 ${
+          faqRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-foreground mb-4">

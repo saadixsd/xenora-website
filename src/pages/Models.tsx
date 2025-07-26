@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { 
-  Brain,
+  Bot,
   Shield, 
   Clock, 
   Users, 
@@ -118,7 +118,7 @@ const Models = () => {
             <Card className="bg-card-gradient border-primary/10 hover-lift hover:shadow-primary transition-all duration-300">
               <CardHeader className="text-center pb-6">
                 <div className="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 hover-scale">
-                  <Brain className="h-10 w-10 text-primary" />
+                  <Bot className="h-10 w-10 text-primary" />
                 </div>
                 <CardTitle className="text-3xl font-bold text-foreground">Nora</CardTitle>
                 <p className="text-muted-foreground">
@@ -249,7 +249,7 @@ const Models = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center space-y-4 hover-scale">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto hover:bg-primary/20 transition-colors">
-                <Brain className="h-8 w-8 text-primary" />
+                <Bot className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-lg font-semibold text-foreground">Canadian Legal Database</h3>
               <p className="text-muted-foreground">Trained on comprehensive Canadian and provincial legal data with AI-enabled search.</p>

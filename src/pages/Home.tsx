@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { 
-  Brain,
+  Bot,
   Sparkles, 
   Shield, 
   Clock, 
@@ -119,7 +119,7 @@ const Home = () => {
               <Card className="bg-card-gradient border-primary/10 hover-lift hover:shadow-elegant transition-all duration-300 group">
                 <CardContent className="p-6">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                    <Brain className="h-6 w-6 text-primary" />
+                    <Bot className="h-6 w-6 text-primary" />
                   </div>
                   <h3 className="font-semibold text-foreground mb-2">Case Analysis</h3>
                   <p className="text-sm text-muted-foreground">AI-Powered Research</p>

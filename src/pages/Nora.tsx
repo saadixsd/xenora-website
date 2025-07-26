@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
 import { 
-  Brain, 
+  Bot, 
   Shield, 
   Clock, 
   FileText, 
@@ -16,7 +16,8 @@ import {
   Sparkles,
   Zap,
   Globe,
-  Users
+  Users,
+  Database
 } from "lucide-react";
 
 const Nora = () => {
@@ -61,7 +62,7 @@ const Nora = () => {
 
   const specifications = [
     {
-      icon: Brain,
+      icon: Database,
       title: "Canadian Legal Database",
       description: "Trained on comprehensive Canadian and provincial legal data with RAG-enabled search.",
       metric: "10M+ Cases"
@@ -106,7 +107,7 @@ const Nora = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
               <Badge variant="outline" className="w-fit">
-                <Brain className="h-3 w-3 mr-1" />
+                <Bot className="h-3 w-3 mr-1" />
                 AI Legal Assistant
               </Badge>
               
@@ -141,7 +142,7 @@ const Nora = () => {
             <Card className="bg-card-gradient border-primary/10 shadow-primary">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Brain className="h-5 w-5 text-primary" />
+                  <Bot className="h-5 w-5 text-primary" />
                   <span>Nora AI Assistant</span>
                 </CardTitle>
                 <CardDescription>Demo Coming Soon</CardDescription>
@@ -265,7 +266,7 @@ const Nora = () => {
             <CardContent className="p-12">
               <div className="space-y-6">
                 <div className="flex items-center justify-center space-x-2">
-                  <Brain className="h-8 w-8 text-primary" />
+                  <Bot className="h-8 w-8 text-primary" />
                   <span className="text-2xl font-bold text-foreground">Nora AI Assistant</span>
                 </div>
                 

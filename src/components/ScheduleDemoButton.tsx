@@ -12,7 +12,7 @@ const ScheduleDemoButton = ({ className = "", size = "default" }: ScheduleDemoBu
     <Button 
       asChild 
       size={size}
-      className={`bg-foreground text-background hover:bg-foreground/90 transition-all duration-300 ${className}`}
+      className={`bg-gradient-to-r from-primary to-[hsl(280,100%,70%)] text-white hover:shadow-lg hover:scale-105 transition-all duration-300 ${className}`}
     >
       <Link to="/contact">
         <Calendar className="h-4 w-4 mr-2" />

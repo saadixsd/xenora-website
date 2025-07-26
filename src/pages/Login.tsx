@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Link, useNavigate } from "react-router-dom";
-import { Brain, Mail, Lock, User, ArrowRight, CheckCircle } from "lucide-react";
+import { Bot, Mail, Lock, User, ArrowRight, CheckCircle } from "lucide-react";
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -42,14 +42,14 @@ const Login = () => {
   ];
 
   return (
-    <div className="min-h-screen pt-16 bg-hero-gradient">
+    <div className="min-h-screen pt-16 bg-hero-gradient page-fade-in">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Side - Welcome Content */}
           <div className="space-y-8">
             <div className="flex items-center space-x-3">
               <div className="relative">
-                <Brain className="h-10 w-10 text-primary" />
+                <Bot className="h-10 w-10 text-primary" />
                 <div className="absolute inset-0 bg-primary/20 rounded-full blur-lg" />
               </div>
               <span className="text-3xl font-bold bg-primary-gradient bg-clip-text text-transparent">
@@ -138,7 +138,8 @@ const Login = () => {
                       </div>
                       <Button 
                         type="submit" 
-                        className="w-full bg-primary-gradient hover:shadow-glow transition-all duration-300"
+                        className="w-full"
+                        variant="gradient"
                         disabled={isLoading}
                       >
                         {isLoading ? "Signing In..." : "Sign In"}
@@ -196,7 +197,8 @@ const Login = () => {
                       </div>
                       <Button 
                         type="submit" 
-                        className="w-full bg-primary-gradient hover:shadow-glow transition-all duration-300"
+                        className="w-full"
+                        variant="gradient"
                         disabled={isLoading}
                       >
                         {isLoading ? "Creating Account..." : "Create Account"}

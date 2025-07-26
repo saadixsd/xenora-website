@@ -14,7 +14,7 @@ import {
   CheckCircle, 
   ArrowRight,
   Sparkles,
-  Brain,
+  Bot,
   Settings,
   Lock
 } from "lucide-react";
@@ -36,7 +36,7 @@ const Halo = () => {
     { icon: BarChart3, label: "Efficiency", value: "95%", change: "+10%" },
     { icon: Users, label: "Active Clients", value: "50", change: "+15" },
     { icon: FileText, label: "Documents", value: "1,200", change: "+200" },
-    { icon: Brain, label: "Queries/Mo", value: "150", change: "+30%" }
+    { icon: Bot, label: "Queries/Mo", value: "150", change: "+30%" }
   ];
 
   const useCases = [

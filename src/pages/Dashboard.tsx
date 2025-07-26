@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "react-router-dom";
 import { 
-  Brain, 
+  Bot, 
   Building, 
   Crown, 
   Settings, 
@@ -95,7 +95,7 @@ const Dashboard = () => {
                 <CardHeader>
                   <div className="flex items-center space-x-3">
                     <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <Brain className="h-6 w-6 text-primary" />
+                      <Bot className="h-6 w-6 text-primary" />
                     </div>
                     <div>
                       <CardTitle>Nora AI Assistant</CardTitle>
@@ -162,7 +162,7 @@ const Dashboard = () => {
                   {recentActivity.map((activity, index) => (
                     <div key={index} className="flex items-center space-x-4 p-3 rounded-lg bg-accent/50">
                       <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                        {activity.type === "query" && <Brain className="h-4 w-4 text-primary" />}
+                        {activity.type === "query" && <Bot className="h-4 w-4 text-primary" />}
                         {activity.type === "document" && <FileText className="h-4 w-4 text-primary" />}
                         {activity.type === "case" && <Building className="h-4 w-4 text-primary" />}
                         {activity.type === "meeting" && <Calendar className="h-4 w-4 text-primary" />}
@@ -186,7 +186,7 @@ const Dashboard = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Brain className="h-5 w-5 text-primary" />
+                  <Bot className="h-5 w-5 text-primary" />
                   <span>Nora AI Assistant</span>
                 </CardTitle>
                 <CardDescription>
@@ -211,7 +211,7 @@ const Dashboard = () => {
                 
                 <Button size="lg" asChild className="w-full bg-primary-gradient hover:shadow-glow transition-all duration-300">
                   <Link to="/nora">
-                    <Brain className="mr-2 h-5 w-5" />
+                    <Bot className="mr-2 h-5 w-5" />
                     Launch Nora AI Assistant
                   </Link>
                 </Button>
