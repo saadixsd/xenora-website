@@ -237,7 +237,7 @@ const Contact = () => {
                     Interested in our Nora or Halo models? Be among the first to experience 
                     our latest AI innovations.
                   </p>
-                  <Button variant="secondary" size="lg">
+                  <Button variant="outline" size="lg" className="border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white hover-scale">
                     Join Waitlist Now
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>

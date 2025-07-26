@@ -11,8 +11,9 @@ const ScheduleDemoButton = ({ className = "", size = "default" }: ScheduleDemoBu
   return (
     <Button 
       asChild 
+      variant="outline"
       size={size}
-      className={`bg-gradient-to-r from-primary via-[hsl(330,100%,50%)] to-accent text-white hover:shadow-lg hover:scale-105 transition-all duration-300 ${className}`}
+      className={`border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white hover:shadow-lg hover:scale-105 transition-all duration-300 ${className}`}
     >
       <Link to="/contact">
         <Calendar className="h-4 w-4 mr-2" />
