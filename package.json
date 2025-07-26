@@ -4,13 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "homepage": "https://saadixsd.github.io/xenora_website",
+  {
   "scripts": {
     "dev": "vite",
-    "build:dev": "vite build --mode"
     "build": "vite build",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
-  },
+    "build:dev": "vite build --mode development",
+    "preview": "vite preview"
+  }
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-accordion": "^1.2.0",
