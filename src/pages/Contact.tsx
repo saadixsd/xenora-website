@@ -75,21 +75,27 @@ const Contact = () => {
   ];
 
   return (
-    <div className="min-h-screen pt-16 page-fade-in">
+    <div className="min-h-screen pt-16 page-fade-in relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 animate-pulse" />
+      
       {/* Header */}
-      <section className="section-padding bg-hero-gradient">
+      <section className="relative section-padding bg-hero-gradient shadow-elegant">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-transparent" />
         <div 
           ref={heroRef.ref}
-          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center transition-all duration-700 ${
+          className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center transition-all duration-700 ${
             heroRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <Badge variant="outline" className="mb-4">
-            <Mail className="h-3 w-3 mr-1" />
-            Get in Touch
+          <Badge variant="outline" className="mb-8 border-primary/30 bg-primary/5">
+            <Mail className="h-4 w-4 mr-2" />
+            <span className="text-lg font-medium">Get in Touch</span>
           </Badge>
-          <h1 className="text-6xl font-bold text-foreground mb-8 animate-fade-in-up">
-            We'd Love to Hear From You
+          <h1 className="text-7xl font-bold text-foreground mb-8 animate-fade-in-up">
+            We'd Love to 
+            <br />
+            <span className="bg-primary-gradient bg-clip-text text-transparent">Hear From You</span>
           </h1>
           <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
             Ready to transform your legal practice? Have questions about our AI solutions? 
@@ -99,24 +105,24 @@ const Contact = () => {
       </section>
 
       {/* Contact Form & Info */}
-      <section className="section-padding section-swoosh bg-background">
+      <section className="relative section-swoosh section-padding bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div 
             ref={formRef.ref}
-            className={`grid grid-cols-1 lg:grid-cols-2 gap-12 transition-all duration-700 ${
+            className={`grid grid-cols-1 lg:grid-cols-2 gap-16 transition-all duration-700 ${
               formRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
             {/* Contact Form */}
-            <Card className="bg-card-gradient border-primary/10 shadow-elegant">
-              <CardHeader>
-                <CardTitle className="text-2xl">Send Us a Message</CardTitle>
-                <CardDescription>
+            <Card className="bg-card-gradient border-primary/10 shadow-elegant hover-lift transition-all duration-300">
+              <CardHeader className="pb-8">
+                <CardTitle className="text-3xl font-bold text-foreground">Send Us a Message</CardTitle>
+                <CardDescription className="text-lg text-muted-foreground">
                   Fill out the form below and we'll get back to you as soon as possible.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="firstName">First Name</Label>
@@ -175,11 +181,11 @@ const Contact = () => {
                   
                   <Button 
                     type="submit" 
-                    className="w-full bg-primary-gradient hover:shadow-glow transition-all duration-300"
+                    className="w-full bg-primary-gradient hover:shadow-glow transition-all duration-300 text-lg py-4"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? "Sending..." : "Send Message"}
-                    <Send className="ml-2 h-4 w-4" />
+                    <Send className="ml-2 h-5 w-5" />
                   </Button>
                 </form>
               </CardContent>

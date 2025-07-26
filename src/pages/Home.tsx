@@ -81,8 +81,8 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8 animate-swoosh-in">
               <Badge variant="outline" className="w-fit border-primary/20 text-primary hover-scale">
-                <Sparkles className="h-3 w-3 mr-1" />
-                Legal Solutions & Automation
+                <Sparkles className="h-4 w-4 mr-2" />
+                <span className="text-lg font-medium">Legal Solutions & Automation</span>
               </Badge>
               
               <div className="space-y-4">
@@ -168,23 +168,26 @@ const Home = () => {
           className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-animate ${benefitsRef.isVisible ? 'visible' : ''}`}
         >
           <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-4xl font-bold text-foreground mb-8">
-              Smart Legal Solutions for Everyone
+            <h2 className="text-5xl font-bold text-foreground mb-8">
+              Empowering Justice Through Technology
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-12">
-              XenoraAI is revolutionizing AI legal solutions, designed to meet the unique needs of Canada's legal community & its people.
+              Discover how XenoraAI transforms legal workflows with intelligent automation, 
+              comprehensive research tools, and seamless practice management solutions.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {benefits.map((benefit, index) => (
-              <div key={index} className="text-center space-y-4 hover-scale group">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto group-hover:bg-primary/20 transition-colors">
-                  <benefit.icon className="h-8 w-8 text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold text-foreground">{benefit.title}</h3>
-                <p className="text-muted-foreground">{benefit.description}</p>
-              </div>
+              <Card key={index} className="bg-card-gradient border-primary/10 hover-lift hover:shadow-elegant transition-all duration-500 group cursor-pointer">
+                <CardContent className="p-8 text-center space-y-6">
+                  <div className="w-20 h-20 bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                    <benefit.icon className="h-10 w-10 text-primary group-hover:text-accent transition-colors duration-300" />
+                  </div>
+                  <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">{benefit.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed">{benefit.description}</p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>

@@ -134,28 +134,39 @@ const Pricing = () => {
 
   return (
     <div className="min-h-screen page-fade-in">
-      {/* Hero Intro Section */}
-      <section className="section-padding bg-hero-gradient shadow-elegant">
+      {/* Visual Hero Intro Section */}
+      <section className="relative overflow-hidden bg-hero-gradient section-padding shadow-elegant">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-transparent animate-pulse" />
         <div 
           ref={heroRef.ref}
-          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center scroll-animate ${heroRef.isVisible ? 'visible' : ''}`}
+          className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center scroll-animate ${heroRef.isVisible ? 'visible' : ''}`}
         >
-          <Badge variant="outline" className="mb-6 hover-scale">
-            <Sparkles className="h-3 w-3 mr-1" />
-            Pricing Plans
+          <Badge variant="outline" className="mb-8 hover-scale border-primary/30 bg-primary/5">
+            <Sparkles className="h-4 w-4 mr-2" />
+            <span className="text-lg font-medium">Flexible Pricing Plans</span>
           </Badge>
-          <h1 className="text-6xl font-bold text-foreground mb-8 animate-fade-in-up">
-            Choose Your XenoraAI Plan
+          <h1 className="text-7xl lg:text-8xl font-bold text-foreground mb-12 animate-fade-in-up">
+            Choose Your
+            <br />
+            <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+              XenoraAI Plan
+            </span>
           </h1>
-          <div className="bg-primary/10 border border-primary/20 rounded-lg p-6 max-w-2xl mx-auto mb-8">
-            <h3 className="text-xl font-semibold text-primary mb-2">🎉 7-Day Free Trial</h3>
-            <p className="text-muted-foreground">
+          
+          {/* 7-Day Trial Notice */}
+          <div className="bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 border border-primary/20 rounded-2xl p-8 max-w-3xl mx-auto mb-8 hover-lift">
+            <h3 className="text-2xl font-bold text-primary mb-4">🎉 7-Day Free Trial</h3>
+            <p className="text-lg text-muted-foreground mb-4">
               Start with a 7-day full trial. After trial, enjoy a free limited version of Nora with 5 searches every 10 hours.
             </p>
+            <Badge variant="outline" className="text-sm font-medium">
+              ✅ No credit card required • Cancel anytime
+            </Badge>
           </div>
+          
           <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            From individual lawyers to large firms, we have the perfect AI solution 
-            for your legal practice needs.
+            From individual lawyers to large firms, discover the perfect AI solution 
+            tailored to your legal practice needs and budget.
           </p>
         </div>
       </section>
@@ -164,71 +175,75 @@ const Pricing = () => {
       <section className="section-swoosh section-padding bg-background">
         <div 
           ref={plansRef.ref}
-          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 scroll-animate ${plansRef.isVisible ? 'visible' : ''}`}
+          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20 scroll-animate ${plansRef.isVisible ? 'visible' : ''}`}
         >
           {userTypes.map((userType, typeIndex) => (
-            <div key={typeIndex} className="space-y-8">
+            <div key={typeIndex} className="space-y-12">
               <div className="text-center">
-                <h2 className="text-3xl font-bold text-foreground mb-4">{userType.name}</h2>
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                <h2 className="text-5xl font-bold text-foreground mb-6">{userType.name}</h2>
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
                   {userType.description}
                 </p>
               </div>
               
               <div className={`grid gap-8 ${
                 userType.plans.length === 1 ? 'max-w-md mx-auto' :
-                userType.plans.length === 2 ? 'grid-cols-1 lg:grid-cols-2 max-w-4xl mx-auto' :
+                userType.plans.length === 2 ? 'grid-cols-1 lg:grid-cols-2 max-w-5xl mx-auto' :
                 'grid-cols-1 lg:grid-cols-3'
               }`}>
                 {userType.plans.map((plan, planIndex) => (
                   <Card 
                     key={planIndex} 
-                    className={`relative bg-card-gradient border-primary/10 hover-lift hover:shadow-elegant transition-all duration-300 ${
-                      plan.popular ? 'border-primary shadow-primary scale-105' : ''
+                    className={`relative bg-card-gradient border-primary/10 hover-lift hover:shadow-elegant transition-all duration-500 group flex flex-col ${
+                      plan.popular ? 'border-primary/30 shadow-primary/20 scale-105' : ''
                     }`}
                   >
                     {plan.popular && (
-                      <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary-gradient text-white">
-                        <Crown className="h-3 w-3 mr-1" />
-                        {plan.highlight}
-                      </Badge>
+                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <Badge className="bg-primary-gradient text-white px-6 py-2 text-sm font-semibold">
+                          <Crown className="h-4 w-4 mr-1" />
+                          {plan.highlight}
+                        </Badge>
+                      </div>
                     )}
                     {plan.highlight && !plan.popular && (
-                      <Badge variant="outline" className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                        {plan.highlight}
-                      </Badge>
+                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <Badge variant="outline" className="bg-background px-4 py-1 text-sm">
+                          {plan.highlight}
+                        </Badge>
+                      </div>
                     )}
                     
-                    <CardHeader className="text-center pb-6">
-                      <div className="space-y-2">
-                        <CardTitle className="text-2xl font-bold">{plan.name}</CardTitle>
-                        <div className="flex items-baseline justify-center space-x-1">
-                          <span className="text-4xl font-bold text-primary">{plan.price}</span>
-                          <span className="text-muted-foreground">{plan.period}</span>
+                    <CardHeader className="text-center pb-8">
+                      <div className="space-y-4">
+                        <CardTitle className="text-3xl font-bold text-foreground">{plan.name}</CardTitle>
+                        <div className="flex items-baseline justify-center space-x-2">
+                          <span className="text-6xl font-bold text-primary">{plan.price}</span>
+                          <span className="text-xl text-muted-foreground">{plan.period}</span>
                         </div>
-                        <CardDescription className="text-base">
+                        <CardDescription className="text-lg text-muted-foreground leading-relaxed">
                           {plan.description}
                         </CardDescription>
                       </div>
                     </CardHeader>
                     
-                    <CardContent className="space-y-6">
-                      <ul className="space-y-3">
+                    <CardContent className="flex-1 flex flex-col space-y-8 px-8 pb-8">
+                      <ul className="space-y-4 flex-1">
                         {plan.features.map((feature, featureIndex) => (
-                          <li key={featureIndex} className="flex items-start space-x-3">
-                            <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                            <span className="text-sm text-foreground">{feature}</span>
+                          <li key={featureIndex} className="flex items-start space-x-4">
+                            <CheckCircle className="h-6 w-6 text-primary mt-0.5 flex-shrink-0" />
+                            <span className="text-muted-foreground leading-relaxed">{feature}</span>
                           </li>
                         ))}
                       </ul>
                       
                       <Button 
                         asChild 
-                        className="w-full bg-primary-gradient hover:shadow-glow transition-all duration-300 mt-auto"
+                        className="w-full bg-primary-gradient hover:shadow-glow transition-all duration-300 mt-auto text-lg py-4"
                       >
                         <Link to="/login">
                           {plan.cta}
-                          <ArrowRight className="ml-2 h-4 w-4" />
+                          <ArrowRight className="ml-2 h-5 w-5" />
                         </Link>
                       </Button>
                     </CardContent>

@@ -177,10 +177,11 @@ All colors MUST be HSL.
 }
 
 /* Enhanced scroll animations with swoosh effect */
+/* Enhanced scroll animations with smoother transitions */
 .scroll-animate {
   opacity: 0;
-  transform: translateY(40px) scale(0.98);
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(40px) scale(0.96);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .scroll-animate.visible {

@@ -121,12 +121,12 @@ const About = () => {
             <Users className="h-3 w-3 mr-1" />
             About XenoraAI
           </Badge>
-          <h1 className="text-5xl font-bold text-foreground mb-6">
-            Democratizing Legal Support
+          <h1 className="text-7xl font-bold text-foreground mb-8 animate-fade-in-up">
+            About <span className="bg-primary-gradient bg-clip-text text-transparent">XenoraAI</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            We're on a mission to revolutionize the legal industry through innovative AI solutions, 
-            making legal expertise accessible to everyone while empowering professionals with cutting-edge tools.
+          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+            We're building the future of legal technology, democratizing access to sophisticated 
+            AI tools for legal professionals across Canada.
           </p>
         </div>
       </section>

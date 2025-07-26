@@ -44,7 +44,7 @@ const Login = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-hero-gradient page-fade-in">
+    <div className="min-h-screen bg-hero-gradient page-fade-in pt-16">
       <div 
         ref={heroRef.ref}
         className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 scroll-animate ${heroRef.isVisible ? 'visible' : ''}`}
@@ -88,11 +88,11 @@ const Login = () => {
               </ul>
             </div>
 
-            <div className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-6">
-              <h4 className="font-semibold text-foreground mb-2">Trusted by Legal Professionals</h4>
-              <p className="text-sm text-muted-foreground">
-                "XenoraAI has transformed how we approach legal research. The AI-powered insights 
-                save us hours every day." - Partner at Leading Canadian Law Firm
+            <div className="bg-gradient-to-r from-primary/5 to-accent/5 backdrop-blur-sm border border-primary/10 rounded-xl p-8 hover-lift transition-all duration-300">
+              <h4 className="font-semibold text-foreground mb-4 text-xl">🚀 Join the Legal AI Revolution</h4>
+              <p className="text-muted-foreground leading-relaxed">
+                Experience the future of legal technology with our advanced AI models designed specifically 
+                for Canadian legal professionals. Transform your practice today.
               </p>
             </div>
           </div>

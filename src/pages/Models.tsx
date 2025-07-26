@@ -86,109 +86,122 @@ const Models = () => {
 
   return (
     <div className="min-h-screen pt-16 page-fade-in">
-      {/* Header */}
-      <section className="section-padding bg-hero-gradient shadow-elegant">
+      {/* Animated Hero Section */}
+      <section className="relative overflow-hidden bg-hero-gradient section-padding shadow-elegant">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-transparent animate-pulse" />
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDEzOSwgOTIsIDI0NiwgMC4xKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-20" />
         <div 
           ref={heroRef.ref}
-          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center scroll-animate ${heroRef.isVisible ? 'visible' : ''}`}
+          className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center scroll-animate ${heroRef.isVisible ? 'visible' : ''}`}
         >
-          <Badge variant="outline" className="mb-4 hover-scale">
-            <Sparkles className="h-3 w-3 mr-1" />
-            Product Showcase
+          <Badge variant="outline" className="mb-8 hover-scale border-primary/30 bg-primary/5">
+            <Sparkles className="h-4 w-4 mr-2 animate-pulse" />
+            <span className="text-lg font-medium">Revolutionary AI Technology</span>
           </Badge>
-          <h1 className="text-6xl font-bold text-foreground mb-6 animate-fade-in-up">
-            Revolutionary Legal AI
+          <h1 className="text-7xl lg:text-8xl font-bold text-foreground mb-8 animate-fade-in-up">
+            <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-pulse">
+              Next-Gen
+            </span>
+            <br />
+            Legal Intelligence
           </h1>
-          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto mb-8 leading-relaxed">
-            Experience the future of Canadian legal practice with our intelligent AI models, 
-            designed to enhance every aspect of your legal workflow.
+          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto mb-12 leading-relaxed">
+            Experience the future of Canadian legal practice with breakthrough AI models 
+            that understand, analyze, and enhance every aspect of your legal workflow.
           </p>
-          <ScheduleDemoButton size="lg" className="animate-scale-in bg-primary-gradient hover:shadow-glow transition-all duration-300 border-0" />
+          <ScheduleDemoButton size="lg" className="animate-scale-in bg-primary-gradient hover:shadow-glow transition-all duration-300 border-0 text-xl px-8 py-4" />
         </div>
       </section>
 
-      {/* Models Section */}
-      <section className="section-swoosh section-padding bg-background">
+      {/* Product Showcase */}
+      <section className="section-swoosh section-padding bg-background relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/2 to-transparent" />
         <div 
           ref={modelsRef.ref}
-          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-animate ${modelsRef.isVisible ? 'visible' : ''}`}
+          className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-animate ${modelsRef.isVisible ? 'visible' : ''}`}
         >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Nora */}
-            <Card className="bg-card-gradient border-primary/10 hover-lift hover:shadow-primary transition-all duration-300">
-              <CardHeader className="text-center pb-6">
-                <div className="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 hover-scale">
-                  <Bot className="h-10 w-10 text-primary" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            {/* Nora AI Assistant */}
+            <Card className="bg-card-gradient border-primary/10 hover-lift hover:shadow-primary transition-all duration-500 group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <CardHeader className="text-center pb-8 relative z-10">
+                <div className="w-24 h-24 bg-gradient-to-br from-primary/20 to-accent/10 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500">
+                  <Bot className="h-12 w-12 text-primary group-hover:animate-pulse" />
                 </div>
-                <CardTitle className="text-3xl font-bold text-foreground">Nora AI Assistant</CardTitle>
-                <Badge variant="secondary" className="mb-2">Canada's Smartest Legal AI Assistant</Badge>
-                <p className="text-muted-foreground">
+                <CardTitle className="text-4xl font-bold text-foreground mb-4">Nora AI Assistant</CardTitle>
+                <Badge variant="secondary" className="mb-4 bg-gradient-to-r from-primary/10 to-accent/10 text-primary font-semibold">
+                  🇨🇦 Canada's Smartest Legal AI Assistant
+                </Badge>
+                <p className="text-muted-foreground text-lg leading-relaxed">
                   Revolutionary AI technology powering intelligent legal research, 
                   document analysis, and automated task management for Canadian legal professionals.
                 </p>
               </CardHeader>
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-8 relative z-10">
                 <div>
-                  <h4 className="font-semibold text-foreground mb-4">Key Features</h4>
-                  <ul className="space-y-3">
+                  <h4 className="font-semibold text-foreground mb-6 text-xl">Core Capabilities</h4>
+                  <ul className="space-y-4">
                     {noraFeatures.map((feature, index) => (
-                      <li key={index} className="flex items-start space-x-3">
-                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-muted-foreground">{feature}</span>
+                      <li key={index} className="flex items-start space-x-4">
+                        <CheckCircle className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
+                        <span className="text-muted-foreground leading-relaxed">{feature}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
                 
                 <div className="space-y-4">
-                  <Button asChild className="w-full bg-primary-gradient hover:shadow-glow transition-all duration-300">
+                  <Button asChild className="w-full bg-primary-gradient hover:shadow-glow transition-all duration-300 text-lg py-3">
                     <Link to="/nora">
-                      Learn More About Nora
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      Explore Nora AI
+                      <ArrowRight className="ml-2 h-5 w-5" />
                     </Link>
                   </Button>
-                  <Badge variant="secondary" className="w-full justify-center py-2">
-                    Demo Coming Soon
+                  <Badge variant="secondary" className="w-full justify-center py-3 text-sm">
+                    🚀 Demo Coming Soon
                   </Badge>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Halo */}
-            <Card className="bg-card-gradient border-primary/10 hover-lift hover:shadow-primary transition-all duration-300">
-              <CardHeader className="text-center pb-6">
-                <div className="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 hover-scale">
-                  <Building className="h-10 w-10 text-primary" />
+            {/* Halo Legal Suite */}
+            <Card className="bg-card-gradient border-primary/10 hover-lift hover:shadow-primary transition-all duration-500 group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <CardHeader className="text-center pb-8 relative z-10">
+                <div className="w-24 h-24 bg-gradient-to-br from-accent/20 to-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500">
+                  <Building className="h-12 w-12 text-accent group-hover:animate-pulse" />
                 </div>
-                <CardTitle className="text-3xl font-bold text-foreground">Halo Legal Suite</CardTitle>
-                <Badge variant="secondary" className="mb-2">Complete Practice Management</Badge>
-                <p className="text-muted-foreground">
+                <CardTitle className="text-4xl font-bold text-foreground mb-4">Halo Legal Suite</CardTitle>
+                <Badge variant="secondary" className="mb-4 bg-gradient-to-r from-accent/10 to-primary/10 text-accent font-semibold">
+                  🏢 Complete Practice Management
+                </Badge>
+                <p className="text-muted-foreground text-lg leading-relaxed">
                   The complete AI-powered legal operating system, seamlessly integrating Nora's intelligence 
                   with comprehensive practice management, billing, and client relationship tools.
                 </p>
               </CardHeader>
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-8 relative z-10">
                 <div>
-                  <h4 className="font-semibold text-foreground mb-4">Key Features</h4>
-                  <ul className="space-y-3">
+                  <h4 className="font-semibold text-foreground mb-6 text-xl">Suite Features</h4>
+                  <ul className="space-y-4">
                     {haloFeatures.map((feature, index) => (
-                      <li key={index} className="flex items-start space-x-3">
-                        <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-muted-foreground">{feature}</span>
+                      <li key={index} className="flex items-start space-x-4">
+                        <CheckCircle className="h-6 w-6 text-accent mt-1 flex-shrink-0" />
+                        <span className="text-muted-foreground leading-relaxed">{feature}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
                 
                 <div className="space-y-4">
-                  <Button asChild className="w-full bg-primary-gradient hover:shadow-glow transition-all duration-300">
+                  <Button asChild className="w-full bg-gradient-to-r from-accent to-primary hover:shadow-glow transition-all duration-300 text-lg py-3">
                     <Link to="/halo">
-                      Learn More About Halo
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      Discover Halo Suite
+                      <ArrowRight className="ml-2 h-5 w-5" />
                     </Link>
                   </Button>
-                  <Badge variant="secondary" className="w-full justify-center py-2">
-                    Launching August 2025
+                  <Badge variant="secondary" className="w-full justify-center py-3 text-sm">
+                    🗓️ Launching August 2025
                   </Badge>
                 </div>
               </CardContent>
