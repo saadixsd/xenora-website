@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useTranslation } from 'react-i18next';
 
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -24,6 +25,7 @@ const Contact = () => {
   const heroRef = useScrollAnimation();
   const formRef = useScrollAnimation();
   const faqRef = useScrollAnimation();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,8 +35,8 @@ const Contact = () => {
     setTimeout(() => {
       setIsSubmitting(false);
       toast({
-        title: "Message sent!",
-        description: "We'll get back to you within 24 hours.",
+        title: t('contact.form.success'),
+        description: t('contact.methods.email.description'),
       });
     }, 2000);
   };

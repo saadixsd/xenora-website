@@ -270,8 +270,165 @@
       }
     }
   },
+  "pricing": {
+    "hero": {
+      "badge": "Tarification transparente",
+      "title": "Choisissez votre plan IA juridique",
+      "description": "Options de tarification flexibles conçues pour les professionnels juridiques canadiens, des praticiens solo aux grandes firmes."
+    },
+    "plans": {
+      "starter": {
+        "name": "Débutant",
+        "price": "99 $",
+        "period": "/mois",
+        "description": "Parfait pour les praticiens solo et les petites firmes",
+        "features": [
+          "Accès à l'assistant IA Nora",
+          "50 requêtes par mois",
+          "Analyse de base des documents",
+          "Support par courriel",
+          "Base de données de jurisprudence canadienne"
+        ]
+      },
+      "professional": {
+        "name": "Professionnel",
+        "price": "299 $", 
+        "period": "/mois",
+        "description": "Idéal pour les pratiques en croissance et les firmes de taille moyenne",
+        "features": [
+          "Tout ce qui est inclus dans Débutant",
+          "Requêtes Nora illimitées",
+          "Analyse avancée des documents",
+          "Support prioritaire",
+          "Outils de collaboration d'équipe",
+          "Intégrations personnalisées"
+        ]
+      },
+      "enterprise": {
+        "name": "Entreprise",
+        "price": "Personnalisé",
+        "period": "",
+        "description": "Solutions sur mesure pour les grandes firmes et organisations",
+        "features": [
+          "Tout ce qui est inclus dans Professionnel",
+          "Accès à la suite juridique Halo",
+          "Gestionnaire de compte dédié",
+          "Formation IA personnalisée",
+          "Garanties SLA",
+          "Déploiement sur site"
+        ]
+      }
+    },
+    "cta": {
+      "title": "Prêt à transformer votre pratique?",
+      "description": "Rejoignez des centaines de professionnels juridiques canadiens qui utilisent déjà XenoraAI.",
+      "button": "Commencer l'essai gratuit"
+    }
+  },
+  "nora": {
+    "hero": {
+      "badge": "Rencontrez Nora",
+      "title": "Votre assistante IA juridique",
+      "description": "Recherche intelligente, analyse de documents et support juridique alimentés par l'IA avancée formée sur le droit canadien."
+    },
+    "features": {
+      "title": "Intelligence juridique puissante",
+      "research": {
+        "title": "Recherche juridique",
+        "description": "Recherchez instantanément la jurisprudence canadienne avec des insights alimentés par l'IA"
+      },
+      "analysis": {
+        "title": "Analyse de documents",
+        "description": "Révision automatisée de contrats et extraction de clauses"
+      },
+      "drafting": {
+        "title": "Rédaction juridique",
+        "description": "Création de documents assistée par IA et génération de modèles"
+      }
+    }
+  },
+  "halo": {
+    "hero": {
+      "badge": "Présentation de Halo",
+      "title": "Gestion complète de pratique juridique",
+      "description": "Suite intégrée combinant l'IA de Nora avec des outils complets de gestion de pratique."
+    },
+    "features": {
+      "title": "Solution juridique tout-en-un",
+      "case": {
+        "title": "Gestion de dossiers",
+        "description": "Suivez les dossiers, échéances et communications clients"
+      },
+      "billing": {
+        "title": "Facturation intelligente",
+        "description": "Suivi automatisé du temps et génération de factures"
+      },
+      "client": {
+        "title": "Portail client",
+        "description": "Accès sécurisé des clients aux documents et mises à jour"
+      }
+    }
+  },
+  "login": {
+    "hero": {
+      "title": "Rejoignez la liste d'attente",
+      "description": "Soyez parmi les premiers à découvrir l'avenir de l'IA juridique"
+    },
+    "form": {
+      "name": "Nom complet",
+      "email": "Adresse courriel",
+      "company": "Cabinet d'avocats/Organisation",
+      "title": "Titre du poste",
+      "interests": "Domaines d'intérêt",
+      "submit": "Rejoindre la liste d'attente",
+      "success": "Inscription à la liste d'attente réussie!"
+    }
+  },
+  "legal": {
+    "privacy": {
+      "title": "Politique de confidentialité",
+      "lastUpdated": "Dernière mise à jour",
+      "sections": {
+        "overview": "Aperçu de la confidentialité",
+        "collection": "Collecte d'informations",
+        "usage": "Comment nous utilisons les informations",
+        "sharing": "Partage d'informations",
+        "security": "Sécurité des données",
+        "rights": "Vos droits",
+        "contact": "Nous contacter"
+      }
+    },
+    "terms": {
+      "title": "Conditions d'utilisation",
+      "lastUpdated": "Dernière mise à jour",
+      "sections": {
+        "acceptance": "Acceptation des conditions",
+        "services": "Description des services",
+        "usage": "Utilisation acceptable",
+        "intellectual": "Propriété intellectuelle",
+        "limitation": "Limitation de responsabilité",
+        "termination": "Résiliation",
+        "governing": "Droit applicable"
+      }
+    },
+    "cookies": {
+      "title": "Politique des cookies",
+      "lastUpdated": "Dernière mise à jour",
+      "sections": {
+        "what": "Que sont les cookies",
+        "usage": "Comment nous utilisons les cookies",
+        "types": "Types de cookies",
+        "manage": "Gestion des cookies",
+        "contact": "Nous contacter"
+      }
+    }
+  },
   "common": {
     "connect": "Se connecter",
-    "learnMore": "En savoir plus"
+    "learnMore": "En savoir plus",
+    "getStarted": "Commencer",
+    "comingSoon": "Bientôt disponible",
+    "readMore": "Lire la suite",
+    "backToHome": "Retour à l'accueil"
   }
 }

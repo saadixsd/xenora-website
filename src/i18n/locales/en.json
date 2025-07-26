@@ -270,8 +270,165 @@
       }
     }
   },
+  "pricing": {
+    "hero": {
+      "badge": "Transparent Pricing",
+      "title": "Choose Your Legal AI Plan",
+      "description": "Flexible pricing options designed for Canadian legal professionals, from solo practitioners to large firms."
+    },
+    "plans": {
+      "starter": {
+        "name": "Starter",
+        "price": "$99",
+        "period": "/month",
+        "description": "Perfect for solo practitioners and small firms",
+        "features": [
+          "Access to Nora AI Assistant",
+          "50 queries per month",
+          "Basic document analysis",
+          "Email support",
+          "Canadian case law database"
+        ]
+      },
+      "professional": {
+        "name": "Professional", 
+        "price": "$299",
+        "period": "/month",
+        "description": "Ideal for growing practices and mid-size firms",
+        "features": [
+          "Everything in Starter",
+          "Unlimited Nora queries",
+          "Advanced document analysis",
+          "Priority support",
+          "Team collaboration tools",
+          "Custom integrations"
+        ]
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "price": "Custom",
+        "period": "",
+        "description": "Tailored solutions for large firms and organizations",
+        "features": [
+          "Everything in Professional",
+          "Halo Legal Suite access",
+          "Dedicated account manager",
+          "Custom AI training",
+          "SLA guarantees",
+          "On-premise deployment"
+        ]
+      }
+    },
+    "cta": {
+      "title": "Ready to Transform Your Practice?",
+      "description": "Join hundreds of Canadian legal professionals already using XenoraAI.",
+      "button": "Start Free Trial"
+    }
+  },
+  "nora": {
+    "hero": {
+      "badge": "Meet Nora",
+      "title": "Your AI Legal Assistant",
+      "description": "Intelligent research, document analysis, and legal support powered by advanced AI trained on Canadian law."
+    },
+    "features": {
+      "title": "Powerful Legal Intelligence",
+      "research": {
+        "title": "Legal Research",
+        "description": "Instantly search Canadian case law with AI-powered insights"
+      },
+      "analysis": {
+        "title": "Document Analysis", 
+        "description": "Automated contract review and clause extraction"
+      },
+      "drafting": {
+        "title": "Legal Drafting",
+        "description": "AI-assisted document creation and template generation"
+      }
+    }
+  },
+  "halo": {
+    "hero": {
+      "badge": "Introducing Halo",
+      "title": "Complete Legal Practice Management",
+      "description": "Integrated suite combining Nora's AI with comprehensive practice management tools."
+    },
+    "features": {
+      "title": "All-in-One Legal Solution",
+      "case": {
+        "title": "Case Management",
+        "description": "Track cases, deadlines, and client communications"
+      },
+      "billing": {
+        "title": "Smart Billing",
+        "description": "Automated time tracking and invoice generation"
+      },
+      "client": {
+        "title": "Client Portal",
+        "description": "Secure client access to documents and updates"
+      }
+    }
+  },
+  "login": {
+    "hero": {
+      "title": "Join the Waitlist",
+      "description": "Be among the first to experience the future of legal AI"
+    },
+    "form": {
+      "name": "Full Name",
+      "email": "Email Address", 
+      "company": "Law Firm/Organization",
+      "title": "Job Title",
+      "interests": "Areas of Interest",
+      "submit": "Join Waitlist",
+      "success": "Successfully joined waitlist!"
+    }
+  },
+  "legal": {
+    "privacy": {
+      "title": "Privacy Policy",
+      "lastUpdated": "Last updated",
+      "sections": {
+        "overview": "Privacy Overview",
+        "collection": "Information Collection",
+        "usage": "How We Use Information",
+        "sharing": "Information Sharing",
+        "security": "Data Security",
+        "rights": "Your Rights",
+        "contact": "Contact Us"
+      }
+    },
+    "terms": {
+      "title": "Terms of Service",
+      "lastUpdated": "Last updated",
+      "sections": {
+        "acceptance": "Acceptance of Terms",
+        "services": "Description of Services", 
+        "usage": "Acceptable Use",
+        "intellectual": "Intellectual Property",
+        "limitation": "Limitation of Liability",
+        "termination": "Termination",
+        "governing": "Governing Law"
+      }
+    },
+    "cookies": {
+      "title": "Cookie Policy",
+      "lastUpdated": "Last updated",
+      "sections": {
+        "what": "What are Cookies",
+        "usage": "How We Use Cookies",
+        "types": "Types of Cookies",
+        "manage": "Managing Cookies",
+        "contact": "Contact Us"
+      }
+    }
+  },
   "common": {
     "connect": "Connect",
-    "learnMore": "Learn More"
+    "learnMore": "Learn More",
+    "getStarted": "Get Started",
+    "comingSoon": "Coming Soon",
+    "readMore": "Read More",
+    "backToHome": "Back to Home"
   }
 }

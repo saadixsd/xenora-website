@@ -19,11 +19,13 @@ import {
   Lock
 } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useTranslation } from 'react-i18next';
 
 const Halo = () => {
   const heroRef = useScrollAnimation();
   const featuresRef = useScrollAnimation();
   const useCasesRef = useScrollAnimation();
+  const { t } = useTranslation();
   const whyRef = useScrollAnimation();
   const features = [
     "Case and client management system powered by Nora",

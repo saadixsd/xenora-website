@@ -15,11 +15,13 @@ import {
 } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import ScheduleDemoButton from "@/components/ScheduleDemoButton";
+import { useTranslation } from 'react-i18next';
 
 const Pricing = () => {
   const heroRef = useScrollAnimation();
   const featuresRef = useScrollAnimation();
   const plansRef = useScrollAnimation();
+  const { t } = useTranslation();
   const faqRef = useScrollAnimation();
   const userTypes = [
     {

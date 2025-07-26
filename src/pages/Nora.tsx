@@ -20,11 +20,13 @@ import {
   Database
 } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useTranslation } from 'react-i18next';
 
 const Nora = () => {
   const heroRef = useScrollAnimation();
   const featuresRef = useScrollAnimation();
   const useCasesRef = useScrollAnimation();
+  const { t } = useTranslation();
   const specsRef = useScrollAnimation();
   const features = [
     "Legal Q&A with citations from Canadian federal and provincial case law",
