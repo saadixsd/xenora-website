@@ -18,8 +18,13 @@ import {
   Settings,
   Lock
 } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const Halo = () => {
+  const heroRef = useScrollAnimation();
+  const featuresRef = useScrollAnimation();
+  const useCasesRef = useScrollAnimation();
+  const whyRef = useScrollAnimation();
   const features = [
     "Case and client management system powered by Nora",
     "Secure document vault with tagging and versioning",
@@ -112,19 +117,22 @@ const Halo = () => {
   ];
 
   return (
-    <div className="min-h-screen pt-20">
+    <div className="min-h-screen page-fade-in">
       {/* Header */}
-      <section className="py-16 bg-hero-gradient">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="section-padding bg-hero-gradient shadow-elegant">
+        <div 
+          ref={heroRef.ref}
+          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-animate ${heroRef.isVisible ? 'visible' : ''}`}
+        >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <Badge variant="outline" className="w-fit">
+            <div className="space-y-8 animate-swoosh-in">
+              <Badge variant="outline" className="w-fit hover-scale">
                 <Building className="h-3 w-3 mr-1" />
                 Legal Operating Suite
               </Badge>
               
               <div className="space-y-4">
-                <h1 className="text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+                <h1 className="text-5xl lg:text-6xl font-bold text-foreground leading-tight animate-fade-in-up">
                   Welcome to
                   <br />
                   <span className="bg-primary-gradient bg-clip-text text-transparent">
@@ -156,7 +164,7 @@ const Halo = () => {
             </div>
 
             {/* Dashboard Preview */}
-            <Card className="bg-card-gradient border-primary/10 shadow-primary">
+            <Card className="bg-card-gradient border-primary/10 shadow-primary hover-lift">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <Building className="h-5 w-5 text-primary" />
@@ -167,7 +175,7 @@ const Halo = () => {
               <CardContent>
                 <div className="grid grid-cols-2 gap-4">
                   {dashboardStats.map((stat, index) => (
-                    <div key={index} className="bg-accent/50 rounded-lg p-3 text-center">
+                    <div key={index} className="bg-accent/50 rounded-lg p-3 text-center hover-scale">
                       <div className="flex items-center justify-center mb-2">
                         <stat.icon className="h-4 w-4 text-primary" />
                       </div>
@@ -184,9 +192,12 @@ const Halo = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+      <section className="section-swoosh section-padding bg-background">
+        <div 
+          ref={featuresRef.ref}
+          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-animate ${featuresRef.isVisible ? 'visible' : ''}`}
+        >
+          <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-4xl font-bold text-foreground mb-4">
               Complete Legal Management
             </h2>
@@ -195,7 +206,7 @@ const Halo = () => {
             </p>
           </div>
 
-          <Card className="bg-card-gradient border-primary/10">
+          <Card className="bg-card-gradient border-primary/10 hover-lift">
             <CardHeader>
               <CardTitle>Key Features</CardTitle>
               <CardDescription>Everything you need for complete practice management</CardDescription>
@@ -215,9 +226,12 @@ const Halo = () => {
       </section>
 
       {/* Use Cases */}
-      <section className="py-20 bg-accent/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+      <section className="section-swoosh section-padding bg-accent/30">
+        <div 
+          ref={useCasesRef.ref}
+          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-animate ${useCasesRef.isVisible ? 'visible' : ''}`}
+        >
+          <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-4xl font-bold text-foreground mb-4">
               Halo Use Cases
             </h2>
@@ -228,9 +242,9 @@ const Halo = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {useCases.map((useCase, index) => (
-              <Card key={index} className="bg-card-gradient border-primary/10 hover:shadow-elegant transition-all duration-300">
+              <Card key={index} className="bg-card-gradient border-primary/10 hover-lift hover:shadow-elegant transition-all duration-300">
                 <CardContent className="p-6">
-                  <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                  <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-4 hover-scale">
                     <useCase.icon className="h-7 w-7 text-primary" />
                   </div>
                   <h3 className="text-lg font-semibold text-foreground mb-3">{useCase.title}</h3>
@@ -244,9 +258,12 @@ const Halo = () => {
       </section>
 
       {/* Why Halo */}
-      <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+      <section className="section-swoosh section-padding bg-background">
+        <div 
+          ref={whyRef.ref}
+          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-animate ${whyRef.isVisible ? 'visible' : ''}`}
+        >
+          <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-4xl font-bold text-foreground mb-4">
               Why Choose Halo
             </h2>
@@ -257,8 +274,8 @@ const Halo = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {whyHalo.map((reason, index) => (
-              <div key={index} className="text-center space-y-4">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+              <div key={index} className="text-center space-y-4 hover-scale">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto hover:bg-primary/20 transition-colors">
                   <reason.icon className="h-8 w-8 text-primary" />
                 </div>
                 <h3 className="text-lg font-semibold text-foreground">{reason.title}</h3>
@@ -270,9 +287,9 @@ const Halo = () => {
       </section>
 
       {/* Launch Info */}
-      <section className="py-20 bg-primary-gradient">
+      <section className="section-padding bg-primary-gradient shadow-elegant">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="space-y-8">
+          <div className="space-y-8 animate-scale-in">
             <div className="flex items-center justify-center space-x-2 mb-4">
               <Building className="h-8 w-8 text-white" />
               <span className="text-2xl font-bold text-white">Halo: Launching August 2025</span>
@@ -287,13 +304,13 @@ const Halo = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" asChild>
+              <Button size="lg" variant="secondary" asChild className="hover-scale">
                 <Link to="/contact">
                   Join Waitlist
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10" asChild>
+              <Button size="lg" variant="outline" className="border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white hover-scale" asChild>
                 <Link to="/contact">Get in Touch</Link>
               </Button>
             </div>

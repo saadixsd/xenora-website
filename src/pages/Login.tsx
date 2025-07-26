@@ -7,10 +7,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Link, useNavigate } from "react-router-dom";
 import { Bot, Mail, Lock, User, ArrowRight, CheckCircle } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const heroRef = useScrollAnimation();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,8 +44,11 @@ const Login = () => {
   ];
 
   return (
-    <div className="min-h-screen pt-16 bg-hero-gradient page-fade-in">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="min-h-screen bg-hero-gradient page-fade-in">
+      <div 
+        ref={heroRef.ref}
+        className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 scroll-animate ${heroRef.isVisible ? 'visible' : ''}`}
+      >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Side - Welcome Content */}
           <div className="space-y-8">

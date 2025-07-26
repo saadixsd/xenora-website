@@ -19,8 +19,13 @@ import {
   Users,
   Database
 } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const Nora = () => {
+  const heroRef = useScrollAnimation();
+  const featuresRef = useScrollAnimation();
+  const useCasesRef = useScrollAnimation();
+  const specsRef = useScrollAnimation();
   const features = [
     "Legal Q&A with citations from Canadian federal and provincial case law",
     "Document upload and parsing (PDF, DOCX, TXT) with clause extraction",
@@ -100,19 +105,22 @@ const Nora = () => {
   ];
 
   return (
-    <div className="min-h-screen pt-20">
+    <div className="min-h-screen page-fade-in">
       {/* Header */}
-      <section className="py-16 bg-hero-gradient">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="section-padding bg-hero-gradient shadow-elegant">
+        <div 
+          ref={heroRef.ref}
+          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-animate ${heroRef.isVisible ? 'visible' : ''}`}
+        >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <Badge variant="outline" className="w-fit">
+            <div className="space-y-8 animate-swoosh-in">
+              <Badge variant="outline" className="w-fit hover-scale">
                 <Bot className="h-3 w-3 mr-1" />
                 AI Legal Assistant
               </Badge>
               
               <div className="space-y-4">
-                <h1 className="text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+                <h1 className="text-5xl lg:text-6xl font-bold text-foreground leading-tight animate-fade-in-up">
                   Meet
                   <br />
                   <span className="bg-primary-gradient bg-clip-text text-transparent">
@@ -139,7 +147,7 @@ const Nora = () => {
             </div>
 
             {/* Feature Preview */}
-            <Card className="bg-card-gradient border-primary/10 shadow-primary">
+            <Card className="bg-card-gradient border-primary/10 shadow-primary hover-lift">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <Bot className="h-5 w-5 text-primary" />
@@ -166,9 +174,12 @@ const Nora = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+      <section className="section-swoosh section-padding bg-background">
+        <div 
+          ref={featuresRef.ref}
+          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-animate ${featuresRef.isVisible ? 'visible' : ''}`}
+        >
+          <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-4xl font-bold text-foreground mb-4">
               Nora Showcase
             </h2>
@@ -177,7 +188,7 @@ const Nora = () => {
             </p>
           </div>
 
-          <Card className="bg-card-gradient border-primary/10">
+          <Card className="bg-card-gradient border-primary/10 hover-lift">
             <CardHeader>
               <CardTitle>Key Features</CardTitle>
               <CardDescription>Everything you need for intelligent legal assistance</CardDescription>
@@ -197,9 +208,12 @@ const Nora = () => {
       </section>
 
       {/* Use Cases */}
-      <section className="py-20 bg-accent/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+      <section className="section-swoosh section-padding bg-accent/30">
+        <div 
+          ref={useCasesRef.ref}
+          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-animate ${useCasesRef.isVisible ? 'visible' : ''}`}
+        >
+          <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-4xl font-bold text-foreground mb-4">
               Nora Use Cases
             </h2>
@@ -210,10 +224,10 @@ const Nora = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {useCases.map((useCase, index) => (
-              <Card key={index} className="bg-card-gradient border-primary/10 hover:shadow-elegant transition-all duration-300">
+              <Card key={index} className="bg-card-gradient border-primary/10 hover-lift hover:shadow-elegant transition-all duration-300">
                 <CardContent className="p-8">
                   <div className="flex items-center space-x-4 mb-6">
-                    <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center">
+                    <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center hover-scale">
                       <useCase.icon className="h-7 w-7 text-primary" />
                     </div>
                     <div>
@@ -230,9 +244,12 @@ const Nora = () => {
       </section>
 
       {/* Technical Specifications */}
-      <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+      <section className="section-swoosh section-padding bg-background">
+        <div 
+          ref={specsRef.ref}
+          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-animate ${specsRef.isVisible ? 'visible' : ''}`}
+        >
+          <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-4xl font-bold text-foreground mb-4">
               Nora Technical Specifications
             </h2>
@@ -243,9 +260,9 @@ const Nora = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {specifications.map((spec, index) => (
-              <Card key={index} className="bg-card-gradient border-primary/10 hover:shadow-elegant transition-all duration-300 text-center">
+              <Card key={index} className="bg-card-gradient border-primary/10 hover-lift hover:shadow-elegant transition-all duration-300 text-center">
                 <CardContent className="p-8">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 hover-scale">
                     <spec.icon className="h-8 w-8 text-primary" />
                   </div>
                   <h3 className="text-lg font-semibold text-foreground mb-2">{spec.title}</h3>
@@ -259,12 +276,12 @@ const Nora = () => {
       </section>
 
       {/* Pricing Preview */}
-      <section className="py-20 bg-accent/30">
+      <section className="section-padding bg-primary-gradient shadow-elegant">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-foreground mb-8">Ready to Experience Nora?</h2>
-          <Card className="bg-card-gradient border-primary/10 shadow-elegant">
+          <h2 className="text-3xl font-bold text-white mb-8">Ready to Experience Nora?</h2>
+          <Card className="bg-card-gradient border-primary/10 shadow-elegant hover-lift">
             <CardContent className="p-12">
-              <div className="space-y-6">
+              <div className="space-y-6 animate-scale-in">
                 <div className="flex items-center justify-center space-x-2">
                   <Bot className="h-8 w-8 text-primary" />
                   <span className="text-2xl font-bold text-foreground">Nora AI Assistant</span>
@@ -278,13 +295,13 @@ const Nora = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button size="lg" asChild className="bg-primary-gradient hover:shadow-glow transition-all duration-300">
+                  <Button size="lg" asChild className="bg-primary-gradient hover:shadow-glow transition-all duration-300 hover-scale">
                     <Link to="/login">
                       Start Free Trial
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
-                  <Button size="lg" variant="outline" asChild>
+                  <Button size="lg" variant="outline" asChild className="hover-scale">
                     <Link to="/contact">Schedule Demo</Link>
                   </Button>
                 </div>

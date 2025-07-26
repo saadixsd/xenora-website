@@ -79,8 +79,8 @@ const Pricing = () => {
       ]
     },
     {
-      name: "Non-Lawyer Professionals", 
-      description: "Paralegals, legal assistants, and other professionals",
+      name: "Non-Lawyer Professionals/Students", 
+      description: "Paralegals, legal assistants, students, and other professionals",
       plans: [
         {
           name: "Free Plan",
@@ -111,13 +111,7 @@ const Pricing = () => {
             "Collaboration tools"
           ],
           cta: "Start Pro Plan"
-        }
-      ]
-    },
-    {
-      name: "Students",
-      description: "Law students with valid academic credentials",
-      plans: [
+        },
         {
           name: "Nora Student",
           price: "$8.99", 
@@ -139,20 +133,18 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="min-h-screen pt-20 page-fade-in">
+    <div className="min-h-screen page-fade-in">
       {/* Header */}
-      <section 
-        ref={heroRef.ref}
-        className={`py-16 bg-hero-gradient transition-all duration-700 ${
-          heroRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <Badge variant="outline" className="mb-4">
+      <section className="section-padding bg-hero-gradient shadow-elegant">
+        <div 
+          ref={heroRef.ref}
+          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center scroll-animate ${heroRef.isVisible ? 'visible' : ''}`}
+        >
+          <Badge variant="outline" className="mb-4 hover-scale">
             <Sparkles className="h-3 w-3 mr-1" />
             Subscription Plans
           </Badge>
-          <h1 className="text-5xl font-bold text-foreground mb-6">
+          <h1 className="text-5xl font-bold text-foreground mb-6 animate-fade-in-up">
             Choose Your XenoraAI Plan
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
@@ -163,13 +155,11 @@ const Pricing = () => {
       </section>
 
       {/* Pricing by User Type */}
-      <section 
-        ref={plansRef.ref}
-        className={`py-20 bg-background transition-all duration-700 delay-200 ${
-          plansRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+      <section className="section-swoosh section-padding bg-background">
+        <div 
+          ref={plansRef.ref}
+          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 scroll-animate ${plansRef.isVisible ? 'visible' : ''}`}
+        >
           {userTypes.map((userType, typeIndex) => (
             <div key={typeIndex} className="space-y-8">
               <div className="text-center">
@@ -187,7 +177,7 @@ const Pricing = () => {
                 {userType.plans.map((plan, planIndex) => (
                   <Card 
                     key={planIndex} 
-                    className={`relative bg-card-gradient border-primary/10 hover:shadow-elegant transition-all duration-300 ${
+                    className={`relative bg-card-gradient border-primary/10 hover-lift hover:shadow-elegant transition-all duration-300 ${
                       plan.popular ? 'border-primary shadow-primary scale-105' : ''
                     }`}
                   >
@@ -246,9 +236,9 @@ const Pricing = () => {
       </section>
 
       {/* Free Trial Info */}
-      <section className="py-16 bg-accent/30">
+      <section className="section-swoosh section-padding bg-accent/30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <Card className="bg-card-gradient max-w-md mx-auto">
+          <Card className="bg-card-gradient max-w-md mx-auto hover-lift">
             <CardHeader>
               <CardTitle className="text-xl flex items-center justify-center">
                 <Zap className="h-5 w-5 mr-2 text-primary" />
@@ -268,13 +258,11 @@ const Pricing = () => {
       </section>
 
       {/* FAQ Section */}
-      <section 
-        ref={faqRef.ref}
-        className={`py-20 bg-accent/30 transition-all duration-700 delay-400 ${
-          faqRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-        }`}
-      >
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="section-swoosh section-padding bg-background">
+        <div 
+          ref={faqRef.ref}
+          className={`max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 scroll-animate ${faqRef.isVisible ? 'visible' : ''}`}
+        >
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-foreground mb-4">
               Frequently Asked Questions
@@ -315,9 +303,9 @@ const Pricing = () => {
       </section>
 
       {/* Enterprise CTA */}
-      <section className="py-20 bg-primary-gradient">
+      <section className="section-padding bg-primary-gradient shadow-elegant">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="space-y-8">
+          <div className="space-y-8 animate-scale-in">
             <div className="flex items-center justify-center space-x-2 mb-4">
               <Building className="h-8 w-8 text-white" />
               <span className="text-2xl font-bold text-white">Enterprise Solutions</span>
@@ -332,15 +320,13 @@ const Pricing = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" asChild>
+              <Button size="lg" variant="secondary" asChild className="hover-scale">
                 <Link to="/contact" className="text-foreground">
                   <Mail className="mr-2 h-4 w-4" />
                   Contact Sales Team
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10" asChild>
-                <Link to="/contact">Schedule Demo</Link>
-              </Button>
+              <ScheduleDemoButton size="lg" className="hover-scale" />
             </div>
           </div>
         </div>

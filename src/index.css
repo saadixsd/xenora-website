@@ -176,15 +176,16 @@ All colors MUST be HSL.
   animation: swooshIn 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Enhanced scroll animations with swoosh effect */
 .scroll-animate {
   opacity: 0;
-  transform: translateY(40px);
+  transform: translateY(40px) scale(0.98);
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .scroll-animate.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 /* Enhanced hover effects */
@@ -255,7 +256,17 @@ All colors MUST be HSL.
 
 @media (min-width: 1024px) {
   .section-padding {
-    @apply py-24;
+    @apply py-32;
+  }
+  
+  .section-swoosh::before {
+    height: 120px;
+    top: -60px;
+  }
+  
+  .section-swoosh::after {
+    height: 120px;
+    bottom: -60px;
   }
 }
 
