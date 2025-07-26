@@ -22,7 +22,7 @@ function spaFallbackPlugin() {
 }
 
 export default defineConfig(({ mode }) => ({
-  base: "/xenora_website/",
+  base: "/",
   server: {
     host: "::",
     port: 8080,
