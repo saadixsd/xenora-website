@@ -6,11 +6,13 @@ import { cn } from "@/lib/utils";
 import XenoraLogo from "./XenoraLogo";
 import DarkModeToggle from "./DarkModeToggle";
 import LanguageToggle from "./LanguageToggle";
+import { useTranslation } from 'react-i18next';
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,11 +24,11 @@ const Navigation = () => {
   }, []);
 
   const navItems = [
-    { name: "Home", path: "/" },
-    { name: "Products", path: "/models" },
-    { name: "Pricing", path: "/pricing" },
-    { name: "About", path: "/about" },
-    { name: "Contact", path: "/contact" },
+    { name: t('navigation.home'), path: "/" },
+    { name: t('navigation.models'), path: "/models" },
+    { name: t('navigation.pricing'), path: "/pricing" },
+    { name: t('navigation.about'), path: "/about" },
+    { name: t('navigation.contact'), path: "/contact" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -69,10 +71,10 @@ const Navigation = () => {
             <LanguageToggle />
             <DarkModeToggle />
             <Button variant="ghost" asChild className="hover-scale">
-              <Link to="/login">Sign In</Link>
+              <Link to="/login">{t('navigation.login')}</Link>
             </Button>
             <Button asChild className="bg-primary-gradient hover:shadow-glow hover-scale transition-all duration-300">
-              <Link to="/login">Get Started</Link>
+              <Link to="/login">{t('navigation.scheduleDemo')}</Link>
             </Button>
           </div>
 
@@ -114,16 +116,16 @@ const Navigation = () => {
                </div>
                
                <div className="pt-4 space-y-2">
-                 <Button variant="ghost" className="w-full justify-start" asChild>
-                   <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
-                     Sign In
-                   </Link>
-                 </Button>
-                 <Button className="w-full justify-start bg-primary-gradient" asChild>
-                   <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
-                     Get Started
-                   </Link>
-                 </Button>
+                  <Button variant="ghost" className="w-full justify-start" asChild>
+                    <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                      {t('navigation.login')}
+                    </Link>
+                  </Button>
+                  <Button className="w-full justify-start bg-primary-gradient" asChild>
+                    <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                      {t('navigation.scheduleDemo')}
+                    </Link>
+                  </Button>
                </div>
             </div>
           </div>

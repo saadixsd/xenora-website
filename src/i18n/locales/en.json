@@ -1,0 +1,256 @@
+{
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "models": "Products",
+    "pricing": "Pricing",
+    "contact": "Contact",
+    "login": "Login",
+    "scheduleDemo": "Schedule Demo"
+  },
+  "home": {
+    "hero": {
+      "badge": "Revolutionizing Canadian Law",
+      "title": "The Future of",
+      "subtitle": "Legal AI is Here",
+      "description": "Empower your legal practice with Nora AI Assistant and Halo Legal Suite - cutting-edge AI technology designed specifically for Canadian legal professionals.",
+      "cta": "Join Waitlist",
+      "demo": "Schedule Demo"
+    },
+    "features": {
+      "title": "Transforming Legal Practice",
+      "subtitle": "AI-powered solutions designed for modern legal professionals",
+      "nora": {
+        "title": "Nora AI Assistant",
+        "description": "Intelligent legal research and document analysis powered by advanced AI"
+      },
+      "halo": {
+        "title": "Halo Legal Suite",
+        "description": "Complete practice management with integrated AI capabilities"
+      },
+      "security": {
+        "title": "Enterprise Security",
+        "description": "PIPEDA compliant with bank-level security standards"
+      }
+    }
+  },
+  "about": {
+    "hero": {
+      "badge": "About XenoraAI",
+      "title": "About XenoraAI",
+      "description": "We're building the future of legal technology, democratizing access to sophisticated AI tools for legal professionals across Canada."
+    },
+    "mission": {
+      "title": "Our Mission",
+      "description": "Transforming the legal landscape through accessible AI technology and ethical innovation.",
+      "access": {
+        "title": "Access to Justice",
+        "description": "Making legal information and assistance accessible to everyone, regardless of their background or resources."
+      },
+      "innovation": {
+        "title": "AI-Powered Innovation",
+        "description": "Leveraging cutting-edge artificial intelligence to enhance legal research, document analysis, and case preparation."
+      },
+      "canadian": {
+        "title": "Canadian Focus",
+        "description": "Specialized in Canadian law with deep understanding of provincial differences and bilingual support."
+      }
+    },
+    "values": {
+      "title": "What Drives Us Forward",
+      "description": "Our core values guide every decision we make and every solution we create.",
+      "innovation": {
+        "title": "Innovation",
+        "description": "Constantly pushing boundaries to develop novel AI solutions that address real-world legal problems."
+      },
+      "integrity": {
+        "title": "Integrity",
+        "description": "Maintaining the highest ethical standards in AI development, ensuring transparency and accountability."
+      },
+      "impact": {
+        "title": "Impact",
+        "description": "Every solution we create is designed to deliver measurable value and positive transformation."
+      }
+    },
+    "team": {
+      "title": "Meet Our Team",
+      "description": "The brilliant minds driving XenoraAI's vision forward"
+    },
+    "cta": {
+      "title": "Join Our Vision",
+      "description": "Be part of the legal AI revolution. Experience the future of legal technology with XenoraAI.",
+      "button": "Get Started Today"
+    }
+  },
+  "models": {
+    "hero": {
+      "badge": "Revolutionary AI Technology",
+      "title": "Next-Gen Legal Intelligence",
+      "description": "Experience the future of Canadian legal practice with breakthrough AI models that understand, analyze, and enhance every aspect of your legal workflow."
+    },
+    "nora": {
+      "title": "Nora AI Assistant",
+      "badge": "🇨🇦 Canada's Smartest Legal AI Assistant",
+      "description": "Revolutionary AI technology powering intelligent legal research, document analysis, and automated task management for Canadian legal professionals.",
+      "features": {
+        "title": "Core Capabilities",
+        "legal_qa": "Legal Q&A with Canadian case law citations",
+        "document_upload": "Document upload and parsing (PDF, DOCX, TXT)",
+        "contract_summary": "Contract summarization and clause extraction",
+        "context_prompting": "Context-aware prompting for lawyers, judges, or clients",
+        "meeting_notes": "Meeting notes summarization and smart task reminders",
+        "legal_search": "Real-time RAG-enabled legal knowledge search",
+        "memory": "Personalized responses with long-term user memory"
+      },
+      "button": "Explore Nora AI",
+      "status": "🚀 Demo Coming Soon"
+    },
+    "halo": {
+      "title": "Halo Legal Suite",
+      "badge": "🏢 Complete Practice Management",
+      "description": "The complete AI-powered legal operating system, seamlessly integrating Nora's intelligence with comprehensive practice management, billing, and client relationship tools.",
+      "features": {
+        "title": "Suite Features",
+        "case_management": "Case and client management system powered by Nora",
+        "document_vault": "Secure document vault with tagging and versioning",
+        "calendar": "Smart calendar with legal deadlines and task scheduling",
+        "billing": "Billing and invoicing with automated time tracking",
+        "client_portal": "Client portal for appointments and invoice access",
+        "integration": "Integration with Google Drive and Office365",
+        "access_control": "Role-based access controls for team management"
+      },
+      "button": "Discover Halo Suite",
+      "status": "🗓️ Launching August 2025"
+    },
+    "useCases": {
+      "title": "Real-World Applications",
+      "description": "Discover how Nora and Halo transform legal workflows for various professionals in Canadian law firms.",
+      "case_management": {
+        "title": "Case Management",
+        "description": "Halo enables lawyers to track cases and clients with Nora-powered insights."
+      },
+      "billing": {
+        "title": "Billing & Invoicing",
+        "description": "Halo's billing dashboard, powered by Nora's time tracking, streamlines invoicing."
+      },
+      "scheduling": {
+        "title": "Smart Scheduling",
+        "description": "Paralegals use Halo's calendar with Nora's task automation for efficient scheduling."
+      },
+      "client_portal": {
+        "title": "Client Portal",
+        "description": "Clients access invoices and book appointments securely via Halo's portal."
+      },
+      "document_analysis": {
+        "title": "Document Analysis",
+        "description": "Nora parses contracts and legal documents, extracting key clauses and summarizing content."
+      },
+      "collaboration": {
+        "title": "Team Collaboration",
+        "description": "Halo's role-based access controls enable secure team collaboration."
+      }
+    },
+    "technical": {
+      "title": "Technical Excellence",
+      "description": "Built with cutting-edge technology and designed for Canadian legal compliance.",
+      "database": {
+        "title": "Canadian Legal Database",
+        "description": "Trained on comprehensive Canadian and provincial legal data with AI-enabled search."
+      },
+      "speed": {
+        "title": "Response < 5s",
+        "description": "Optimized for speed and accuracy in a high-performance environment."
+      },
+      "security": {
+        "title": "PIPEDA, SOC2",
+        "description": "Adheres to Canadian data protection and security standards."
+      },
+      "cloud": {
+        "title": "Cloud-Based",
+        "description": "Supports firms of all sizes with scalable, cloud-based infrastructure."
+      }
+    },
+    "cta": {
+      "title": "Ready to Experience the Future of Legal AI?",
+      "description": "Join the waitlist and be among the first to access Nora and Halo when they launch.",
+      "waitlist": "Join Waitlist",
+      "demo": "Schedule Demo"
+    }
+  },
+  "contact": {
+    "hero": {
+      "badge": "Get in Touch",
+      "title": "We'd Love to Hear From You",
+      "description": "Ready to transform your legal practice? Have questions about our AI solutions? Let's start a conversation about the future of legal technology."
+    },
+    "form": {
+      "title": "Send Us a Message",
+      "description": "Fill out the form below and we'll get back to you as soon as possible.",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "company": "Company/Organization",
+      "subject": "Subject",
+      "message": "Message",
+      "messagePlaceholder": "Tell us about your needs and how we can help...",
+      "send": "Send Message",
+      "sending": "Sending..."
+    },
+    "methods": {
+      "title": "Other Ways to Connect",
+      "description": "Choose the method that works best for you. We're here to help and answer any questions about our AI solutions.",
+      "email": {
+        "title": "Email Us",
+        "subtitle": "Primary",
+        "content": "xenoraai@gmail.com",
+        "description": "Response within 24 hours"
+      },
+      "linkedin": {
+        "title": "LinkedIn",
+        "subtitle": "Professional",
+        "content": "Connect with XenoraAI",
+        "description": "Follow us for updates and industry insights"
+      },
+      "twitter": {
+        "title": "X (Twitter)",
+        "subtitle": "News",
+        "content": "@XenoraAI",
+        "description": "Latest updates, announcements, and AI insights"
+      },
+      "location": {
+        "title": "Our Location",
+        "subtitle": "Office",
+        "content": "Montreal, Quebec, Canada",
+        "description": "Timezone: Eastern Standard Time (EST)"
+      }
+    },
+    "waitlist": {
+      "title": "Join Our Waitlist",
+      "description": "Interested in our Nora or Halo models? Be among the first to experience our latest AI innovations.",
+      "button": "Join Waitlist Now"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "response": {
+        "title": "How quickly will I hear back?",
+        "description": "We typically respond to all inquiries within 24 hours during business days."
+      },
+      "demo": {
+        "title": "Can I schedule a demo?",
+        "description": "Absolutely! Mention demo interest in your message and we'll arrange a personalized session."
+      },
+      "enterprise": {
+        "title": "Do you offer enterprise solutions?",
+        "description": "Yes, we provide custom enterprise solutions with dedicated support and integrations."
+      },
+      "security": {
+        "title": "What about data security?",
+        "description": "We're PIPEDA and SOC2 compliant, ensuring the highest standards of data protection."
+      }
+    }
+  },
+  "common": {
+    "connect": "Connect",
+    "learnMore": "Learn More"
+  }
+}

@@ -1,0 +1,256 @@
+{
+  "navigation": {
+    "home": "Accueil",
+    "about": "À propos",
+    "models": "Produits",
+    "pricing": "Tarification",
+    "contact": "Contact",
+    "login": "Connexion",
+    "scheduleDemo": "Planifier une démo"
+  },
+  "home": {
+    "hero": {
+      "badge": "Révolutionner le droit canadien",
+      "title": "L'avenir de",
+      "subtitle": "l'IA juridique est ici",
+      "description": "Renforcez votre pratique juridique avec l'assistant IA Nora et la suite juridique Halo - une technologie IA de pointe conçue spécifiquement pour les professionnels juridiques canadiens.",
+      "cta": "Rejoindre la liste d'attente",
+      "demo": "Planifier une démo"
+    },
+    "features": {
+      "title": "Transformer la pratique juridique",
+      "subtitle": "Solutions alimentées par l'IA conçues pour les professionnels juridiques modernes",
+      "nora": {
+        "title": "Assistant IA Nora",
+        "description": "Recherche juridique intelligente et analyse de documents alimentées par l'IA avancée"
+      },
+      "halo": {
+        "title": "Suite juridique Halo",
+        "description": "Gestion complète de la pratique avec des capacités IA intégrées"
+      },
+      "security": {
+        "title": "Sécurité d'entreprise",
+        "description": "Conforme à la PIPEDA avec des normes de sécurité de niveau bancaire"
+      }
+    }
+  },
+  "about": {
+    "hero": {
+      "badge": "À propos de XenoraAI",
+      "title": "À propos de XenoraAI",
+      "description": "Nous construisons l'avenir de la technologie juridique, démocratisant l'accès aux outils IA sophistiqués pour les professionnels juridiques à travers le Canada."
+    },
+    "mission": {
+      "title": "Notre mission",
+      "description": "Transformer le paysage juridique grâce à une technologie IA accessible et une innovation éthique.",
+      "access": {
+        "title": "Accès à la justice",
+        "description": "Rendre l'information et l'assistance juridiques accessibles à tous, quel que soit leur origine ou leurs ressources."
+      },
+      "innovation": {
+        "title": "Innovation alimentée par l'IA",
+        "description": "Exploiter l'intelligence artificielle de pointe pour améliorer la recherche juridique, l'analyse de documents et la préparation de dossiers."
+      },
+      "canadian": {
+        "title": "Focus canadien",
+        "description": "Spécialisé en droit canadien avec une compréhension approfondie des différences provinciales et un support bilingue."
+      }
+    },
+    "values": {
+      "title": "Ce qui nous pousse vers l'avant",
+      "description": "Nos valeurs fondamentales guident chaque décision que nous prenons et chaque solution que nous créons.",
+      "innovation": {
+        "title": "Innovation",
+        "description": "Repousser constamment les limites pour développer des solutions IA novatrices qui répondent aux problèmes juridiques du monde réel."
+      },
+      "integrity": {
+        "title": "Intégrité",
+        "description": "Maintenir les plus hauts standards éthiques dans le développement IA, en assurant transparence et responsabilité."
+      },
+      "impact": {
+        "title": "Impact",
+        "description": "Chaque solution que nous créons est conçue pour offrir une valeur mesurable et une transformation positive."
+      }
+    },
+    "team": {
+      "title": "Rencontrez notre équipe",
+      "description": "Les esprits brillants qui font avancer la vision de XenoraAI"
+    },
+    "cta": {
+      "title": "Rejoignez notre vision",
+      "description": "Faites partie de la révolution IA juridique. Découvrez l'avenir de la technologie juridique avec XenoraAI.",
+      "button": "Commencer aujourd'hui"
+    }
+  },
+  "models": {
+    "hero": {
+      "badge": "Technologie IA révolutionnaire",
+      "title": "Intelligence juridique de nouvelle génération",
+      "description": "Découvrez l'avenir de la pratique juridique canadienne avec des modèles IA révolutionnaires qui comprennent, analysent et améliorent tous les aspects de votre flux de travail juridique."
+    },
+    "nora": {
+      "title": "Assistant IA Nora",
+      "badge": "🇨🇦 L'assistant IA juridique le plus intelligent du Canada",
+      "description": "Technologie IA révolutionnaire alimentant la recherche juridique intelligente, l'analyse de documents et la gestion automatisée des tâches pour les professionnels juridiques canadiens.",
+      "features": {
+        "title": "Capacités principales",
+        "legal_qa": "Q&R juridiques avec citations de jurisprudence canadienne",
+        "document_upload": "Téléchargement et analyse de documents (PDF, DOCX, TXT)",
+        "contract_summary": "Résumé de contrats et extraction de clauses",
+        "context_prompting": "Prompts contextuels pour avocats, juges ou clients",
+        "meeting_notes": "Résumé de notes de réunion et rappels de tâches intelligents",
+        "legal_search": "Recherche de connaissances juridiques en temps réel avec RAG",
+        "memory": "Réponses personnalisées avec mémoire utilisateur à long terme"
+      },
+      "button": "Explorer Nora IA",
+      "status": "🚀 Démo bientôt disponible"
+    },
+    "halo": {
+      "title": "Suite juridique Halo",
+      "badge": "🏢 Gestion complète de la pratique",
+      "description": "Le système d'exploitation juridique complet alimenté par l'IA, intégrant de manière transparente l'intelligence de Nora avec des outils complets de gestion de pratique, facturation et relations clients.",
+      "features": {
+        "title": "Fonctionnalités de la suite",
+        "case_management": "Système de gestion des dossiers et clients alimenté par Nora",
+        "document_vault": "Coffre-fort de documents sécurisé avec étiquetage et versioning",
+        "calendar": "Calendrier intelligent avec échéances juridiques et planification de tâches",
+        "billing": "Facturation avec suivi automatisé du temps",
+        "client_portal": "Portail client pour rendez-vous et accès aux factures",
+        "integration": "Intégration avec Google Drive et Office365",
+        "access_control": "Contrôles d'accès basés sur les rôles pour la gestion d'équipe"
+      },
+      "button": "Découvrir la suite Halo",
+      "status": "🗓️ Lancement en août 2025"
+    },
+    "useCases": {
+      "title": "Applications concrètes",
+      "description": "Découvrez comment Nora et Halo transforment les flux de travail juridiques pour divers professionnels dans les cabinets d'avocats canadiens.",
+      "case_management": {
+        "title": "Gestion des dossiers",
+        "description": "Halo permet aux avocats de suivre les dossiers et clients avec des insights alimentés par Nora."
+      },
+      "billing": {
+        "title": "Facturation",
+        "description": "Le tableau de bord de facturation de Halo, alimenté par le suivi du temps de Nora, rationalise la facturation."
+      },
+      "scheduling": {
+        "title": "Planification intelligente",
+        "description": "Les parajuristes utilisent le calendrier de Halo avec l'automatisation des tâches de Nora pour une planification efficace."
+      },
+      "client_portal": {
+        "title": "Portail client",
+        "description": "Les clients accèdent aux factures et prennent rendez-vous en toute sécurité via le portail de Halo."
+      },
+      "document_analysis": {
+        "title": "Analyse de documents",
+        "description": "Nora analyse les contrats et documents juridiques, extrayant les clauses clés et résumant le contenu."
+      },
+      "collaboration": {
+        "title": "Collaboration d'équipe",
+        "description": "Les contrôles d'accès basés sur les rôles de Halo permettent une collaboration d'équipe sécurisée."
+      }
+    },
+    "technical": {
+      "title": "Excellence technique",
+      "description": "Construit avec une technologie de pointe et conçu pour la conformité juridique canadienne.",
+      "database": {
+        "title": "Base de données juridique canadienne",
+        "description": "Formé sur des données juridiques canadiennes et provinciales complètes avec recherche alimentée par l'IA."
+      },
+      "speed": {
+        "title": "Réponse < 5s",
+        "description": "Optimisé pour la vitesse et la précision dans un environnement haute performance."
+      },
+      "security": {
+        "title": "PIPEDA, SOC2",
+        "description": "Conforme aux normes canadiennes de protection et sécurité des données."
+      },
+      "cloud": {
+        "title": "Basé sur le cloud",
+        "description": "Prend en charge les cabinets de toutes tailles avec une infrastructure cloud évolutive."
+      }
+    },
+    "cta": {
+      "title": "Prêt à découvrir l'avenir de l'IA juridique?",
+      "description": "Rejoignez la liste d'attente et soyez parmi les premiers à accéder à Nora et Halo lors de leur lancement.",
+      "waitlist": "Rejoindre la liste d'attente",
+      "demo": "Planifier une démo"
+    }
+  },
+  "contact": {
+    "hero": {
+      "badge": "Entrer en contact",
+      "title": "Nous aimerions avoir de vos nouvelles",
+      "description": "Prêt à transformer votre pratique juridique? Avez-vous des questions sur nos solutions IA? Commençons une conversation sur l'avenir de la technologie juridique."
+    },
+    "form": {
+      "title": "Envoyez-nous un message",
+      "description": "Remplissez le formulaire ci-dessous et nous vous répondrons dès que possible.",
+      "firstName": "Prénom",
+      "lastName": "Nom de famille",
+      "email": "Courriel",
+      "company": "Entreprise/Organisation",
+      "subject": "Sujet",
+      "message": "Message",
+      "messagePlaceholder": "Parlez-nous de vos besoins et comment nous pouvons vous aider...",
+      "send": "Envoyer le message",
+      "sending": "Envoi en cours..."
+    },
+    "methods": {
+      "title": "Autres moyens de nous contacter",
+      "description": "Choisissez la méthode qui vous convient le mieux. Nous sommes là pour aider et répondre à toutes questions sur nos solutions IA.",
+      "email": {
+        "title": "Nous envoyer un courriel",
+        "subtitle": "Principal",
+        "content": "xenoraai@gmail.com",
+        "description": "Réponse dans les 24 heures"
+      },
+      "linkedin": {
+        "title": "LinkedIn",
+        "subtitle": "Professionnel",
+        "content": "Se connecter avec XenoraAI",
+        "description": "Suivez-nous pour les mises à jour et perspectives de l'industrie"
+      },
+      "twitter": {
+        "title": "X (Twitter)",
+        "subtitle": "Nouvelles",
+        "content": "@XenoraAI",
+        "description": "Dernières mises à jour, annonces et perspectives IA"
+      },
+      "location": {
+        "title": "Notre emplacement",
+        "subtitle": "Bureau",
+        "content": "Montréal, Québec, Canada",
+        "description": "Fuseau horaire: Heure normale de l'Est (HNE)"
+      }
+    },
+    "waitlist": {
+      "title": "Rejoignez notre liste d'attente",
+      "description": "Intéressé par nos modèles Nora ou Halo? Soyez parmi les premiers à découvrir nos dernières innovations IA.",
+      "button": "Rejoindre la liste d'attente maintenant"
+    },
+    "faq": {
+      "title": "Questions fréquemment posées",
+      "response": {
+        "title": "À quelle vitesse aurai-je une réponse?",
+        "description": "Nous répondons généralement à toutes les demandes dans les 24 heures pendant les jours ouvrables."
+      },
+      "demo": {
+        "title": "Puis-je planifier une démo?",
+        "description": "Absolument! Mentionnez votre intérêt pour une démo dans votre message et nous organiserons une session personnalisée."
+      },
+      "enterprise": {
+        "title": "Offrez-vous des solutions d'entreprise?",
+        "description": "Oui, nous fournissons des solutions d'entreprise personnalisées avec support dédié et intégrations."
+      },
+      "security": {
+        "title": "Qu'en est-il de la sécurité des données?",
+        "description": "Nous sommes conformes à la PIPEDA et SOC2, assurant les plus hauts standards de protection des données."
+      }
+    }
+  },
+  "common": {
+    "connect": "Se connecter",
+    "learnMore": "En savoir plus"
+  }
+}
