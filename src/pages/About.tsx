@@ -125,7 +125,7 @@ const About = () => {
             <span className="text-lg font-medium">{t('about.hero.badge')}</span>
           </Badge>
           <h1 className="text-7xl font-bold text-foreground mb-8 animate-fade-in-up">
-            {t('about.hero.title')}
+            About <span className="bg-primary-gradient bg-clip-text text-transparent">XenoraAI</span>
           </h1>
           <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
             {t('about.hero.description')}
