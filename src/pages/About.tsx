@@ -117,9 +117,9 @@ const About = () => {
             heroRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <Badge variant="outline" className="mb-4">
-            <Users className="h-3 w-3 mr-1" />
-            About XenoraAI
+          <Badge variant="outline" className="mb-8 border-primary/30 bg-primary/5">
+            <Users className="h-4 w-4 mr-2" />
+            <span className="text-lg font-medium">About XenoraAI</span>
           </Badge>
           <h1 className="text-7xl font-bold text-foreground mb-8 animate-fade-in-up">
             About <span className="bg-primary-gradient bg-clip-text text-transparent">XenoraAI</span>
