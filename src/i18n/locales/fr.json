@@ -10,28 +10,49 @@
   },
   "home": {
     "hero": {
-      "badge": "Révolutionner le droit canadien",
-      "title": "L'avenir de",
-      "subtitle": "l'IA juridique est ici",
-      "description": "Renforcez votre pratique juridique avec l'assistant IA Nora et la suite juridique Halo - une technologie IA de pointe conçue spécifiquement pour les professionnels juridiques canadiens.",
-      "cta": "Rejoindre la liste d'attente",
-      "demo": "Planifier une démo"
+      "badge": "Solutions juridiques et automatisation",
+      "title1": "Chacun",
+      "title2": "Mérite Un",
+      "title3": "Avocat",
+      "description": "Solutions IA juridiques de pointe et automatisation & perspectives pour professionnels et particuliers.",
+      "explore": "Explorer nos modèles",
+      "discover": "Découvrir XenoraAI"
     },
-    "features": {
-      "title": "Transformer la pratique juridique",
-      "subtitle": "Solutions alimentées par l'IA conçues pour les professionnels juridiques modernes",
-      "nora": {
-        "title": "Assistant IA Nora",
-        "description": "Recherche juridique intelligente et analyse de documents alimentées par l'IA avancée"
+    "heroCards": {
+      "caseAnalysis": "Analyse de jurisprudence",
+      "caseAnalysisDesc": "Recherche alimentée par l'IA",
+      "documentReview": "Révision de documents",
+      "documentReviewDesc": "Analyse instantanée",
+      "canliiIntegration": "Intégration CanLII",
+      "canliiIntegrationDesc": "Recherche intelligente",
+      "proceduralGuidance": "Guidance procédurale",
+      "proceduralGuidanceDesc": "Aide juridique étape par étape"
+    },
+    "benefits": {
+      "title": "Autonomiser la justice grâce à la technologie",
+      "description": "Découvrez comment XenoraAI transforme les flux de travail juridiques avec l'automatisation intelligente, des outils de recherche complets et des solutions de gestion de pratique transparentes.",
+      "provincial": {
+        "title": "Expertise provinciale",
+        "description": "Solutions qui comprennent les nuances juridiques régionales à travers le Canada."
       },
-      "halo": {
-        "title": "Suite juridique Halo",
-        "description": "Gestion complète de la pratique avec des capacités IA intégrées"
+      "bilingual": {
+        "title": "Support bilingue",
+        "description": "Fonctionnalité complète en français et en anglais, assurant l'accessibilité à l'échelle nationale."
       },
-      "security": {
-        "title": "Sécurité d'entreprise",
-        "description": "Conforme à la PIPEDA avec des normes de sécurité de niveau bancaire"
+      "ethical": {
+        "title": "IA éthique",
+        "description": "Construit avec l'éthique juridique canadienne et la conformité pour améliorer la confiance des utilisateurs."
+      },
+      "realtime": {
+        "title": "Résultats en temps réel",
+        "description": "Obtenez des réponses en secondes, pas en heures. Optimisez l'efficacité de votre flux de travail."
       }
+    },
+    "cta": {
+      "title": "Transformez votre pratique juridique",
+      "description": "Accédez aux outils IA juridiques les plus avancés du Canada. Rejoignez la liste d'attente et soyez parmi les premiers à découvrir Nora et Halo.",
+      "getStarted": "Commencer maintenant",
+      "contactSales": "Contacter les ventes"
     }
   },
   "about": {

@@ -10,28 +10,49 @@
   },
   "home": {
     "hero": {
-      "badge": "Revolutionizing Canadian Law",
-      "title": "The Future of",
-      "subtitle": "Legal AI is Here",
-      "description": "Empower your legal practice with Nora AI Assistant and Halo Legal Suite - cutting-edge AI technology designed specifically for Canadian legal professionals.",
-      "cta": "Join Waitlist",
-      "demo": "Schedule Demo"
+      "badge": "Legal Solutions & Automation",
+      "title1": "Everyone",
+      "title2": "Deserves An",
+      "title3": "Advocate",
+      "description": "Leading Legal AI solutions & delivering Automation & Insights for Professionals & Individuals.",
+      "explore": "Explore Our Models",
+      "discover": "Discover XenoraAI"
     },
-    "features": {
-      "title": "Transforming Legal Practice",
-      "subtitle": "AI-powered solutions designed for modern legal professionals",
-      "nora": {
-        "title": "Nora AI Assistant",
-        "description": "Intelligent legal research and document analysis powered by advanced AI"
+    "heroCards": {
+      "caseAnalysis": "Case Analysis",
+      "caseAnalysisDesc": "AI-Powered Research",
+      "documentReview": "Document Review",
+      "documentReviewDesc": "Instant Analysis",
+      "canliiIntegration": "CanLII Integration",
+      "canliiIntegrationDesc": "Smart Search",
+      "proceduralGuidance": "Procedural Guidance",
+      "proceduralGuidanceDesc": "Step-by-Step Legal Help"
+    },
+    "benefits": {
+      "title": "Empowering Justice Through Technology",
+      "description": "Discover how XenoraAI transforms legal workflows with intelligent automation, comprehensive research tools, and seamless practice management solutions.",
+      "provincial": {
+        "title": "Provincial Expertise",
+        "description": "Solutions that understand regional legal nuances across Canada."
       },
-      "halo": {
-        "title": "Halo Legal Suite",
-        "description": "Complete practice management with integrated AI capabilities"
+      "bilingual": {
+        "title": "Bilingual Support", 
+        "description": "Full functionality in French and English, ensuring accessibility nationwide."
       },
-      "security": {
-        "title": "Enterprise Security",
-        "description": "PIPEDA compliant with bank-level security standards"
+      "ethical": {
+        "title": "Ethical AI",
+        "description": "Built with Canadian legal ethics and compliance to enhance user trust."
+      },
+      "realtime": {
+        "title": "Real-time Results",
+        "description": "Get answers in seconds, not hours. Optimize your workflow efficiency."
       }
+    },
+    "cta": {
+      "title": "Transform Your Legal Practice",
+      "description": "Access Canada's most advanced legal AI tools. Join the waitlist and be among the first to experience Nora and Halo.",
+      "getStarted": "Get Started Now",
+      "contactSales": "Contact Sales"
     }
   },
   "about": {

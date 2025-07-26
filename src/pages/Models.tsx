@@ -19,11 +19,13 @@ import {
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import XenoraLogo from "@/components/XenoraLogo";
 import ScheduleDemoButton from "@/components/ScheduleDemoButton";
+import { useTranslation } from 'react-i18next';
 
 const Models = () => {
   const heroRef = useScrollAnimation();
   const modelsRef = useScrollAnimation();
   const useCasesRef = useScrollAnimation();
+  const { t } = useTranslation();
   
   const noraFeatures = [
     "Legal Q&A with Canadian case law citations",

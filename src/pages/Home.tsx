@@ -17,11 +17,13 @@ import {
 } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import XenoraLogo from "@/components/XenoraLogo";
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
   const heroRef = useScrollAnimation();
   const featuresRef = useScrollAnimation();
   const benefitsRef = useScrollAnimation();
+  const { t } = useTranslation();
   
   const features = [
     {
@@ -49,23 +51,23 @@ const Home = () => {
   const benefits = [
     {
       icon: Users,
-      title: "Provincial Expertise",
-      description: "Solutions that understand regional legal nuances across Canada."
+      title: t('home.benefits.provincial.title'),
+      description: t('home.benefits.provincial.description')
     },
     {
       icon: Sparkles,
-      title: "Bilingual Support",
-      description: "Full functionality in French and English, ensuring accessibility nationwide."
+      title: t('home.benefits.bilingual.title'),
+      description: t('home.benefits.bilingual.description')
     },
     {
       icon: Shield,
-      title: "Ethical AI",
-      description: "Built with Canadian legal ethics and compliance to enhance user trust."
+      title: t('home.benefits.ethical.title'),
+      description: t('home.benefits.ethical.description')
     },
     {
       icon: Clock,
-      title: "Real-time Results",
-      description: "Get answers in seconds, not hours. Optimize your workflow efficiency."
+      title: t('home.benefits.realtime.title'),
+      description: t('home.benefits.realtime.description')
     }
   ];
 
@@ -82,34 +84,33 @@ const Home = () => {
             <div className="space-y-8 animate-swoosh-in">
               <Badge variant="outline" className="w-fit border-primary/20 text-primary hover-scale mt-8 sm:mt-0">
                 <Sparkles className="h-4 w-4 mr-2" />
-                <span className="text-lg font-medium">Legal Solutions & Automation</span>
+                <span className="text-lg font-medium">{t('home.hero.badge')}</span>
               </Badge>
               
               <div className="space-y-4">
                 <h1 className="text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-                  Everyone
+                  {t('home.hero.title1')}
                   <br />
-                  Deserves An
+                  {t('home.hero.title2')}
                   <br />
                   <span className="bg-primary-gradient bg-clip-text text-transparent">
-                    Advocate
+                    {t('home.hero.title3')}
                   </span>
                 </h1>
                 <p className="text-2xl text-muted-foreground max-w-lg">
-                  Leading Legal AI solutions & delivering Automation & Insights for 
-                  Professionals & Individuals.
+                  {t('home.hero.description')}
                 </p>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" asChild className="bg-primary-gradient hover:shadow-glow transition-all duration-300">
                   <Link to="/models">
-                    Explore Our Models
+                    {t('home.hero.explore')}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
                 <Button size="lg" variant="outline" asChild>
-                  <Link to="/about">Discover XenoraAI</Link>
+                  <Link to="/about">{t('home.hero.discover')}</Link>
                 </Button>
               </div>
             </div>
@@ -121,8 +122,8 @@ const Home = () => {
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                     <Bot className="h-6 w-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold text-foreground mb-2">Case Analysis</h3>
-                  <p className="text-sm text-muted-foreground">AI-Powered Research</p>
+                  <h3 className="font-semibold text-foreground mb-2">{t('home.heroCards.caseAnalysis')}</h3>
+                  <p className="text-sm text-muted-foreground">{t('home.heroCards.caseAnalysisDesc')}</p>
                 </CardContent>
               </Card>
 
@@ -131,8 +132,8 @@ const Home = () => {
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                     <FileText className="h-6 w-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold text-foreground mb-2">Document Review</h3>
-                  <p className="text-sm text-muted-foreground">Instant Analysis</p>
+                  <h3 className="font-semibold text-foreground mb-2">{t('home.heroCards.documentReview')}</h3>
+                  <p className="text-sm text-muted-foreground">{t('home.heroCards.documentReviewDesc')}</p>
                 </CardContent>
               </Card>
 
@@ -141,8 +142,8 @@ const Home = () => {
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                     <Search className="h-6 w-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold text-foreground mb-2">CanLII Integration</h3>
-                  <p className="text-sm text-muted-foreground">Smart Search</p>
+                  <h3 className="font-semibold text-foreground mb-2">{t('home.heroCards.canliiIntegration')}</h3>
+                  <p className="text-sm text-muted-foreground">{t('home.heroCards.canliiIntegrationDesc')}</p>
                 </CardContent>
               </Card>
 
@@ -151,8 +152,8 @@ const Home = () => {
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                     <Zap className="h-6 w-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold text-foreground mb-2">Procedural Guidance</h3>
-                  <p className="text-sm text-muted-foreground">Step-by-Step Legal Help</p>
+                  <h3 className="font-semibold text-foreground mb-2">{t('home.heroCards.proceduralGuidance')}</h3>
+                  <p className="text-sm text-muted-foreground">{t('home.heroCards.proceduralGuidanceDesc')}</p>
                 </CardContent>
               </Card>
             </div>
@@ -169,11 +170,10 @@ const Home = () => {
         >
           <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-5xl font-bold text-foreground mb-8">
-              Empowering Justice Through Technology
+              {t('home.benefits.title')}
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-12">
-              Discover how XenoraAI transforms legal workflows with intelligent automation, 
-              comprehensive research tools, and seamless practice management solutions.
+              {t('home.benefits.description')}
             </p>
           </div>
 
@@ -198,20 +198,20 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="space-y-8 animate-scale-in">
             <h2 className="text-4xl font-bold text-white mb-4">
-              Transform Your Legal Practice
+              {t('home.cta.title')}
             </h2>
             <p className="text-xl text-white/90 max-w-3xl mx-auto">
-              Access Canada's most advanced legal AI tools. Join the waitlist and be among the first to experience Nora and Halo.
+              {t('home.cta.description')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" variant="secondary" asChild className="hover-scale">
                 <Link to="/login">
-                  Get Started Now
+                  {t('home.cta.getStarted')}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
               <Button size="lg" variant="outline" className="border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white hover-scale" asChild>
-                <Link to="/contact">Contact Sales</Link>
+                <Link to="/contact">{t('home.cta.contactSales')}</Link>
               </Button>
             </div>
           </div>

@@ -14,27 +14,30 @@ import {
 import XenoraLogo from "@/components/XenoraLogo";
 import ScheduleDemoButton from "@/components/ScheduleDemoButton";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useTranslation } from 'react-i18next';
 
 const About = () => {
   const heroRef = useScrollAnimation();
   const missionRef = useScrollAnimation();
   const valuesRef = useScrollAnimation();
   const teamRef = useScrollAnimation();
+  const { t } = useTranslation();
+  
   const values = [
     {
       icon: Sparkles,
-      title: "Innovation",
-      description: "Constantly pushing boundaries to develop novel AI solutions that address real-world legal problems."
+      title: t('about.values.innovation.title'),
+      description: t('about.values.innovation.description')
     },
     {
       icon: Shield,
-      title: "Integrity",
-      description: "Maintaining the highest ethical standards in AI development, ensuring transparency and accountability."
+      title: t('about.values.integrity.title'),
+      description: t('about.values.integrity.description')
     },
     {
       icon: Target,
-      title: "Impact",
-      description: "Every solution we create is designed to deliver measurable value and positive transformation."
+      title: t('about.values.impact.title'),
+      description: t('about.values.impact.description')
     }
   ];
 
@@ -92,18 +95,18 @@ const About = () => {
   const missions = [
     {
       icon: Users,
-      title: "Access to Justice",
-      description: "Making legal information and assistance accessible to everyone, regardless of their background or resources."
+      title: t('about.mission.access.title'),
+      description: t('about.mission.access.description')
     },
     {
       icon: Bot,
-      title: "AI-Powered Innovation",
-      description: "Leveraging cutting-edge artificial intelligence to enhance legal research, document analysis, and case preparation."
+      title: t('about.mission.innovation.title'),
+      description: t('about.mission.innovation.description')
     },
     {
       icon: Shield,
-      title: "Canadian Focus",
-      description: "Specialized in Canadian law with deep understanding of provincial differences and bilingual support."
+      title: t('about.mission.canadian.title'),
+      description: t('about.mission.canadian.description')
     }
   ];
 
@@ -119,14 +122,13 @@ const About = () => {
         >
           <Badge variant="outline" className="mb-8 border-primary/30 bg-primary/5">
             <Users className="h-4 w-4 mr-2" />
-            <span className="text-lg font-medium">About XenoraAI</span>
+            <span className="text-lg font-medium">{t('about.hero.badge')}</span>
           </Badge>
           <h1 className="text-7xl font-bold text-foreground mb-8 animate-fade-in-up">
-            About <span className="bg-primary-gradient bg-clip-text text-transparent">XenoraAI</span>
+            {t('about.hero.title')}
           </h1>
           <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            We're building the future of legal technology, democratizing access to sophisticated 
-            AI tools for legal professionals across Canada.
+            {t('about.hero.description')}
           </p>
         </div>
       </section>
@@ -140,9 +142,9 @@ const About = () => {
               missionRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            <h2 className="text-4xl font-bold text-foreground mb-4">Our Mission</h2>
+            <h2 className="text-4xl font-bold text-foreground mb-4">{t('about.mission.title')}</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Transforming the legal landscape through accessible AI technology and ethical innovation.
+              {t('about.mission.description')}
             </p>
           </div>
 
@@ -175,9 +177,9 @@ const About = () => {
               valuesRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            <h2 className="text-4xl font-bold text-foreground mb-4">What Drives Us Forward</h2>
+            <h2 className="text-4xl font-bold text-foreground mb-4">{t('about.values.title')}</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Our core values guide every decision we make and every solution we create.
+              {t('about.values.description')}
             </p>
           </div>
 
@@ -208,9 +210,9 @@ const About = () => {
               teamRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
-            <h2 className="text-4xl font-bold text-foreground mb-4">Meet Our Team</h2>
+            <h2 className="text-4xl font-bold text-foreground mb-4">{t('about.team.title')}</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              The brilliant minds driving XenoraAI's vision forward
+              {t('about.team.description')}
             </p>
           </div>
 
@@ -254,15 +256,15 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="space-y-8">
             <h2 className="text-4xl font-bold text-white mb-4">
-              Join Our Vision
+              {t('about.cta.title')}
             </h2>
             <p className="text-xl text-white/90 max-w-3xl mx-auto">
-              Be part of the legal AI revolution. Experience the future of legal technology with XenoraAI.
+              {t('about.cta.description')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" variant="secondary" asChild>
                 <Link to="/login">
-                  Get Started Today
+                  {t('about.cta.button')}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
