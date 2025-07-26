@@ -98,7 +98,7 @@ const Models = () => {
             <Sparkles className="h-4 w-4 mr-2 animate-pulse" />
             <span className="text-lg font-medium">Revolutionary AI Technology</span>
           </Badge>
-          <h1 className="text-7xl lg:text-8xl font-bold text-foreground mb-8 animate-fade-in-up">
+          <h1 className="text-7xl font-bold text-foreground mb-8 animate-fade-in-up">
             <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-pulse">
               Next-Gen
             </span>
