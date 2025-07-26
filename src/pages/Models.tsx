@@ -101,7 +101,7 @@ const Models = () => {
             <span className="text-lg font-medium">Revolutionary AI Technology</span>
           </Badge>
           <h1 className="text-7xl font-bold text-foreground mb-8 animate-fade-in-up">
-            <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-pulse">
+            <span className="bg-primary-gradient bg-clip-text text-transparent">
               Next-Gen
             </span>
             <br />
@@ -130,7 +130,7 @@ const Models = () => {
                 <div className="w-24 h-24 bg-gradient-to-br from-primary/20 to-accent/10 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500">
                   <Bot className="h-12 w-12 text-primary group-hover:animate-pulse" />
                 </div>
-                <CardTitle className="text-4xl font-bold text-foreground mb-6">Nora AI Assistant</CardTitle>
+                <CardTitle className="text-4xl font-bold text-foreground mb-6">Nora <span className="bg-primary-gradient bg-clip-text text-transparent">AI Assistant</span></CardTitle>
                 <div className="flex justify-center mb-6">
                   <Badge variant="secondary" className="bg-gradient-to-r from-primary/15 to-accent/15 text-primary font-bold text-lg px-6 py-3 rounded-full border border-primary/20">
                     🇨🇦 Canada's Smartest Legal AI Assistant
@@ -175,7 +175,7 @@ const Models = () => {
                 <div className="w-24 h-24 bg-gradient-to-br from-accent/20 to-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500">
                   <Building className="h-12 w-12 text-accent group-hover:animate-pulse" />
                 </div>
-                <CardTitle className="text-4xl font-bold text-foreground mb-6">Halo Legal Suite</CardTitle>
+                <CardTitle className="text-4xl font-bold text-foreground mb-6">Halo <span className="bg-primary-gradient bg-clip-text text-transparent">Legal Suite</span></CardTitle>
                 <div className="flex justify-center mb-6">
                   <Badge variant="secondary" className="bg-gradient-to-r from-accent/15 to-primary/15 text-accent font-bold text-lg px-6 py-3 rounded-full border border-accent/20">
                     🏢 Complete Practice Management
