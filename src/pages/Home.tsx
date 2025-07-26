@@ -80,7 +80,7 @@ const Home = () => {
         >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8 animate-swoosh-in">
-              <Badge variant="outline" className="w-fit border-primary/20 text-primary hover-scale">
+              <Badge variant="outline" className="w-fit border-primary/20 text-primary hover-scale mt-8 sm:mt-0">
                 <Sparkles className="h-4 w-4 mr-2" />
                 <span className="text-lg font-medium">Legal Solutions & Automation</span>
               </Badge>
