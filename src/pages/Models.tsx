@@ -96,12 +96,12 @@ const Models = () => {
             <Sparkles className="h-3 w-3 mr-1" />
             Product Showcase
           </Badge>
-          <h1 className="text-5xl font-bold text-foreground mb-6 animate-fade-in-up">
-            Intelligent Legal AI Solutions
+          <h1 className="text-6xl font-bold text-foreground mb-6 animate-fade-in-up">
+            Revolutionary Legal AI
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Discover our cutting-edge AI models designed specifically for Canadian legal professionals.
-            From intelligent research to complete practice management.
+          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto mb-8 leading-relaxed">
+            Experience the future of Canadian legal practice with our intelligent AI models, 
+            designed to enhance every aspect of your legal workflow.
           </p>
           <ScheduleDemoButton size="lg" className="animate-scale-in bg-primary-gradient hover:shadow-glow transition-all duration-300 border-0" />
         </div>
@@ -120,10 +120,11 @@ const Models = () => {
                 <div className="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 hover-scale">
                   <Bot className="h-10 w-10 text-primary" />
                 </div>
-                <CardTitle className="text-3xl font-bold text-foreground">Nora</CardTitle>
+                <CardTitle className="text-3xl font-bold text-foreground">Nora AI Assistant</CardTitle>
+                <Badge variant="secondary" className="mb-2">Canada's Smartest Legal AI Assistant</Badge>
                 <p className="text-muted-foreground">
-                  Canada's smartest legal AI assistant, powering intelligent legal research, 
-                  document analysis, and task automation.
+                  Revolutionary AI technology powering intelligent legal research, 
+                  document analysis, and automated task management for Canadian legal professionals.
                 </p>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -159,10 +160,11 @@ const Models = () => {
                 <div className="w-20 h-20 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 hover-scale">
                   <Building className="h-10 w-10 text-primary" />
                 </div>
-                <CardTitle className="text-3xl font-bold text-foreground">Halo</CardTitle>
+                <CardTitle className="text-3xl font-bold text-foreground">Halo Legal Suite</CardTitle>
+                <Badge variant="secondary" className="mb-2">Complete Practice Management</Badge>
                 <p className="text-muted-foreground">
-                  The AI-powered legal operating suite, embedding Nora's intelligence into case management, 
-                  billing, scheduling & many other tasks.
+                  The complete AI-powered legal operating system, seamlessly integrating Nora's intelligence 
+                  with comprehensive practice management, billing, and client relationship tools.
                 </p>
               </CardHeader>
               <CardContent className="space-y-6">

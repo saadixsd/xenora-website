@@ -75,7 +75,7 @@ const Contact = () => {
   ];
 
   return (
-    <div className="min-h-screen pt-20 page-fade-in">
+    <div className="min-h-screen pt-16 page-fade-in">
       {/* Header */}
       <section className="section-padding bg-hero-gradient">
         <div 
@@ -88,12 +88,12 @@ const Contact = () => {
             <Mail className="h-3 w-3 mr-1" />
             Get in Touch
           </Badge>
-          <h1 className="text-5xl font-bold text-foreground mb-6">
-            Contact XenoraAI
+          <h1 className="text-6xl font-bold text-foreground mb-8 animate-fade-in-up">
+            We'd Love to Hear From You
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
             Ready to transform your legal practice? Have questions about our AI solutions? 
-            We'd love to hear from you.
+            Let's start a conversation about the future of legal technology.
           </p>
         </div>
       </section>
@@ -237,7 +237,7 @@ const Contact = () => {
                     Interested in our Nora or Halo models? Be among the first to experience 
                     our latest AI innovations.
                   </p>
-                  <Button variant="outline" size="lg" className="border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white hover-scale">
+                  <Button size="lg" className="border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white hover:shadow-lg hover:scale-105 transition-all duration-300">
                     Join Waitlist Now
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>

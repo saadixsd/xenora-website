@@ -110,7 +110,7 @@ const About = () => {
   return (
     <div className="min-h-screen pt-20 page-fade-in">
       {/* Header */}
-      <section className="section-padding bg-hero-gradient">
+      <section className="section-padding bg-hero-gradient shadow-elegant">
         <div 
           ref={heroRef.ref}
           className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center transition-all duration-700 ${

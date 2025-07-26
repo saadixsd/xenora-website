@@ -10,28 +10,28 @@ const PrivacyPolicy = () => {
   const sections = [
     {
       icon: Eye,
-      title: "Introduction",
-      content: "At XenoraAI, we value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our AI-powered legal solutions and services."
+      title: "1. Information We Collect",
+      content: "We collect information you provide directly when registering for our services, including: • Personal identifiers (name, email, phone) • Professional information (law firm, practice area) • Account credentials and billing information • Documents and content you upload for AI analysis • Usage data and interaction patterns with our AI models"
     },
     {
       icon: FileText,
-      title: "Data Collection",
-      content: "We collect information you provide directly, such as your name, email address, and company information when you register for our services. We also collect usage data through cookies and similar technologies to improve your experience with our platform."
+      title: "2. How We Use Your Information",
+      content: "Your information enables us to: • Provide and improve our AI legal services • Process your legal document analysis requests • Communicate important updates and features • Ensure platform security and prevent fraud • Comply with legal obligations and regulatory requirements • Personalize your experience based on usage patterns"
     },
     {
       icon: Lock,
-      title: "Data Usage",
-      content: "Your information is used to provide and improve our services, communicate with you about updates and features, and ensure the security and functionality of our platform. We never sell your personal information to third parties."
+      title: "3. Information Sharing and Disclosure",
+      content: "We do not sell your personal information. We may share information only when: • You provide explicit consent • Required by law or legal process • Necessary to protect our rights or safety • With trusted service providers under strict confidentiality agreements • During business transfers (mergers, acquisitions) with continued privacy protection"
     },
     {
       icon: Shield,
-      title: "Data Protection",
-      content: "We implement industry-standard security measures to protect your data, including encryption, secure servers, and regular security audits. Our team is trained in data protection best practices and privacy regulations."
+      title: "4. Data Security and Retention",
+      content: "We implement comprehensive security measures: • End-to-end encryption for all data transmission • PIPEDA and SOC2 compliance standards • Regular security audits and penetration testing • Secure data centers with physical access controls • Data retention policies aligned with legal requirements • Right to request data deletion upon account termination"
     }
   ];
 
   return (
-    <div className="min-h-screen pt-20 page-fade-in">
+    <div className="min-h-screen pt-16 page-fade-in">
       {/* Header */}
       <section className="section-padding bg-hero-gradient">
         <div 

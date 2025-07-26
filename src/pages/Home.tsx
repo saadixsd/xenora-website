@@ -95,7 +95,7 @@ const Home = () => {
                     Advocate
                   </span>
                 </h1>
-                <p className="text-xl text-muted-foreground max-w-lg">
+                <p className="text-2xl text-muted-foreground max-w-lg">
                   Leading Legal AI solutions & delivering Automation & Insights for 
                   Professionals & Individuals.
                 </p>
@@ -168,10 +168,10 @@ const Home = () => {
           className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-animate ${benefitsRef.isVisible ? 'visible' : ''}`}
         >
           <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-4xl font-bold text-foreground mb-4">
-              Leading AI Innovation in Canadian Law
+            <h2 className="text-4xl font-bold text-foreground mb-8">
+              Smart Legal Solutions for Everyone
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-12">
               XenoraAI is revolutionizing AI legal solutions, designed to meet the unique needs of Canada's legal community & its people.
             </p>
           </div>

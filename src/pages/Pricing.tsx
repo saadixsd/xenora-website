@@ -79,7 +79,7 @@ const Pricing = () => {
       ]
     },
     {
-      name: "Non-Lawyer Professionals/Students", 
+      name: "Non-Lawyer Professionals/Students",
       description: "Paralegals, legal assistants, students, and other professionals",
       plans: [
         {
@@ -134,20 +134,26 @@ const Pricing = () => {
 
   return (
     <div className="min-h-screen page-fade-in">
-      {/* Header */}
+      {/* Hero Intro Section */}
       <section className="section-padding bg-hero-gradient shadow-elegant">
         <div 
           ref={heroRef.ref}
           className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center scroll-animate ${heroRef.isVisible ? 'visible' : ''}`}
         >
-          <Badge variant="outline" className="mb-4 hover-scale">
+          <Badge variant="outline" className="mb-6 hover-scale">
             <Sparkles className="h-3 w-3 mr-1" />
-            Subscription Plans
+            Pricing Plans
           </Badge>
-          <h1 className="text-5xl font-bold text-foreground mb-6 animate-fade-in-up">
+          <h1 className="text-6xl font-bold text-foreground mb-8 animate-fade-in-up">
             Choose Your XenoraAI Plan
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <div className="bg-primary/10 border border-primary/20 rounded-lg p-6 max-w-2xl mx-auto mb-8">
+            <h3 className="text-xl font-semibold text-primary mb-2">🎉 7-Day Free Trial</h3>
+            <p className="text-muted-foreground">
+              Start with a 7-day full trial. After trial, enjoy a free limited version of Nora with 5 searches every 10 hours.
+            </p>
+          </div>
+          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
             From individual lawyers to large firms, we have the perfect AI solution 
             for your legal practice needs.
           </p>
@@ -218,8 +224,7 @@ const Pricing = () => {
                       
                       <Button 
                         asChild 
-                        className="w-full"
-                        variant={plan.popular ? 'gradient' : 'outline'}
+                        className="w-full bg-primary-gradient hover:shadow-glow transition-all duration-300 mt-auto"
                       >
                         <Link to="/login">
                           {plan.cta}

@@ -10,28 +10,28 @@ const TermsOfService = () => {
   const sections = [
     {
       icon: CheckCircle,
-      title: "Acceptance of Terms",
-      content: "By using XenoraAI services, you agree to these terms and conditions. These terms govern your access to and use of our AI-powered legal solutions, including our website, applications, and any related services we provide."
+      title: "1. Acceptance and Scope",
+      content: "By accessing or using XenoraAI services, you agree to be bound by these Terms of Service. These terms apply to: • All XenoraAI software and services • Nora AI Assistant and Halo Legal Suite • API access and integrations • Support and consulting services • Any future products or features we may release"
     },
     {
       icon: FileText,
-      title: "Use of Services",
-      content: "Our services are designed to assist with legal research and document analysis. You may use our services for lawful purposes only and in accordance with these terms. You are responsible for maintaining the confidentiality of your account credentials."
+      title: "2. Permitted Use and Restrictions",
+      content: "You may use our services for lawful legal purposes only. Prohibited activities include: • Reverse engineering or copying our AI models • Sharing account credentials with unauthorized users • Using services for illegal or unethical purposes • Attempting to breach security or access controls • Violating applicable laws or professional conduct rules • Interfering with service operation or other users"
     },
     {
       icon: AlertTriangle,
-      title: "User Responsibilities",
-      content: "You agree to use our services responsibly and not to engage in any activities that could harm our platform or other users. This includes not attempting to reverse engineer our AI models or use our services for illegal activities."
+      title: "3. Professional Responsibility",
+      content: "While our AI tools provide sophisticated assistance, users maintain full professional responsibility for: • All legal advice and decisions • Compliance with professional conduct rules • Client confidentiality and privilege protection • Accuracy of any work product • Meeting all applicable deadlines and requirements • Supervising any AI-generated content or recommendations"
     },
     {
       icon: Scale,
-      title: "Limitation of Liability",
-      content: "XenoraAI is not liable for indirect, incidental, or consequential damages arising from service use. Our AI tools are designed to assist legal professionals but do not replace professional legal judgment and advice."
+      title: "4. Disclaimers and Limitations",
+      content: "XenoraAI services are provided 'as is' without warranties. Our liability is limited to: • The amount paid for services in the preceding 12 months • Direct damages only (no indirect, consequential, or punitive damages) • Reasonable efforts to maintain service availability • Professional indemnity insurance coverage • Compliance with applicable professional liability standards"
     }
   ];
 
   return (
-    <div className="min-h-screen pt-20 page-fade-in">
+    <div className="min-h-screen pt-16 page-fade-in">
       {/* Header */}
       <section className="section-padding bg-hero-gradient">
         <div 

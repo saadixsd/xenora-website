@@ -10,28 +10,28 @@ const CookiePolicy = () => {
   const sections = [
     {
       icon: Info,
-      title: "What Are Cookies",
-      content: "Cookies are small text files stored on your device when you visit our website. They help us enhance your experience by remembering your preferences, analyzing site traffic, and providing personalized content. Cookies do not contain any personally identifiable information by themselves."
+      title: "1. Essential Cookies",
+      content: "These cookies are necessary for our website to function properly: • Authentication and login sessions • Security and fraud prevention • Load balancing and performance optimization • Shopping cart and payment processing • Language and accessibility preferences • These cookies cannot be disabled without affecting site functionality"
     },
     {
       icon: Settings,
-      title: "How We Use Cookies",
-      content: "We use cookies to improve website functionality, analyze user behavior, and provide better services. This includes essential cookies for site operation, analytics cookies to understand usage patterns, and preference cookies to remember your settings."
+      title: "2. Analytics and Performance",
+      content: "We use analytics cookies to understand how users interact with our services: • Page views and navigation patterns • Feature usage and engagement metrics • Error tracking and performance monitoring • A/B testing for service improvements • Aggregate user behavior analysis • All data is anonymized and used solely for improvement purposes"
     },
     {
       icon: Cookie,
-      title: "Types of Cookies",
-      content: "Essential cookies ensure basic website functionality. Analytics cookies help us understand how visitors interact with our site. Functional cookies remember your preferences and settings. Marketing cookies may be used to provide relevant content and advertisements."
+      title: "3. Functional and Preference",
+      content: "These cookies enhance your experience by remembering: • Your preferred language and region settings • Dark/light theme preferences • Notification and communication preferences • Recently viewed content and searches • Customized dashboard layouts • Professional practice area selections"
     },
     {
       icon: Shield,
-      title: "Managing Cookies",
-      content: "You can control and manage cookies through your browser settings. Most browsers allow you to refuse cookies or alert you when cookies are being sent. However, disabling certain cookies may affect your ability to use some features of our website."
+      title: "4. Cookie Management and Control",
+      content: "You have full control over cookie preferences: • Browser settings allow blocking or deleting cookies • Most browsers provide cookie management tools • You can opt-out of analytics tracking • Essential cookies are required for basic functionality • Cookie preferences can be updated anytime • We respect Do Not Track browser signals where technically feasible"
     }
   ];
 
   return (
-    <div className="min-h-screen pt-20 page-fade-in">
+    <div className="min-h-screen pt-16 page-fade-in">
       {/* Header */}
       <section className="section-padding bg-hero-gradient">
         <div 
