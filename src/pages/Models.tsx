@@ -128,10 +128,12 @@ const Models = () => {
                 <div className="w-24 h-24 bg-gradient-to-br from-primary/20 to-accent/10 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500">
                   <Bot className="h-12 w-12 text-primary group-hover:animate-pulse" />
                 </div>
-                <CardTitle className="text-4xl font-bold text-foreground mb-4">Nora AI Assistant</CardTitle>
-                <Badge variant="secondary" className="mb-4 bg-gradient-to-r from-primary/10 to-accent/10 text-primary font-semibold">
-                  🇨🇦 Canada's Smartest Legal AI Assistant
-                </Badge>
+                <CardTitle className="text-4xl font-bold text-foreground mb-6">Nora AI Assistant</CardTitle>
+                <div className="flex justify-center mb-6">
+                  <Badge variant="secondary" className="bg-gradient-to-r from-primary/15 to-accent/15 text-primary font-bold text-lg px-6 py-3 rounded-full border border-primary/20">
+                    🇨🇦 Canada's Smartest Legal AI Assistant
+                  </Badge>
+                </div>
                 <p className="text-muted-foreground text-lg leading-relaxed">
                   Revolutionary AI technology powering intelligent legal research, 
                   document analysis, and automated task management for Canadian legal professionals.
@@ -171,10 +173,12 @@ const Models = () => {
                 <div className="w-24 h-24 bg-gradient-to-br from-accent/20 to-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500">
                   <Building className="h-12 w-12 text-accent group-hover:animate-pulse" />
                 </div>
-                <CardTitle className="text-4xl font-bold text-foreground mb-4">Halo Legal Suite</CardTitle>
-                <Badge variant="secondary" className="mb-4 bg-gradient-to-r from-accent/10 to-primary/10 text-accent font-semibold">
-                  🏢 Complete Practice Management
-                </Badge>
+                <CardTitle className="text-4xl font-bold text-foreground mb-6">Halo Legal Suite</CardTitle>
+                <div className="flex justify-center mb-6">
+                  <Badge variant="secondary" className="bg-gradient-to-r from-accent/15 to-primary/15 text-accent font-bold text-lg px-6 py-3 rounded-full border border-accent/20">
+                    🏢 Complete Practice Management
+                  </Badge>
+                </div>
                 <p className="text-muted-foreground text-lg leading-relaxed">
                   The complete AI-powered legal operating system, seamlessly integrating Nora's intelligence 
                   with comprehensive practice management, billing, and client relationship tools.
