@@ -103,7 +103,7 @@ const Models = () => {
             Discover our cutting-edge AI models designed specifically for Canadian legal professionals.
             From intelligent research to complete practice management.
           </p>
-          <ScheduleDemoButton size="lg" className="animate-scale-in" />
+          <ScheduleDemoButton size="lg" className="animate-scale-in bg-primary-gradient hover:shadow-glow transition-all duration-300 border-0" />
         </div>
       </section>
 
