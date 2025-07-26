@@ -13,16 +13,24 @@ const resources = {
   }
 };
 
-i18n
-  .use(initReactI18next)
-  .init({
-    resources,
-    lng: localStorage.getItem('language') || 'en',
-    fallbackLng: 'en',
-    
-    interpolation: {
-      escapeValue: false
-    }
-  });
+const initI18n = async () => {
+  await i18n
+    .use(initReactI18next)
+    .init({
+      resources,
+      lng: localStorage.getItem('language') || 'en',
+      fallbackLng: 'en',
+      
+      interpolation: {
+        escapeValue: false
+      },
+      
+      react: {
+        useSuspense: true
+      }
+    });
+};
+
+initI18n();
 
 export default i18n;
