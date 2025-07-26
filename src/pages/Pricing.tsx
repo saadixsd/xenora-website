@@ -141,7 +141,7 @@ const Pricing = () => {
           ref={heroRef.ref}
           className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center scroll-animate ${heroRef.isVisible ? 'visible' : ''}`}
         >
-          <Badge variant="outline" className="mb-8 hover-scale border-primary/30 bg-primary/5">
+          <Badge variant="outline" className="mb-8 mt-8 hover-scale border-primary/30 bg-primary/5">
             <Sparkles className="h-4 w-4 mr-2" />
             <span className="text-lg font-medium">Flexible Pricing Plans</span>
           </Badge>
