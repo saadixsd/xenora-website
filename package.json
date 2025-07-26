@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://saadixsd.github.io/xenora_website",
+  "homepage": "https://nora-reimagined-portal.lovable.app",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
