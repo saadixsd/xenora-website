@@ -145,7 +145,7 @@ const Pricing = () => {
             <Sparkles className="h-4 w-4 mr-2" />
             <span className="text-lg font-medium">Flexible Pricing Plans</span>
           </Badge>
-          <h1 className="text-7xl lg:text-8xl font-bold text-foreground mb-12 animate-fade-in-up">
+          <h1 className="text-7xl font-bold text-foreground mb-12 animate-fade-in-up">
             Choose Your
             <br />
             <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
