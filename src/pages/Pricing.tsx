@@ -91,7 +91,7 @@ const Pricing = () => {
           description: "Get started with basic legal AI", 
           features: [
             "5 searches every 10 hours",
-            "Basic document analysis",
+            "Document analysis for up to 10 documents",
             "Educational case law access",
             "Standard support",
             "Non-commercial use only"
