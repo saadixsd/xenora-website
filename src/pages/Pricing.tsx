@@ -121,7 +121,7 @@ const Pricing = () => {
           description: "Limited access for educational use only",
           features: [
             "Unlimited searches",
-            "Basic document analysis",
+            "Premium Document Analysis",
             "Educational case law access",
             "Study templates",
             "Email support",
