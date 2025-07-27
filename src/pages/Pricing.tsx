@@ -81,8 +81,8 @@ const Pricing = () => {
       ]
     },
     {
-      name: "Non-Lawyer Professionals/Students",
-      description: "Paralegals, legal assistants, students, and other professionals",
+      name: "Non-Lawyer Professionals",
+      description: "Paralegals, legal assistants, and other professionals",
       plans: [
         {
           name: "Free Plan",
@@ -157,12 +157,12 @@ const Pricing = () => {
           
           {/* 7-Day Trial Notice */}
           <div className="bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 border border-primary/20 rounded-2xl p-8 max-w-3xl mx-auto mb-8 hover-lift">
-            <h3 className="text-2xl font-bold text-primary mb-4">🎉 7-Day Free Trial</h3>
+            <h3 className="text-2xl font-bold text-primary mb-4">7-Day Free Trial</h3>
             <p className="text-lg text-muted-foreground mb-4">
               Start with a 7-day full trial. After trial, enjoy a free limited version of Nora with 5 searches every 10 hours.
             </p>
             <Badge variant="outline" className="text-sm font-medium">
-              ✅ No credit card required • Cancel anytime
+              Credit Card required but they won't be charged • Cancel anytime
             </Badge>
           </div>
           

@@ -61,7 +61,7 @@ const Models = () => {
       models: ["Halo", "Nora"]
     },
     {
-      icon: Calendar,
+      icon: Clock,
       title: "Smart Scheduling",
       description: "Paralegals use Halo's calendar with Nora's task automation for efficient scheduling.",
       models: ["Halo", "Nora"]
@@ -79,7 +79,7 @@ const Models = () => {
       models: ["Nora"]
     },
     {
-      icon: Building,
+      icon: Users,
       title: "Team Collaboration",
       description: "Halo's role-based access controls enable secure team collaboration.",
       models: ["Halo"]
@@ -128,12 +128,12 @@ const Models = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <CardHeader className="text-center pb-8 relative z-10">
                 <div className="w-24 h-24 bg-gradient-to-br from-primary/20 to-accent/10 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500">
-                  <Bot className="h-12 w-12 text-primary group-hover:animate-pulse" />
+                  <Sparkles className="h-12 w-12 text-primary group-hover:animate-pulse" />
                 </div>
                 <CardTitle className="text-4xl font-bold text-foreground mb-6">Nora <span className="bg-primary-gradient bg-clip-text text-transparent">AI Assistant</span></CardTitle>
                 <div className="flex justify-center mb-6">
                   <Badge variant="secondary" className="bg-gradient-to-r from-primary/15 to-accent/15 text-primary font-bold text-lg px-6 py-3 rounded-full border border-primary/20">
-                    🇨🇦 Canada's Smartest Legal AI Assistant
+                    Canada's Smartest Legal AI Assistant
                   </Badge>
                 </div>
                 <p className="text-muted-foreground text-lg leading-relaxed">
@@ -162,7 +162,7 @@ const Models = () => {
                     </Link>
                   </Button>
                   <Badge variant="secondary" className="w-full justify-center py-3 text-sm">
-                    🚀 Demo Coming Soon
+                    Demo Coming Soon
                   </Badge>
                 </div>
               </CardContent>
@@ -173,12 +173,12 @@ const Models = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <CardHeader className="text-center pb-8 relative z-10">
                 <div className="w-24 h-24 bg-gradient-to-br from-accent/20 to-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500">
-                  <Building className="h-12 w-12 text-accent group-hover:animate-pulse" />
+                  <Scale className="h-12 w-12 text-accent group-hover:animate-pulse" />
                 </div>
                 <CardTitle className="text-4xl font-bold text-foreground mb-6">Halo <span className="bg-primary-gradient bg-clip-text text-transparent">Legal Suite</span></CardTitle>
                 <div className="flex justify-center mb-6">
                   <Badge variant="secondary" className="bg-gradient-to-r from-accent/15 to-primary/15 text-accent font-bold text-lg px-6 py-3 rounded-full border border-accent/20">
-                    🏢 Complete Practice Management
+                    Complete Practice Management
                   </Badge>
                 </div>
                 <p className="text-muted-foreground text-lg leading-relaxed">
@@ -207,7 +207,7 @@ const Models = () => {
                     </Link>
                   </Button>
                   <Badge variant="secondary" className="w-full justify-center py-3 text-sm">
-                    🗓️ Launching August 2025
+                    Launching August 2025
                   </Badge>
                 </div>
               </CardContent>
