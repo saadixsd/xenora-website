@@ -120,7 +120,7 @@ const Pricing = () => {
           period: "/month",
           description: "Limited access for educational use only",
           features: [
-            "5 searches every 10 hours",
+            "Unlimited searches",
             "Basic document analysis",
             "Educational case law access",
             "Study templates",
