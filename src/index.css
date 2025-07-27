@@ -58,22 +58,22 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 20 14% 4%;
+    --background: 0 0% 4%;
     --foreground: 24 9% 88%;
 
-    --card: 20 14% 8%;
+    --card: 0 0% 8%;
     --card-foreground: 24 9% 88%;
 
-    --popover: 20 14% 8%;
+    --popover: 0 0% 8%;
     --popover-foreground: 24 9% 88%;
 
     --primary: 271 76% 53%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 20 14% 12%;
+    --secondary: 0 0% 12%;
     --secondary-foreground: 24 9% 88%;
 
-    --muted: 20 14% 12%;
+    --muted: 0 0% 12%;
     --muted-foreground: 24 9% 65%;
 
     --accent: 22 100% 63%;
@@ -82,24 +82,24 @@ All colors MUST be HSL.
     --destructive: 0 62.8% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 20 14% 15%;
-    --input: 20 14% 15%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
     --ring: 271 76% 53%;
 
     /* Dark mode gradients - maintain purple to orange theme */
     --primary-gradient: linear-gradient(135deg, hsl(271 76% 53%), hsl(330 100% 50%), hsl(22 100% 63%));
-    --hero-gradient: linear-gradient(135deg, hsl(20 14% 4%), hsl(20 14% 8%));
-    --card-gradient: linear-gradient(135deg, hsl(20 14% 8%), hsl(20 14% 10%));
+    --hero-gradient: linear-gradient(135deg, hsl(0 0% 4%), hsl(0 0% 8%));
+    --card-gradient: linear-gradient(135deg, hsl(0 0% 8%), hsl(0 0% 10%));
     --shadow-primary: 0 10px 40px -10px hsl(271 76% 53% / 0.3);
     --shadow-elegant: 0 4px 30px -4px hsl(0 0% 0% / 0.5);
     --glow-primary: 0 0 30px hsl(271 76% 53% / 0.4);
-    --sidebar-background: 20 14% 6%;
+    --sidebar-background: 0 0% 6%;
     --sidebar-foreground: 24 9% 88%;
     --sidebar-primary: 271 76% 53%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 20 14% 12%;
+    --sidebar-accent: 0 0% 12%;
     --sidebar-accent-foreground: 24 9% 88%;
-    --sidebar-border: 20 14% 15%;
+    --sidebar-border: 0 0% 15%;
     --sidebar-ring: 271 76% 53%;
   }
 }
