@@ -17,7 +17,7 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 220 9% 9%;
 
-    --primary: 22 90% 65%; /* Changed to light orange */
+    --primary: 271 76% 53%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 25 40% 90%;
@@ -34,17 +34,17 @@ All colors MUST be HSL.
 
     --border: 25 30% 88%;
     --input: 25 30% 88%;
-    --ring: 22 90% 65%; /* Changed to match new primary */
+    --ring: 271 76% 53%;
 
     --radius: 1rem;
 
-    /* XenoraAI Custom Design Variables - Orange Theme */
-    --primary-gradient: linear-gradient(135deg, hsl(22 90% 65%), hsl(30 95% 60%), hsl(35 100% 63%));
-    --hero-gradient: linear-gradient(135deg, hsl(25 30% 96%), hsl(30 50% 92%), hsl(35 45% 88%)); /* More orangish blend */
-    --card-gradient: linear-gradient(135deg, hsl(0 0% 100%), hsl(30 25% 96%)); /* Less saturated */
-    --shadow-primary: 0 8px 25px -8px hsl(22 90% 65% / 0.15);
+    /* XenoraAI Custom Design Variables - Purple to Orange Theme */
+    --primary-gradient: linear-gradient(135deg, hsl(271 76% 53%), hsl(330 100% 50%), hsl(22 100% 63%));
+    --hero-gradient: linear-gradient(135deg, hsl(25 30% 96%), hsl(22 100% 95%));
+    --card-gradient: linear-gradient(135deg, hsl(0 0% 100%), hsl(25 15% 98%));
+    --shadow-primary: 0 8px 25px -8px hsl(271 76% 53% / 0.15);
     --shadow-elegant: 0 4px 20px -4px hsl(220 9% 9% / 0.08);
-    --glow-primary: 0 0 25px hsl(22 90% 65% / 0.2);
+    --glow-primary: 0 0 25px hsl(271 76% 53% / 0.2);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
@@ -67,7 +67,7 @@ All colors MUST be HSL.
     --popover: 20 14% 8%;
     --popover-foreground: 24 9% 88%;
 
-    --primary: 22 90% 65%; /* Changed to light orange */
+    --primary: 271 76% 53%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 20 14% 12%;
@@ -84,23 +84,23 @@ All colors MUST be HSL.
 
     --border: 20 14% 15%;
     --input: 20 14% 15%;
-    --ring: 22 90% 65%; /* Changed to match new primary */
+    --ring: 271 76% 53%;
 
-    /* Dark mode gradients - orange theme */
-    --primary-gradient: linear-gradient(135deg, hsl(22 90% 65%), hsl(30 95% 60%), hsl(35 100% 63%));
-    --hero-gradient: linear-gradient(135deg, hsl(20 14% 4%), hsl(22 20% 8%), hsl(30 15% 6%)); /* Subtle orange tint */
-    --card-gradient: linear-gradient(135deg, hsl(20 14% 8%), hsl(25 18% 10%)); /* Less saturated */
-    --shadow-primary: 0 10px 40px -10px hsl(22 90% 65% / 0.3);
+    /* Dark mode gradients - maintain purple to orange theme */
+    --primary-gradient: linear-gradient(135deg, hsl(271 76% 53%), hsl(330 100% 50%), hsl(22 100% 63%));
+    --hero-gradient: linear-gradient(135deg, hsl(20 14% 4%), hsl(20 14% 8%));
+    --card-gradient: linear-gradient(135deg, hsl(20 14% 8%), hsl(20 14% 10%));
+    --shadow-primary: 0 10px 40px -10px hsl(271 76% 53% / 0.3);
     --shadow-elegant: 0 4px 30px -4px hsl(0 0% 0% / 0.5);
-    --glow-primary: 0 0 30px hsl(22 90% 65% / 0.4);
+    --glow-primary: 0 0 30px hsl(271 76% 53% / 0.4);
     --sidebar-background: 20 14% 6%;
     --sidebar-foreground: 24 9% 88%;
-    --sidebar-primary: 22 90% 65%;
+    --sidebar-primary: 271 76% 53%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 20 14% 12%;
     --sidebar-accent-foreground: 24 9% 88%;
     --sidebar-border: 20 14% 15%;
-    --sidebar-ring: 22 90% 65%;
+    --sidebar-ring: 271 76% 53%;
   }
 }
 
