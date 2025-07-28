@@ -308,7 +308,7 @@ const Models = () => {
               Join the waitlist and be among the first to access Nora and Halo when they launch.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" asChild className="hover-scale">
+              <Button size="lg" className="bg-white text-foreground hover:bg-white/90 hover-scale" asChild>
                 <Link to="/login">
                   Join Waitlist
                   <ArrowRight className="ml-2 h-4 w-4" />
