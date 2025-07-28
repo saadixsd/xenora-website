@@ -174,7 +174,7 @@ For more information about managing cookies in your specific browser, please vis
       <div className="bg-white border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <h1 className="text-4xl font-bold text-foreground mb-4">
-            XenoraAI Privacy Statement
+            XenoraAI <span className="bg-primary-gradient bg-clip-text text-transparent">Privacy Statement</span>
           </h1>
           <button className="text-primary hover:underline text-sm">
             What's new?
