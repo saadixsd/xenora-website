@@ -294,10 +294,10 @@ const Halo = () => {
           <div className="space-y-8 animate-scale-in">
             <div className="flex items-center justify-center space-x-2 mb-4">
               <Building className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold text-foreground">Halo: Launching Q4 2025</span>
+              <span className="text-2xl font-bold bg-primary-gradient bg-clip-text text-transparent">Halo: Launching Q4 2025</span>
             </div>
             
-            <h2 className="text-4xl font-bold text-foreground mb-4">
+            <h2 className="text-4xl font-bold bg-primary-gradient bg-clip-text text-transparent mb-4">
               Be Among the First
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
