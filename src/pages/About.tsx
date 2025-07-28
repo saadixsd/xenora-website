@@ -265,7 +265,12 @@ const About = () => {
       </section>
 
       {/* Team Section */}
-      <section className="section-padding section-swoosh bg-accent/5">
+      <section className="relative section-padding section-swoosh bg-accent/5">
+        {/* Orange accent lines */}
+        <div className="absolute top-10 left-0 w-32 h-1 bg-gradient-to-r from-orange-400 to-accent opacity-60"></div>
+        <div className="absolute top-20 right-0 w-24 h-1 bg-gradient-to-l from-orange-400 to-accent opacity-60"></div>
+        <div className="absolute bottom-10 left-1/4 w-20 h-1 bg-gradient-to-r from-accent to-orange-400 opacity-60"></div>
+        
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div 
             ref={teamRef.ref}
@@ -273,6 +278,11 @@ const About = () => {
               teamRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
           >
+            <div className="flex items-center justify-center mb-6">
+              <div className="h-px bg-gradient-to-r from-transparent via-orange-400 to-transparent w-32"></div>
+              <div className="mx-4 w-3 h-3 bg-orange-400 rounded-full animate-pulse"></div>
+              <div className="h-px bg-gradient-to-r from-transparent via-orange-400 to-transparent w-32"></div>
+            </div>
             <h2 className="text-4xl font-bold text-foreground mb-4">{t('about.team.title')}</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               {t('about.team.description')}
@@ -289,24 +299,26 @@ const About = () => {
                 line.length === 2 ? 'gap-8' : 'gap-6'
               } flex-wrap`}>
                 {line.map((member, memberIndex) => (
-                  <Card key={memberIndex} className="bg-card-gradient border-primary/10 hover:shadow-elegant hover-lift transition-all duration-300 w-full sm:w-80">
-                    <CardContent className="p-8 text-center">
-                      <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <Users className="h-10 w-10 text-primary" />
-                      </div>
-                      <h3 className="text-xl font-semibold text-foreground mb-2">{member.name}</h3>
-                      <p className="text-sm text-primary font-medium mb-4">{member.role}</p>
-                      <p className="text-muted-foreground text-sm mb-6">{member.description}</p>
-                      {member.linkedin !== "#" && (
-                        <Button variant="outline" size="sm" asChild>
-                          <a href={member.linkedin} target="_blank" rel="noopener noreferrer">
-                            <Linkedin className="h-4 w-4 mr-2" />
-                            LinkedIn
-                          </a>
-                        </Button>
-                      )}
-                    </CardContent>
-                  </Card>
+                <Card key={memberIndex} className="relative bg-card-gradient border-primary/10 hover:shadow-elegant hover-lift transition-all duration-300 w-full sm:w-80 group">
+                  {/* Orange accent border on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-orange-400 via-accent to-primary opacity-0 group-hover:opacity-20 rounded-lg transition-opacity duration-300"></div>
+                  <CardContent className="relative p-8 text-center">
+                    <div className="w-20 h-20 bg-gradient-to-br from-orange-100 to-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:from-orange-200 group-hover:to-orange-100 transition-colors duration-300">
+                      <Users className="h-10 w-10 text-primary group-hover:text-orange-500 transition-colors duration-300" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-foreground mb-2">{member.name}</h3>
+                    <p className="text-sm text-primary font-medium mb-4">{member.role}</p>
+                    <p className="text-muted-foreground text-sm mb-6">{member.description}</p>
+                    {member.linkedin !== "#" && (
+                      <Button variant="outline" size="sm" className="border-orange-300 text-orange-600 hover:bg-orange-50 hover:border-orange-400 hover:text-orange-700 transition-all duration-300" asChild>
+                        <a href={member.linkedin} target="_blank" rel="noopener noreferrer">
+                          <Linkedin className="h-4 w-4 mr-2" />
+                          LinkedIn
+                        </a>
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
                 ))}
               </div>
             ))}
