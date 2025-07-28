@@ -113,10 +113,11 @@ const About = () => {
   return (
     <div className="min-h-screen pt-16 page-fade-in">
       {/* Header */}
-      <section className="section-padding bg-hero-gradient shadow-elegant">
+      <section className="relative overflow-hidden bg-hero-gradient section-padding shadow-elegant">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-transparent animate-pulse" />
         <div 
           ref={heroRef.ref}
-          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center transition-all duration-700 ${
+          className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center transition-all duration-700 ${
             heroRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
