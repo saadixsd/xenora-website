@@ -33,31 +33,32 @@ const PrivacyPolicy = () => {
   return (
     <div className="min-h-screen pt-16 page-fade-in">
       {/* Header */}
-      <section className="section-padding bg-hero-gradient">
+      <section className="relative overflow-hidden bg-hero-gradient section-padding shadow-elegant">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-transparent animate-pulse" />
         <div 
           ref={heroRef.ref}
-          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center transition-all duration-700 ${
+          className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center transition-all duration-700 ${
             heroRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <Badge variant="outline" className="mb-4">
-            <Shield className="h-3 w-3 mr-1" />
-            Privacy Policy
+          <Badge variant="outline" className="mb-8 hover-scale border-primary/30 bg-primary/5">
+            <Shield className="h-4 w-4 mr-2" />
+            <span className="text-lg font-medium">Privacy Policy</span>
           </Badge>
-          <h1 className="text-5xl font-bold text-foreground mb-6">
-            Your Privacy Matters
+          <h1 className="text-7xl font-bold text-foreground mb-8 animate-fade-in-up">
+            Your <span className="bg-primary-gradient bg-clip-text text-transparent">Privacy</span> Matters
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-4">
             Learn how XenoraAI protects and manages your personal information with transparency and care.
           </p>
-          <p className="text-sm text-muted-foreground mt-4">
+          <p className="text-lg text-muted-foreground opacity-80">
             Last updated: January 2024
           </p>
         </div>
       </section>
 
       {/* Privacy Content */}
-      <section className="section-padding section-swoosh bg-background">
+      <section className="section-padding section-swoosh bg-accent/5">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div 
             ref={contentRef.ref}
@@ -82,7 +83,7 @@ const PrivacyPolicy = () => {
             ))}
 
             {/* Contact Information */}
-            <Card className="bg-primary-gradient border-0">
+            <Card className="bg-primary-gradient border-0 shadow-elegant hover-lift">
               <CardContent className="p-8 text-center text-white">
                 <h3 className="text-xl font-semibold mb-4">Questions About Privacy?</h3>
                 <p className="mb-6 text-white/90">
