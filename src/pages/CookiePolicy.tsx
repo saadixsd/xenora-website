@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { ChevronRight, ChevronDown } from "lucide-react";
+import { ChevronRight, ChevronDown, Menu, X } from "lucide-react";
 
 const CookiePolicy = () => {
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSection = (sectionId: string) => {
     setExpandedSections(prev => 
@@ -119,21 +120,58 @@ For more information about managing cookies, visit your browser's help section o
     <div className="min-h-screen pt-16 bg-background">
       {/* Header */}
       <div className="bg-white border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            XenoraAI <span className="bg-primary-gradient bg-clip-text text-transparent">Cookie Policy</span>
-          </h1>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
+              XenoraAI <span className="bg-primary-gradient bg-clip-text text-transparent">Cookie Policy</span>
+            </h1>
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="lg:hidden p-2 rounded-md text-muted-foreground hover:text-primary hover:bg-accent"
+            >
+              {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
           <button className="text-primary hover:underline text-sm">
             What's new?
           </button>
         </div>
       </div>
 
+      {/* Mobile Sidebar Overlay */}
+      {sidebarOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 bg-black/50" onClick={() => setSidebarOpen(false)}>
+          <div className="fixed left-0 top-0 h-full w-80 bg-background border-r border-border p-6 overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="font-semibold text-foreground">Cookie Policy</h2>
+              <button onClick={() => setSidebarOpen(false)} className="p-1 rounded-md hover:bg-accent">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <nav className="space-y-1">
+              {sidebarItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    scrollToSection(item.id);
+                    setSidebarOpen(false);
+                  }}
+                  className="block w-full text-left py-3 px-3 text-sm text-muted-foreground hover:text-primary hover:bg-accent rounded-md transition-colors"
+                >
+                  {item.title}
+                </button>
+              ))}
+            </nav>
+          </div>
+        </div>
+      )}
+
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex gap-8">
-          {/* Sidebar */}
-          <div className="w-80 flex-shrink-0">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+        <div className="lg:flex lg:gap-8">
+          {/* Desktop Sidebar */}
+          <div className="hidden lg:block w-80 flex-shrink-0">
             <div className="sticky top-24">
               <h2 className="font-semibold text-foreground mb-4">XenoraAI Cookie Policy</h2>
               <nav className="space-y-1">
@@ -151,33 +189,33 @@ For more information about managing cookies, visit your browser's help section o
           </div>
 
           {/* Content */}
-          <div className="flex-1 max-w-4xl">
+          <div className="flex-1 lg:max-w-4xl">
             <div className="prose prose-slate max-w-none">
-              <p className="text-lg text-muted-foreground mb-8">
+              <p className="text-base lg:text-lg text-muted-foreground mb-6 lg:mb-8 leading-relaxed">
                 This Cookie Policy explains how XenoraAI uses cookies and similar technologies to recognize you when you visit our website. It explains what these technologies are and why we use them, as well as your rights to control our use of them.
               </p>
 
-              <div className="space-y-8">
+              <div className="space-y-6 lg:space-y-8">
                 {sections.map((section) => (
-                  <div key={section.id} id={section.id} className="border-t border-border pt-8">
+                  <div key={section.id} id={section.id} className="border-t border-border pt-6 lg:pt-8">
                     <button
                       onClick={() => toggleSection(section.id)}
-                      className="flex items-center justify-between w-full text-left group"
+                      className="flex items-center justify-between w-full text-left group touch-manipulation"
                     >
-                      <h2 className="text-2xl font-semibold text-foreground group-hover:text-primary transition-colors">
+                      <h2 className="text-xl lg:text-2xl font-semibold text-foreground group-hover:text-primary transition-colors pr-4">
                         {section.title}
                       </h2>
                       {expandedSections.includes(section.id) ? (
-                        <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                        <ChevronDown className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                       ) : (
-                        <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                        <ChevronRight className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                       )}
                     </button>
                     
                     {expandedSections.includes(section.id) && (
                       <div className="mt-4 text-muted-foreground leading-relaxed space-y-4">
                         {section.content.split('\n\n').map((paragraph, index) => (
-                          <p key={index}>{paragraph}</p>
+                          <p key={index} className="text-sm lg:text-base">{paragraph}</p>
                         ))}
                       </div>
                     )}
@@ -186,12 +224,12 @@ For more information about managing cookies, visit your browser's help section o
               </div>
 
               {/* Contact Section */}
-              <div className="mt-16 p-6 bg-accent/50 rounded-lg border border-border">
+              <div className="mt-12 lg:mt-16 p-4 lg:p-6 bg-accent/50 rounded-lg border border-border">
                 <h3 className="text-lg font-semibold text-foreground mb-2">Cookie Preferences</h3>
-                <p className="text-muted-foreground mb-4">
+                <p className="text-sm lg:text-base text-muted-foreground mb-4">
                   You can manage your cookie preferences through your browser settings or contact us for assistance with cookie-related questions.
                 </p>
-                <p className="text-muted-foreground">
+                <p className="text-sm lg:text-base text-muted-foreground">
                   Email: <span className="font-medium text-foreground">xenoraai@gmail.com</span>
                 </p>
               </div>
