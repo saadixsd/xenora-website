@@ -160,12 +160,12 @@ const Nora = () => {
               <CardContent className="space-y-4">
                 <div className="bg-accent/50 rounded-lg p-4">
                   <p className="text-sm text-muted-foreground mb-2">Query:</p>
-                  <p className="font-medium">"What are the key elements of a valid contract in Ontario?"</p>
+                  <p className="font-medium">"What are the key elements of a valid contract in Quebec under the Civil Code?"</p>
                 </div>
                 <div className="bg-primary/5 rounded-lg p-4">
                   <p className="text-sm text-muted-foreground mb-2">Nora's Response:</p>
-                  <p className="text-sm">In Ontario, a valid contract requires: 1) Offer and acceptance, 2) Consideration, 3) Intention to create legal relations, 4) Capacity to contract...</p>
-                  <p className="text-xs text-primary mt-2">Source: Ontario Contract Law, R.S.O. 1990</p>
+                  <p className="text-sm">In Quebec, a valid contract under the Civil Code requires: 1) Consent of the parties, 2) Capacity to contract, 3) Cause (object), 4) Lawful object...</p>
+                  <p className="text-xs text-primary mt-2">Source: Civil Code of Quebec, C.C.Q. Art. 1385</p>
                 </div>
                 <Progress value={85} className="h-2" />
                 <p className="text-xs text-muted-foreground">Response generated in 3.2 seconds</p>
