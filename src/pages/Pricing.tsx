@@ -259,7 +259,7 @@ const Pricing = () => {
 
 
       {/* FAQ Section */}
-      <section className="section-swoosh section-padding bg-background">
+      <section className="section-swoosh section-padding bg-accent/10">
         <div 
           ref={faqRef.ref}
           className={`max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 scroll-animate ${faqRef.isVisible ? 'visible' : ''}`}
