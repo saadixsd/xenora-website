@@ -104,6 +104,17 @@ For more information about managing cookies, visit your browser's help section o
     { id: "cookie-management", title: "Cookie Management and Control" }
   ];
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Auto-expand the section when navigating to it
+      if (!expandedSections.includes(sectionId)) {
+        setExpandedSections(prev => [...prev, sectionId]);
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen pt-16 bg-background">
       {/* Header */}
@@ -130,13 +141,13 @@ For more information about managing cookies, visit your browser's help section o
               <h2 className="font-semibold text-foreground mb-4">XenoraAI Cookie Policy</h2>
               <nav className="space-y-1">
                 {sidebarItems.map((item) => (
-                  <a
+                  <button
                     key={item.id}
-                    href={`#${item.id}`}
-                    className="block py-2 px-3 text-sm text-muted-foreground hover:text-primary hover:bg-accent rounded-md transition-colors"
+                    onClick={() => scrollToSection(item.id)}
+                    className="block w-full text-left py-2 px-3 text-sm text-muted-foreground hover:text-primary hover:bg-accent rounded-md transition-colors"
                   >
                     {item.title}
-                  </a>
+                  </button>
                 ))}
               </nav>
             </div>
