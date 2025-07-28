@@ -123,9 +123,6 @@ For more information about managing cookies, visit your browser's help section o
           <h1 className="text-4xl font-bold text-foreground mb-4">
             XenoraAI Cookie Policy
           </h1>
-          <p className="text-muted-foreground mb-2">
-            Last Updated: January 2025
-          </p>
           <button className="text-primary hover:underline text-sm">
             What's new?
           </button>

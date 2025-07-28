@@ -123,9 +123,6 @@ For detailed information about how we handle your data, please review our Privac
           <h1 className="text-4xl font-bold text-foreground mb-4">
             XenoraAI Terms of Service
           </h1>
-          <p className="text-muted-foreground mb-2">
-            Last Updated: January 2025
-          </p>
           <button className="text-primary hover:underline text-sm">
             What's new?
           </button>
