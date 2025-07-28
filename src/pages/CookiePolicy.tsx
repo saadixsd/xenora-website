@@ -184,7 +184,7 @@ For more information about managing cookies, visit your browser's help section o
                   You can manage your cookie preferences through your browser settings or contact us for assistance with cookie-related questions.
                 </p>
                 <p className="text-muted-foreground">
-                  Email: <span className="font-medium text-foreground">cookies@xenoraai.com</span>
+                  Email: <span className="font-medium text-foreground">xenoraai@gmail.com</span>
                 </p>
               </div>
             </div>

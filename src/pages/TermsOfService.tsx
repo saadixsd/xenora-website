@@ -184,7 +184,7 @@ For detailed information about how we handle your data, please review our Privac
                   If you have any questions about these Terms of Service, please contact our legal team.
                 </p>
                 <p className="text-muted-foreground">
-                  Email: <span className="font-medium text-foreground">legal@xenoraai.com</span>
+                  Email: <span className="font-medium text-foreground">xenoraai@gmail.com</span>
                 </p>
               </div>
             </div>
