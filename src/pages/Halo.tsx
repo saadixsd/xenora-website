@@ -289,42 +289,42 @@ const Halo = () => {
       </section>
 
       {/* Launch Info */}
-      <section className="section-padding bg-accent/5 shadow-elegant">
+      <section className="section-padding bg-primary-gradient shadow-elegant">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="space-y-8 animate-scale-in">
             <div className="flex items-center justify-center space-x-2 mb-4">
-              <Building className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold bg-primary-gradient bg-clip-text text-transparent">Halo: Launching Q4 2025</span>
+              <Building className="h-8 w-8 text-white" />
+              <span className="text-2xl font-bold text-white">Halo: Launching Q4 2025</span>
             </div>
             
-            <h2 className="text-4xl font-bold bg-primary-gradient bg-clip-text text-transparent mb-4">
+            <h2 className="text-4xl font-bold text-white mb-4">
               Be Among the First
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-xl text-white/90 max-w-3xl mx-auto">
               Join the waitlist to be among the first to experience Halo's powerful legal suite, 
               integrated with Nora AI.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="default" asChild className="hover-scale">
+              <Button size="lg" variant="secondary" asChild className="hover-scale">
                 <Link to="/contact">
                   Join Waitlist
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="hover-scale" asChild>
+              <Button size="lg" variant="outline" className="border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white hover-scale" asChild>
                 <Link to="/contact">Get in Touch</Link>
               </Button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
               <div className="text-center">
-                <div className="text-3xl font-bold text-foreground mb-2">October 2025</div>
-                <div className="text-muted-foreground">Full Release</div>
+                <div className="text-3xl font-bold text-white mb-2">October 2025</div>
+                <div className="text-white/80">Full Release</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-foreground mb-2">Q4 2025</div>
-                <div className="text-muted-foreground">Integrations</div>
+                <div className="text-3xl font-bold text-white mb-2">Q4 2025</div>
+                <div className="text-white/80">Integrations</div>
               </div>
             </div>
           </div>
