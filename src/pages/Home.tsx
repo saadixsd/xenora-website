@@ -163,7 +163,7 @@ const Home = () => {
 
 
       {/* Benefits Section */}
-      <section className="section-swoosh section-padding bg-accent/30 shadow-elegant">
+      <section className="section-swoosh section-padding bg-accent/10 shadow-elegant">
         <div 
           ref={benefitsRef.ref}
           className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-animate ${benefitsRef.isVisible ? 'visible' : ''}`}

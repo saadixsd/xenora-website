@@ -257,27 +257,6 @@ const Pricing = () => {
         </div>
       </section>
 
-      {/* Free Trial Info */}
-      <section className="section-swoosh section-padding bg-accent/30">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <Card className="bg-card-gradient max-w-md mx-auto hover-lift">
-            <CardHeader>
-              <CardTitle className="text-xl flex items-center justify-center">
-                <Zap className="h-5 w-5 mr-2 text-primary" />
-                Free Trial
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">
-                Start with a 7-day full trial. After trial, enjoy a free limited version of Nora 
-                with 5 searches every 10 hours.
-              </p>
-              <div className="text-2xl font-bold text-primary">7 Days Free</div>
-              <p className="text-sm text-muted-foreground">then limited free access</p>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
 
       {/* FAQ Section */}
       <section className="section-swoosh section-padding bg-background">
