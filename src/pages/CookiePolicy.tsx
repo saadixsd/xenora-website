@@ -1,102 +1,196 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { Cookie, Settings, Info, Shield } from "lucide-react";
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useState } from "react";
+import { ChevronRight, ChevronDown } from "lucide-react";
 
 const CookiePolicy = () => {
-  const heroRef = useScrollAnimation();
-  const contentRef = useScrollAnimation();
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
+
+  const toggleSection = (sectionId: string) => {
+    setExpandedSections(prev => 
+      prev.includes(sectionId) 
+        ? prev.filter(id => id !== sectionId)
+        : [...prev, sectionId]
+    );
+  };
 
   const sections = [
     {
-      icon: Info,
-      title: "1. Essential Cookies",
-      content: "These cookies are necessary for our website to function properly: • Authentication and login sessions • Security and fraud prevention • Load balancing and performance optimization • Shopping cart and payment processing • Language and accessibility preferences • These cookies cannot be disabled without affecting site functionality"
+      id: "essential-cookies",
+      title: "Essential Cookies",
+      content: `These cookies are necessary for our website to function properly and cannot be switched off in our systems. They are usually only set in response to actions made by you which amount to a request for services.
+
+Essential cookies enable core functionality such as:
+• User authentication and login sessions
+• Security features and fraud prevention
+• Load balancing and performance optimization
+• Shopping cart and payment processing
+• Language and accessibility preferences
+• CSRF protection and form submissions
+
+These cookies do not store any personally identifiable information, but without them, some parts of our service may not function properly. You can set your browser to block or alert you about these cookies, but this may cause some parts of the site to not work.`
     },
     {
-      icon: Settings,
-      title: "2. Analytics and Performance",
-      content: "We use analytics cookies to understand how users interact with our services: • Page views and navigation patterns • Feature usage and engagement metrics • Error tracking and performance monitoring • A/B testing for service improvements • Aggregate user behavior analysis • All data is anonymized and used solely for improvement purposes"
+      id: "analytics-performance",
+      title: "Analytics and Performance Cookies",
+      content: `We use analytics cookies to understand how visitors interact with our website. These cookies help us improve our services by providing information about which pages are visited most often and if users get error messages from web pages.
+
+Analytics cookies collect information about:
+• Page views and navigation patterns
+• Feature usage and user engagement
+• Error tracking and performance monitoring
+• Time spent on different pages
+• Traffic sources and referral information
+• Device and browser information
+
+All information these cookies collect is aggregated and anonymous. If you do not allow these cookies, we will not know when you have visited our site and will not be able to monitor its performance or make improvements based on user behavior.`
     },
     {
-      icon: Cookie,
-      title: "3. Functional and Preference",
-      content: "These cookies enhance your experience by remembering: • Your preferred language and region settings • Dark/light theme preferences • Notification and communication preferences • Recently viewed content and searches • Customized dashboard layouts • Professional practice area selections"
+      id: "functional-preference",
+      title: "Functional and Preference Cookies",
+      content: `These cookies enable the website to provide enhanced functionality and personalization. They may be set by us or by third-party providers whose services we have added to our pages.
+
+Functional cookies remember:
+• Your preferred language and region settings
+• Dark mode or light mode theme preferences
+• Font size and accessibility settings
+• Recently viewed content and search history
+• Customized dashboard layouts and tool preferences
+• Professional practice area selections
+• Notification and communication preferences
+
+If you do not allow these cookies, then some or all of these services may not function properly. These cookies may store personally identifiable information to provide you with a personalized experience.`
     },
     {
-      icon: Shield,
-      title: "4. Cookie Management and Control",
-      content: "You have full control over cookie preferences: • Browser settings allow blocking or deleting cookies • Most browsers provide cookie management tools • You can opt-out of analytics tracking • Essential cookies are required for basic functionality • Cookie preferences can be updated anytime • We respect Do Not Track browser signals where technically feasible"
+      id: "targeting-advertising",
+      title: "Targeting and Advertising Cookies",
+      content: `These cookies may be set through our site by our advertising partners to build a profile of your interests and show you relevant adverts on other sites. They work by uniquely identifying your browser and internet device.
+
+Advertising cookies are used for:
+• Delivering advertisements relevant to you and your interests
+• Limiting the number of times you see an advertisement
+• Measuring the effectiveness of advertising campaigns
+• Understanding user behavior across websites
+• Providing reports to advertisers about ad performance
+
+If you do not allow these cookies, you will experience less targeted advertising. These cookies may store personally identifiable information and track your browsing habits across multiple websites.`
+    },
+    {
+      id: "cookie-management",
+      title: "Cookie Management and Control",
+      content: `You have several options to control and manage cookies on our website and in your browser.
+
+Browser Controls:
+• Most browsers allow you to view, manage, and delete cookies
+• You can set your browser to notify you when cookies are being used
+• Browser settings can block all cookies or only third-party cookies
+• Private/incognito browsing modes limit cookie storage
+
+XenoraAI Cookie Controls:
+• Cookie preference center (available in site footer)
+• Account settings for logged-in users
+• Email preferences for marketing communications
+• Do Not Track signal support where technically feasible
+
+Managing cookies may affect your experience on our website. Essential cookies cannot be disabled without impacting core functionality, but you can control analytics, functional, and advertising cookies through your browser settings or our preference center.
+
+For more information about managing cookies, visit your browser's help section or www.allaboutcookies.org for guidance.`
     }
   ];
 
+  const sidebarItems = [
+    { id: "essential-cookies", title: "Essential Cookies" },
+    { id: "analytics-performance", title: "Analytics and Performance Cookies" },
+    { id: "functional-preference", title: "Functional and Preference Cookies" },
+    { id: "targeting-advertising", title: "Targeting and Advertising Cookies" },
+    { id: "cookie-management", title: "Cookie Management and Control" }
+  ];
+
   return (
-    <div className="min-h-screen pt-16 page-fade-in">
+    <div className="min-h-screen pt-16 bg-background">
       {/* Header */}
-      <section className="relative overflow-hidden bg-hero-gradient section-padding shadow-elegant">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-transparent animate-pulse" />
-        <div 
-          ref={heroRef.ref}
-          className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center transition-all duration-700 ${
-            heroRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <Badge variant="outline" className="mb-8 hover-scale border-primary/30 bg-primary/5">
-            <Cookie className="h-4 w-4 mr-2" />
-            <span className="text-lg font-medium">Cookie Policy</span>
-          </Badge>
-          <h1 className="text-7xl font-bold text-foreground mb-8 animate-fade-in-up">
-            Understanding Our <span className="bg-primary-gradient bg-clip-text text-transparent">Cookies</span>
+      <div className="bg-white border-b border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <h1 className="text-4xl font-bold text-foreground mb-4">
+            XenoraAI Cookie Policy
           </h1>
-          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-4">
-            Learn how XenoraAI uses cookies to enhance your browsing experience and improve our services.
+          <p className="text-muted-foreground mb-2">
+            Last Updated: January 2025
           </p>
-          <p className="text-lg text-muted-foreground opacity-80">
-            Last updated: January 2024
-          </p>
+          <button className="text-primary hover:underline text-sm">
+            What's new?
+          </button>
         </div>
-      </section>
+      </div>
 
-      {/* Cookie Content */}
-      <section className="section-padding section-swoosh bg-accent/5">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div 
-            ref={contentRef.ref}
-            className={`space-y-8 transition-all duration-700 ${
-              contentRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
-          >
-            {sections.map((section, index) => (
-              <Card key={index} className="bg-card-gradient border-primary/10 hover:shadow-elegant hover-lift transition-all duration-300">
-                <CardContent className="p-8">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <section.icon className="h-6 w-6 text-primary" />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl font-semibold text-foreground mb-4">{section.title}</h2>
-                      <p className="text-muted-foreground leading-relaxed">{section.content}</p>
-                    </div>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex gap-8">
+          {/* Sidebar */}
+          <div className="w-80 flex-shrink-0">
+            <div className="sticky top-24">
+              <h2 className="font-semibold text-foreground mb-4">XenoraAI Cookie Policy</h2>
+              <nav className="space-y-1">
+                {sidebarItems.map((item) => (
+                  <a
+                    key={item.id}
+                    href={`#${item.id}`}
+                    className="block py-2 px-3 text-sm text-muted-foreground hover:text-primary hover:bg-accent rounded-md transition-colors"
+                  >
+                    {item.title}
+                  </a>
+                ))}
+              </nav>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 max-w-4xl">
+            <div className="prose prose-slate max-w-none">
+              <p className="text-lg text-muted-foreground mb-8">
+                This Cookie Policy explains how XenoraAI uses cookies and similar technologies to recognize you when you visit our website. It explains what these technologies are and why we use them, as well as your rights to control our use of them.
+              </p>
+
+              <div className="space-y-8">
+                {sections.map((section) => (
+                  <div key={section.id} id={section.id} className="border-t border-border pt-8">
+                    <button
+                      onClick={() => toggleSection(section.id)}
+                      className="flex items-center justify-between w-full text-left group"
+                    >
+                      <h2 className="text-2xl font-semibold text-foreground group-hover:text-primary transition-colors">
+                        {section.title}
+                      </h2>
+                      {expandedSections.includes(section.id) ? (
+                        <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                      ) : (
+                        <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                      )}
+                    </button>
+                    
+                    {expandedSections.includes(section.id) && (
+                      <div className="mt-4 text-muted-foreground leading-relaxed space-y-4">
+                        {section.content.split('\n\n').map((paragraph, index) => (
+                          <p key={index}>{paragraph}</p>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+                ))}
+              </div>
 
-            {/* Cookie Settings */}
-            <Card className="bg-primary-gradient border-0 shadow-elegant hover-lift">
-              <CardContent className="p-8 text-center text-white">
-                <h3 className="text-xl font-semibold mb-4">Cookie Preferences</h3>
-                <p className="mb-6 text-white/90">
-                  You can manage your cookie preferences through your browser settings or contact us for assistance.
+              {/* Contact Section */}
+              <div className="mt-16 p-6 bg-accent/50 rounded-lg border border-border">
+                <h3 className="text-lg font-semibold text-foreground mb-2">Cookie Preferences</h3>
+                <p className="text-muted-foreground mb-4">
+                  You can manage your cookie preferences through your browser settings or contact us for assistance with cookie-related questions.
                 </p>
-                <p className="text-white/90">
-                  Email: <span className="font-semibold">cookies@xenoraai.com</span>
+                <p className="text-muted-foreground">
+                  Email: <span className="font-medium text-foreground">cookies@xenoraai.com</span>
                 </p>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

@@ -1,102 +1,196 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { FileText, CheckCircle, AlertTriangle, Scale } from "lucide-react";
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useState } from "react";
+import { ChevronRight, ChevronDown } from "lucide-react";
 
 const TermsOfService = () => {
-  const heroRef = useScrollAnimation();
-  const contentRef = useScrollAnimation();
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
+
+  const toggleSection = (sectionId: string) => {
+    setExpandedSections(prev => 
+      prev.includes(sectionId) 
+        ? prev.filter(id => id !== sectionId)
+        : [...prev, sectionId]
+    );
+  };
 
   const sections = [
     {
-      icon: CheckCircle,
-      title: "1. Acceptance and Scope",
-      content: "By accessing or using XenoraAI services, you agree to be bound by these Terms of Service. These terms apply to: • All XenoraAI software and services • Nora AI Assistant and Halo Legal Suite • API access and integrations • Support and consulting services • Any future products or features we may release"
+      id: "acceptance-scope",
+      title: "Acceptance and Scope",
+      content: `By accessing or using XenoraAI services, you agree to be bound by these Terms of Service and all terms incorporated by reference. If you do not agree to these terms, do not use our services.
+
+These terms apply to all XenoraAI products and services, including:
+• XenoraAI legal AI platform and tools
+• Nora AI Assistant and Halo Legal Suite
+• API access and third-party integrations
+• Professional support and consulting services
+• Any future products, features, or services we may release
+
+These terms constitute the entire agreement between you and XenoraAI regarding your use of our services, superseding any prior agreements between you and XenoraAI relating to your use of the services.`
     },
     {
-      icon: FileText,
-      title: "2. Permitted Use and Restrictions",
-      content: "You may use our services for lawful legal purposes only. Prohibited activities include: • Reverse engineering or copying our AI models • Sharing account credentials with unauthorized users • Using services for illegal or unethical purposes • Attempting to breach security or access controls • Violating applicable laws or professional conduct rules • Interfering with service operation or other users"
+      id: "permitted-use-restrictions",
+      title: "Permitted Use and Restrictions",
+      content: `You may use our services only for lawful purposes and in accordance with these terms. You agree not to use the services:
+
+• For any unlawful purpose or to solicit others to take unlawful actions
+• To violate any international, federal, provincial, or local laws or regulations
+• To transmit, or procure the sending of, any advertising or promotional material
+• To impersonate or attempt to impersonate XenoraAI, our employees, another user, or any other person or entity
+• To engage in any other conduct that restricts or inhibits anyone's use or enjoyment of our services
+
+You also agree not to:
+• Use our services in any manner that could disable, overburden, damage, or impair the service
+• Use any robot, spider, or other automatic device to access our services
+• Attempt to gain unauthorized access to our services, accounts, computer systems, or networks
+• Reverse engineer, decompile, or disassemble any aspect of our AI models or proprietary technology`
     },
     {
-      icon: AlertTriangle,
-      title: "3. Professional Responsibility",
-      content: "While our AI tools provide sophisticated assistance, users maintain full professional responsibility for: • All legal advice and decisions • Compliance with professional conduct rules • Client confidentiality and privilege protection • Accuracy of any work product • Meeting all applicable deadlines and requirements • Supervising any AI-generated content or recommendations"
+      id: "professional-responsibility",
+      title: "Professional Responsibility and AI Usage",
+      content: `XenoraAI provides AI-powered tools to assist legal professionals, but users maintain full professional responsibility for all legal work and decisions. You acknowledge and agree that:
+
+• Our AI tools are assistive technology and do not constitute legal advice
+• You are solely responsible for all legal advice provided to clients
+• You must supervise and review all AI-generated content before use
+• You remain subject to all applicable professional conduct rules and ethical obligations
+• You must maintain client confidentiality and attorney-client privilege
+• You are responsible for meeting all deadlines and court requirements
+
+You must ensure that your use of our AI tools complies with:
+• Rules of professional conduct in your jurisdiction
+• Client confidentiality requirements
+• Court rules regarding AI-assisted legal work
+• Any disclosure requirements for AI assistance in legal documents`
     },
     {
-      icon: Scale,
-      title: "4. Disclaimers and Limitations",
-      content: "XenoraAI services are provided 'as is' without warranties. Our liability is limited to: • The amount paid for services in the preceding 12 months • Direct damages only (no indirect, consequential, or punitive damages) • Reasonable efforts to maintain service availability • Professional indemnity insurance coverage • Compliance with applicable professional liability standards"
+      id: "disclaimers-limitations",
+      title: "Disclaimers and Limitations of Liability",
+      content: `XenoraAI services are provided on an "as is" and "as available" basis without warranties of any kind, either express or implied.
+
+To the fullest extent permitted by law, XenoraAI disclaims all warranties, express or implied, including:
+• Warranties of merchantability, fitness for a particular purpose, and non-infringement
+• Warranties that the services will be uninterrupted, secure, or error-free
+• Warranties regarding the accuracy, reliability, or completeness of AI-generated content
+
+Our liability is limited to:
+• The amount you paid for services in the 12 months preceding the claim
+• Direct damages only (excluding indirect, incidental, special, consequential, or punitive damages)
+• Reasonable efforts to maintain service availability and security
+• Professional liability insurance coverage where applicable
+
+Nothing in these terms excludes or limits our liability for death or personal injury caused by negligence, fraud, or any other liability that cannot be excluded or limited under applicable law.`
+    },
+    {
+      id: "data-privacy",
+      title: "Data Privacy and Security",
+      content: `Your privacy and the security of your data are important to us. Our collection, use, and protection of your personal information is governed by our Privacy Policy.
+
+By using our services, you acknowledge that:
+• We implement industry-standard security measures to protect your data
+• You are responsible for maintaining the confidentiality of your account credentials
+• You must notify us immediately of any unauthorized use of your account
+• We may process your data as necessary to provide our services
+• We comply with applicable data protection laws and regulations
+
+For detailed information about how we handle your data, please review our Privacy Policy, which is incorporated into these terms by reference.`
     }
   ];
 
+  const sidebarItems = [
+    { id: "acceptance-scope", title: "Acceptance and Scope" },
+    { id: "permitted-use-restrictions", title: "Permitted Use and Restrictions" },
+    { id: "professional-responsibility", title: "Professional Responsibility and AI Usage" },
+    { id: "disclaimers-limitations", title: "Disclaimers and Limitations of Liability" },
+    { id: "data-privacy", title: "Data Privacy and Security" }
+  ];
+
   return (
-    <div className="min-h-screen pt-16 page-fade-in">
+    <div className="min-h-screen pt-16 bg-background">
       {/* Header */}
-      <section className="relative overflow-hidden bg-hero-gradient section-padding shadow-elegant">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-transparent animate-pulse" />
-        <div 
-          ref={heroRef.ref}
-          className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center transition-all duration-700 ${
-            heroRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <Badge variant="outline" className="mb-8 hover-scale border-primary/30 bg-primary/5">
-            <FileText className="h-4 w-4 mr-2" />
-            <span className="text-lg font-medium">Terms of Service</span>
-          </Badge>
-          <h1 className="text-7xl font-bold text-foreground mb-8 animate-fade-in-up">
-            Terms & <span className="bg-primary-gradient bg-clip-text text-transparent">Conditions</span>
+      <div className="bg-white border-b border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <h1 className="text-4xl font-bold text-foreground mb-4">
+            XenoraAI Terms of Service
           </h1>
-          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-4">
-            Please read these terms carefully before using XenoraAI's legal AI solutions and services.
+          <p className="text-muted-foreground mb-2">
+            Last Updated: January 2025
           </p>
-          <p className="text-lg text-muted-foreground opacity-80">
-            Last updated: January 2024
-          </p>
+          <button className="text-primary hover:underline text-sm">
+            What's new?
+          </button>
         </div>
-      </section>
+      </div>
 
-      {/* Terms Content */}
-      <section className="section-padding section-swoosh bg-accent/5">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div 
-            ref={contentRef.ref}
-            className={`space-y-8 transition-all duration-700 ${
-              contentRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
-          >
-            {sections.map((section, index) => (
-              <Card key={index} className="bg-card-gradient border-primary/10 hover:shadow-elegant hover-lift transition-all duration-300">
-                <CardContent className="p-8">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <section.icon className="h-6 w-6 text-primary" />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl font-semibold text-foreground mb-4">{section.title}</h2>
-                      <p className="text-muted-foreground leading-relaxed">{section.content}</p>
-                    </div>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex gap-8">
+          {/* Sidebar */}
+          <div className="w-80 flex-shrink-0">
+            <div className="sticky top-24">
+              <h2 className="font-semibold text-foreground mb-4">XenoraAI Terms of Service</h2>
+              <nav className="space-y-1">
+                {sidebarItems.map((item) => (
+                  <a
+                    key={item.id}
+                    href={`#${item.id}`}
+                    className="block py-2 px-3 text-sm text-muted-foreground hover:text-primary hover:bg-accent rounded-md transition-colors"
+                  >
+                    {item.title}
+                  </a>
+                ))}
+              </nav>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 max-w-4xl">
+            <div className="prose prose-slate max-w-none">
+              <p className="text-lg text-muted-foreground mb-8">
+                Please read these Terms of Service carefully before using XenoraAI's legal AI solutions and services. These terms govern your use of our platform and establish important legal rights and obligations.
+              </p>
+
+              <div className="space-y-8">
+                {sections.map((section) => (
+                  <div key={section.id} id={section.id} className="border-t border-border pt-8">
+                    <button
+                      onClick={() => toggleSection(section.id)}
+                      className="flex items-center justify-between w-full text-left group"
+                    >
+                      <h2 className="text-2xl font-semibold text-foreground group-hover:text-primary transition-colors">
+                        {section.title}
+                      </h2>
+                      {expandedSections.includes(section.id) ? (
+                        <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                      ) : (
+                        <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                      )}
+                    </button>
+                    
+                    {expandedSections.includes(section.id) && (
+                      <div className="mt-4 text-muted-foreground leading-relaxed space-y-4">
+                        {section.content.split('\n\n').map((paragraph, index) => (
+                          <p key={index}>{paragraph}</p>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+                ))}
+              </div>
 
-            {/* Legal Notice */}
-            <Card className="bg-primary-gradient border-0 shadow-elegant hover-lift">
-              <CardContent className="p-8 text-center text-white">
-                <h3 className="text-xl font-semibold mb-4">Questions About These Terms?</h3>
-                <p className="mb-6 text-white/90">
+              {/* Contact Section */}
+              <div className="mt-16 p-6 bg-accent/50 rounded-lg border border-border">
+                <h3 className="text-lg font-semibold text-foreground mb-2">Questions About These Terms?</h3>
+                <p className="text-muted-foreground mb-4">
                   If you have any questions about these Terms of Service, please contact our legal team.
                 </p>
-                <p className="text-white/90">
-                  Email: <span className="font-semibold">legal@xenoraai.com</span>
+                <p className="text-muted-foreground">
+                  Email: <span className="font-medium text-foreground">legal@xenoraai.com</span>
                 </p>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

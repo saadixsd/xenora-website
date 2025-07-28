@@ -1,102 +1,174 @@
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { Shield, Lock, Eye, FileText } from "lucide-react";
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useState } from "react";
+import { ChevronRight, ChevronDown } from "lucide-react";
 
 const PrivacyPolicy = () => {
-  const heroRef = useScrollAnimation();
-  const contentRef = useScrollAnimation();
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
+
+  const toggleSection = (sectionId: string) => {
+    setExpandedSections(prev => 
+      prev.includes(sectionId) 
+        ? prev.filter(id => id !== sectionId)
+        : [...prev, sectionId]
+    );
+  };
 
   const sections = [
     {
-      icon: Eye,
-      title: "1. Information We Collect",
-      content: "We collect information you provide directly when registering for our services, including: • Personal identifiers (name, email, phone) • Professional information (law firm, practice area) • Account credentials and billing information • Documents and content you upload for AI analysis • Usage data and interaction patterns with our AI models"
+      id: "personal-data-we-collect",
+      title: "Personal data we collect",
+      content: `XenoraAI collects data from you, through our interactions with you and through our products. You provide some of this data directly, and we get some of it by collecting data about your interactions, use, and experiences with our products. The data we collect depends on the context of your interactions with XenoraAI and the choices you make, including your privacy settings and the products and features you use.
+
+We also obtain data about you from third parties. We protect data obtained from third parties according to the practices described in this statement, plus any additional restrictions imposed by the source of the data. These third-party sources vary over time.
+
+The data we collect can include the following:
+
+• Name and contact data: We collect your first and last name, email address, postal address, phone number, and other similar contact data.
+• Credentials: We collect passwords, password hints, and similar security information used for authentication and account access.
+• Payment data: We collect data necessary to process your payment if you make purchases, such as your payment instrument number and the security code associated with your payment instrument.
+• Device and Usage data: We collect data about your device and how you and your device interact with XenoraAI and our products.
+• Location data: We collect data about your location, which can be either precise or imprecise.`
     },
     {
-      icon: FileText,
-      title: "2. How We Use Your Information",
-      content: "Your information enables us to: • Provide and improve our AI legal services • Process your legal document analysis requests • Communicate important updates and features • Ensure platform security and prevent fraud • Comply with legal obligations and regulatory requirements • Personalize your experience based on usage patterns"
+      id: "how-we-use-personal-data",
+      title: "How we use personal data",
+      content: `XenoraAI uses the data we collect to provide you with rich, interactive experiences. In particular, we use data to:
+
+• Provide our products, which includes updating, securing, and troubleshooting, as well as providing support.
+• Improve and develop our products.
+• Personalize our products and make recommendations.
+• Advertise and market to you, which includes sending promotional communications, targeting advertising, and presenting you with relevant offers.
+
+We also use the data to operate our business, which includes analyzing our performance, meeting our legal obligations, developing our workforce, and doing research.
+
+In carrying out these purposes, we combine data we collect from different contexts (for example, from your use of two XenoraAI products) or obtain from third parties to give you a more seamless, consistent, and personalized experience, to make informed business decisions, and for other legitimate purposes.`
     },
     {
-      icon: Lock,
-      title: "3. Information Sharing and Disclosure",
-      content: "We do not sell your personal information. We may share information only when: • You provide explicit consent • Required by law or legal process • Necessary to protect our rights or safety • With trusted service providers under strict confidentiality agreements • During business transfers (mergers, acquisitions) with continued privacy protection"
+      id: "reasons-we-share-personal-data",
+      title: "Reasons we share personal data",
+      content: `We share your personal data with your consent or as necessary to complete any transaction or provide any product you have requested or authorized. We also share data with XenoraAI-controlled affiliates and subsidiaries; with vendors working on our behalf; when required by law or to respond to legal process; to protect our customers; to protect lives; to maintain the security of our products; and to protect the rights or property of XenoraAI.
+
+Please note that some of our products include links to or otherwise enable you to access third-party products whose privacy practices differ from those of XenoraAI. If you provide personal data to any of those products, your data is governed by their privacy policies.`
     },
     {
-      icon: Shield,
-      title: "4. Data Security and Retention",
-      content: "We implement comprehensive security measures: • End-to-end encryption for all data transmission • PIPEDA and SOC2 compliance standards • Regular security audits and penetration testing • Secure data centers with physical access controls • Data retention policies aligned with legal requirements • Right to request data deletion upon account termination"
+      id: "how-to-access-control-personal-data",
+      title: "How to access and control your personal data",
+      content: `You can also make choices about the collection and use of your data by XenoraAI. You can control your personal data that XenoraAI has obtained, and exercise your data protection rights, by contacting XenoraAI or using various tools we provide.
+
+You can access and control your personal data through:
+• Privacy dashboard for managing your privacy settings
+• Account settings for updating your profile information
+• Communication preferences for managing how we contact you
+• Data portability options for downloading your data
+• Deletion requests for removing your personal data`
+    },
+    {
+      id: "cookies-similar-technologies",
+      title: "Cookies and similar technologies",
+      content: `Most XenoraAI sites use cookies, small text files placed on your device which web servers in the domain that placed the cookie can retrieve later. We use cookies to store your preferences and settings, help with sign-in, provide personalized ads, and analyze site operations.
+
+You have a variety of tools to control the data collected by cookies, web beacons, and similar technologies. For example, you can use controls in your internet browser to limit how the websites you visit are able to use cookies and to withdraw your consent by clearing or blocking cookies.`
     }
   ];
 
+  const sidebarItems = [
+    { id: "personal-data-we-collect", title: "Personal data we collect" },
+    { id: "how-we-use-personal-data", title: "How we use personal data" },
+    { id: "reasons-we-share-personal-data", title: "Reasons we share personal data" },
+    { id: "how-to-access-control-personal-data", title: "How to access and control your personal data" },
+    { id: "cookies-similar-technologies", title: "Cookies and similar technologies" }
+  ];
+
   return (
-    <div className="min-h-screen pt-16 page-fade-in">
+    <div className="min-h-screen pt-16 bg-background">
       {/* Header */}
-      <section className="relative overflow-hidden bg-hero-gradient section-padding shadow-elegant">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-transparent animate-pulse" />
-        <div 
-          ref={heroRef.ref}
-          className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center transition-all duration-700 ${
-            heroRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <Badge variant="outline" className="mb-8 hover-scale border-primary/30 bg-primary/5">
-            <Shield className="h-4 w-4 mr-2" />
-            <span className="text-lg font-medium">Privacy Policy</span>
-          </Badge>
-          <h1 className="text-7xl font-bold text-foreground mb-8 animate-fade-in-up">
-            Your <span className="bg-primary-gradient bg-clip-text text-transparent">Privacy</span> Matters
+      <div className="bg-white border-b border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <h1 className="text-4xl font-bold text-foreground mb-4">
+            XenoraAI Privacy Statement
           </h1>
-          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-4">
-            Learn how XenoraAI protects and manages your personal information with transparency and care.
+          <p className="text-muted-foreground mb-2">
+            Last Updated: January 2025
           </p>
-          <p className="text-lg text-muted-foreground opacity-80">
-            Last updated: January 2024
-          </p>
+          <button className="text-primary hover:underline text-sm">
+            What's new?
+          </button>
         </div>
-      </section>
+      </div>
 
-      {/* Privacy Content */}
-      <section className="section-padding section-swoosh bg-accent/5">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div 
-            ref={contentRef.ref}
-            className={`space-y-8 transition-all duration-700 ${
-              contentRef.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-            }`}
-          >
-            {sections.map((section, index) => (
-              <Card key={index} className="bg-card-gradient border-primary/10 hover:shadow-elegant hover-lift transition-all duration-300">
-                <CardContent className="p-8">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <section.icon className="h-6 w-6 text-primary" />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl font-semibold text-foreground mb-4">{section.title}</h2>
-                      <p className="text-muted-foreground leading-relaxed">{section.content}</p>
-                    </div>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex gap-8">
+          {/* Sidebar */}
+          <div className="w-80 flex-shrink-0">
+            <div className="sticky top-24">
+              <h2 className="font-semibold text-foreground mb-4">XenoraAI Privacy Statement</h2>
+              <nav className="space-y-1">
+                {sidebarItems.map((item) => (
+                  <a
+                    key={item.id}
+                    href={`#${item.id}`}
+                    className="block py-2 px-3 text-sm text-muted-foreground hover:text-primary hover:bg-accent rounded-md transition-colors"
+                  >
+                    {item.title}
+                  </a>
+                ))}
+              </nav>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 max-w-4xl">
+            <div className="prose prose-slate max-w-none">
+              <p className="text-lg text-muted-foreground mb-8">
+                Your privacy is important to us. This privacy statement explains the personal data XenoraAI processes, how XenoraAI processes it, and for what purposes.
+              </p>
+
+              <p className="text-muted-foreground mb-8">
+                XenoraAI offers a wide range of AI-powered legal solutions, including tools that help legal professionals analyze documents, research case law, and streamline their workflows. References to XenoraAI products in this statement include XenoraAI services, websites, apps, software, servers, and devices.
+              </p>
+
+              <div className="space-y-8">
+                {sections.map((section) => (
+                  <div key={section.id} id={section.id} className="border-t border-border pt-8">
+                    <button
+                      onClick={() => toggleSection(section.id)}
+                      className="flex items-center justify-between w-full text-left group"
+                    >
+                      <h2 className="text-2xl font-semibold text-foreground group-hover:text-primary transition-colors">
+                        {section.title}
+                      </h2>
+                      {expandedSections.includes(section.id) ? (
+                        <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                      ) : (
+                        <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                      )}
+                    </button>
+                    
+                    {expandedSections.includes(section.id) && (
+                      <div className="mt-4 text-muted-foreground leading-relaxed space-y-4">
+                        {section.content.split('\n\n').map((paragraph, index) => (
+                          <p key={index}>{paragraph}</p>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+                ))}
+              </div>
 
-            {/* Contact Information */}
-            <Card className="bg-primary-gradient border-0 shadow-elegant hover-lift">
-              <CardContent className="p-8 text-center text-white">
-                <h3 className="text-xl font-semibold mb-4">Questions About Privacy?</h3>
-                <p className="mb-6 text-white/90">
-                  If you have any questions about this Privacy Policy or our data practices, please contact us.
+              {/* Contact Section */}
+              <div className="mt-16 p-6 bg-accent/50 rounded-lg border border-border">
+                <h3 className="text-lg font-semibold text-foreground mb-2">Contact us</h3>
+                <p className="text-muted-foreground mb-4">
+                  If you have a privacy concern, complaint, or question for the XenoraAI Chief Privacy Officer, please contact us using our web form.
                 </p>
-                <p className="text-white/90">
-                  Email: <span className="font-semibold">privacy@xenoraai.com</span>
+                <p className="text-muted-foreground">
+                  Email: <span className="font-medium text-foreground">privacy@xenoraai.com</span>
                 </p>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };
