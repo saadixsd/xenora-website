@@ -73,7 +73,7 @@ const About = () => {
         name: "Yassen",
         role: "AI Director",
         description: "Leading AI strategy and research with specialized expertise in advanced machine learning methodologies.",
-        linkedin: "#"
+        linkedin: "https://www.linkedin.com/in/yassen-hegazy-33aa28330/"
       }
     ],
     [
@@ -81,13 +81,13 @@ const About = () => {
         name: "Ali",
         role: "Software Development Engineer",
         description: "Building scalable software solutions and integrations for XenoraAI's platform infrastructure and user experience.",
-        linkedin: "#"
+        linkedin: "https://www.linkedin.com/in/alialdhaher/"
       },
       {
         name: "Jayden Nkeuze",
         role: "AI Research Engineer",
         description: "Developing and optimizing AI models for legal applications with focus on natural language processing and machine learning.",
-        linkedin: "#"
+        linkedin: "https://www.linkedin.com/in/jayden-nkueze/"
       }
     ]
   ];
@@ -266,10 +266,6 @@ const About = () => {
 
       {/* Team Section */}
       <section className="relative section-padding section-swoosh bg-accent/5">
-        {/* Orange accent lines */}
-        <div className="absolute top-10 left-0 w-32 h-1 bg-gradient-to-r from-orange-400 to-accent opacity-60"></div>
-        <div className="absolute top-20 right-0 w-24 h-1 bg-gradient-to-l from-orange-400 to-accent opacity-60"></div>
-        <div className="absolute bottom-10 left-1/4 w-20 h-1 bg-gradient-to-r from-accent to-orange-400 opacity-60"></div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div 
