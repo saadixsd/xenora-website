@@ -297,7 +297,7 @@ const Nora = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button size="lg" className="bg-white text-foreground hover:bg-white/90 hover-scale" asChild>
+                  <Button size="lg" className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 hover-scale" asChild>
                     <Link to="/login">
                       Start Free Trial
                       <ArrowRight className="ml-2 h-4 w-4" />
