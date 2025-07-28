@@ -111,7 +111,7 @@ const About = () => {
   ];
 
   return (
-    <div className="min-h-screen pt-20 page-fade-in">
+    <div className="min-h-screen pt-16 page-fade-in">
       {/* Header */}
       <section className="section-padding bg-hero-gradient shadow-elegant">
         <div 
@@ -127,14 +127,76 @@ const About = () => {
           <h1 className="text-7xl font-bold text-foreground mb-8 animate-fade-in-up">
             About <span className="bg-primary-gradient bg-clip-text text-transparent">XenoraAI</span>
           </h1>
-          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-8">
             {t('about.hero.description')}
+          </p>
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto opacity-80">
+            Founded in Canada with a vision to democratize legal technology, we're building AI solutions that understand the complexities of Canadian law and make legal expertise accessible to everyone.
           </p>
         </div>
       </section>
 
+      {/* Our Story Section */}
+      <section className="section-padding bg-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+              <h2 className="text-4xl font-bold text-foreground">Our Story</h2>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                XenoraAI was born from a simple observation: the legal industry was ripe for transformation. 
+                Our founders, with backgrounds in AI research and legal technology, recognized that Canadian 
+                law firms needed intelligent solutions designed specifically for their unique needs.
+              </p>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                What started as late-night conversations about the intersection of artificial intelligence 
+                and legal practice has evolved into a comprehensive platform that's reshaping how legal 
+                professionals work across Canada.
+              </p>
+              <div className="flex items-center space-x-4 pt-4">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-primary">2024</div>
+                  <div className="text-sm text-muted-foreground">Founded</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-primary">7+</div>
+                  <div className="text-sm text-muted-foreground">Team Members</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-primary">∞</div>
+                  <div className="text-sm text-muted-foreground">Possibilities</div>
+                </div>
+              </div>
+            </div>
+            <div className="relative">
+              <Card className="bg-card-gradient border-primary/10 shadow-elegant">
+                <CardContent className="p-8">
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-3 h-3 bg-primary rounded-full"></div>
+                      <span className="text-sm font-medium">Founded with Canadian legal focus</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-3 h-3 bg-accent rounded-full"></div>
+                      <span className="text-sm font-medium">AI-first approach to legal technology</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-3 h-3 bg-primary rounded-full"></div>
+                      <span className="text-sm font-medium">Building for accessibility and innovation</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-3 h-3 bg-accent rounded-full"></div>
+                      <span className="text-sm font-medium">Commitment to data security and compliance</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Mission Section */}
-      <section className="section-padding section-swoosh bg-background">
+      <section className="section-padding section-swoosh bg-accent/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div 
             ref={missionRef.ref}
@@ -169,7 +231,7 @@ const About = () => {
       </section>
 
       {/* Values Section */}
-      <section className="section-padding section-swoosh bg-accent/5">
+      <section className="section-padding section-swoosh bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div 
             ref={valuesRef.ref}
@@ -202,7 +264,7 @@ const About = () => {
       </section>
 
       {/* Team Section */}
-      <section className="section-padding section-swoosh bg-background">
+      <section className="section-padding section-swoosh bg-accent/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div 
             ref={teamRef.ref}
