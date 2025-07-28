@@ -201,7 +201,7 @@ const Models = () => {
                     </Link>
                   </Button>
                   <Badge variant="secondary" className="w-full justify-center py-3 text-sm">
-                    Launching August 2025
+                    Available Q4 2025
                   </Badge>
                 </div>
               </CardContent>
