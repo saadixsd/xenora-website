@@ -281,40 +281,35 @@ const Nora = () => {
       <section className="section-padding bg-primary-gradient shadow-elegant">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-8">Ready to Experience Nora?</h2>
-          <Card className="bg-card-gradient border-primary/10 shadow-elegant hover-lift">
-            <CardContent className="p-12">
-              <div className="space-y-6 animate-scale-in">
-                <div className="flex items-center justify-center space-x-2">
-                  <Bot className="h-8 w-8 text-primary" />
-                  <span className="text-2xl font-bold text-foreground">Nora AI Assistant</span>
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="text-4xl font-bold text-primary">Starting at $49/month</div>
-                  <p className="text-muted-foreground">
-                    Access Nora's full capabilities with our flexible subscription plans
-                  </p>
-                </div>
+          <div className="space-y-6 animate-scale-in">
+            <div className="flex items-center justify-center space-x-2">
+              <span className="text-2xl font-bold text-white">Nora AI Assistant</span>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="text-4xl font-bold text-white">Starting at $60/month</div>
+              <p className="text-white/80">
+                Access Nora's full capabilities with our flexible subscription plans
+              </p>
+            </div>
 
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button size="lg" className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 hover-scale" asChild>
-                    <Link to="/login">
-                      Start Free Trial
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                  <Button size="lg" variant="outline" asChild className="hover-scale">
-                    <Link to="/contact">Schedule Demo</Link>
-                  </Button>
-                </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" className="bg-white/20 backdrop-blur-sm border-white/30 text-white hover:bg-white/30 hover-scale" asChild>
+                <Link to="/login">
+                  Start Free Trial
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" className="border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white hover-scale" asChild>
+                <Link to="/contact">Schedule Demo</Link>
+              </Button>
+            </div>
 
-                <Badge variant="secondary" className="mt-4">
-                  <Sparkles className="h-3 w-3 mr-1" />
-                  Demo Available Soon
-                </Badge>
-              </div>
-            </CardContent>
-          </Card>
+            <Badge variant="secondary" className="mt-4 bg-white/20 text-white border-white/30">
+              <Sparkles className="h-3 w-3 mr-1" />
+              Demo Available Soon
+            </Badge>
+          </div>
         </div>
       </section>
     </div>
