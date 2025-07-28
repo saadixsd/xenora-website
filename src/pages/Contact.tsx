@@ -257,7 +257,7 @@ const Contact = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="section-padding section-swoosh bg-accent/10">
+      <section className="section-padding section-swoosh bg-accent/5">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div 
             ref={faqRef.ref}

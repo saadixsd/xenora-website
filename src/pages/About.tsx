@@ -169,7 +169,7 @@ const About = () => {
       </section>
 
       {/* Values Section */}
-      <section className="section-padding section-swoosh bg-accent/10">
+      <section className="section-padding section-swoosh bg-accent/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div 
             ref={valuesRef.ref}

@@ -217,7 +217,7 @@ const Models = () => {
       </section>
 
       {/* Use Cases */}
-      <section className="section-swoosh section-padding bg-accent/10">
+      <section className="section-swoosh section-padding bg-accent/5">
         <div 
           ref={useCasesRef.ref}
           className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-animate ${useCasesRef.isVisible ? 'visible' : ''}`}
