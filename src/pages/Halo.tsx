@@ -177,12 +177,12 @@ const Halo = () => {
               <CardContent>
                 <div className="grid grid-cols-2 gap-4">
                   {dashboardStats.map((stat, index) => (
-                    <div key={index} className="bg-amber-50/80 border border-amber-200/60 rounded-lg p-3 text-center hover-scale hover:bg-amber-100/60 transition-all duration-200">
+                    <div key={index} className="bg-card-gradient border border-primary/10 rounded-lg p-3 text-center hover-scale hover:shadow-sm transition-all duration-200">
                       <div className="flex items-center justify-center mb-2">
-                        <stat.icon className="h-4 w-4 text-amber-700" />
+                        <stat.icon className="h-4 w-4 text-primary" />
                       </div>
-                      <div className="text-lg font-bold text-amber-900">{stat.value}</div>
-                      <div className="text-xs text-amber-700">{stat.label}</div>
+                      <div className="text-lg font-bold text-foreground">{stat.value}</div>
+                      <div className="text-xs text-muted-foreground">{stat.label}</div>
                       <div className="text-xs text-primary font-medium">{stat.change}</div>
                     </div>
                   ))}
