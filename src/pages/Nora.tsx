@@ -304,11 +304,6 @@ const Nora = () => {
                 <Link to="/contact">Schedule Demo</Link>
               </Button>
             </div>
-
-            <Badge variant="secondary" className="mt-4 bg-white/20 text-white border-white/30">
-              <Sparkles className="h-3 w-3 mr-1" />
-              Demo Available Soon
-            </Badge>
           </div>
         </div>
       </section>
