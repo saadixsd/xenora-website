@@ -155,7 +155,7 @@ const About = () => {
               </p>
               <div className="flex items-center space-x-4 pt-4">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">2024</div>
+                  <div className="text-3xl font-bold text-primary">2025</div>
                   <div className="text-sm text-muted-foreground">Founded</div>
                 </div>
                 <div className="text-center">
