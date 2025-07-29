@@ -173,19 +173,19 @@ const About = () => {
                 <CardContent className="p-8">
                   <div className="space-y-4">
                     <div className="flex items-center space-x-3">
-                      <div className="w-3 h-3 bg-primary rounded-full"></div>
+                      <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
                       <span className="text-sm font-medium">Founded with Canadian legal focus</span>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <div className="w-3 h-3 bg-accent rounded-full"></div>
+                      <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
                       <span className="text-sm font-medium">AI-first approach to legal technology</span>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <div className="w-3 h-3 bg-primary rounded-full"></div>
+                      <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
                       <span className="text-sm font-medium">Building for accessibility and innovation</span>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <div className="w-3 h-3 bg-accent rounded-full"></div>
+                      <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
                       <span className="text-sm font-medium">Commitment to data security and compliance</span>
                     </div>
                   </div>
