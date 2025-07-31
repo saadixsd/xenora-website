@@ -90,7 +90,7 @@ const Pricing = () => {
           period: "/month",
           description: "Get started with basic legal AI", 
           features: [
-            "5 searches every 10 hours",
+            "Basic legal research access",
             "Document analysis for up to 10 documents",
             "Educational case law access",
             "Standard support",
@@ -156,14 +156,23 @@ const Pricing = () => {
           </h1>
           
           {/* 7-Day Trial Notice */}
-          <div className="bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 border border-primary/20 rounded-2xl p-8 max-w-3xl mx-auto mb-8 hover-lift">
-            <h3 className="text-2xl font-bold text-primary mb-4">7-Day Free Trial</h3>
-            <p className="text-lg text-muted-foreground mb-4">
-              Start with a 7-day full trial. After trial, enjoy a free limited version of Nora with 5 searches every 10 hours.
+          <div className="bg-gradient-to-r from-primary/15 via-accent/10 to-primary/15 border border-primary/30 rounded-2xl p-8 max-w-3xl mx-auto mb-8 hover-lift shadow-elegant">
+            <div className="flex items-center justify-center mb-4">
+              <Sparkles className="h-6 w-6 text-primary mr-2" />
+              <h3 className="text-3xl font-bold text-primary">7-Day Free Trial</h3>
+              <Sparkles className="h-6 w-6 text-primary ml-2" />
+            </div>
+            <p className="text-xl text-foreground mb-6 font-medium">
+              Experience the full power of XenoraAI risk-free! Unlimited access to all features for a complete week.
             </p>
-            <Badge variant="outline" className="text-sm font-medium">
-              Credit Card required but they won't be charged • Cancel anytime
-            </Badge>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
+              <Badge variant="outline" className="text-sm font-medium bg-primary/10 border-primary/30 text-primary">
+                ✓ No Credit Card Required
+              </Badge>
+              <Badge variant="outline" className="text-sm font-medium bg-accent/10 border-accent/30 text-accent">
+                ✓ Cancel Anytime
+              </Badge>
+            </div>
           </div>
           
           <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
