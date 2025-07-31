@@ -169,7 +169,7 @@ const Home = () => {
           className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-animate ${benefitsRef.isVisible ? 'visible' : ''}`}
         >
           <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-5xl font-bold text-foreground mb-8">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-8 leading-tight">
               {t('home.benefits.title')}
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-12">
