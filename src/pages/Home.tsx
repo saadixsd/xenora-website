@@ -170,10 +170,12 @@ const Home = () => {
               </div>
               
               {/* Main logo container */}
-              <div className="relative group z-10 flex items-center justify-center">
+              <div className="relative group z-10">
                 <div className="absolute -inset-1 bg-primary-gradient rounded-full blur opacity-30 group-hover:opacity-50 transition duration-1000 group-hover:duration-200" />
                 <div className="relative bg-background/80 backdrop-blur-xl rounded-full w-80 h-80 border border-primary/20 shadow-2xl group-hover:shadow-glow transition-all duration-500 flex items-center justify-center">
-                  <XenoraLogo className="w-40 h-40 transform group-hover:scale-110 transition-transform duration-500" />
+                  <div className="flex items-center justify-center w-full h-full">
+                    <XenoraLogo className="w-40 h-40 transform group-hover:scale-110 transition-transform duration-500" />
+                  </div>
                 </div>
                 
                 {/* Orbiting elements */}
