@@ -117,12 +117,25 @@ const Home = () => {
             </div>
 
             {/* Logo/Visual Element */}
-            <div className="flex justify-center animate-slide-up">
-              <div className="relative">
-                <div className="absolute inset-0 bg-primary/20 rounded-3xl blur-3xl animate-pulse" />
-                <div className="relative bg-gradient-to-br from-card via-card/90 to-card/70 backdrop-blur-sm rounded-3xl p-12 border border-primary/20 shadow-2xl">
-                  <XenoraLogo className="w-32 h-32 mx-auto" />
+            <div className="relative flex justify-center items-center animate-slide-up">
+              {/* Floating background elements */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="absolute w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse" />
+                <div className="absolute w-48 h-48 bg-accent/10 rounded-full blur-2xl animate-pulse delay-1000" />
+                <div className="absolute w-32 h-32 bg-primary/10 rounded-full blur-xl animate-pulse delay-500" />
+              </div>
+              
+              {/* Main logo container */}
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-primary-gradient rounded-full blur opacity-30 group-hover:opacity-50 transition duration-1000 group-hover:duration-200" />
+                <div className="relative bg-background/80 backdrop-blur-xl rounded-full p-8 border border-primary/20 shadow-2xl group-hover:shadow-glow transition-all duration-500">
+                  <XenoraLogo className="w-40 h-40 mx-auto transform group-hover:scale-110 transition-transform duration-500" />
                 </div>
+                
+                {/* Orbiting elements */}
+                <div className="absolute top-4 right-4 w-3 h-3 bg-primary rounded-full animate-pulse" />
+                <div className="absolute bottom-8 left-2 w-2 h-2 bg-accent rounded-full animate-pulse delay-700" />
+                <div className="absolute top-1/2 -right-2 w-1.5 h-1.5 bg-primary/60 rounded-full animate-pulse delay-300" />
               </div>
             </div>
           </div>
