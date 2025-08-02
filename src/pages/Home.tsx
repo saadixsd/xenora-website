@@ -116,47 +116,14 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Feature Cards */}
-            <div className="grid grid-cols-2 gap-4 animate-slide-up">
-              <Card className="bg-card-gradient border-primary/10 hover-lift hover:shadow-elegant transition-all duration-300 group">
-                <CardContent className="p-6">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                    <Bot className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-2">{t('home.heroCards.caseAnalysis')}</h3>
-                  <p className="text-sm text-muted-foreground">{t('home.heroCards.caseAnalysisDesc')}</p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-card-gradient border-primary/10 hover-lift hover:shadow-elegant transition-all duration-300 group">
-                <CardContent className="p-6">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                    <FileText className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-2">{t('home.heroCards.documentReview')}</h3>
-                  <p className="text-sm text-muted-foreground">{t('home.heroCards.documentReviewDesc')}</p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-card-gradient border-primary/10 hover-lift hover:shadow-elegant transition-all duration-300 group">
-                <CardContent className="p-6">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                    <Search className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-2">{t('home.heroCards.canliiIntegration')}</h3>
-                  <p className="text-sm text-muted-foreground">{t('home.heroCards.canliiIntegrationDesc')}</p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-card-gradient border-primary/10 hover-lift hover:shadow-elegant transition-all duration-300 group">
-                <CardContent className="p-6">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                    <Zap className="h-6 w-6 text-primary" />
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-2">{t('home.heroCards.proceduralGuidance')}</h3>
-                  <p className="text-sm text-muted-foreground">{t('home.heroCards.proceduralGuidanceDesc')}</p>
-                </CardContent>
-              </Card>
+            {/* Logo/Visual Element */}
+            <div className="flex justify-center animate-slide-up">
+              <div className="relative">
+                <div className="absolute inset-0 bg-primary/20 rounded-3xl blur-3xl animate-pulse" />
+                <div className="relative bg-gradient-to-br from-card via-card/90 to-card/70 backdrop-blur-sm rounded-3xl p-12 border border-primary/20 shadow-2xl">
+                  <XenoraLogo className="w-32 h-32 mx-auto" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
