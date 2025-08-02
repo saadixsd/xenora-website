@@ -117,7 +117,7 @@ const Home = () => {
             </div>
 
             {/* Logo/Visual Element */}
-            <div className="relative flex justify-center items-center animate-slide-up">
+            <div className="relative flex justify-center items-center animate-slide-up min-h-[500px]">
               {/* Floating background elements */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="absolute w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse" />
@@ -125,8 +125,52 @@ const Home = () => {
                 <div className="absolute w-32 h-32 bg-primary/10 rounded-full blur-xl animate-pulse delay-500" />
               </div>
               
+              {/* Neural Network Pattern */}
+              <div className="absolute inset-0 overflow-hidden">
+                {/* Connection Lines */}
+                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 400">
+                  <defs>
+                    <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
+                      <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity="0.1" />
+                    </linearGradient>
+                  </defs>
+                  
+                  {/* Main connecting lines forming a network */}
+                  <line x1="80" y1="100" x2="200" y2="150" stroke="url(#lineGradient)" strokeWidth="1" className="animate-pulse" />
+                  <line x1="320" y1="120" x2="200" y2="180" stroke="url(#lineGradient)" strokeWidth="1" className="animate-pulse delay-300" />
+                  <line x1="120" y1="280" x2="200" y2="220" stroke="url(#lineGradient)" strokeWidth="1" className="animate-pulse delay-500" />
+                  <line x1="280" y1="300" x2="200" y2="240" stroke="url(#lineGradient)" strokeWidth="1" className="animate-pulse delay-700" />
+                  <line x1="80" y1="200" x2="160" y2="180" stroke="url(#lineGradient)" strokeWidth="1" className="animate-pulse delay-200" />
+                  <line x1="320" y1="220" x2="240" y2="200" stroke="url(#lineGradient)" strokeWidth="1" className="animate-pulse delay-400" />
+                  <line x1="150" y1="80" x2="200" y2="120" stroke="url(#lineGradient)" strokeWidth="1" className="animate-pulse delay-600" />
+                  <line x1="250" y1="320" x2="200" y2="280" stroke="url(#lineGradient)" strokeWidth="1" className="animate-pulse delay-800" />
+                  
+                  {/* Secondary connection lines */}
+                  <line x1="80" y1="100" x2="120" y2="280" stroke="url(#lineGradient)" strokeWidth="0.5" className="animate-pulse delay-1000" />
+                  <line x1="320" y1="120" x2="280" y2="300" stroke="url(#lineGradient)" strokeWidth="0.5" className="animate-pulse delay-1200" />
+                  <line x1="150" y1="80" x2="250" y2="320" stroke="url(#lineGradient)" strokeWidth="0.5" className="animate-pulse delay-1400" />
+                </svg>
+                
+                {/* Network Nodes */}
+                <div className="absolute top-[25%] left-[20%] w-3 h-3 bg-primary rounded-full animate-pulse shadow-lg shadow-primary/50" />
+                <div className="absolute top-[30%] right-[20%] w-2.5 h-2.5 bg-accent rounded-full animate-pulse delay-300 shadow-lg shadow-accent/50" />
+                <div className="absolute bottom-[30%] left-[30%] w-3.5 h-3.5 bg-primary/80 rounded-full animate-pulse delay-500 shadow-lg shadow-primary/30" />
+                <div className="absolute bottom-[25%] right-[30%] w-2 h-2 bg-accent/90 rounded-full animate-pulse delay-700 shadow-lg shadow-accent/40" />
+                <div className="absolute top-[50%] left-[15%] w-2.5 h-2.5 bg-primary/60 rounded-full animate-pulse delay-200 shadow-lg shadow-primary/20" />
+                <div className="absolute top-[55%] right-[15%] w-3 h-3 bg-accent/70 rounded-full animate-pulse delay-400 shadow-lg shadow-accent/30" />
+                <div className="absolute top-[20%] left-[37.5%] w-2 h-2 bg-primary/90 rounded-full animate-pulse delay-600 shadow-lg shadow-primary/40" />
+                <div className="absolute bottom-[20%] right-[37.5%] w-2.5 h-2.5 bg-accent/80 rounded-full animate-pulse delay-800 shadow-lg shadow-accent/35" />
+                
+                {/* Central hub nodes */}
+                <div className="absolute top-[37.5%] left-[40%] w-1.5 h-1.5 bg-primary rounded-full animate-pulse delay-1000" />
+                <div className="absolute top-[45%] right-[40%] w-1.5 h-1.5 bg-accent rounded-full animate-pulse delay-1200" />
+                <div className="absolute bottom-[37.5%] left-[45%] w-2 h-2 bg-primary/70 rounded-full animate-pulse delay-1400" />
+                <div className="absolute bottom-[45%] right-[45%] w-1.5 h-1.5 bg-accent/60 rounded-full animate-pulse delay-1600" />
+              </div>
+              
               {/* Main logo container */}
-              <div className="relative group">
+              <div className="relative group z-10">
                 <div className="absolute -inset-1 bg-primary-gradient rounded-full blur opacity-30 group-hover:opacity-50 transition duration-1000 group-hover:duration-200" />
                 <div className="relative bg-background/80 backdrop-blur-xl rounded-full p-8 border border-primary/20 shadow-2xl group-hover:shadow-glow transition-all duration-500">
                   <XenoraLogo className="w-40 h-40 mx-auto transform group-hover:scale-110 transition-transform duration-500" />
