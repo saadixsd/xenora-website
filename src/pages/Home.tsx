@@ -152,11 +152,23 @@ const Home = () => {
                   <line x1="150" y1="80" x2="250" y2="320" stroke="url(#lineGradient)" strokeWidth="0.5" className="animate-pulse delay-1400" />
                 </svg>
                 
-                {/* Network Nodes */}
-                <div className="absolute top-[25%] left-[20%] w-3 h-3 bg-primary rounded-full animate-pulse shadow-lg shadow-primary/50" />
-                <div className="absolute top-[30%] right-[20%] w-2.5 h-2.5 bg-accent rounded-full animate-pulse delay-300 shadow-lg shadow-accent/50" />
-                <div className="absolute bottom-[30%] left-[30%] w-3.5 h-3.5 bg-primary/80 rounded-full animate-pulse delay-500 shadow-lg shadow-primary/30" />
-                <div className="absolute bottom-[25%] right-[30%] w-2 h-2 bg-accent/90 rounded-full animate-pulse delay-700 shadow-lg shadow-accent/40" />
+                {/* Network Nodes with Labels */}
+                <div className="absolute top-[25%] left-[20%] flex items-center">
+                  <div className="w-3 h-3 bg-primary rounded-full animate-pulse shadow-lg shadow-primary/50" />
+                  <span className="ml-2 text-xs font-medium text-primary/80">Law</span>
+                </div>
+                <div className="absolute top-[30%] right-[20%] flex items-center justify-end">
+                  <span className="mr-2 text-xs font-medium text-accent/80">Intelligence</span>
+                  <div className="w-2.5 h-2.5 bg-accent rounded-full animate-pulse delay-300 shadow-lg shadow-accent/50" />
+                </div>
+                <div className="absolute bottom-[30%] left-[30%] flex items-center">
+                  <div className="w-3.5 h-3.5 bg-primary/80 rounded-full animate-pulse delay-500 shadow-lg shadow-primary/30" />
+                  <span className="ml-2 text-xs font-medium text-primary/70">Legality</span>
+                </div>
+                <div className="absolute bottom-[25%] right-[30%] flex items-center justify-end">
+                  <span className="mr-2 text-xs font-medium text-accent/70">Networks</span>
+                  <div className="w-2 h-2 bg-accent/90 rounded-full animate-pulse delay-700 shadow-lg shadow-accent/40" />
+                </div>
                 <div className="absolute top-[50%] left-[15%] w-2.5 h-2.5 bg-primary/60 rounded-full animate-pulse delay-200 shadow-lg shadow-primary/20" />
                 <div className="absolute top-[55%] right-[15%] w-3 h-3 bg-accent/70 rounded-full animate-pulse delay-400 shadow-lg shadow-accent/30" />
                 <div className="absolute top-[20%] left-[37.5%] w-2 h-2 bg-primary/90 rounded-full animate-pulse delay-600 shadow-lg shadow-primary/40" />
