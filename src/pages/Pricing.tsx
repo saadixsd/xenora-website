@@ -167,12 +167,15 @@ const Pricing = () => {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
               <Badge variant="outline" className="text-sm font-medium bg-primary/10 border-primary/30 text-primary">
-                ✓ No Credit Card Required
+                ✓ Credit Card Required
               </Badge>
               <Badge variant="outline" className="text-sm font-medium bg-accent/10 border-accent/30 text-accent">
                 ✓ Cancel Anytime
               </Badge>
             </div>
+            <p className="text-sm text-muted-foreground mt-4">
+              Credit card required, but only charged after 7-day free trial
+            </p>
           </div>
           
           <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
