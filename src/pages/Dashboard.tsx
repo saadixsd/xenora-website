@@ -74,12 +74,20 @@ const Dashboard = () => {
 
   // Event handlers
   const handleLogout = () => {
+    // Clear all authentication data
     localStorage.removeItem('userToken');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('darkMode');
+    
     toast({
       title: "Logged out successfully",
       description: "You have been logged out of your account.",
     });
+    
+    // Navigate to login and trigger storage event for navigation update
     navigate('/login');
+    window.dispatchEvent(new Event('storage'));
   };
 
   const handleSaveSettings = () => {

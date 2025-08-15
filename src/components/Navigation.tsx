@@ -19,8 +19,9 @@ const Navigation = () => {
   useEffect(() => {
     const checkAuthStatus = () => {
       const userToken = localStorage.getItem('userToken');
-      const userName = localStorage.getItem('userName');
-      setIsLoggedIn(!!(userToken || userName || location.pathname === '/dashboard'));
+      // Only consider user logged in if they have a valid token
+      // Don't rely on route or userName alone
+      setIsLoggedIn(!!userToken);
     };
     
     checkAuthStatus();
