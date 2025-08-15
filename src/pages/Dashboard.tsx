@@ -2,7 +2,11 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router-dom";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
+import { Link, useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Bot, 
   Building, 
@@ -13,11 +17,53 @@ import {
   BarChart3,
   ArrowRight,
   Activity,
-  Zap
+  Zap,
+  User,
+  Mail,
+  Moon,
+  Sun,
+  CheckCircle,
+  CreditCard
 } from "lucide-react";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  // State management
   const [activeSubscription] = useState("Premium");
+  const [userName, setUserName] = useState("John");
+  const [userEmail, setUserEmail] = useState("john@example.com");
+  const [isDarkMode, setIsDarkMode] = useState(
+    localStorage.getItem('darkMode') === 'true'
+  );
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [subscriptionOpen, setSubscriptionOpen] = useState(false);
+  
+  // Subscription plans data
+  const subscriptionPlans = [
+    {
+      name: "Basic",
+      price: "$49",
+      period: "/month",
+      features: ["500 Nora queries", "Basic Halo features", "Email support"],
+      current: activeSubscription === "Basic"
+    },
+    {
+      name: "Premium",
+      price: "$99",
+      period: "/month",
+      features: ["1000 Nora queries", "Full Halo suite", "Priority support", "Advanced analytics"],
+      current: activeSubscription === "Premium"
+    },
+    {
+      name: "Enterprise",
+      price: "$199",
+      period: "/month",
+      features: ["Unlimited queries", "Team collaboration", "Custom integrations", "Dedicated support"],
+      current: activeSubscription === "Enterprise"
+    }
+  ];
   
   const recentActivity = [
     { type: "query", title: "Contract Analysis Request", time: "2 minutes ago" },
@@ -26,13 +72,41 @@ const Dashboard = () => {
     { type: "meeting", title: "Client Consultation Notes", time: "1 day ago" }
   ];
 
+  // Event handlers
+  const handleLogout = () => {
+    localStorage.removeItem('userToken');
+    toast({
+      title: "Logged out successfully",
+      description: "You have been logged out of your account.",
+    });
+    navigate('/login');
+  };
+
+  const handleSaveSettings = () => {
+    localStorage.setItem('userName', userName);
+    localStorage.setItem('userEmail', userEmail);
+    localStorage.setItem('darkMode', isDarkMode.toString());
+    
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    
+    toast({
+      title: "Settings saved",
+      description: "Your preferences have been updated successfully.",
+    });
+    setSettingsOpen(false);
+  };
+
   return (
     <div className="min-h-screen pt-20 bg-gradient-to-br from-background via-background to-muted/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12">
           <div className="space-y-2">
-            <h1 className="text-4xl font-bold text-foreground">Welcome back, John</h1>
+            <h1 className="text-4xl font-bold text-foreground">Welcome back, {userName}</h1>
             <p className="text-lg text-muted-foreground">Your AI-powered legal workspace</p>
           </div>
           <div className="flex items-center space-x-3 mt-6 sm:mt-0">
@@ -40,10 +114,59 @@ const Dashboard = () => {
               <Crown className="h-4 w-4 mr-2" />
               {activeSubscription}
             </Badge>
-            <Button variant="ghost" size="icon" className="h-9 w-9">
-              <Settings className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="icon" className="h-9 w-9">
+            <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-9 w-9">
+                  <Settings className="h-4 w-4" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Settings</DialogTitle>
+                  <DialogDescription>
+                    Manage your account preferences and settings.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-6 py-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Name</label>
+                    <Input
+                      value={userName}
+                      onChange={(e) => setUserName(e.target.value)}
+                      placeholder="Enter your name"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Email</label>
+                    <Input
+                      type="email"
+                      value={userEmail}
+                      onChange={(e) => setUserEmail(e.target.value)}
+                      placeholder="Enter your email"
+                    />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <label className="text-sm font-medium">Dark Mode</label>
+                      <p className="text-xs text-muted-foreground">Toggle dark/light theme</p>
+                    </div>
+                    <Switch
+                      checked={isDarkMode}
+                      onCheckedChange={setIsDarkMode}
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-end space-x-2">
+                  <Button variant="outline" onClick={() => setSettingsOpen(false)}>
+                    Cancel
+                  </Button>
+                  <Button onClick={handleSaveSettings}>
+                    Save Changes
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+            <Button variant="ghost" size="icon" className="h-9 w-9" onClick={handleLogout}>
               <LogOut className="h-4 w-4" />
             </Button>
           </div>
@@ -189,9 +312,72 @@ const Dashboard = () => {
                   <span className="text-sm text-muted-foreground">Next Billing</span>
                   <span className="text-sm font-medium">Jan 15, 2025</span>
                 </div>
-                <Button variant="outline" size="sm" className="w-full">
-                  Manage Subscription
-                </Button>
+                <Dialog open={subscriptionOpen} onOpenChange={setSubscriptionOpen}>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" size="sm" className="w-full">
+                      Manage Subscription
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-4xl">
+                    <DialogHeader>
+                      <DialogTitle>Subscription Management</DialogTitle>
+                      <DialogDescription>
+                        Choose the plan that best fits your needs or manage your current subscription.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-6">
+                      {subscriptionPlans.map((plan, index) => (
+                        <Card key={index} className={`relative ${plan.current ? 'border-primary bg-primary/5 ring-2 ring-primary/20' : 'border-border'}`}>
+                          {plan.current && (
+                            <Badge className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-primary">
+                              Current Plan
+                            </Badge>
+                          )}
+                          <CardHeader className="text-center pb-4">
+                            <CardTitle className="text-xl">{plan.name}</CardTitle>
+                            <div className="flex items-baseline justify-center">
+                              <span className="text-3xl font-bold text-primary">{plan.price}</span>
+                              <span className="text-muted-foreground ml-1">{plan.period}</span>
+                            </div>
+                          </CardHeader>
+                          <CardContent>
+                            <ul className="space-y-3 mb-6">
+                              {plan.features.map((feature, featureIndex) => (
+                                <li key={featureIndex} className="flex items-center space-x-2 text-sm">
+                                  <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
+                                  <span>{feature}</span>
+                                </li>
+                              ))}
+                            </ul>
+                            <Button 
+                              variant={plan.current ? "outline" : "default"} 
+                              className="w-full"
+                              disabled={plan.current}
+                            >
+                              {plan.current ? "Current Plan" : "Upgrade"}
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                    <div className="border-t pt-6">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <CreditCard className="h-5 w-5 text-muted-foreground" />
+                          <span className="text-sm text-muted-foreground">Next billing: Jan 15, 2025</span>
+                        </div>
+                        <div className="flex space-x-2">
+                          <Button variant="outline" size="sm">
+                            Update Payment Method
+                          </Button>
+                          <Button variant="outline" size="sm">
+                            Cancel Subscription
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </CardContent>
             </Card>
           </div>
