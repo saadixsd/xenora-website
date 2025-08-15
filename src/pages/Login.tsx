@@ -22,6 +22,9 @@ const Login = () => {
     // Simulate login
     setTimeout(() => {
       setIsLoading(false);
+      // Set authentication token to indicate user is logged in
+      localStorage.setItem('userToken', 'fake-jwt-token');
+      localStorage.setItem('userName', 'John');
       navigate("/dashboard");
     }, 2000);
   };
@@ -32,6 +35,9 @@ const Login = () => {
     // Simulate signup
     setTimeout(() => {
       setIsLoading(false);
+      // Set authentication token to indicate user is logged in
+      localStorage.setItem('userToken', 'fake-jwt-token');
+      localStorage.setItem('userName', 'John');
       navigate("/dashboard");
     }, 2000);
   };

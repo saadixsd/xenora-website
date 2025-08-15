@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import XenoraLogo from "./XenoraLogo";
 import DarkModeToggle from "./DarkModeToggle";
@@ -11,8 +11,23 @@ import { useTranslation } from 'react-i18next';
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
   const { t } = useTranslation();
+
+  // Check authentication status
+  useEffect(() => {
+    const checkAuthStatus = () => {
+      const userToken = localStorage.getItem('userToken');
+      const userName = localStorage.getItem('userName');
+      setIsLoggedIn(!!(userToken || userName || location.pathname === '/dashboard'));
+    };
+    
+    checkAuthStatus();
+    // Listen for storage changes (login/logout events)
+    window.addEventListener('storage', checkAuthStatus);
+    return () => window.removeEventListener('storage', checkAuthStatus);
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -70,12 +85,23 @@ const Navigation = () => {
           <div className="hidden md:flex items-center space-x-4">
             <LanguageToggle />
             <DarkModeToggle />
-            <Button variant="ghost" asChild className="hover-scale">
-              <Link to="/login">{t('navigation.login')}</Link>
-            </Button>
-            <Button asChild className="bg-primary-gradient hover:shadow-glow hover-scale transition-all duration-300">
-              <Link to="/login">{t('navigation.scheduleDemo')}</Link>
-            </Button>
+            {isLoggedIn ? (
+              <Button variant="ghost" asChild className="hover-scale">
+                <Link to="/dashboard">
+                  <User className="h-4 w-4 mr-2" />
+                  Dashboard
+                </Link>
+              </Button>
+            ) : (
+              <>
+                <Button variant="ghost" asChild className="hover-scale">
+                  <Link to="/login">{t('navigation.login')}</Link>
+                </Button>
+                <Button asChild className="bg-primary-gradient hover:shadow-glow hover-scale transition-all duration-300">
+                  <Link to="/login">{t('navigation.scheduleDemo')}</Link>
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -115,18 +141,29 @@ const Navigation = () => {
                  <DarkModeToggle />
                </div>
                
-               <div className="pt-4 space-y-2">
-                  <Button variant="ghost" className="w-full justify-start" asChild>
-                    <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
-                      {t('navigation.login')}
-                    </Link>
-                  </Button>
-                  <Button className="w-full justify-start bg-primary-gradient" asChild>
-                    <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
-                      {t('navigation.scheduleDemo')}
-                    </Link>
-                  </Button>
-               </div>
+                <div className="pt-4 space-y-2">
+                  {isLoggedIn ? (
+                    <Button variant="ghost" className="w-full justify-start" asChild>
+                      <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
+                        <User className="h-4 w-4 mr-2" />
+                        Dashboard
+                      </Link>
+                    </Button>
+                  ) : (
+                    <>
+                      <Button variant="ghost" className="w-full justify-start" asChild>
+                        <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                          {t('navigation.login')}
+                        </Link>
+                      </Button>
+                      <Button className="w-full justify-start bg-primary-gradient" asChild>
+                        <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                          {t('navigation.scheduleDemo')}
+                        </Link>
+                      </Button>
+                    </>
+                  )}
+                </div>
             </div>
           </div>
         )}
