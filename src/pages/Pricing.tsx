@@ -137,17 +137,17 @@ const Pricing = () => {
   return (
     <div className="min-h-screen page-fade-in">
       {/* Visual Hero Intro Section */}
-      <section className="relative overflow-hidden bg-hero-gradient section-padding shadow-elegant">
+      <section className="relative overflow-hidden bg-hero-gradient py-16 sm:py-20 shadow-elegant">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-transparent animate-pulse" />
         <div 
           ref={heroRef.ref}
           className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center scroll-animate ${heroRef.isVisible ? 'visible' : ''}`}
         >
-          <Badge variant="outline" className="mb-8 mt-8 hover-scale border-primary/30 bg-primary/5">
+          <Badge variant="outline" className="mb-6 hover-scale border-primary/30 bg-primary/5">
             <Sparkles className="h-4 w-4 mr-2" />
-            <span className="text-lg font-medium">Flexible Pricing Plans</span>
+            <span className="text-base sm:text-lg font-medium">Flexible Pricing Plans</span>
           </Badge>
-          <h1 className="text-7xl font-bold text-foreground mb-12 animate-fade-in-up">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-8 animate-fade-in-up">
             Choose Your
             <br />
             <span className="bg-primary-gradient bg-clip-text text-transparent">
@@ -156,23 +156,23 @@ const Pricing = () => {
           </h1>
           
           {/* 7-Day Trial Notice */}
-          <div className="bg-card border border-border rounded-xl p-6 max-w-2xl mx-auto mb-4">
-            <div className="text-center mb-4">
-              <h3 className="text-2xl font-semibold text-foreground">7-Day Free Trial</h3>
+          <div className="bg-card border border-border rounded-xl p-4 sm:p-6 max-w-2xl mx-auto mb-6">
+            <div className="text-center mb-3">
+              <h3 className="text-xl sm:text-2xl font-semibold text-foreground">7-Day Free Trial</h3>
             </div>
-            <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+            <p className="text-sm sm:text-lg text-muted-foreground mb-4 leading-relaxed">
               Experience the full power of XenoraAI risk-free! <br />
               Unlimited access to all features for a complete week.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
-              <Badge variant="outline" className="text-sm font-medium bg-primary/10 border-primary/30 text-primary">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 text-center mb-3">
+              <Badge variant="outline" className="text-xs sm:text-sm font-medium bg-primary/10 border-primary/30 text-primary">
                 ✓ Credit Card Required
               </Badge>
-              <Badge variant="outline" className="text-sm font-medium bg-accent/10 border-accent/30 text-accent">
+              <Badge variant="outline" className="text-xs sm:text-sm font-medium bg-accent/10 border-accent/30 text-accent">
                 ✓ Cancel Anytime
               </Badge>
             </div>
-            <p className="text-sm text-muted-foreground mt-4">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               Credit card required, but only charged after 7-day free trial
             </p>
           </div>
@@ -180,7 +180,7 @@ const Pricing = () => {
       </section>
 
       {/* Pricing by User Type */}
-      <section className="section-swoosh section-padding bg-background">
+      <section className="section-swoosh py-12 sm:py-16 bg-background">
         <div 
           ref={plansRef.ref}
           className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20 scroll-animate ${plansRef.isVisible ? 'visible' : ''}`}
