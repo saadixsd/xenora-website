@@ -5,7 +5,6 @@ import { Menu, X, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import XenoraLogo from "./XenoraLogo";
 import DarkModeToggle from "./DarkModeToggle";
-import LanguageToggle from "./LanguageToggle";
 import { useTranslation } from 'react-i18next';
 
 const Navigation = () => {
@@ -82,7 +81,6 @@ const Navigation = () => {
 
           {/* Right side - Desktop */}
           <div className="hidden md:flex items-center space-x-4">
-            <LanguageToggle />
             <DarkModeToggle />
             {isLoggedIn ? (
               <Button variant="ghost" asChild className="hover-scale">
@@ -134,11 +132,10 @@ const Navigation = () => {
                 </Link>
                ))}
                
-               {/* Mobile Controls */}
-               <div className="flex items-center justify-center space-x-4 pt-4 border-t border-border mt-4">
-                 <LanguageToggle />
-                 <DarkModeToggle />
-               </div>
+                {/* Mobile Controls */}
+                <div className="flex items-center justify-center space-x-4 pt-4 border-t border-border mt-4">
+                  <DarkModeToggle />
+                </div>
                
                 <div className="pt-4 space-y-2">
                   {isLoggedIn ? (
