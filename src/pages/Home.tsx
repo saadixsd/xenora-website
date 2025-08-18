@@ -78,14 +78,14 @@ const Home = () => {
       <section className="relative overflow-hidden bg-hero-gradient section-padding shadow-elegant">
         {/* Floating Glass Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-32 h-32 glass-subtle rounded-full glass-float opacity-30" />
-          <div className="absolute top-40 right-16 w-24 h-24 glass rounded-full glass-float-delayed opacity-40" />
-          <div className="absolute bottom-32 left-20 w-40 h-40 glass-subtle rounded-full glass-float opacity-25" />
-          <div className="absolute bottom-20 right-10 w-28 h-28 glass rounded-full glass-float-delayed opacity-35" />
-          <div className="absolute top-60 left-1/3 w-16 h-16 glass rounded-full glass-float opacity-50" />
-          <div className="absolute top-80 right-1/4 w-20 h-20 glass-subtle rounded-full glass-float-delayed opacity-30" />
-          <div className="absolute top-16 right-1/4 w-20 h-8 glass-subtle rounded-lg glass-float opacity-30 rotate-12" />
-          <div className="absolute bottom-24 left-1/3 w-16 h-6 glass rounded-lg glass-float-delayed opacity-35 -rotate-6" />
+          <div className="absolute top-20 left-10 w-32 h-32 glass-strong rounded-full glass-float opacity-60 shadow-lg shadow-primary/20" />
+          <div className="absolute top-40 right-16 w-24 h-24 glass-strong rounded-full glass-float-delayed opacity-70 shadow-lg shadow-accent/20" />
+          <div className="absolute bottom-32 left-20 w-40 h-40 glass rounded-full glass-float opacity-50 shadow-xl shadow-primary/10" />
+          <div className="absolute bottom-20 right-10 w-28 h-28 glass-strong rounded-full glass-float-delayed opacity-65 shadow-lg shadow-accent/15" />
+          <div className="absolute top-60 left-1/3 w-16 h-16 glass-strong rounded-full glass-float opacity-80 shadow-md shadow-primary/30" />
+          <div className="absolute top-80 right-1/4 w-20 h-20 glass rounded-full glass-float-delayed opacity-60 shadow-lg shadow-accent/25" />
+          <div className="absolute top-16 right-1/4 w-20 h-8 glass-strong rounded-lg glass-float opacity-50 rotate-12 shadow-md shadow-primary/20" />
+          <div className="absolute bottom-24 left-1/3 w-16 h-6 glass-strong rounded-lg glass-float-delayed opacity-55 -rotate-6 shadow-md shadow-accent/20" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/10" />
         <div 
