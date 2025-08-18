@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Link } from "react-router-dom";
 import { 
   Bot, 
@@ -22,6 +23,17 @@ const About = () => {
   const valuesRef = useScrollAnimation();
   const teamRef = useScrollAnimation();
   const { t } = useTranslation();
+
+  // Helper function to get avatar URL from LinkedIn
+  const getAvatarUrl = (linkedinUrl: string) => {
+    const username = linkedinUrl.split('/in/')[1]?.replace('/', '');
+    return `https://unavatar.io/linkedin/${username}`;
+  };
+
+  // Helper function to get initials
+  const getInitials = (name: string) => {
+    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+  };
   
   const values = [
     {
@@ -299,9 +311,16 @@ const About = () => {
                   {/* Orange accent border on hover */}
                   <div className="absolute inset-0 bg-gradient-to-r from-orange-400 via-accent to-primary opacity-0 group-hover:opacity-20 rounded-lg transition-opacity duration-300"></div>
                   <CardContent className="relative p-8 text-center">
-                    <div className="w-20 h-20 bg-gradient-to-br from-orange-100 to-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:from-orange-200 group-hover:to-orange-100 transition-colors duration-300">
-                      <Users className="h-10 w-10 text-primary group-hover:text-orange-500 transition-colors duration-300" />
-                    </div>
+                    <Avatar className="w-20 h-20 mx-auto mb-6 ring-2 ring-primary/20 group-hover:ring-orange-400/40 transition-all duration-300">
+                      <AvatarImage 
+                        src={getAvatarUrl(member.linkedin)} 
+                        alt={`${member.name} profile picture`}
+                        className="object-cover"
+                      />
+                      <AvatarFallback className="bg-gradient-to-br from-orange-100 to-primary/10 text-primary font-semibold text-lg group-hover:from-orange-200 group-hover:to-orange-100 group-hover:text-orange-500 transition-colors duration-300">
+                        {getInitials(member.name)}
+                      </AvatarFallback>
+                    </Avatar>
                     <h3 className="text-xl font-semibold text-foreground mb-2">{member.name}</h3>
                     <p className="text-sm text-primary font-medium mb-4">{member.role}</p>
                     <p className="text-muted-foreground text-sm mb-6">{member.description}</p>
