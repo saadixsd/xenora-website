@@ -121,7 +121,7 @@ const Home = () => {
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" asChild className="glass-button border-white/20 text-white hover:text-white">
+                <Button size="lg" variant="outline" asChild className="border-white/30 bg-white/10 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm">
                   <Link to="/about">{t('home.hero.discover')}</Link>
                 </Button>
               </div>
