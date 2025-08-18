@@ -85,7 +85,7 @@ const About = () => {
       {
         name: "Yassen Hegazy",
         role: "AI Director",
-        description: "Leading AI strategy and research with specialized expertise in advanced machine learning methodologies.",
+        description: "Developing and optimizing AI models for legal applications with focus on natural language processing and machine learning.",
         linkedin: "https://www.linkedin.com/in/yassen-hegazy-33aa28330/"
       }
     ],
@@ -99,7 +99,7 @@ const About = () => {
       {
         name: "Jayden Nkeuze",
         role: "AI Research Engineer",
-        description: "Developing and optimizing AI models for legal applications with focus on natural language processing and machine learning.",
+        description: "Conducting advanced AI research and developing cutting-edge machine learning algorithms to push the boundaries of artificial intelligence in legal technology.",
         linkedin: "https://www.linkedin.com/in/jayden-nkueze/"
       }
     ]
