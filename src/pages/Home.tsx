@@ -115,13 +115,13 @@ const Home = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" asChild className="glass-button border-0 text-white bg-primary-gradient hover:shadow-glow transition-all duration-300">
+                <Button size="lg" asChild className="bg-primary-gradient hover:shadow-glow transition-all duration-300 text-white font-semibold">
                   <Link to="/models">
                     {t('home.hero.explore')}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" asChild className="glass-button border-white/20">
+                <Button size="lg" variant="outline" asChild className="glass-button border-white/20 text-white hover:text-white">
                   <Link to="/about">{t('home.hero.discover')}</Link>
                 </Button>
               </div>
