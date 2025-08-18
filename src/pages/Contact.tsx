@@ -35,7 +35,7 @@ const Contact = () => {
     setTimeout(() => {
       setIsSubmitting(false);
       toast({
-        title: t('contact.form.success'),
+        title: "Message Success",
         description: t('contact.methods.email.description'),
         duration: 5000, // Auto-dismiss after 5 seconds
         className: "animate-fade-in"
