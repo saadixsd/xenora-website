@@ -76,16 +76,14 @@ const Home = () => {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-hero-gradient section-padding shadow-elegant">
-        {/* Floating Glass Elements */}
+        {/* Floating Glass Elements with Logo Colors */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-32 h-32 glass-strong rounded-full glass-float opacity-60 shadow-lg shadow-primary/20" />
-          <div className="absolute top-40 right-16 w-24 h-24 glass-strong rounded-full glass-float-delayed opacity-70 shadow-lg shadow-accent/20" />
-          <div className="absolute bottom-32 left-20 w-40 h-40 glass rounded-full glass-float opacity-50 shadow-xl shadow-primary/10" />
-          <div className="absolute bottom-20 right-10 w-28 h-28 glass-strong rounded-full glass-float-delayed opacity-65 shadow-lg shadow-accent/15" />
-          <div className="absolute top-60 left-1/3 w-16 h-16 glass-strong rounded-full glass-float opacity-80 shadow-md shadow-primary/30" />
-          <div className="absolute top-80 right-1/4 w-20 h-20 glass rounded-full glass-float-delayed opacity-60 shadow-lg shadow-accent/25" />
-          <div className="absolute top-16 right-1/4 w-20 h-8 glass-strong rounded-lg glass-float opacity-50 rotate-12 shadow-md shadow-primary/20" />
-          <div className="absolute bottom-24 left-1/3 w-16 h-6 glass-strong rounded-lg glass-float-delayed opacity-55 -rotate-6 shadow-md shadow-accent/20" />
+          <div className="absolute top-20 left-10 w-32 h-32 glass-strong rounded-full glass-float opacity-40 shadow-xl shadow-primary/30" style={{background: 'linear-gradient(135deg, rgba(120, 119, 198, 0.15), rgba(255, 77, 79, 0.1))'}} />
+          <div className="absolute top-40 right-16 w-24 h-24 glass-strong rounded-full glass-float-delayed opacity-50 shadow-lg shadow-primary/25" style={{background: 'linear-gradient(135deg, rgba(255, 77, 79, 0.12), rgba(120, 119, 198, 0.08))'}} />
+          <div className="absolute bottom-32 left-20 w-40 h-40 glass rounded-full glass-float opacity-35 shadow-xl shadow-primary/20" style={{background: 'linear-gradient(135deg, rgba(120, 119, 198, 0.1), rgba(255, 77, 79, 0.05))'}} />
+          <div className="absolute bottom-20 right-10 w-28 h-28 glass-strong rounded-full glass-float-delayed opacity-45 shadow-lg shadow-primary/20" style={{background: 'linear-gradient(135deg, rgba(255, 77, 79, 0.1), rgba(120, 119, 198, 0.1))'}} />
+          <div className="absolute top-60 left-1/3 w-16 h-16 glass-strong rounded-full glass-float opacity-60 shadow-md shadow-primary/35" style={{background: 'linear-gradient(135deg, rgba(120, 119, 198, 0.18), rgba(255, 77, 79, 0.12))'}} />
+          <div className="absolute top-80 right-1/4 w-20 h-20 glass rounded-full glass-float-delayed opacity-45 shadow-lg shadow-primary/25" style={{background: 'linear-gradient(135deg, rgba(255, 77, 79, 0.08), rgba(120, 119, 198, 0.12))'}} />
         </div>
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/10" />
         <div 
@@ -240,29 +238,27 @@ const Home = () => {
                 className={`group transform transition-all duration-1000 ${featuresRef.isVisible ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-20 opacity-0 scale-95'}`}
                 style={{ transitionDelay: `${(index + 1) * 200}ms` }}
                >
-                <Card className="relative glass-card overflow-hidden border-0 shadow-2xl">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <Card className="relative bg-white/95 dark:bg-gray-900/95 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300 group-hover:scale-102 overflow-hidden backdrop-blur-sm">
                   
-                  <CardContent className="relative p-12 space-y-8">
+                  <CardContent className="relative p-8 space-y-6">
                     <div className="relative">
-                      <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500" />
-                      <div className="relative w-24 h-24 bg-gradient-to-br from-primary/20 to-accent/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
-                        <feature.icon className="h-12 w-12 text-primary group-hover:text-accent transition-all duration-500" />
+                      <div className="relative w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center group-hover:scale-105 transition-all duration-300">
+                        <feature.icon className="h-8 w-8 text-primary transition-all duration-300" />
                       </div>
                     </div>
                     
-                    <div className="space-y-4">
-                      <h3 className="text-3xl font-bold text-foreground group-hover:text-primary transition-colors duration-500">
+                    <div className="space-y-3">
+                      <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
                         {feature.title}
                       </h3>
-                      <p className="text-lg text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-500">
+                      <p className="text-muted-foreground leading-relaxed">
                         {feature.description}
                       </p>
                     </div>
                     
-                    <div className="flex items-center text-primary group-hover:text-accent transition-colors duration-500">
-                      <ArrowRight className="h-5 w-5 transform group-hover:translate-x-2 transition-transform duration-500" />
-                      <span className="ml-2 font-medium">Learn More</span>
+                    <div className="flex items-center text-primary group-hover:text-primary/80 transition-colors duration-300">
+                      <ArrowRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform duration-300" />
+                      <span className="ml-2 text-sm font-medium">Learn More</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -294,20 +290,18 @@ const Home = () => {
                 className={`transform transition-all duration-1000 ${benefitsRef.isVisible ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-16 opacity-0 scale-90'}`}
                 style={{ transitionDelay: `${(index + 3) * 150}ms` }}
               >
-                <Card className="relative glass-card border-0 hover:shadow-glow transition-all duration-500 group cursor-pointer overflow-hidden h-full">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <Card className="relative bg-white/95 dark:bg-gray-900/95 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300 group cursor-pointer overflow-hidden h-full backdrop-blur-sm">
                   
-                  <CardContent className="relative p-8 text-center space-y-6 h-full flex flex-col justify-between">
-                    <div className="space-y-6">
+                  <CardContent className="relative p-6 text-center space-y-4 h-full flex flex-col justify-between">
+                    <div className="space-y-4">
                       <div className="relative">
-                        <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-lg group-hover:blur-xl transition-all duration-500 opacity-50" />
-                        <div className="relative w-20 h-20 bg-gradient-to-br from-primary/15 to-accent/15 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
-                          <benefit.icon className="h-10 w-10 text-primary group-hover:text-accent transition-all duration-500" />
+                        <div className="relative w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto group-hover:scale-105 transition-all duration-300">
+                          <benefit.icon className="h-8 w-8 text-primary transition-all duration-300" />
                         </div>
                       </div>
-                      <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-500">{benefit.title}</h3>
+                      <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-300">{benefit.title}</h3>
                     </div>
-                    <p className="text-muted-foreground leading-relaxed group-hover:text-foreground transition-colors duration-500">{benefit.description}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{benefit.description}</p>
                   </CardContent>
                 </Card>
               </div>
