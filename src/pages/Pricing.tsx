@@ -156,11 +156,9 @@ const Pricing = () => {
           </h1>
           
           {/* 7-Day Trial Notice */}
-          <div className="bg-gradient-to-r from-primary/15 via-accent/10 to-primary/15 border border-primary/30 rounded-2xl p-8 max-w-3xl mx-auto mb-8 hover-lift shadow-elegant">
-            <div className="flex items-center justify-center mb-4">
-              <Sparkles className="h-6 w-6 text-primary mr-2" />
-              <h3 className="text-3xl font-bold text-primary">7-Day Free Trial</h3>
-              <Sparkles className="h-6 w-6 text-primary ml-2" />
+          <div className="bg-card border border-border rounded-xl p-6 max-w-2xl mx-auto mb-8">
+            <div className="text-center mb-4">
+              <h3 className="text-2xl font-semibold text-foreground">7-Day Free Trial</h3>
             </div>
             <p className="text-xl text-foreground mb-6 font-medium">
               Experience the full power of XenoraAI risk-free! Unlimited access to all features for a complete week.
