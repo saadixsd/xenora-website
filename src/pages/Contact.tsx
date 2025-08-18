@@ -18,6 +18,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useTranslation } from 'react-i18next';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -27,20 +28,48 @@ const Contact = () => {
   const faqRef = useScrollAnimation();
   const { t } = useTranslation();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
+    const formData = new FormData(e.currentTarget);
+    const templateParams = {
+      from_name: `${formData.get('firstName')} ${formData.get('lastName')}`,
+      from_email: formData.get('email'),
+      company: formData.get('company'),
+      subject: formData.get('subject'),
+      message: formData.get('message'),
+      to_email: 'xenoraai@gmail.com'
+    };
+
+    try {
+      // Using EmailJS public configuration - you'll need to set up your EmailJS account
+      await emailjs.send(
+        'service_xenora', // You'll need to create this service ID in EmailJS
+        'template_contact', // You'll need to create this template ID in EmailJS
+        templateParams,
+        'your_public_key' // You'll need to add your EmailJS public key
+      );
+      
       setIsSubmitting(false);
       toast({
-        title: "Message Success",
-        description: t('contact.methods.email.description'),
-        duration: 5000, // Auto-dismiss after 5 seconds
+        title: "Message Sent Successfully!",
+        description: "We'll get back to you within 24 hours.",
+        duration: 5000,
         className: "animate-fade-in"
       });
-    }, 2000);
+      
+      // Reset form
+      e.currentTarget.reset();
+    } catch (error) {
+      setIsSubmitting(false);
+      toast({
+        title: "Failed to Send Message",
+        description: "Please try again or contact us directly at xenoraai@gmail.com",
+        duration: 5000,
+        className: "animate-fade-in"
+      });
+    }
   };
 
   const contactMethods = [
@@ -132,6 +161,7 @@ const Contact = () => {
                       <Label htmlFor="firstName">First Name</Label>
                       <Input
                         id="firstName"
+                        name="firstName"
                         placeholder="John"
                         required
                       />
@@ -140,6 +170,7 @@ const Contact = () => {
                       <Label htmlFor="lastName">Last Name</Label>
                       <Input
                         id="lastName"
+                        name="lastName"
                         placeholder="Doe"
                         required
                       />
@@ -150,6 +181,7 @@ const Contact = () => {
                     <Label htmlFor="email">Email</Label>
                     <Input
                       id="email"
+                      name="email"
                       type="email"
                       placeholder="john@example.com"
                       required
@@ -160,6 +192,7 @@ const Contact = () => {
                     <Label htmlFor="company">Company/Organization</Label>
                     <Input
                       id="company"
+                      name="company"
                       placeholder="Your Law Firm"
                     />
                   </div>
@@ -168,6 +201,7 @@ const Contact = () => {
                     <Label htmlFor="subject">Subject</Label>
                     <Input
                       id="subject"
+                      name="subject"
                       placeholder="Inquiry about Nora AI Assistant"
                       required
                     />
@@ -177,6 +211,7 @@ const Contact = () => {
                     <Label htmlFor="message">Message</Label>
                     <Textarea
                       id="message"
+                      name="message"
                       placeholder="Tell us about your needs and how we can help..."
                       rows={5}
                       required
