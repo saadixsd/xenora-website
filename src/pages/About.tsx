@@ -24,10 +24,11 @@ const About = () => {
   const teamRef = useScrollAnimation();
   const { t } = useTranslation();
 
-  // Helper function to get avatar URL from LinkedIn
-  const getAvatarUrl = (linkedinUrl: string) => {
+  // Helper function to get avatar URL from LinkedIn  
+  const getAvatarUrl = (linkedinUrl: string, name: string) => {
     const username = linkedinUrl.split('/in/')[1]?.replace('/', '');
-    return `https://unavatar.io/linkedin/${username}`;
+    // Use multiple services with fallback to a name-based avatar
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&size=128&background=f97316&color=ffffff&bold=true&format=png`;
   };
 
   // Helper function to get initials
@@ -56,13 +57,13 @@ const About = () => {
   const teamLines = [
     [
       {
-        name: "Saad",
+        name: "Saad Kashif",
         role: "Founder & CEO",
         description: "Leading XenoraAI's vision and strategy while enhancing AI research in Machine Learning and Neural Network Applications.",
         linkedin: "https://www.linkedin.com/in/saad-kashif/"
       },
       {
-        name: "Gavin",
+        name: "Gavin Martin",
         role: "Founder & COO/CMO",
         description: "Overseeing operational excellence and growth while driving marketing initiatives for Xenora's AI solutions.",
         linkedin: "https://www.linkedin.com/in/gavin-m-4a8718274/"
@@ -70,19 +71,19 @@ const About = () => {
     ],
     [
       {
-        name: "Yacine",
+        name: "Yacine Eldjidel",
         role: "CTO / DevOps Engineer",
         description: "Architecting XenoraAI's technical infrastructure while tackling breakthroughs in NLP, Computer Vision, and AI systems deployment.",
         linkedin: "https://www.linkedin.com/in/yacine-eldjidel-b1838a32a/"
       },
       {
-        name: "Sila",
+        name: "Sila Ben Khelifa",
         role: "Chief Information Officer",
         description: "Orchestrating XenoraAI's digital transformation through strategic IT leadership, secure data ecosystems, and technology roadmap alignment.",
         linkedin: "https://www.linkedin.com/in/sila-bk-8553692b2/"
       },
       {
-        name: "Yassen",
+        name: "Yassen Hegazy",
         role: "AI Director",
         description: "Leading AI strategy and research with specialized expertise in advanced machine learning methodologies.",
         linkedin: "https://www.linkedin.com/in/yassen-hegazy-33aa28330/"
@@ -90,7 +91,7 @@ const About = () => {
     ],
     [
       {
-        name: "Ali",
+        name: "Ali Al-Dhaher",
         role: "Software Development Engineer",
         description: "Building scalable software solutions and integrations for XenoraAI's platform infrastructure and user experience.",
         linkedin: "https://www.linkedin.com/in/alialdhaher/"
@@ -313,7 +314,7 @@ const About = () => {
                   <CardContent className="relative p-8 text-center">
                     <Avatar className="w-20 h-20 mx-auto mb-6 ring-2 ring-primary/20 group-hover:ring-orange-400/40 transition-all duration-300">
                       <AvatarImage 
-                        src={getAvatarUrl(member.linkedin)} 
+                        src={getAvatarUrl(member.linkedin, member.name)}
                         alt={`${member.name} profile picture`}
                         className="object-cover"
                       />
