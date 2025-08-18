@@ -160,8 +160,9 @@ const Pricing = () => {
             <div className="text-center mb-4">
               <h3 className="text-2xl font-semibold text-foreground">7-Day Free Trial</h3>
             </div>
-            <p className="text-xl text-foreground mb-6 font-medium">
-              Experience the full power of XenoraAI risk-free! Unlimited access to all features for a complete week.
+            <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+              Experience the full power of XenoraAI risk-free! <br />
+              Unlimited access to all features for a complete week.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
               <Badge variant="outline" className="text-sm font-medium bg-primary/10 border-primary/30 text-primary">
@@ -175,11 +176,6 @@ const Pricing = () => {
               Credit card required, but only charged after 7-day free trial
             </p>
           </div>
-          
-          <p className="text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            From individual lawyers to large firms, discover the perfect AI solution 
-            tailored to your legal practice needs and budget.
-          </p>
         </div>
       </section>
 
