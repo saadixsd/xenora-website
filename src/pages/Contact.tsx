@@ -43,9 +43,9 @@ const Contact = () => {
     };
 
     try {
-      // Using EmailJS public configuration - you'll need to set up your EmailJS account
+      // Using your EmailJS service
       await emailjs.send(
-        'service_xenora', // You'll need to create this service ID in EmailJS
+        'service_l7z12gk', // Your EmailJS service ID
         'template_contact', // You'll need to create this template ID in EmailJS
         templateParams,
         'your_public_key' // You'll need to add your EmailJS public key
