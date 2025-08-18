@@ -93,7 +93,7 @@ const About = () => {
       {
         name: "Ali Al-Dhaher",
         role: "Chief Security Officer (CSO)",
-        description: "Building scalable software solutions and integrations for XenoraAI's platform infrastructure and user experience.",
+        description: "Leading XenoraAI's security strategy and ensuring comprehensive protection of client data, platform integrity, and regulatory compliance.",
         linkedin: "https://www.linkedin.com/in/alialdhaher/"
       },
       {
