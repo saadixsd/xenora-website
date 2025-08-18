@@ -156,7 +156,7 @@ const Pricing = () => {
           </h1>
           
           {/* 7-Day Trial Notice */}
-          <div className="bg-card border border-border rounded-xl p-6 max-w-2xl mx-auto mb-8">
+          <div className="bg-card border border-border rounded-xl p-6 max-w-2xl mx-auto mb-4">
             <div className="text-center mb-4">
               <h3 className="text-2xl font-semibold text-foreground">7-Day Free Trial</h3>
             </div>
