@@ -78,7 +78,7 @@ const About = () => {
       },
       {
         name: "Sila Ben Khelifa",
-        role: "Chief Information Officer",
+        role: "Chief Software Architect",
         description: "Orchestrating XenoraAI's digital transformation through strategic IT leadership, secure data ecosystems, and technology roadmap alignment.",
         linkedin: "https://www.linkedin.com/in/sila-bk-8553692b2/"
       },
@@ -92,7 +92,7 @@ const About = () => {
     [
       {
         name: "Ali Al-Dhaher",
-        role: "Software Development Engineer",
+        role: "Chief Security Officer (CSO)",
         description: "Building scalable software solutions and integrations for XenoraAI's platform infrastructure and user experience.",
         linkedin: "https://www.linkedin.com/in/alialdhaher/"
       },
