@@ -51,10 +51,8 @@ const Navigation = () => {
 
   return (
     <nav className={cn(
-      "fixed top-0 w-full z-50 transition-all duration-300",
-      isScrolled 
-        ? "nav-sticky shadow-elegant" 
-        : "bg-background/90 backdrop-blur-md border-b border-border"
+      "fixed top-0 w-full z-50 transition-all duration-300 glass-nav",
+      isScrolled && "scrolled"
     )}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -119,7 +117,7 @@ const Navigation = () => {
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-card border-t border-border">
+            <div className="px-2 pt-2 pb-3 space-y-1 glass-strong border-t border-white/10 rounded-b-2xl">
               {navItems.map((item) => (
                 <Link
                   key={item.name}

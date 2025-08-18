@@ -76,6 +76,17 @@ const Home = () => {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-hero-gradient section-padding shadow-elegant">
+        {/* Floating Glass Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-32 h-32 glass-subtle rounded-full glass-float opacity-30" />
+          <div className="absolute top-40 right-16 w-24 h-24 glass rounded-full glass-float-delayed opacity-40" />
+          <div className="absolute bottom-32 left-20 w-40 h-40 glass-subtle rounded-full glass-float opacity-25" />
+          <div className="absolute bottom-20 right-10 w-28 h-28 glass rounded-full glass-float-delayed opacity-35" />
+          <div className="absolute top-60 left-1/3 w-16 h-16 glass rounded-full glass-float opacity-50" />
+          <div className="absolute top-80 right-1/4 w-20 h-20 glass-subtle rounded-full glass-float-delayed opacity-30" />
+          <div className="absolute top-16 right-1/4 w-20 h-8 glass-subtle rounded-lg glass-float opacity-30 rotate-12" />
+          <div className="absolute bottom-24 left-1/3 w-16 h-6 glass rounded-lg glass-float-delayed opacity-35 -rotate-6" />
+        </div>
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/10" />
         <div 
           ref={heroRef.ref}
@@ -104,13 +115,13 @@ const Home = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" asChild className="bg-primary-gradient hover:shadow-glow transition-all duration-300">
+                <Button size="lg" asChild className="glass-button border-0 text-white bg-primary-gradient hover:shadow-glow transition-all duration-300">
                   <Link to="/models">
                     {t('home.hero.explore')}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" asChild>
+                <Button size="lg" variant="outline" asChild className="glass-button border-white/20">
                   <Link to="/about">{t('home.hero.discover')}</Link>
                 </Button>
               </div>
@@ -184,7 +195,7 @@ const Home = () => {
               {/* Main logo container */}
               <div className="relative group z-10">
                 <div className="absolute -inset-1 bg-primary-gradient rounded-full blur opacity-30 group-hover:opacity-50 transition duration-1000 group-hover:duration-200" />
-                <div className="relative bg-background/80 backdrop-blur-xl rounded-full p-8 border border-primary/20 shadow-2xl group-hover:shadow-glow transition-all duration-500 flex items-center justify-center">
+                <div className="relative glass-strong rounded-full p-8 shadow-2xl group-hover:shadow-glow transition-all duration-500 flex items-center justify-center">
                   <div className="w-full h-full flex items-center justify-center">
                     <XenoraLogo className="transform group-hover:scale-110 transition-transform duration-500" />
                   </div>
@@ -228,8 +239,8 @@ const Home = () => {
                 key={index}
                 className={`group transform transition-all duration-1000 ${featuresRef.isVisible ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-20 opacity-0 scale-95'}`}
                 style={{ transitionDelay: `${(index + 1) * 200}ms` }}
-              >
-                <Card className="relative bg-gradient-to-br from-card via-card/90 to-card/70 border-primary/20 hover:border-primary/40 shadow-2xl hover:shadow-glow transition-all duration-700 group-hover:scale-105 overflow-hidden">
+               >
+                <Card className="relative glass-card overflow-hidden border-0 shadow-2xl">
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   
                   <CardContent className="relative p-12 space-y-8">
@@ -283,7 +294,7 @@ const Home = () => {
                 className={`transform transition-all duration-1000 ${benefitsRef.isVisible ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-16 opacity-0 scale-90'}`}
                 style={{ transitionDelay: `${(index + 3) * 150}ms` }}
               >
-                <Card className="relative bg-card-gradient border-primary/10 hover:border-primary/30 hover:shadow-glow transition-all duration-500 group cursor-pointer overflow-hidden h-full">
+                <Card className="relative glass-card border-0 hover:shadow-glow transition-all duration-500 group cursor-pointer overflow-hidden h-full">
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   
                   <CardContent className="relative p-8 text-center space-y-6 h-full flex flex-col justify-between">
