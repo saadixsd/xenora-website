@@ -37,6 +37,8 @@ const Contact = () => {
       toast({
         title: t('contact.form.success'),
         description: t('contact.methods.email.description'),
+        duration: 5000, // Auto-dismiss after 5 seconds
+        className: "animate-fade-in"
       });
     }, 2000);
   };
