@@ -92,13 +92,13 @@ const Home = () => {
         >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8 animate-swoosh-in">
-              <Badge variant="outline" className="w-fit border-primary/20 text-primary hover-scale mt-8 sm:mt-0">
+              <Badge variant="outline" className="w-fit border-primary/20 text-primary hover-scale mt-16 sm:mt-8 md:mt-0">
                 <Sparkles className="h-4 w-4 mr-2" />
                 <span className="text-lg font-medium">{t('home.hero.badge')}</span>
               </Badge>
               
               <div className="space-y-4">
-                <h1 className="text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+                <h1 className="text-5xl lg:text-6xl font-bold text-foreground leading-tight pt-4 sm:pt-0">
                   {t('home.hero.title1')}
                   <br />
                   {t('home.hero.title2')}
