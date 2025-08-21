@@ -82,7 +82,7 @@ const About = () => {
         name: "Luna",
         role: "Chief Financial Officer (CFO)",
         description: "Managing XenoraAI's financial strategy, investor relations, and business development to drive sustainable growth and market expansion.",
-        linkedin: "#"
+        linkedin: "https://www.linkedin.com/in/lunaqin/"
       },
       {
         name: "Sila Ben Khelifa",
@@ -181,7 +181,7 @@ const About = () => {
                   <div className="text-sm text-muted-foreground">Founded</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">7+</div>
+                  <div className="text-3xl font-bold text-primary">8+</div>
                   <div className="text-sm text-muted-foreground">Team Members</div>
                 </div>
                 <div className="text-center">
@@ -317,10 +317,10 @@ const About = () => {
                 line.length === 2 ? 'gap-8' : 'gap-6'
               } flex-wrap`}>
                 {line.map((member, memberIndex) => (
-                <Card key={memberIndex} className="relative bg-card-gradient border-primary/10 hover:shadow-elegant hover-lift transition-all duration-300 w-full sm:w-80 group">
+                <Card key={memberIndex} className="relative bg-card-gradient border-primary/10 hover:shadow-elegant hover-lift transition-all duration-300 w-full sm:w-80 group h-full">
                   {/* Orange accent border on hover */}
                   <div className="absolute inset-0 bg-gradient-to-r from-orange-400 via-accent to-primary opacity-0 group-hover:opacity-20 rounded-lg transition-opacity duration-300"></div>
-                  <CardContent className="relative p-8 text-center">
+                  <CardContent className="relative p-8 text-center h-full flex flex-col">
                     <Avatar className="w-20 h-20 mx-auto mb-6 ring-2 ring-primary/20 group-hover:ring-orange-400/40 transition-all duration-300">
                       <AvatarImage 
                         src={getAvatarUrl(member.linkedin, member.name)}
@@ -333,14 +333,16 @@ const About = () => {
                     </Avatar>
                     <h3 className="text-xl font-semibold text-foreground mb-2">{member.name}</h3>
                     <p className="text-sm text-primary font-medium mb-4">{member.role}</p>
-                    <p className="text-muted-foreground text-sm mb-6">{member.description}</p>
+                    <p className="text-muted-foreground text-sm mb-6 flex-grow">{member.description}</p>
                     {member.linkedin !== "#" && (
-                      <Button variant="outline" size="sm" className="border-orange-300 text-orange-600 hover:bg-orange-50 hover:border-orange-400 hover:text-orange-700 transition-all duration-300" asChild>
-                        <a href={member.linkedin} target="_blank" rel="noopener noreferrer">
-                          <Linkedin className="h-4 w-4 mr-2" />
-                          LinkedIn
-                        </a>
-                      </Button>
+                      <div className="mt-auto">
+                        <Button variant="outline" size="sm" className="border-orange-300 text-orange-600 hover:bg-orange-50 hover:border-orange-400 hover:text-orange-700 transition-all duration-300" asChild>
+                          <a href={member.linkedin} target="_blank" rel="noopener noreferrer">
+                            <Linkedin className="h-4 w-4 mr-2" />
+                            LinkedIn
+                          </a>
+                        </Button>
+                      </div>
                     )}
                   </CardContent>
                 </Card>
