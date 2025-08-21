@@ -327,7 +327,7 @@ const About = () => {
                         alt={`${member.name} profile picture`}
                         className="object-cover"
                       />
-                      <AvatarFallback className="bg-gradient-to-br from-orange-100 to-primary/10 text-primary font-semibold text-lg group-hover:from-orange-200 group-hover:to-orange-100 group-hover:text-orange-500 transition-colors duration-300">
+                      <AvatarFallback className="bg-gradient-to-br from-primary/10 to-accent/10 text-black font-semibold text-lg group-hover:from-primary/20 group-hover:to-accent/20 transition-colors duration-300">
                         {getInitials(member.name)}
                       </AvatarFallback>
                     </Avatar>
