@@ -55,7 +55,7 @@ const About = () => {
   ];
 
   const teamLines = [
-    // Executive Leadership: Top 4
+    // Founders
     [
       {
         name: "Saad Kashif",
@@ -68,7 +68,10 @@ const About = () => {
         role: "Founder & COO/CMO",
         description: "Overseeing operational excellence and growth while driving marketing initiatives for Xenora's AI solutions.",
         linkedin: "https://www.linkedin.com/in/gavin-m-4a8718274/"
-      },
+      }
+    ],
+    // Senior Leadership
+    [
       {
         name: "Yacine Eldjidel",
         role: "CTO / DevOps Engineer",
@@ -80,16 +83,16 @@ const About = () => {
         role: "Chief Financial Officer (CFO)",
         description: "Managing XenoraAI's financial strategy, investor relations, and business development to drive sustainable growth and market expansion.",
         linkedin: "#"
-      }
-    ],
-    // Core Team
-    [
+      },
       {
         name: "Sila Ben Khelifa",
         role: "Chief Software Architect",
         description: "Orchestrating XenoraAI's digital transformation through strategic IT leadership, secure data ecosystems, and technology roadmap alignment.",
         linkedin: "https://www.linkedin.com/in/sila-bk-8553692b2/"
-      },
+      }
+    ],
+    // Core Team
+    [
       {
         name: "Yassen Hegazy",
         role: "AI Director",
