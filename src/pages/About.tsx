@@ -313,11 +313,11 @@ const About = () => {
             }`}
           >
             {teamLines.map((line, lineIndex) => (
-              <div key={lineIndex} className={`flex justify-center ${
-                line.length === 2 ? 'gap-8' : 'gap-6'
-              } flex-wrap`}>
+              <div key={lineIndex} className={`grid ${
+                line.length === 2 ? 'grid-cols-1 md:grid-cols-2 gap-8' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+              } justify-items-center max-w-6xl mx-auto`}>
                 {line.map((member, memberIndex) => (
-                <Card key={memberIndex} className="relative bg-card-gradient border-primary/10 hover:shadow-elegant hover-lift transition-all duration-300 w-full sm:w-80 group h-full">
+                <Card key={memberIndex} className="relative bg-card-gradient border-primary/10 hover:shadow-elegant hover-lift transition-all duration-300 w-full max-w-80 group h-full">
                   {/* Orange accent border on hover */}
                   <div className="absolute inset-0 bg-gradient-to-r from-orange-400 via-accent to-primary opacity-0 group-hover:opacity-20 rounded-lg transition-opacity duration-300"></div>
                   <CardContent className="relative p-8 text-center h-full flex flex-col">
