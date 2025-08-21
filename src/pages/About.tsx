@@ -55,13 +55,17 @@ const About = () => {
   ];
 
   const teamLines = [
+    // Executive Leadership Row 1: CEO
     [
       {
         name: "Saad Kashif",
         role: "Founder & CEO",
         description: "Leading XenoraAI's vision and strategy while enhancing AI research in Machine Learning and Neural Network Applications.",
         linkedin: "https://www.linkedin.com/in/saad-kashif/"
-      },
+      }
+    ],
+    // Executive Leadership Row 2: COO/CMO
+    [
       {
         name: "Gavin Martin",
         role: "Founder & COO/CMO",
@@ -69,6 +73,7 @@ const About = () => {
         linkedin: "https://www.linkedin.com/in/gavin-m-4a8718274/"
       }
     ],
+    // C-Suite Row: CTO and CFO
     [
       {
         name: "Yacine Eldjidel",
@@ -76,6 +81,15 @@ const About = () => {
         description: "Architecting XenoraAI's technical infrastructure while tackling breakthroughs in NLP, Computer Vision, and AI systems deployment.",
         linkedin: "https://www.linkedin.com/in/yacine-eldjidel-b1838a32a/"
       },
+      {
+        name: "Luna",
+        role: "CFO",
+        description: "Managing XenoraAI's financial strategy, investor relations, and business development to drive sustainable growth and market expansion.",
+        linkedin: "#"
+      }
+    ],
+    // Senior Team
+    [
       {
         name: "Sila Ben Khelifa",
         role: "Chief Software Architect",
@@ -87,15 +101,16 @@ const About = () => {
         role: "AI Director",
         description: "Developing and optimizing AI models for legal applications with focus on natural language processing and machine learning.",
         linkedin: "https://www.linkedin.com/in/yassen-hegazy-33aa28330/"
-      }
-    ],
-    [
+      },
       {
         name: "Ali Al-Dhaher",
         role: "Chief Security Officer (CSO)",
         description: "Leading XenoraAI's security strategy and ensuring comprehensive protection of client data, platform integrity, and regulatory compliance.",
         linkedin: "https://www.linkedin.com/in/alialdhaher/"
-      },
+      }
+    ],
+    // Core Team
+    [
       {
         name: "Jayden Nkeuze",
         role: "AI Research Engineer",
