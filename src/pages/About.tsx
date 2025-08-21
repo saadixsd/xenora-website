@@ -55,26 +55,20 @@ const About = () => {
   ];
 
   const teamLines = [
-    // Executive Leadership Row 1: CEO
+    // Executive Leadership: Top 4
     [
       {
         name: "Saad Kashif",
         role: "Founder & CEO",
         description: "Leading XenoraAI's vision and strategy while enhancing AI research in Machine Learning and Neural Network Applications.",
         linkedin: "https://www.linkedin.com/in/saad-kashif/"
-      }
-    ],
-    // Executive Leadership Row 2: COO/CMO
-    [
+      },
       {
         name: "Gavin Martin",
         role: "Founder & COO/CMO",
         description: "Overseeing operational excellence and growth while driving marketing initiatives for Xenora's AI solutions.",
         linkedin: "https://www.linkedin.com/in/gavin-m-4a8718274/"
-      }
-    ],
-    // C-Suite Row: CTO and CFO
-    [
+      },
       {
         name: "Yacine Eldjidel",
         role: "CTO / DevOps Engineer",
@@ -83,12 +77,12 @@ const About = () => {
       },
       {
         name: "Luna",
-        role: "CFO",
+        role: "Chief Financial Officer (CFO)",
         description: "Managing XenoraAI's financial strategy, investor relations, and business development to drive sustainable growth and market expansion.",
         linkedin: "#"
       }
     ],
-    // Senior Team
+    // Core Team
     [
       {
         name: "Sila Ben Khelifa",
@@ -107,10 +101,7 @@ const About = () => {
         role: "Chief Security Officer (CSO)",
         description: "Leading XenoraAI's security strategy and ensuring comprehensive protection of client data, platform integrity, and regulatory compliance.",
         linkedin: "https://www.linkedin.com/in/alialdhaher/"
-      }
-    ],
-    // Core Team
-    [
+      },
       {
         name: "Jayden Nkeuze",
         role: "AI Research Engineer",
