@@ -21,6 +21,9 @@ import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import CookiePolicy from "./pages/CookiePolicy";
 import TermsOfService from "./pages/TermsOfService";
+import ForCanadians from "./pages/ForCanadians";
+import DocumentExplainer from "./pages/DocumentExplainer";
+import InvestorHub from "./pages/InvestorHub";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +48,9 @@ const App = () => (
                 <Route path="/pricing" element={<Pricing />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/for-canadians" element={<ForCanadians />} />
+                <Route path="/document-explainer" element={<DocumentExplainer />} />
+                <Route path="/investor-hub" element={<InvestorHub />} />
                 <Route path="/privacy" element={<PrivacyPolicy />} />
                 <Route path="/cookies" element={<CookiePolicy />} />
                 <Route path="/terms" element={<TermsOfService />} />

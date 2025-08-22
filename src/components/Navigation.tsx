@@ -40,9 +40,11 @@ const Navigation = () => {
 
   const navItems = [
     { name: t('navigation.home'), path: "/" },
-    { name: t('navigation.models'), path: "/models" },
+    { name: "For Canadians", path: "/for-canadians" },
+    { name: "Document AI", path: "/document-explainer" },
     { name: t('navigation.pricing'), path: "/pricing" },
     { name: t('navigation.about'), path: "/about" },
+    { name: "Investors", path: "/investor-hub" },
     { name: t('navigation.contact'), path: "/contact" },
   ];
 
