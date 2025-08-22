@@ -12,8 +12,8 @@ const LanguageToggle = () => {
   const { i18n } = useTranslation();
 
   const languages = [
-    { code: 'en', name: 'English', flag: '🇨🇦' },
-    { code: 'fr', name: 'Français', flag: '🇨🇦' }
+    { code: 'en', name: 'English', flag: '🍁' },
+    { code: 'fr', name: 'Français', flag: '🍁' }
   ];
 
   const handleLanguageChange = (languageCode: string) => {

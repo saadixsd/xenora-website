@@ -159,7 +159,7 @@ const ForCanadians = () => {
           <div className="text-center space-y-8">
             <Badge variant="outline" className="w-fit border-primary/20 text-primary hover-scale">
               <MapPin className="h-4 w-4 mr-2" />
-              <span className="text-lg font-medium">🇨🇦 Your Rights, Your Province</span>
+              <span className="text-lg font-medium">Your Rights, Your Province</span>
             </Badge>
             
             <div className="space-y-4">
@@ -386,7 +386,7 @@ const ForCanadians = () => {
               {/* Visual representation of Canada */}
               <div className="relative bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-8 h-96 flex items-center justify-center">
                 <div className="text-center space-y-4">
-                  <div className="text-6xl mb-4">🇨🇦</div>
+                  <div className="text-6xl mb-4">🍁</div>
                   <h3 className="text-2xl font-bold text-foreground">Built for Canada</h3>
                   <p className="text-muted-foreground">From coast to coast to coast</p>
                   <div className="flex flex-wrap justify-center gap-2 mt-6">

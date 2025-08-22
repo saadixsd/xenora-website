@@ -135,7 +135,7 @@ const Home = () => {
             <div className="space-y-8 animate-swoosh-in">
               <Badge variant="outline" className="w-fit border-primary/20 text-primary hover-scale mt-16 sm:mt-8 md:mt-0">
                 <MapPin className="h-4 w-4 mr-2" />
-                <span className="text-lg font-medium">🇨🇦 Made for Canadians</span>
+                <span className="text-lg font-medium">Made for Canadians</span>
               </Badge>
               
               <div className="space-y-4">
@@ -165,9 +165,6 @@ const Home = () => {
                 </Button>
               </div>
 
-              <div className="pt-4 text-sm text-muted-foreground">
-                <p>🔒 Privacy-first • 🇨🇦 Canadian-hosted • ⚡ Free to start</p>
-              </div>
             </div>
 
             {/* Enhanced logo/visual element */}
