@@ -147,35 +147,13 @@ const Pricing = () => {
             <Sparkles className="h-4 w-4 mr-2" />
             <span className="text-base sm:text-lg font-medium">Flexible Pricing Plans</span>
           </Badge>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-8 animate-fade-in-up">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-12 animate-fade-in-up">
             Choose Your
             <br />
             <span className="bg-primary-gradient bg-clip-text text-transparent">
               XenoraAI Plan
             </span>
           </h1>
-          
-          {/* 7-Day Trial Notice */}
-          <div className="bg-card border border-border rounded-xl p-4 sm:p-6 max-w-2xl mx-auto mb-6">
-            <div className="text-center mb-3">
-              <h3 className="text-xl sm:text-2xl font-semibold text-foreground">7-Day Free Trial</h3>
-            </div>
-            <p className="text-sm sm:text-lg text-muted-foreground mb-4 leading-relaxed">
-              Experience the full power of XenoraAI risk-free! <br />
-              Unlimited access to all features for a complete week.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 text-center mb-3">
-              <Badge variant="outline" className="text-xs sm:text-sm font-medium bg-primary/10 border-primary/30 text-primary">
-                ✓ Credit Card Required
-              </Badge>
-              <Badge variant="outline" className="text-xs sm:text-sm font-medium bg-accent/10 border-accent/30 text-accent">
-                ✓ Cancel Anytime
-              </Badge>
-            </div>
-            <p className="text-xs sm:text-sm text-muted-foreground">
-              Credit card required, but only charged after 7-day free trial
-            </p>
-          </div>
         </div>
       </section>
 
@@ -225,9 +203,14 @@ const Pricing = () => {
                     <CardHeader className="text-center pb-8">
                       <div className="space-y-4">
                         <CardTitle className="text-3xl font-bold text-foreground">{plan.name}</CardTitle>
-                        <div className="flex items-baseline justify-center space-x-2">
-                          <span className="text-6xl font-bold text-primary">{plan.price}</span>
-                          <span className="text-xl text-muted-foreground">{plan.period}</span>
+                        <div className="space-y-2">
+                          <div className="flex items-baseline justify-center space-x-2">
+                            <span className="text-6xl font-bold text-primary">{plan.price}</span>
+                            <span className="text-xl text-muted-foreground">{plan.period}</span>
+                          </div>
+                          {plan.name !== "Free Plan" && (
+                            <p className="text-sm text-muted-foreground font-medium">(7 days Free)</p>
+                          )}
                         </div>
                         <CardDescription className="text-lg text-muted-foreground leading-relaxed">
                           {plan.description}
