@@ -135,12 +135,12 @@ const Home = () => {
             <div className="space-y-8 animate-swoosh-in">
               <Badge variant="outline" className="w-fit border-primary/20 text-primary hover-scale mt-16 sm:mt-8 md:mt-0">
                 <MapPin className="h-4 w-4 mr-2" />
-                <span className="text-lg font-medium">Made for Canadians</span>
+                <span className="text-lg font-medium">Legal Solutions & Automation</span>
               </Badge>
               
               <div className="space-y-4">
                 <h1 className="text-5xl lg:text-6xl font-bold text-foreground leading-tight pt-4 sm:pt-0">
-                  Every Canadian
+                  Everyone
                   <br />
                   Deserves to
                   <br />
@@ -149,19 +149,21 @@ const Home = () => {
                   </span>
                 </h1>
                 <p className="text-2xl text-muted-foreground max-w-lg">
-                  From Montreal to Vancouver, we're making legal knowledge accessible to everyone. No law degree required.
+                  From Montreal to Vancouver, we're making legal knowledge accessible to everyone.
+                  <br />
+                  No law degree required.
                 </p>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" asChild className="bg-primary-gradient hover:shadow-glow transition-all duration-300 text-white font-semibold border-0">
-                  <Link to="/for-canadians">
-                    Find Your Rights
+                  <Link to="/nora">
+                    Try Nora
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
                 <Button size="lg" variant="outline" asChild className="border-gray-300 bg-white text-black hover:bg-gray-100 hover:text-black font-medium">
-                  <Link to="/document-explainer">Try Document Explainer</Link>
+                  <Link to="/pricing">Explore Solutions</Link>
                 </Button>
               </div>
 
@@ -187,14 +189,23 @@ const Home = () => {
                     </linearGradient>
                   </defs>
                   
-                  {/* Connection lines representing legal networks */}
+                  {/* Enhanced connection lines representing legal networks */}
                   <line x1="80" y1="100" x2="200" y2="150" stroke="url(#canadianGradient)" strokeWidth="1" className="animate-pulse" />
                   <line x1="320" y1="120" x2="200" y2="180" stroke="url(#canadianGradient)" strokeWidth="1" className="animate-pulse delay-300" />
                   <line x1="120" y1="280" x2="200" y2="220" stroke="url(#canadianGradient)" strokeWidth="1" className="animate-pulse delay-500" />
                   <line x1="280" y1="300" x2="200" y2="240" stroke="url(#canadianGradient)" strokeWidth="1" className="animate-pulse delay-700" />
+                  <line x1="160" y1="80" x2="200" y2="120" stroke="url(#canadianGradient)" strokeWidth="1" className="animate-pulse delay-200" />
+                  <line x1="240" y1="80" x2="200" y2="120" stroke="url(#canadianGradient)" strokeWidth="1" className="animate-pulse delay-600" />
+                  <line x1="100" y1="200" x2="150" y2="200" stroke="url(#canadianGradient)" strokeWidth="1" className="animate-pulse delay-400" />
+                  <line x1="250" y1="200" x2="300" y2="200" stroke="url(#canadianGradient)" strokeWidth="1" className="animate-pulse delay-800" />
+                  <line x1="200" y1="260" x2="200" y2="320" stroke="url(#canadianGradient)" strokeWidth="1" className="animate-pulse delay-100" />
+                  <line x1="140" y1="160" x2="180" y2="180" stroke="url(#canadianGradient)" strokeWidth="0.8" className="animate-pulse delay-350" />
+                  <line x1="260" y1="160" x2="220" y2="180" stroke="url(#canadianGradient)" strokeWidth="0.8" className="animate-pulse delay-750" />
+                  <line x1="180" y1="240" x2="140" y2="260" stroke="url(#canadianGradient)" strokeWidth="0.8" className="animate-pulse delay-550" />
+                  <line x1="220" y1="240" x2="260" y2="260" stroke="url(#canadianGradient)" strokeWidth="0.8" className="animate-pulse delay-650" />
                 </svg>
                 
-                {/* Network nodes with Canadian legal concepts */}
+                {/* Network nodes with legal concepts */}
                 <div className="absolute top-[25%] left-[20%] flex items-center">
                   <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse shadow-lg shadow-red-500/50" />
                   <span className="ml-2 text-xs font-medium text-red-600/80">Rights</span>
@@ -210,6 +221,23 @@ const Home = () => {
                 <div className="absolute bottom-[25%] right-[30%] flex items-center justify-end">
                   <span className="mr-2 text-xs font-medium text-primary/70">Knowledge</span>
                   <div className="w-2 h-2 bg-primary/90 rounded-full animate-pulse delay-700 shadow-lg shadow-primary/40" />
+                </div>
+                {/* Additional nodes for richer network */}
+                <div className="absolute top-[20%] left-[40%] flex items-center">
+                  <div className="w-2 h-2 bg-accent/80 rounded-full animate-pulse delay-200 shadow-lg shadow-accent/30" />
+                  <span className="ml-1 text-xs font-medium text-accent/70">Legal AI</span>
+                </div>
+                <div className="absolute top-[60%] right-[40%] flex items-center justify-end">
+                  <span className="mr-1 text-xs font-medium text-accent/60">Solutions</span>
+                  <div className="w-2.5 h-2.5 bg-accent/70 rounded-full animate-pulse delay-600 shadow-lg shadow-accent/25" />
+                </div>
+                <div className="absolute top-[45%] left-[15%] flex items-center">
+                  <div className="w-1.5 h-1.5 bg-primary/60 rounded-full animate-pulse delay-400 shadow-lg shadow-primary/20" />
+                  <span className="ml-1 text-xs font-medium text-primary/60">Automation</span>
+                </div>
+                <div className="absolute top-[55%] right-[15%] flex items-center justify-end">
+                  <span className="mr-1 text-xs font-medium text-red-500/60">Analysis</span>
+                  <div className="w-1.5 h-1.5 bg-red-500/60 rounded-full animate-pulse delay-800 shadow-lg shadow-red-500/20" />
                 </div>
               </div>
               
@@ -280,8 +308,8 @@ const Home = () => {
 
           <div className="text-center mt-16">
             <Button size="lg" asChild className="bg-primary-gradient hover:shadow-glow transition-all duration-300 text-white font-semibold border-0">
-              <Link to="/for-canadians">
-                Explore All Legal Areas
+              <Link to="/nora">
+                Try Nora
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
@@ -410,7 +438,7 @@ const Home = () => {
 
             <div className={`flex flex-col sm:flex-row gap-6 justify-center items-center transform transition-all duration-1000 delay-400 ${ctaRef.isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
               <Button size="lg" variant="outline" asChild className="bg-white text-primary border-white hover:bg-gray-100 hover:text-primary font-semibold">
-                <Link to="/for-canadians">Start For Free</Link>
+                <Link to="/nora">Start For Free</Link>
               </Button>
               <Button size="lg" variant="ghost" asChild className="glass-button text-white border-white/20 hover:bg-white/10">
                 <Link to="/contact">Talk to Our Team</Link>
