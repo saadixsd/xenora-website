@@ -127,8 +127,7 @@ const Pricing = () => {
             "Email support",
             "Non-commercial use only"
           ],
-          cta: "Student Plan",
-          highlight: "Less than Netflix!"
+          cta: "Student Plan"
         }
       ]
     }
