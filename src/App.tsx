@@ -21,7 +21,6 @@ import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import CookiePolicy from "./pages/CookiePolicy";
 import TermsOfService from "./pages/TermsOfService";
-import DocumentExplainer from "./pages/DocumentExplainer";
 
 const queryClient = new QueryClient();
 
@@ -46,7 +45,6 @@ const App = () => (
                 <Route path="/pricing" element={<Pricing />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/document-explainer" element={<DocumentExplainer />} />
                 <Route path="/privacy" element={<PrivacyPolicy />} />
                 <Route path="/cookies" element={<CookiePolicy />} />
                 <Route path="/terms" element={<TermsOfService />} />
