@@ -25,9 +25,25 @@ const Pricing = () => {
   const faqRef = useScrollAnimation();
   const userTypes = [
     {
-      name: "Lawyers",
-      description: "Licensed legal professionals and law firms",
+      name: "Professional & Business",
+      description: "Lawyers, paralegals, legal assistants, and businesses",
       plans: [
+        {
+          name: "Nora AI Pro",
+          price: "$60",
+          period: "/month",
+          description: "AI Legal Assistant for professionals", 
+          features: [
+            "Legal research queries",
+            "Document analysis",
+            "Basic case law access",
+            "Contract review assistance", 
+            "Standard support",
+            "Professional templates",
+            "Collaboration tools"
+          ],
+          cta: "Start Pro Plan"
+        },
         {
           name: "Nora AI",
           price: "$150",
@@ -46,77 +62,56 @@ const Pricing = () => {
         },
         {
           name: "Halo Suite",
-          price: "$120", 
-          period: "/month",
-          description: "Complete legal practice management",
+          price: "$230",
+          period: "/month", 
+          description: "Complete AI-powered legal solution with practice management",
           features: [
+            "Everything in Nora AI",
             "Case management system",
             "Client portal access", 
             "Document vault",
             "Smart calendar & scheduling",
             "Billing & invoicing",
-            "1 free sub-user included",
-            "Priority support"
-          ],
-          cta: "Choose Halo"
-        },
-        {
-          name: "Bundle Package",
-          price: "$230",
-          period: "/month", 
-          description: "Complete AI-powered legal solution",
-          features: [
-            "Everything in Nora AI",
-            "Everything in Halo Suite",
-            "Unified dashboard access",
             "2 free sub-users included",
             "Premium support",
-            "Custom integrations",
-            "Advanced analytics"
+            "Custom integrations"
           ],
           popular: true,
-          cta: "Get Bundle",
+          cta: "Get Halo Suite",
           highlight: "Best Value"
         }
       ]
     },
     {
-      name: "Non-Lawyer Professionals",
-      description: "Paralegals, legal assistants, and other professionals",
+      name: "General Public",
+      description: "Everyone deserves access to legal guidance",
       plans: [
         {
-          name: "Free Plan",
-          price: "$0",
+          name: "Nora Basic",
+          price: "$9.99",
           period: "/month",
-          description: "Get started with basic legal AI", 
+          description: "Legal AI assistant for everyday needs", 
           features: [
-            "Basic legal research access",
-            "Document analysis for up to 10 documents",
-            "Educational case law access",
-            "Standard support",
-            "Non-commercial use only"
+            "Basic legal research",
+            "Document analysis (up to 20 docs/month)",
+            "Legal question assistance",
+            "Contract review basics", 
+            "Email support",
+            "Legal templates access",
+            "Plain language explanations"
           ],
-          cta: "Start Free"
-        },
-        {
-          name: "Nora AI Pro",
-          price: "$60",
-          period: "/month",
-          description: "AI Legal Assistant for professionals", 
-          features: [
-            "Legal research queries",
-            "Document analysis",
-            "Basic case law access",
-            "Contract review assistance", 
-            "Standard support",
-            "Professional templates",
-            "Collaboration tools"
-          ],
-          cta: "Start Pro Plan"
-        },
+          cta: "Start Basic Plan",
+          highlight: "Most Popular"
+        }
+      ]
+    },
+    {
+      name: "Students",
+      description: "Educational access for law students and researchers",
+      plans: [
         {
           name: "Nora Student",
-          price: "$8.99", 
+          price: "$4.99", 
           period: "/month",
           description: "Limited access for educational use only",
           features: [
