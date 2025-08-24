@@ -1,10 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
 import { 
-  Bot, 
   Shield, 
   Clock, 
   FileText, 
@@ -13,14 +11,17 @@ import {
   Languages,
   CheckCircle, 
   ArrowRight,
-  Sparkles,
   Zap,
   Globe,
   Users,
-  Database
+  Database,
+  BookOpen,
+  Gavel,
+  Building
 } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useTranslation } from 'react-i18next';
+import NoraDemo from "@/components/NoraDemo";
 
 const Nora = () => {
   const heroRef = useScrollAnimation();
@@ -42,28 +43,28 @@ const Nora = () => {
 
   const useCases = [
     {
-      icon: Search,
-      title: "Legal Research",
-      description: "Nora delivers precise answers to complex legal queries with citations from Canadian case law, saving hours of manual research.",
-      highlight: "Save 80% research time"
+      icon: Gavel,
+      title: "Legal Research & Analysis",
+      description: "Instantly research Canadian case law, statutes, and regulations with precise citations and contextual analysis across federal and provincial jurisdictions.",
+      highlight: "10M+ legal documents"
     },
     {
       icon: FileText,
-      title: "Document Analysis",
-      description: "Nora parses contracts and legal documents, extracting key clauses and summarizing content for quick review.",
-      highlight: "Instant clause extraction"
+      title: "Contract Intelligence",
+      description: "Advanced document analysis for contracts, agreements, and legal instruments with clause extraction and risk assessment capabilities.",
+      highlight: "99% accuracy rate"
     },
     {
-      icon: Zap,
-      title: "Task Automation",
-      description: "Nora automates repetitive tasks like meeting note summarization and deadline reminders, boosting efficiency.",
-      highlight: "Boost productivity 3x"
+      icon: Building,
+      title: "Corporate Compliance",
+      description: "Navigate complex regulatory frameworks across Canadian provinces with real-time compliance monitoring and advisory services.",
+      highlight: "Multi-jurisdictional expertise"
     },
     {
-      icon: Users,
-      title: "Client Communication",
-      description: "Generate clear, accessible explanations of legal concepts for clients, improving understanding and satisfaction.",
-      highlight: "Enhanced client experience"
+      icon: BookOpen,
+      title: "Legal Education",
+      description: "Comprehensive explanations of Canadian legal principles, procedures, and precedents for professionals and students alike.",
+      highlight: "Bilingual EN/FR support"
     }
   ];
 
@@ -116,23 +117,31 @@ const Nora = () => {
         >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8 animate-swoosh-in">
-              <Badge variant="outline" className="w-fit hover-scale">
-                <Bot className="h-3 w-3 mr-1" />
-                AI Legal Assistant
+              <Badge variant="outline" className="w-fit hover-scale bg-primary/10 border-primary/30">
+                <Scale className="h-3 w-3 mr-1 text-primary" />
+                Canadian Legal AI
               </Badge>
               
-              <div className="space-y-4">
-                <h1 className="text-5xl lg:text-6xl font-bold text-foreground leading-tight animate-fade-in-up">
-                  Meet
+              <div className="space-y-6">
+                <h1 className="text-5xl lg:text-7xl font-bold text-foreground leading-tight animate-fade-in-up">
+                  <span className="bg-primary-gradient bg-clip-text text-transparent">Nora</span>
                   <br />
-                  <span className="bg-primary-gradient bg-clip-text text-transparent">
-                    Nora
-                  </span>
+                  <span className="text-3xl lg:text-4xl font-normal text-muted-foreground">Legal Intelligence</span>
                 </h1>
-                <p className="text-xl text-muted-foreground">
-                  Canada's smartest legal AI assistant, powering intelligent legal research, 
-                  document analysis, and task automation for legal professionals.
+                <p className="text-xl lg:text-2xl text-muted-foreground max-w-2xl">
+                  Advanced AI legal assistant specializing in Canadian federal and provincial law. 
+                  Empowering lawyers, firms, and legal professionals with instant access to comprehensive legal knowledge.
                 </p>
+                <div className="flex items-center space-x-6 text-sm text-muted-foreground">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                    <span>Live AI Powered</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+                    <span>Canadian Law Specialized</span>
+                  </div>
+                </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
@@ -148,29 +157,10 @@ const Nora = () => {
               </div>
             </div>
 
-            {/* Feature Preview */}
-            <Card className="bg-card-gradient border-primary/10 shadow-primary hover-lift">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Bot className="h-5 w-5 text-primary" />
-                  <span>Nora AI Assistant</span>
-                </CardTitle>
-                <CardDescription>Demo Coming Soon</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="bg-accent/50 rounded-lg p-4">
-                  <p className="text-sm text-muted-foreground mb-2">Query:</p>
-                  <p className="font-medium">"What are the key elements of a valid contract in Quebec under the Civil Code?"</p>
-                </div>
-                <div className="bg-primary/5 rounded-lg p-4">
-                  <p className="text-sm text-muted-foreground mb-2">Nora's Response:</p>
-                  <p className="text-sm">In Quebec, a valid contract under the Civil Code requires: 1) Consent of the parties, 2) Capacity to contract, 3) Cause (object), 4) Lawful object...</p>
-                  <p className="text-xs text-primary mt-2">Source: Civil Code of Quebec, C.C.Q. Art. 1385</p>
-                </div>
-                <Progress value={85} className="h-2" />
-                <p className="text-xs text-muted-foreground">Response generated in 3.2 seconds</p>
-              </CardContent>
-            </Card>
+            {/* Live Demo Interface */}
+            <div className="lg:max-w-xl">
+              <NoraDemo />
+            </div>
           </div>
         </div>
       </section>
@@ -183,10 +173,10 @@ const Nora = () => {
         >
           <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-4xl font-bold text-foreground mb-4">
-              Nora Showcase
+              <span className="bg-primary-gradient bg-clip-text text-transparent">Advanced</span> Legal Capabilities
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Discover Nora's comprehensive capabilities designed specifically for Canadian legal professionals.
+              Comprehensive AI-powered tools designed specifically for Canadian legal practice, research, and compliance.
             </p>
           </div>
 
@@ -217,10 +207,10 @@ const Nora = () => {
         >
           <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-4xl font-bold text-foreground mb-4">
-              Nora Use Cases
+              Professional <span className="bg-primary-gradient bg-clip-text text-transparent">Applications</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Explore how Nora transforms legal workflows for various professionals in Canadian law firms.
+              Transforming legal practice across Canada with specialized AI solutions for law firms, corporate legal departments, and government agencies.
             </p>
           </div>
 
@@ -253,10 +243,10 @@ const Nora = () => {
         >
           <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-4xl font-bold text-foreground mb-4">
-              Nora Technical Specifications
+              <span className="bg-primary-gradient bg-clip-text text-transparent">Enterprise-Grade</span> Infrastructure
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Discover the robust architecture powering Nora's intelligent legal solutions.
+              Built on cutting-edge AI technology with robust security, compliance, and scalability for Canadian legal professionals.
             </p>
           </div>
 
@@ -287,9 +277,9 @@ const Nora = () => {
             </div>
             
             <div className="space-y-4">
-              <div className="text-4xl font-bold text-white">Starting at $60/month</div>
+              <div className="text-4xl font-bold text-white">Starting at $9.99/month</div>
               <p className="text-white/80">
-                Access Nora's full capabilities with our flexible subscription plans
+                Professional-grade Canadian legal AI accessible to firms of all sizes
               </p>
             </div>
 

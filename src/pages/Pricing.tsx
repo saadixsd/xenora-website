@@ -3,7 +3,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { 
-  Bot, 
   Building, 
   CheckCircle, 
   ArrowRight,
@@ -11,7 +10,8 @@ import {
   Users,
   Mail,
   Crown,
-  Zap
+  Zap,
+  Scale
 } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import ScheduleDemoButton from "@/components/ScheduleDemoButton";
@@ -114,14 +114,14 @@ const Pricing = () => {
           className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center scroll-animate ${heroRef.isVisible ? 'visible' : ''}`}
         >
           <Badge variant="outline" className="mb-6 hover-scale border-primary/30 bg-primary/5">
-            <Sparkles className="h-4 w-4 mr-2" />
+            <Scale className="h-4 w-4 mr-2" />
             <span className="text-base sm:text-lg font-medium">Flexible Pricing Plans</span>
           </Badge>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-12 animate-fade-in-up">
             Choose Your
             <br />
             <span className="bg-primary-gradient bg-clip-text text-transparent">
-              XenoraAI Plan
+              Nora Plan
             </span>
           </h1>
         </div>
@@ -237,7 +237,7 @@ const Pricing = () => {
               </div>
               <div>
                 <h3 className="font-semibold text-foreground mb-2">Is there a free trial?</h3>
-                <p className="text-muted-foreground text-sm">Yes, we offer a 7-day free trial for all plans so you can experience XenoraAI risk-free.</p>
+                <p className="text-muted-foreground text-sm">Yes, we offer a 7-day free trial for all plans so you can experience Nora risk-free.</p>
               </div>
               <div>
                 <h3 className="font-semibold text-foreground mb-2">What about data security?</h3>

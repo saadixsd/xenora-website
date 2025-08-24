@@ -1,1 +1,4 @@
 project_id = "llptbyudhuysxrgiofez"
+
+[functions.canadian-law-ai]
+verify_jwt = false
