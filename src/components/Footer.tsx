@@ -38,16 +38,6 @@ const Footer = () => {
                   Nora AI Assistant
                 </Link>
               </li>
-              <li>
-                <Link to="/halo" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Halo Legal Suite
-                </Link>
-              </li>
-              <li>
-                <Link to="/models" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  All Models
-                </Link>
-              </li>
             </ul>
           </div>
 

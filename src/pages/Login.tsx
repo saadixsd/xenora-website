@@ -25,7 +25,7 @@ const Login = () => {
       // Set authentication token to indicate user is logged in
       localStorage.setItem('userToken', 'fake-jwt-token');
       localStorage.setItem('userName', 'John');
-      navigate("/dashboard");
+      navigate("/nora");
     }, 2000);
   };
 
@@ -38,13 +38,12 @@ const Login = () => {
       // Set authentication token to indicate user is logged in
       localStorage.setItem('userToken', 'fake-jwt-token');
       localStorage.setItem('userName', 'John');
-      navigate("/dashboard");
+      navigate("/nora");
     }, 2000);
   };
 
   const features = [
     "Access to Nora AI Legal Assistant",
-    "Halo Legal Management Suite",
     "Canadian Case Law Database",
     "Bilingual Support (EN/FR)",
     "PIPEDA & SOC2 Compliant",
@@ -111,7 +110,7 @@ const Login = () => {
               <CardHeader className="text-center">
                 <CardTitle className="text-2xl font-bold">Get Started</CardTitle>
                 <CardDescription>
-                  Access Nora and Halo with your subscription
+                  Access Nora with your subscription
                 </CardDescription>
               </CardHeader>
               <CardContent>

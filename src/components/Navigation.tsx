@@ -40,7 +40,7 @@ const Navigation = () => {
 
   const navItems = [
     { name: t('navigation.home'), path: "/" },
-    { name: t('navigation.models'), path: "/models" },
+    { name: "Nora", path: "/nora" },
     { name: t('navigation.pricing'), path: "/pricing" },
     { name: t('navigation.about'), path: "/about" },
     { name: t('navigation.contact'), path: "/contact" },
@@ -84,9 +84,9 @@ const Navigation = () => {
             <DarkModeToggle />
             {isLoggedIn ? (
               <Button variant="ghost" asChild className="hover-scale">
-                <Link to="/dashboard">
+                <Link to="/nora">
                   <User className="h-4 w-4 mr-2" />
-                  Dashboard
+                  My Account
                 </Link>
               </Button>
             ) : (
@@ -140,9 +140,9 @@ const Navigation = () => {
                 <div className="pt-4 space-y-2">
                   {isLoggedIn ? (
                     <Button variant="ghost" className="w-full justify-start" asChild>
-                      <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
+                      <Link to="/nora" onClick={() => setIsMobileMenuOpen(false)}>
                         <User className="h-4 w-4 mr-2" />
-                        Dashboard
+                        My Account
                       </Link>
                     </Button>
                   ) : (

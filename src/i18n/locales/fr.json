@@ -50,7 +50,7 @@
     },
     "cta": {
       "title": "Transformez votre pratique juridique",
-      "description": "Accédez aux outils IA juridiques les plus avancés du Canada. Rejoignez la liste d'attente et soyez parmi les premiers à découvrir Nora et Halo.",
+      "description": "Accédez aux outils IA juridiques les plus avancés du Canada. Rejoignez la liste d'attente et soyez parmi les premiers à découvrir Nora.",
       "getStarted": "Commencer maintenant",
       "contactSales": "Contacter les ventes"
     }
@@ -126,49 +126,12 @@
       "button": "Explorer Nora IA",
       "status": "🚀 Démo bientôt disponible"
     },
-    "halo": {
-      "title": "Suite juridique Halo",
-      "badge": "🏢 Gestion complète de la pratique",
-      "description": "Le système d'exploitation juridique complet alimenté par l'IA, intégrant de manière transparente l'intelligence de Nora avec des outils complets de gestion de pratique, facturation et relations clients.",
-      "features": {
-        "title": "Fonctionnalités de la suite",
-        "case_management": "Système de gestion des dossiers et clients alimenté par Nora",
-        "document_vault": "Coffre-fort de documents sécurisé avec étiquetage et versioning",
-        "calendar": "Calendrier intelligent avec échéances juridiques et planification de tâches",
-        "billing": "Facturation avec suivi automatisé du temps",
-        "client_portal": "Portail client pour rendez-vous et accès aux factures",
-        "integration": "Intégration avec Google Drive et Office365",
-        "access_control": "Contrôles d'accès basés sur les rôles pour la gestion d'équipe"
-      },
-      "button": "Découvrir la suite Halo",
-      "status": "🗓️ Lancement en août 2025"
-    },
     "useCases": {
       "title": "Applications concrètes",
-      "description": "Découvrez comment Nora et Halo transforment les flux de travail juridiques pour divers professionnels dans les cabinets d'avocats canadiens.",
-      "case_management": {
-        "title": "Gestion des dossiers",
-        "description": "Halo permet aux avocats de suivre les dossiers et clients avec des insights alimentés par Nora."
-      },
-      "billing": {
-        "title": "Facturation",
-        "description": "Le tableau de bord de facturation de Halo, alimenté par le suivi du temps de Nora, rationalise la facturation."
-      },
-      "scheduling": {
-        "title": "Planification intelligente",
-        "description": "Les parajuristes utilisent le calendrier de Halo avec l'automatisation des tâches de Nora pour une planification efficace."
-      },
-      "client_portal": {
-        "title": "Portail client",
-        "description": "Les clients accèdent aux factures et prennent rendez-vous en toute sécurité via le portail de Halo."
-      },
+      "description": "Découvrez comment Nora transforme les flux de travail juridiques pour divers professionnels dans les cabinets d'avocats canadiens.",
       "document_analysis": {
         "title": "Analyse de documents",
         "description": "Nora analyse les contrats et documents juridiques, extrayant les clauses clés et résumant le contenu."
-      },
-      "collaboration": {
-        "title": "Collaboration d'équipe",
-        "description": "Les contrôles d'accès basés sur les rôles de Halo permettent une collaboration d'équipe sécurisée."
       }
     },
     "technical": {
@@ -193,7 +156,7 @@
     },
     "cta": {
       "title": "Prêt à découvrir l'avenir de l'IA juridique?",
-      "description": "Rejoignez la liste d'attente et soyez parmi les premiers à accéder à Nora et Halo lors de leur lancement.",
+      "description": "Rejoignez la liste d'attente et soyez parmi les premiers à accéder à Nora lors de son lancement.",
       "waitlist": "Rejoindre la liste d'attente",
       "demo": "Planifier une démo"
     }
@@ -247,7 +210,7 @@
     },
     "waitlist": {
       "title": "Rejoignez notre liste d'attente",
-      "description": "Intéressé par nos modèles Nora ou Halo? Soyez parmi les premiers à découvrir nos dernières innovations IA.",
+      "description": "Intéressé par notre IA Nora? Soyez parmi les premiers à découvrir nos dernières innovations IA.",
       "button": "Rejoindre la liste d'attente maintenant"
     },
     "faq": {
@@ -311,7 +274,6 @@
         "description": "Solutions sur mesure pour les grandes firmes et organisations",
         "features": [
           "Tout ce qui est inclus dans Professionnel",
-          "Accès à la suite juridique Halo",
           "Gestionnaire de compte dédié",
           "Formation IA personnalisée",
           "Garanties SLA",
@@ -344,28 +306,6 @@
       "drafting": {
         "title": "Rédaction juridique",
         "description": "Création de documents assistée par IA et génération de modèles"
-      }
-    }
-  },
-  "halo": {
-    "hero": {
-      "badge": "Présentation de Halo",
-      "title": "Gestion complète de pratique juridique",
-      "description": "Suite intégrée combinant l'IA de Nora avec des outils complets de gestion de pratique."
-    },
-    "features": {
-      "title": "Solution juridique tout-en-un",
-      "case": {
-        "title": "Gestion de dossiers",
-        "description": "Suivez les dossiers, échéances et communications clients"
-      },
-      "billing": {
-        "title": "Facturation intelligente",
-        "description": "Suivi automatisé du temps et génération de factures"
-      },
-      "client": {
-        "title": "Portail client",
-        "description": "Accès sécurisé des clients aux documents et mises à jour"
       }
     }
   },

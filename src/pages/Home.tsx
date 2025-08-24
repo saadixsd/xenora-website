@@ -114,8 +114,8 @@ const Home = () => {
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" asChild className="bg-primary-gradient hover:shadow-glow transition-all duration-300 text-white font-semibold border-0">
-                  <Link to="/models">
-                    {t('home.hero.explore')}
+                  <Link to="/nora">
+                    Try Nora
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>

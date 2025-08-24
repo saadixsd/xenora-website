@@ -50,7 +50,7 @@
     },
     "cta": {
       "title": "Transform Your Legal Practice",
-      "description": "Access Canada's most advanced legal AI tools. Join the waitlist and be among the first to experience Nora and Halo.",
+      "description": "Access Canada's most advanced legal AI tools. Join the waitlist and be among the first to experience Nora.",
       "getStarted": "Get Started Now",
       "contactSales": "Contact Sales"
     }
@@ -126,49 +126,12 @@
       "button": "Explore Nora AI",
       "status": "🚀 Demo Coming Soon"
     },
-    "halo": {
-      "title": "Halo Legal Suite",
-      "badge": "🏢 Complete Practice Management",
-      "description": "The complete AI-powered legal operating system, seamlessly integrating Nora's intelligence with comprehensive practice management, billing, and client relationship tools.",
-      "features": {
-        "title": "Suite Features",
-        "case_management": "Case and client management system powered by Nora",
-        "document_vault": "Secure document vault with tagging and versioning",
-        "calendar": "Smart calendar with legal deadlines and task scheduling",
-        "billing": "Billing and invoicing with automated time tracking",
-        "client_portal": "Client portal for appointments and invoice access",
-        "integration": "Integration with Google Drive and Office365",
-        "access_control": "Role-based access controls for team management"
-      },
-      "button": "Discover Halo Suite",
-      "status": "🗓️ Launching August 2025"
-    },
     "useCases": {
       "title": "Real-World Applications",
-      "description": "Discover how Nora and Halo transform legal workflows for various professionals in Canadian law firms.",
-      "case_management": {
-        "title": "Case Management",
-        "description": "Halo enables lawyers to track cases and clients with Nora-powered insights."
-      },
-      "billing": {
-        "title": "Billing & Invoicing",
-        "description": "Halo's billing dashboard, powered by Nora's time tracking, streamlines invoicing."
-      },
-      "scheduling": {
-        "title": "Smart Scheduling",
-        "description": "Paralegals use Halo's calendar with Nora's task automation for efficient scheduling."
-      },
-      "client_portal": {
-        "title": "Client Portal",
-        "description": "Clients access invoices and book appointments securely via Halo's portal."
-      },
+      "description": "Discover how Nora transforms legal workflows for various professionals in Canadian law firms.",
       "document_analysis": {
         "title": "Document Analysis",
         "description": "Nora parses contracts and legal documents, extracting key clauses and summarizing content."
-      },
-      "collaboration": {
-        "title": "Team Collaboration",
-        "description": "Halo's role-based access controls enable secure team collaboration."
       }
     },
     "technical": {
@@ -193,7 +156,7 @@
     },
     "cta": {
       "title": "Ready to Experience the Future of Legal AI?",
-      "description": "Join the waitlist and be among the first to access Nora and Halo when they launch.",
+      "description": "Join the waitlist and be among the first to access Nora when it launches.",
       "waitlist": "Join Waitlist",
       "demo": "Schedule Demo"
     }
@@ -247,7 +210,7 @@
     },
     "waitlist": {
       "title": "Join Our Waitlist",
-      "description": "Interested in our Nora or Halo models? Be among the first to experience our latest AI innovations.",
+      "description": "Interested in our Nora AI? Be among the first to experience our latest AI innovations.",
       "button": "Join Waitlist Now"
     },
     "faq": {
@@ -311,7 +274,6 @@
         "description": "Tailored solutions for large firms and organizations",
         "features": [
           "Everything in Professional",
-          "Halo Legal Suite access",
           "Dedicated account manager",
           "Custom AI training",
           "SLA guarantees",
@@ -344,28 +306,6 @@
       "drafting": {
         "title": "Legal Drafting",
         "description": "AI-assisted document creation and template generation"
-      }
-    }
-  },
-  "halo": {
-    "hero": {
-      "badge": "Introducing Halo",
-      "title": "Complete Legal Practice Management",
-      "description": "Integrated suite combining Nora's AI with comprehensive practice management tools."
-    },
-    "features": {
-      "title": "All-in-One Legal Solution",
-      "case": {
-        "title": "Case Management",
-        "description": "Track cases, deadlines, and client communications"
-      },
-      "billing": {
-        "title": "Smart Billing",
-        "description": "Automated time tracking and invoice generation"
-      },
-      "client": {
-        "title": "Client Portal",
-        "description": "Secure client access to documents and updates"
       }
     }
   },

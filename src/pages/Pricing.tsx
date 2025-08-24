@@ -25,6 +25,44 @@ const Pricing = () => {
   const faqRef = useScrollAnimation();
   const userTypes = [
     {
+      name: "General Public",
+      description: "Everyone deserves access to legal guidance",
+      plans: [
+        {
+          name: "Nora Basic",
+          price: "$9.99",
+          period: "/month",
+          description: "Legal AI assistant for everyday needs", 
+          features: [
+            "Basic legal research",
+            "Document analysis (up to 20 docs/month)",
+            "Legal question assistance",
+            "Contract review basics", 
+            "Email support",
+            "Legal templates access",
+            "Plain language explanations"
+          ],
+          cta: "Start Basic Plan",
+          highlight: "Most Popular"
+        },
+        {
+          name: "Nora Student",
+          price: "$4.99", 
+          period: "/month",
+          description: "Limited access for educational use only",
+          features: [
+            "Unlimited searches",
+            "Premium Document Analysis",
+            "Educational case law access",
+            "Study templates",
+            "Email support",
+            "Non-commercial use only"
+          ],
+          cta: "Student Plan"
+        }
+      ]
+    },
+    {
       name: "Professional & Business",
       description: "Lawyers, paralegals, legal assistants, and businesses",
       plans: [
@@ -58,71 +96,9 @@ const Pricing = () => {
             "1 free sub-user included",
             "Priority support"
           ],
-          cta: "Start with Nora"
-        },
-        {
-          name: "Halo Suite",
-          price: "$230",
-          period: "/month", 
-          description: "Complete AI-powered legal solution with practice management",
-          features: [
-            "Everything in Nora AI",
-            "Case management system",
-            "Client portal access", 
-            "Document vault",
-            "Smart calendar & scheduling",
-            "Billing & invoicing",
-            "2 free sub-users included",
-            "Premium support",
-            "Custom integrations"
-          ],
           popular: true,
-          cta: "Get Halo Suite",
+          cta: "Start with Nora",
           highlight: "Best Value"
-        }
-      ]
-    },
-    {
-      name: "General Public",
-      description: "Everyone deserves access to legal guidance",
-      plans: [
-        {
-          name: "Nora Basic",
-          price: "$9.99",
-          period: "/month",
-          description: "Legal AI assistant for everyday needs", 
-          features: [
-            "Basic legal research",
-            "Document analysis (up to 20 docs/month)",
-            "Legal question assistance",
-            "Contract review basics", 
-            "Email support",
-            "Legal templates access",
-            "Plain language explanations"
-          ],
-          cta: "Start Basic Plan",
-          highlight: "Most Popular"
-        }
-      ]
-    },
-    {
-      name: "Students",
-      description: "Educational access for law students and researchers",
-      plans: [
-        {
-          name: "Nora Student",
-          price: "$4.99", 
-          period: "/month",
-          description: "Limited access for educational use only",
-          features: [
-            "Unlimited searches",
-            "Premium Document Analysis",
-            "Educational case law access",
-            "Study templates",
-            "Email support",
-            "Non-commercial use only"
-          ],
-          cta: "Student Plan"
         }
       ]
     }

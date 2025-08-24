@@ -13,10 +13,8 @@ import Models from "./pages/Models";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Nora from "./pages/Nora";
-import Halo from "./pages/Halo";
 import Pricing from "./pages/Pricing";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import CookiePolicy from "./pages/CookiePolicy";
@@ -41,10 +39,8 @@ const App = () => (
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/nora" element={<Nora />} />
-                <Route path="/halo" element={<Halo />} />
                 <Route path="/pricing" element={<Pricing />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/privacy" element={<PrivacyPolicy />} />
                 <Route path="/cookies" element={<CookiePolicy />} />
                 <Route path="/terms" element={<TermsOfService />} />

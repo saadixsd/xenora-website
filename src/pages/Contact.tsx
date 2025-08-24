@@ -278,7 +278,7 @@ const Contact = () => {
                 <CardContent className="p-8 text-center text-white">
                   <h3 className="text-xl font-semibold mb-4">Join Our Waitlist</h3>
                   <p className="mb-6 text-white/90">
-                    Interested in our Nora or Halo models? Be among the first to experience 
+                    Interested in our Nora AI? Be among the first to experience 
                     our latest AI innovations.
                   </p>
                   <Button size="lg" className="border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white hover:shadow-lg hover:scale-105 transition-all duration-300">
