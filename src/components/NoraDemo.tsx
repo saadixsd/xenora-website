@@ -144,7 +144,7 @@ const NoraDemo = () => {
               <Textarea
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Ask Nora about Canadian law... (e.g., 'What are the requirements for a valid contract in Ontario?')"
+                placeholder="Type Your Message"
                 className="min-h-[120px] resize-none border-primary/20 focus:border-primary/40 text-sm leading-relaxed"
                 disabled={loading}
               />

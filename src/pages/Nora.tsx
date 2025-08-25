@@ -110,7 +110,7 @@ const Nora = () => {
   return (
     <div className="min-h-screen page-fade-in">
       {/* Header */}
-      <section className="section-padding bg-hero-gradient shadow-elegant">
+      <section className="pt-16 pb-8 bg-hero-gradient shadow-elegant">
         <div 
           ref={heroRef.ref}
           className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-animate ${heroRef.isVisible ? 'visible' : ''}`}
