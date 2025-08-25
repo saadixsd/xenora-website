@@ -97,10 +97,15 @@ const NoraDemo = () => {
           <CardDescription className="text-sm text-muted-foreground">
             Experience Canada's most advanced legal assistant
           </CardDescription>
-          <Badge variant="outline" className="w-fit mx-auto mt-2 text-xs">
-            <BookOpen className="h-3 w-3 mr-1" />
-            Live Demo
-          </Badge>
+          <div className="flex items-center justify-center gap-2 mt-2">
+            <Badge variant="outline" className="text-xs">
+              <BookOpen className="h-3 w-3 mr-1" />
+              Live Demo
+            </Badge>
+            <Badge variant="secondary" className="text-xs bg-primary/10 text-primary border-primary/30">
+              Beta Version
+            </Badge>
+          </div>
         </CardHeader>
 
         <CardContent className="space-y-6">
