@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Send, Scale, BookOpen, RefreshCw } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Loader2, Send, Scale, BookOpen, RefreshCw, User, GraduationCap, Briefcase, Gavel } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -16,7 +17,15 @@ const NoraDemo = () => {
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState<DemoResponse | null>(null);
   const [loading, setLoading] = useState(false);
+  const [userRole, setUserRole] = useState<string>('individual');
   const { toast } = useToast();
+
+  const userRoles = [
+    { value: 'individual', label: 'Individual', icon: User, description: 'Personal legal questions' },
+    { value: 'student', label: 'Student', icon: GraduationCap, description: 'Legal education and learning' },
+    { value: 'professional', label: 'Professional', icon: Briefcase, description: 'Business and professional use' },
+    { value: 'lawyer', label: 'Lawyer', icon: Gavel, description: 'Legal practice and research' }
+  ];
 
   const allExampleQueries = [
     "What are the elements of negligence under Canadian tort law?",
@@ -49,7 +58,7 @@ const NoraDemo = () => {
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke('canadian-law-ai', {
-        body: { query }
+        body: { query, userRole }
       });
 
       if (error) throw error;
@@ -83,10 +92,10 @@ const NoraDemo = () => {
             <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
               <Scale className="h-5 w-5 text-primary" />
             </div>
-            <CardTitle className="text-xl font-bold">Try Nora AI</CardTitle>
+            <CardTitle className="text-xl font-bold">Try Nora</CardTitle>
           </div>
           <CardDescription className="text-sm text-muted-foreground">
-            Experience Canada's most advanced legal AI assistant
+            Experience Canada's most advanced legal assistant
           </CardDescription>
           <Badge variant="outline" className="w-fit mx-auto mt-2 text-xs">
             <BookOpen className="h-3 w-3 mr-1" />
@@ -135,6 +144,33 @@ const NoraDemo = () => {
                 disabled={loading}
               />
             </div>
+            
+            {/* Role Selection */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-muted-foreground">I am asking as a:</label>
+              <Select value={userRole} onValueChange={setUserRole}>
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {userRoles.map((role) => {
+                    const IconComponent = role.icon;
+                    return (
+                      <SelectItem key={role.value} value={role.value}>
+                        <div className="flex items-center space-x-2">
+                          <IconComponent className="h-4 w-4" />
+                          <div className="flex flex-col">
+                            <span>{role.label}</span>
+                            <span className="text-xs text-muted-foreground">{role.description}</span>
+                          </div>
+                        </div>
+                      </SelectItem>
+                    );
+                  })}
+                </SelectContent>
+              </Select>
+            </div>
+
             <div className="flex gap-2">
               <Button 
                 type="submit" 
