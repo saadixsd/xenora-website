@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { z } from 'zod';
 
 const schema = z.object({
-  name: z.string().trim().min(1, 'Name is required').max(100),
+  name: z.string().trim().min(1, 'Required').max(100),
   email: z.string().trim().email('Enter a valid email').max(255),
 });
 
@@ -37,78 +37,64 @@ const WaitlistForm = () => {
     const { error } = await supabase
       .from('waitlist')
       .insert({ name: result.data.name, email: result.data.email });
-
     setLoading(false);
 
     if (error) {
       if (error.code === '23505') {
-        setServerError('You\'re already on the waitlist! 🎉');
+        setServerError("You're already on the list ✓");
       } else {
-        setServerError('Something went wrong. Please try again.');
+        setServerError('Something went wrong. Try again.');
       }
       return;
     }
-
     setSuccess(true);
   };
 
   if (success) {
     return (
-      <div className="glass glow-border rounded-2xl p-8 md:p-12 max-w-md mx-auto text-center animate-scale-in">
-        <div className="text-5xl mb-4">🎉</div>
-        <h3 className="text-2xl font-bold text-foreground mb-2">You're in!</h3>
-        <p className="text-muted-foreground">We'll notify you when XenoraAI launches. Get ready to Know Beyond.</p>
+      <div className="text-center space-y-2 animate-scale-in">
+        <p className="text-foreground font-medium">You're in.</p>
+        <p className="text-sm text-muted-foreground">We'll be in touch soon.</p>
       </div>
     );
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="glass glow-border rounded-2xl p-8 md:p-12 max-w-md mx-auto space-y-5"
-    >
-      <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-foreground mb-1">Join the Waitlist</h2>
-        <p className="text-sm text-muted-foreground">10,000+ builders waiting</p>
-      </div>
-
-      <div className="space-y-1.5">
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <div>
         <Input
-          placeholder="Your name"
+          placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="bg-muted/50 border-border/50 focus:border-primary focus:shadow-[0_0_12px_hsl(var(--primary)/0.3)] transition-shadow h-12"
+          className="h-11 bg-muted/30 border-border/40 focus:border-primary/50 focus:shadow-[0_0_8px_hsl(var(--primary)/0.15)] transition-shadow text-sm"
           aria-label="Name"
         />
-        {errors.name && <p className="text-destructive text-xs">{errors.name}</p>}
+        {errors.name && <p className="text-destructive text-xs mt-1">{errors.name}</p>}
       </div>
-
-      <div className="space-y-1.5">
+      <div>
         <Input
           type="email"
-          placeholder="your@email.com"
+          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="bg-muted/50 border-border/50 focus:border-primary focus:shadow-[0_0_12px_hsl(var(--primary)/0.3)] transition-shadow h-12"
+          className="h-11 bg-muted/30 border-border/40 focus:border-primary/50 focus:shadow-[0_0_8px_hsl(var(--primary)/0.15)] transition-shadow text-sm"
           aria-label="Email"
         />
-        {errors.email && <p className="text-destructive text-xs">{errors.email}</p>}
+        {errors.email && <p className="text-destructive text-xs mt-1">{errors.email}</p>}
       </div>
-
-      {serverError && <p className="text-primary text-sm text-center">{serverError}</p>}
-
+      {serverError && <p className="text-primary text-xs text-center">{serverError}</p>}
       <Button
         type="submit"
         disabled={loading}
-        className="w-full h-12 text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-[0_0_24px_hsl(var(--primary)/0.4)] transition-all duration-300"
+        className="w-full h-11 text-sm font-medium bg-foreground text-background hover:bg-foreground/90 transition-all rounded-lg"
       >
         {loading ? (
           <span className="flex items-center gap-2">
-            <span className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+            <span className="w-3.5 h-3.5 border-2 border-background/30 border-t-background rounded-full animate-spin" />
             Joining...
           </span>
         ) : (
-          'Get Early Access'
+          'Join Waitlist'
         )}
       </Button>
     </form>
