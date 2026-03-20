@@ -34,9 +34,9 @@ const Reveal = ({ children, className = '', delay = 0 }: { children: React.React
 
 /* ── Problem cards data ── */
 const problems = [
-  { icon: '📱', title: 'You lose 2.1hrs/day to IG at 3pm', desc: 'Your brain craves dopamine at the same time every day. You never notice.' },
-  { icon: '📅', title: 'Same schedule fails every day', desc: "You plan deep work at 9am but your energy peaks at 11. Static schedules don't adapt." },
-  { icon: '🚫', title: "Manual blockers don't stick", desc: 'You disable them in 3 taps. Willpower is a losing strategy.' },
+  { title: 'You lose 2.1hrs/day to IG at 3pm', desc: 'Your brain craves dopamine at the same time every day. You never notice.' },
+  { title: 'Same schedule fails every day', desc: "You plan deep work at 9am but your energy peaks at 11. Static schedules don't adapt." },
+  { title: "Manual blockers don't stick", desc: 'You disable them in 3 taps. Willpower is a losing strategy.' },
 ];
 
 const Index = () => {
