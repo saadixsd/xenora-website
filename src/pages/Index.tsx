@@ -160,17 +160,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ═══ SOCIAL PROOF ═══ */}
-        <section className="py-16 sm:py-20 px-5 sm:px-8 border-t border-border/30">
-          <Reveal>
-            <div className="max-w-lg mx-auto text-center space-y-4">
-              <p className="text-muted-foreground text-sm">
-                Built by <span className="text-foreground font-semibold">Saad Kashif</span> · creator of <span className="text-primary font-medium">XenoraAI</span>
-              </p>
-              <p className="text-muted-foreground/60 text-xs">10K+ followers across platforms</p>
-            </div>
-          </Reveal>
-        </section>
+
 
         {/* ═══ FOOTER ═══ */}
         <footer className="py-10 sm:py-14 px-5 sm:px-8 border-t border-border/20">
