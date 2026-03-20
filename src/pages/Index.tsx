@@ -74,14 +74,7 @@ const Index = () => {
             </a>
           </Reveal>
           <Reveal delay={400}>
-            <div className="mt-6 flex items-center gap-3 text-xs text-muted-foreground/60">
-              <span className="flex -space-x-2">
-                {['🟣','🔵','🟢','🟡'].map((c, i) => (
-                  <span key={i} className="w-6 h-6 rounded-full bg-muted border-2 border-background flex items-center justify-center text-[10px]">{c}</span>
-                ))}
-              </span>
-              <span>347 people already waiting</span>
-            </div>
+            <p className="mt-6 text-xs text-muted-foreground/60">347 people already waiting</p>
           </Reveal>
         </section>
 
