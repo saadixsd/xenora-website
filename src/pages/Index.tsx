@@ -44,8 +44,7 @@ const Index = () => {
     <div className="min-h-[100svh] bg-background relative overflow-x-hidden">
       <NeuralCanvas />
 
-      {/* Gradient overlay */}
-      <div className="fixed inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 0%, hsl(270 40% 12% / 0.5) 0%, transparent 70%)', zIndex: 1 }} aria-hidden="true" />
+
 
       <div className="relative z-10">
 
