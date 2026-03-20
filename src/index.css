@@ -6,44 +6,44 @@
 
 @layer base {
   :root {
-    --background: 0 0% 3%;
-    --foreground: 0 0% 93%;
+    --background: 260 20% 4%;
+    --foreground: 0 0% 96%;
 
-    --card: 0 0% 6%;
-    --card-foreground: 0 0% 93%;
+    --card: 260 20% 8%;
+    --card-foreground: 0 0% 96%;
 
-    --popover: 0 0% 6%;
-    --popover-foreground: 0 0% 93%;
+    --popover: 260 20% 8%;
+    --popover-foreground: 0 0% 96%;
 
-    --primary: 0 0% 93%;
-    --primary-foreground: 0 0% 3%;
+    --primary: 190 100% 44%;
+    --primary-foreground: 260 20% 4%;
 
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 0 0% 93%;
+    --secondary: 260 15% 14%;
+    --secondary-foreground: 0 0% 96%;
 
-    --muted: 0 0% 10%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 260 15% 12%;
+    --muted-foreground: 260 10% 50%;
 
-    --accent: 0 0% 12%;
-    --accent-foreground: 0 0% 93%;
+    --accent: 270 40% 20%;
+    --accent-foreground: 0 0% 96%;
 
     --destructive: 0 70% 55%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 14%;
-    --input: 0 0% 14%;
-    --ring: 0 0% 93%;
+    --border: 260 15% 16%;
+    --input: 260 15% 16%;
+    --ring: 190 100% 44%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 3%;
-    --sidebar-foreground: 0 0% 93%;
-    --sidebar-primary: 0 0% 93%;
-    --sidebar-primary-foreground: 0 0% 3%;
-    --sidebar-accent: 0 0% 10%;
-    --sidebar-accent-foreground: 0 0% 93%;
-    --sidebar-border: 0 0% 14%;
-    --sidebar-ring: 0 0% 93%;
+    --sidebar-background: 260 20% 4%;
+    --sidebar-foreground: 0 0% 96%;
+    --sidebar-primary: 190 100% 44%;
+    --sidebar-primary-foreground: 260 20% 4%;
+    --sidebar-accent: 260 15% 12%;
+    --sidebar-accent-foreground: 0 0% 96%;
+    --sidebar-border: 260 15% 16%;
+    --sidebar-ring: 190 100% 44%;
   }
 }
 
@@ -56,5 +56,17 @@
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-card/40 backdrop-blur-xl border border-border/30;
+  }
+  .glow-teal {
+    box-shadow: 0 0 30px hsl(190 100% 44% / 0.15), 0 0 60px hsl(190 100% 44% / 0.05);
+  }
+  .text-glow {
+    text-shadow: 0 0 40px hsl(190 100% 44% / 0.3), 0 0 80px hsl(190 100% 44% / 0.1);
   }
 }
