@@ -34,9 +34,9 @@ const Reveal = ({ children, className = '', delay = 0 }: { children: React.React
 
 /* ── Problem cards data ── */
 const problems = [
-  { icon: '📱', title: 'You lose 2.1hrs/day to IG at 3pm', desc: 'Your brain craves dopamine at the same time every day. You never notice.' },
-  { icon: '📅', title: 'Same schedule fails every day', desc: "You plan deep work at 9am but your energy peaks at 11. Static schedules don't adapt." },
-  { icon: '🚫', title: "Manual blockers don't stick", desc: 'You disable them in 3 taps. Willpower is a losing strategy.' },
+  { title: 'You lose 2.1hrs/day to IG at 3pm', desc: 'Your brain craves dopamine at the same time every day. You never notice.' },
+  { title: 'Same schedule fails every day', desc: "You plan deep work at 9am but your energy peaks at 11. Static schedules don't adapt." },
+  { title: "Manual blockers don't stick", desc: 'You disable them in 3 taps. Willpower is a losing strategy.' },
 ];
 
 const Index = () => {
@@ -51,7 +51,7 @@ const Index = () => {
         {/* ═══ HERO ═══ */}
         <section className="min-h-[85svh] flex flex-col items-center justify-center px-5 sm:px-8 text-center">
           <Reveal>
-            <h1 className="text-5xl sm:text-7xl lg:text-[8rem] font-black tracking-tighter text-foreground text-glow leading-[0.9]">
+            <h1 className="text-5xl sm:text-7xl lg:text-[8rem] font-black tracking-tighter text-foreground leading-[0.9]">
               Nora Focus
             </h1>
           </Reveal>
@@ -68,21 +68,13 @@ const Index = () => {
           <Reveal delay={320}>
             <a
               href="#waitlist"
-              className="mt-8 sm:mt-10 inline-flex items-center gap-2 px-8 py-3.5 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/85 active:scale-[0.97] transition-all glow-teal"
+              className="mt-8 sm:mt-10 inline-flex items-center px-8 py-3.5 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/85 active:scale-[0.97] transition-all"
             >
               Join Beta Waitlist
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
             </a>
           </Reveal>
           <Reveal delay={400}>
-            <div className="mt-6 flex items-center gap-3 text-xs text-muted-foreground/60">
-              <span className="flex -space-x-2">
-                {['🟣','🔵','🟢','🟡'].map((c, i) => (
-                  <span key={i} className="w-6 h-6 rounded-full bg-muted border-2 border-background flex items-center justify-center text-[10px]">{c}</span>
-                ))}
-              </span>
-              <span>347 people already waiting</span>
-            </div>
+            <p className="mt-6 text-xs text-muted-foreground/60">347 people already waiting</p>
           </Reveal>
         </section>
 
@@ -100,7 +92,6 @@ const Index = () => {
             {problems.map((p, i) => (
               <Reveal key={i} delay={i * 100}>
                 <div className="glass rounded-2xl p-6 sm:p-8 h-full hover:border-primary/30 transition-colors duration-300">
-                  <span className="text-3xl mb-4 block">{p.icon}</span>
                   <h3 className="text-foreground font-semibold text-base sm:text-lg mb-2 leading-snug">{p.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">{p.desc}</p>
                 </div>
@@ -139,12 +130,7 @@ const Index = () => {
           <Reveal delay={200}>
             <div className="mt-16 sm:mt-20 max-w-3xl mx-auto glass rounded-2xl p-1">
               <div className="bg-muted/30 rounded-xl aspect-video flex items-center justify-center">
-                <div className="text-center space-y-3">
-                  <div className="w-14 h-14 mx-auto rounded-2xl bg-primary/15 flex items-center justify-center">
-                    <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 010 1.972l-11.54 6.347a1.125 1.125 0 01-1.667-.986V5.653z" /></svg>
-                  </div>
-                  <p className="text-sm text-muted-foreground">Product demo coming soon</p>
-                </div>
+                <p className="text-sm text-muted-foreground">Product demo coming soon</p>
               </div>
             </div>
           </Reveal>
