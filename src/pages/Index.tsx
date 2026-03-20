@@ -130,12 +130,7 @@ const Index = () => {
           <Reveal delay={200}>
             <div className="mt-16 sm:mt-20 max-w-3xl mx-auto glass rounded-2xl p-1">
               <div className="bg-muted/30 rounded-xl aspect-video flex items-center justify-center">
-                <div className="text-center space-y-3">
-                  <div className="w-14 h-14 mx-auto rounded-2xl bg-primary/15 flex items-center justify-center">
-                    <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 010 1.972l-11.54 6.347a1.125 1.125 0 01-1.667-.986V5.653z" /></svg>
-                  </div>
-                  <p className="text-sm text-muted-foreground">Product demo coming soon</p>
-                </div>
+                <p className="text-sm text-muted-foreground">Product demo coming soon</p>
               </div>
             </div>
           </Reveal>
