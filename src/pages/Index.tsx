@@ -68,10 +68,9 @@ const Index = () => {
           <Reveal delay={320}>
             <a
               href="#waitlist"
-              className="mt-8 sm:mt-10 inline-flex items-center gap-2 px-8 py-3.5 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/85 active:scale-[0.97] transition-all glow-teal"
+              className="mt-8 sm:mt-10 inline-flex items-center px-8 py-3.5 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/85 active:scale-[0.97] transition-all"
             >
               Join Beta Waitlist
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
             </a>
           </Reveal>
           <Reveal delay={400}>
