@@ -92,7 +92,6 @@ const Index = () => {
             {problems.map((p, i) => (
               <Reveal key={i} delay={i * 100}>
                 <div className="glass rounded-2xl p-6 sm:p-8 h-full hover:border-primary/30 transition-colors duration-300">
-                  <span className="text-3xl mb-4 block">{p.icon}</span>
                   <h3 className="text-foreground font-semibold text-base sm:text-lg mb-2 leading-snug">{p.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">{p.desc}</p>
                 </div>
