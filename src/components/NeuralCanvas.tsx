@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-interface Node {
+interface Particle {
   x: number;
   y: number;
   vx: number;
@@ -19,62 +19,65 @@ const NeuralCanvas = () => {
     if (!ctx) return;
 
     let animationId: number;
-    const nodes: Node[] = [];
-    const nodeCount = 80;
-    const connectionDistance = 140;
+    const particles: Particle[] = [];
+    const count = 60;
+    const connDist = 160;
 
     const resize = () => {
-      canvas.width = window.innerWidth * window.devicePixelRatio;
-      canvas.height = window.innerHeight * window.devicePixelRatio;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
       canvas.style.width = window.innerWidth + 'px';
       canvas.style.height = window.innerHeight + 'px';
-      ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
     resize();
     window.addEventListener('resize', resize);
 
-    for (let i = 0; i < nodeCount; i++) {
-      nodes.push({
+    for (let i = 0; i < count; i++) {
+      particles.push({
         x: Math.random() * window.innerWidth,
         y: Math.random() * window.innerHeight,
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: (Math.random() - 0.5) * 0.25,
-        radius: Math.random() * 1.2 + 0.4,
-        opacity: Math.random() * 0.3 + 0.1,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.2,
+        radius: Math.random() * 1.5 + 0.5,
+        opacity: Math.random() * 0.4 + 0.1,
       });
     }
 
     const draw = () => {
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      ctx.clearRect(0, 0, w, h);
 
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < connectionDistance) {
-            const alpha = (1 - dist / connectionDistance) * 0.07;
+          if (dist < connDist) {
+            const alpha = (1 - dist / connDist) * 0.06;
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+            ctx.strokeStyle = `rgba(0, 212, 255, ${alpha})`;
             ctx.lineWidth = 0.5;
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
             ctx.stroke();
           }
         }
       }
 
-      for (const node of nodes) {
+      for (const p of particles) {
         ctx.beginPath();
-        ctx.fillStyle = `rgba(255, 255, 255, ${node.opacity})`;
-        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 212, 255, ${p.opacity * 0.5})`;
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fill();
 
-        node.x += node.vx;
-        node.y += node.vy;
-        if (node.x < 0 || node.x > window.innerWidth) node.vx *= -1;
-        if (node.y < 0 || node.y > window.innerHeight) node.vy *= -1;
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
       }
 
       animationId = requestAnimationFrame(draw);
