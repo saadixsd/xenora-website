@@ -123,7 +123,7 @@ const Index = () => {
           <div className="max-w-4xl mx-auto grid sm:grid-cols-3 gap-6 sm:gap-8">
             {[
               { step: '01', title: 'Track', desc: 'Day 1: Nora silently maps when you lose focus, what triggers it, and your real energy cycles.' },
-              { step: '02', title: 'Learn', desc: 'AI builds your personal focus profile. No two brains are alike — your schedule shouldn't be either.' },
+              { step: '02', title: 'Learn', desc: "AI builds your personal focus profile. No two brains are alike — your schedule shouldn't be either." },
               { step: '03', title: 'Lock In', desc: 'Auto-blocks distractions, schedules deep work, and locks your Spotify to a flow playlist.' },
             ].map((s, i) => (
               <Reveal key={i} delay={i * 120}>
