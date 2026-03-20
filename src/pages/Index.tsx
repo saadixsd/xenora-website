@@ -51,7 +51,7 @@ const Index = () => {
         {/* ═══ HERO ═══ */}
         <section className="min-h-[85svh] flex flex-col items-center justify-center px-5 sm:px-8 text-center">
           <Reveal>
-            <h1 className="text-5xl sm:text-7xl lg:text-[8rem] font-black tracking-tighter text-foreground text-glow leading-[0.9]">
+            <h1 className="text-5xl sm:text-7xl lg:text-[8rem] font-black tracking-tighter text-foreground leading-[0.9]">
               Nora Focus
             </h1>
           </Reveal>
