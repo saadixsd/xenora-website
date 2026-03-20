@@ -5,8 +5,6 @@ interface Particle {
   y: number;
   vx: number;
   vy: number;
-  radius: number;
-  opacity: number;
 }
 
 const NeuralCanvas = () => {
@@ -19,9 +17,9 @@ const NeuralCanvas = () => {
     if (!ctx) return;
 
     let animationId: number;
-    const particles: Particle[] = [];
-    const count = 60;
-    const connDist = 160;
+    const nodes: Particle[] = [];
+    const count = 50;
+    const connDist = 150;
 
     const resize = () => {
       const dpr = window.devicePixelRatio || 1;
@@ -36,13 +34,11 @@ const NeuralCanvas = () => {
     window.addEventListener('resize', resize);
 
     for (let i = 0; i < count; i++) {
-      particles.push({
+      nodes.push({
         x: Math.random() * window.innerWidth,
         y: Math.random() * window.innerHeight,
-        vx: (Math.random() - 0.5) * 0.2,
-        vy: (Math.random() - 0.5) * 0.2,
-        radius: Math.random() * 1.5 + 0.5,
-        opacity: Math.random() * 0.4 + 0.1,
+        vx: (Math.random() - 0.5) * 0.15,
+        vy: (Math.random() - 0.5) * 0.15,
       });
     }
 
@@ -51,33 +47,29 @@ const NeuralCanvas = () => {
       const h = window.innerHeight;
       ctx.clearRect(0, 0, w, h);
 
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
+      // Lines only
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < connDist) {
-            const alpha = (1 - dist / connDist) * 0.06;
+            const alpha = (1 - dist / connDist) * 0.07;
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(0, 212, 255, ${alpha})`;
+            ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
             ctx.lineWidth = 0.5;
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
             ctx.stroke();
           }
         }
       }
 
-      for (const p of particles) {
-        ctx.beginPath();
-        ctx.fillStyle = `rgba(0, 212, 255, ${p.opacity * 0.5})`;
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fill();
-
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0 || p.x > w) p.vx *= -1;
-        if (p.y < 0 || p.y > h) p.vy *= -1;
+      for (const n of nodes) {
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x < 0 || n.x > w) n.vx *= -1;
+        if (n.y < 0 || n.y > h) n.vy *= -1;
       }
 
       animationId = requestAnimationFrame(draw);
