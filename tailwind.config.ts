@@ -1,4 +1,6 @@
 import type { Config } from "tailwindcss";
+import daisyui from "daisyui";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"],
@@ -80,14 +82,55 @@ export default {
           "0%": { opacity: "0", transform: "scale(0.9)" },
           "100%": { opacity: "1", transform: "scale(1)" },
         },
+        "synapse-pulse": {
+          "0%, 100%": { opacity: "0.45", filter: "drop-shadow(0 0 4px rgb(34 211 238 / 0.35))" },
+          "50%": { opacity: "1", filter: "drop-shadow(0 0 12px rgb(34 211 238 / 0.65))" },
+        },
+        "pathway-flow": {
+          "0%": { strokeDashoffset: "32" },
+          "100%": { strokeDashoffset: "0" },
+        },
+        "glow-breathe": {
+          "0%, 100%": { opacity: "0.85" },
+          "50%": { opacity: "1" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.8s ease-out both",
         "scale-in": "scale-in 0.5s ease-out both",
+        "synapse-pulse": "synapse-pulse 2.4s ease-in-out infinite",
+        "pathway-flow": "pathway-flow 1.8s linear infinite",
+        "glow-breathe": "glow-breathe 3s ease-in-out infinite",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [daisyui, tailwindcssAnimate],
+  daisyui: {
+    themes: [
+      {
+        xenora: {
+          primary: "#22d3ee",
+          "primary-content": "#020617",
+          secondary: "#525252",
+          "secondary-content": "#fafafa",
+          accent: "#a3a3a3",
+          "accent-content": "#0a0a0a",
+          neutral: "#171717",
+          "neutral-content": "#fafafa",
+          "base-100": "#030303",
+          "base-200": "#0a0a0a",
+          "base-300": "#171717",
+          "base-content": "#fafafa",
+          info: "#22d3ee",
+          success: "#22c55e",
+          warning: "#eab308",
+          error: "#ef4444",
+        },
+      },
+    ],
+    darkTheme: "xenora",
+    logs: false,
+  },
 } satisfies Config;
