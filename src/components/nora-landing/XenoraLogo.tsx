@@ -1,4 +1,4 @@
-import logoSrc from '@/assets/logo.jpg';
+import logoSrc from '@/assets/logo.jpeg';
 
 type Props = {
   className?: string;
@@ -7,7 +7,7 @@ type Props = {
 };
 
 /**
- * Official Xenora mark — bundled from `src/assets/logo.jpg` so Vite resolves the URL (works with `base` / hashed assets).
+ * Official Xenora mark — bundled from `src/assets/logo.jpeg` so Vite resolves the URL (works with `base` / hashed assets).
  */
 export function XenoraLogo({ className = '', decorative = false }: Props) {
   return (
