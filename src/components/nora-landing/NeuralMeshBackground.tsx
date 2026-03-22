@@ -5,7 +5,7 @@ export const NeuralMeshBackground = () => (
   >
     {/* Base grid */}
     <div
-      className="absolute inset-0 opacity-[0.22]"
+      className="absolute inset-0 opacity-[0.14]"
       style={{
         backgroundImage: `
           linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
@@ -16,7 +16,7 @@ export const NeuralMeshBackground = () => (
     />
     {/* Diagonal neural mesh */}
     <div
-      className="absolute inset-0 opacity-[0.12]"
+      className="absolute inset-0 opacity-[0.08]"
       style={{
         backgroundImage: `
           linear-gradient(135deg, rgba(255,255,255,0.05) 1px, transparent 1px),

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { XenoraGeometricLogoCompact } from './XenoraGeometricLogo';
+import { XenoraLogo } from './XenoraLogo';
 import { NEURAL_NODES, type NeuralNodeId } from './neuralNavData';
 
 const cx = 50;
@@ -66,19 +66,22 @@ type Props = {
   hoveredId: NeuralNodeId | null;
   onNodeClick: (id: NeuralNodeId) => void;
   onHover: (id: NeuralNodeId | null) => void;
+  /** Smaller, calmer — use when the real nav is the header bar. */
+  compact?: boolean;
 };
 
-export const NeuralNavGraph = ({ activeId, hoveredId, onNodeClick, onHover }: Props) => {
+export const NeuralNavGraph = ({ activeId, hoveredId, onNodeClick, onHover, compact = false }: Props) => {
   const points = useMemo(() => anglesDeg.map((deg) => polar(deg)), []);
 
+  const wrap = compact ? 'max-w-[min(92vw,320px)]' : 'max-w-[min(100vw,480px)]';
+
   return (
-    <div className="relative mx-auto w-full max-w-2xl px-2">
-      <div className="relative mx-auto aspect-square w-full max-w-[min(100vw,480px)]">
+    <nav className="relative mx-auto w-full max-w-2xl px-2" aria-label="Optional section map">
+      <div className={`relative mx-auto aspect-square w-full ${wrap}`}>
         <svg
           viewBox="0 0 100 100"
           className="absolute inset-0 h-full w-full"
-          role="img"
-          aria-label="Nora navigation — select a node to jump to a section"
+          aria-hidden
         >
           <defs>
             <linearGradient id="synapse" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -118,17 +121,24 @@ export const NeuralNavGraph = ({ activeId, hoveredId, onNodeClick, onHover }: Pr
                   stroke="url(#synapse)"
                   strokeWidth={0.22}
                   strokeDasharray="3 12"
-                  className={lit ? 'animate-pathway-flow opacity-80' : 'opacity-25'}
+                  className={lit && !compact ? 'animate-pathway-flow opacity-80' : lit ? 'opacity-70' : 'opacity-20'}
                 />
               </g>
             );
           })}
         </svg>
 
-        {/* Center hub — pulsing logo + tagline */}
-        <div className="absolute left-1/2 top-1/2 z-20 flex w-[min(44vw,200px)] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-2 rounded-full border border-primary/35 bg-base-100/95 px-4 py-4 shadow-[0_0_48px_rgb(34_211_238_/_0.18)] backdrop-blur-sm animate-synapse-pulse">
-          <XenoraGeometricLogoCompact className="h-10 w-10 text-primary" />
-          <p className="text-center text-[9px] font-semibold uppercase tracking-[0.38em] text-base-content sm:text-[10px]">
+        {/* Center hub — quiet mark + tagline (header is primary nav) */}
+        <div
+          className={`absolute left-1/2 top-1/2 z-20 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-2 rounded-full border border-base-content/15 bg-base-100/90 px-4 py-4 shadow-sm backdrop-blur-sm ${
+            compact ? 'w-[min(38vw,160px)]' : 'w-[min(44vw,200px)]'
+          }`}
+        >
+          <XenoraLogo
+            decorative
+            className={`object-contain ${compact ? 'h-8 w-8' : 'h-10 w-10'}`}
+          />
+          <p className="text-center text-[9px] font-medium uppercase tracking-[0.32em] text-base-content/70 sm:text-[10px]">
             Know Beyond
           </p>
         </div>
@@ -172,6 +182,6 @@ export const NeuralNavGraph = ({ activeId, hoveredId, onNodeClick, onHover }: Pr
           );
         })}
       </div>
-    </div>
+    </nav>
   );
 };

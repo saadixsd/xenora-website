@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackground';
-import { XenoraGeometricLogo } from '@/components/nora-landing/XenoraGeometricLogo';
+import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { NeuralNavGraph } from '@/components/nora-landing/NeuralNavGraph';
+import { NoraSiteNav } from '@/components/nora-landing/NoraSiteNav';
 import {
   NEURAL_NODES,
   SECTION_IDS,
@@ -47,97 +49,92 @@ const Index = () => {
     <div data-theme="xenora" className="min-h-screen bg-base-100 text-base-content antialiased">
       <NeuralMeshBackground />
 
-      {/* Watermark */}
+      {/* Watermark — real mark, very light so content stays readable */}
       <div
         className="pointer-events-none fixed inset-0 z-[1] flex items-center justify-center overflow-hidden"
         aria-hidden
       >
-        <div className="relative flex flex-col items-center justify-center opacity-50 blur-[1.5px]">
-          <XenoraGeometricLogo size={120} className="mb-6 scale-125 sm:mb-8 sm:scale-150" muted />
-          <span className="text-[clamp(3rem,14vw,8rem)] font-black tracking-tighter text-base-content">
+        <div className="flex max-w-[min(90vw,520px)] flex-col items-center justify-center gap-6 opacity-[0.14] saturate-[0.85]">
+          <XenoraLogo decorative className="h-[min(38vh,280px)] w-auto max-w-full blur-[2px]" />
+          <span className="text-center text-[clamp(1.75rem,6vw,3.5rem)] font-semibold tracking-tight text-base-content/90">
             XenoraAI
           </span>
         </div>
       </div>
 
-      {/* Fixed micro header */}
-      <header className="fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-4 py-4 sm:px-8">
-        <a href="#" className="flex items-center gap-2 text-base-content/90" aria-label="XenoraAI home">
-          <XenoraGeometricLogo size={36} />
-          <span className="hidden text-sm font-semibold tracking-tight sm:inline">XenoraAI</span>
-        </a>
-        <a
-          href="#get-started"
-          className="btn btn-ghost btn-sm border border-base-content/10 text-xs font-medium normal-case text-base-content/80 hover:border-primary/40 hover:text-primary"
-        >
-          Log in
-        </a>
+      {/* Primary navigation — scannable text links (not the graph) */}
+      <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/10 bg-base-100/85 backdrop-blur-md">
+        <div className="navbar mx-auto min-h-14 max-w-6xl gap-2 px-3 py-2 sm:px-6">
+          <div className="navbar-start min-w-0 flex-1">
+            <Link
+              to="/"
+              className="btn btn-ghost btn-sm gap-2.5 px-1.5 font-semibold normal-case text-base-content"
+              aria-label="XenoraAI home"
+            >
+              <XenoraLogo decorative className="h-8 w-8 shrink-0 sm:h-9 sm:w-9" />
+              <span className="truncate">XenoraAI</span>
+            </Link>
+          </div>
+          <div className="navbar-center hidden min-w-0 shrink md:flex md:max-w-none md:flex-1 md:justify-center">
+            <NoraSiteNav />
+          </div>
+          <div className="navbar-end shrink-0 gap-1">
+            <NoraSiteNav className="md:hidden" />
+            <a
+              href="#get-started"
+              className="btn btn-ghost btn-sm border border-base-content/10 font-normal normal-case text-base-content/85 hover:border-primary/35 hover:text-primary"
+            >
+              Log in
+            </a>
+          </div>
+        </div>
       </header>
 
       <main className="relative z-10">
-        {/* Hero */}
-        <section className="flex min-h-[100svh] flex-col items-center justify-center px-4 pb-16 pt-24 sm:px-8">
-          <div className="w-full max-w-4xl text-center">
-            <NeuralNavGraph
-              activeId={activeId}
-              hoveredId={hoveredId}
-              onNodeClick={handleNodeClick}
-              onHover={setHoveredId}
-            />
-
-            <div className="mt-10 space-y-5 animate-fade-in sm:mt-14">
-              <h1 className="text-balance text-3xl font-bold leading-[1.08] tracking-tight text-base-content sm:text-5xl lg:text-6xl">
-                Nora — The Knowledge-First AI Agent Platform
-              </h1>
-              <p className="mx-auto max-w-2xl text-pretty text-sm text-base-content/65 sm:text-lg">
-                Connect your data. Let agents anticipate and automate real workflows. Know Beyond.
-              </p>
-              <div className="flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-                <a
-                  href="#get-started"
-                  className="btn btn-outline btn-primary min-w-[200px] border-primary/60 bg-transparent shadow-[0_0_0_1px_rgb(34_211_238_/_0.25)] transition-all hover:border-primary hover:shadow-[0_0_32px_rgb(34_211_238_/_0.35)]"
-                >
-                  Get started for free
-                </a>
-                <a
-                  href="#nora-platform"
-                  className="btn btn-ghost min-w-[200px] border border-base-content/15 text-base-content/90 hover:border-base-content/25"
-                >
-                  View Nora demo
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Mobile: quick jump accordions */}
-          <div className="mt-14 w-full max-w-lg md:hidden">
-            <p className="mb-3 text-center text-[10px] font-semibold uppercase tracking-[0.2em] text-base-content/40">
-              Jump to section
+        {/* Hero — headline first; map is optional */}
+        <section className="flex min-h-[100svh] flex-col items-center justify-center px-4 pb-20 pt-28 sm:px-8">
+          <div className="w-full max-w-3xl text-center">
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-base-content/45">Nora · XenoraAI</p>
+            <h1 className="mt-4 text-balance text-3xl font-bold leading-[1.08] tracking-tight text-base-content sm:text-5xl lg:text-[3.25rem]">
+              Nora — The Knowledge-First AI Agent Platform
+            </h1>
+            <p className="mx-auto mt-5 max-w-xl text-pretty text-sm text-base-content/65 sm:text-lg">
+              Connect your data. Let agents anticipate and automate real workflows. Know Beyond.
             </p>
-            <div className="space-y-2">
-              {NEURAL_NODES.map((n) => (
-                <div key={n.id} className="collapse collapse-arrow border border-base-content/10 bg-base-200/30">
-                  <input type="checkbox" name="nora-nav-acc" />
-                  <div className="collapse-title min-h-0 py-3 text-sm font-medium text-base-content/85">
-                    {n.label}
-                  </div>
-                  <div className="collapse-content bg-base-100/40 text-sm text-base-content/60">
-                    <button
-                      type="button"
-                      className="btn btn-link btn-sm px-0 text-primary"
-                      onClick={() => handleNodeClick(n.id)}
-                    >
-                      Go to section
-                    </button>
-                  </div>
-                </div>
-              ))}
+            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+              <a
+                href="#get-started"
+                className="btn btn-primary min-w-[200px] border-0 bg-primary text-primary-content shadow-none hover:brightness-110"
+              >
+                Get started for free
+              </a>
+              <a
+                href="#nora-platform"
+                className="btn btn-ghost min-w-[200px] border border-base-content/15 font-normal normal-case text-base-content hover:bg-base-200"
+              >
+                View Nora demo
+              </a>
+            </div>
+
+            <p className="mx-auto mt-12 max-w-md text-xs leading-relaxed text-base-content/40">
+              Use the <strong className="font-medium text-base-content/55">menu above</strong> to jump anywhere. Below is
+              an optional map — same destinations, if you prefer it visual.
+            </p>
+
+            <div className="mt-6 opacity-90">
+              <NeuralNavGraph
+                compact
+                activeId={activeId}
+                hoveredId={hoveredId}
+                onNodeClick={handleNodeClick}
+                onHover={setHoveredId}
+              />
             </div>
           </div>
         </section>
 
         {/* Nora Platform */}
-        <section id="nora-platform" className="scroll-mt-24 px-4 py-20 sm:px-8">
+        <section id="nora-platform" className="scroll-mt-28 px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-5xl">
             <h2 className="text-center text-2xl font-bold tracking-tight text-base-content sm:text-3xl">
               Nora Platform
@@ -239,7 +236,7 @@ const Index = () => {
         </section>
 
         {/* How Nora Works */}
-        <section id="how-nora-works" className="scroll-mt-24 border-t border-base-content/5 px-4 py-20 sm:px-8">
+        <section id="how-nora-works" className="scroll-mt-28 border-t border-base-content/5 px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-4xl">
             <h2 className="text-center text-2xl font-bold tracking-tight sm:text-3xl">How Nora Works</h2>
             <p className="mx-auto mt-3 max-w-xl text-center text-sm text-base-content/55">
@@ -280,7 +277,7 @@ const Index = () => {
         </section>
 
         {/* Pricing */}
-        <section id="pricing" className="scroll-mt-24 px-4 py-20 sm:px-8">
+        <section id="pricing" className="scroll-mt-28 px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-5xl">
             <h2 className="text-center text-2xl font-bold sm:text-3xl">Nora Pricing</h2>
             <p className="mx-auto mt-3 max-w-lg text-center text-sm text-base-content/55">
@@ -354,7 +351,7 @@ const Index = () => {
         </section>
 
         {/* Docs teaser */}
-        <section id="docs" className="scroll-mt-24 px-4 py-12 sm:px-8">
+        <section id="docs" className="scroll-mt-28 px-4 py-12 sm:px-8">
           <div className="mx-auto max-w-xl rounded-2xl border border-base-content/10 bg-base-200/30 px-6 py-10 text-center">
             <h2 className="text-xl font-semibold">Docs</h2>
             <p className="mt-2 text-sm text-base-content/55">
@@ -371,7 +368,7 @@ const Index = () => {
         </section>
 
         {/* Enterprise anchor */}
-        <section id="enterprise" className="scroll-mt-24 px-4 pb-8 sm:px-8">
+        <section id="enterprise" className="scroll-mt-28 px-4 pb-8 sm:px-8">
           <div className="mx-auto max-w-2xl text-center text-sm text-base-content/45">
             <button
               type="button"
@@ -384,7 +381,7 @@ const Index = () => {
         </section>
 
         {/* Get started */}
-        <section id="get-started" className="scroll-mt-24 border-t border-base-content/5 px-4 py-20 sm:px-8">
+        <section id="get-started" className="scroll-mt-28 border-t border-base-content/5 px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-md">
             <h2 className="text-center text-2xl font-bold">Get started with Nora</h2>
             <p className="mt-2 text-center text-sm text-base-content/55">
