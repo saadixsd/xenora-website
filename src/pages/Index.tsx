@@ -46,7 +46,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div data-theme="xenora" className="min-h-screen bg-base-100 text-base-content antialiased">
+    <div data-theme="xenora" className="min-h-screen bg-[#030303] text-base-content antialiased">
       <NeuralMeshBackground />
 
       {/* Watermark — real mark, very light so content stays readable */}
@@ -63,7 +63,7 @@ const Index = () => {
       </div>
 
       {/* Primary navigation — scannable text links (not the graph) */}
-      <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/10 bg-base-100/85 backdrop-blur-md">
+      <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/[0.06] bg-gradient-to-b from-[#050506]/95 via-[#040405]/88 to-[#030303]/55 backdrop-blur-xl backdrop-saturate-150">
         <div className="navbar mx-auto min-h-14 max-w-6xl gap-2 px-3 py-2 sm:px-6">
           <div className="navbar-start min-w-0 flex-1">
             <Link
@@ -92,8 +92,13 @@ const Index = () => {
 
       <main className="relative z-10">
         {/* Hero — headline first; map is optional */}
-        <section className="flex min-h-[100svh] flex-col items-center justify-center px-4 pb-20 pt-28 sm:px-8">
-          <div className="w-full max-w-3xl text-center">
+        <section className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-4 pb-20 pt-28 sm:px-8">
+          {/* Local hero wash — draws the eye to the headline without gradient text gimmicks */}
+          <div
+            className="pointer-events-none absolute inset-0 -z-0 bg-[radial-gradient(ellipse_85%_60%_at_50%_35%,rgba(255,255,255,0.045),transparent_62%)]"
+            aria-hidden
+          />
+          <div className="relative z-[1] w-full max-w-3xl text-center">
             <p className="text-xs font-medium uppercase tracking-[0.2em] text-base-content/45">Nora · XenoraAI</p>
             <h1 className="mt-4 text-balance text-3xl font-bold leading-[1.08] tracking-tight text-base-content sm:text-5xl lg:text-[3.25rem]">
               Nora — The Knowledge-First AI Agent Platform
@@ -243,7 +248,7 @@ const Index = () => {
               Three steps. One loop. Nora keeps context attached from signal to execution.
             </p>
             <div className="relative mt-14 grid gap-10 md:grid-cols-3">
-              <div className="pointer-events-none absolute left-[10%] right-[10%] top-8 hidden h-px bg-gradient-to-r from-transparent via-primary/35 to-transparent md:block" />
+              <div className="pointer-events-none absolute left-[10%] right-[10%] top-8 hidden h-px bg-gradient-to-r from-transparent via-white/[0.12] to-transparent md:block" />
               {[
                 {
                   step: '01',
@@ -262,13 +267,13 @@ const Index = () => {
                 },
               ].map((s, i) => (
                 <div key={s.step} className="relative text-center md:text-left">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-primary/35 bg-base-200/40 font-mono text-sm text-primary shadow-[0_0_24px_rgb(34_211_238_/_0.2)] md:mx-0">
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-gradient-to-b from-white/[0.07] to-transparent font-mono text-sm text-base-content/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] md:mx-0">
                     {s.step}
                   </div>
                   <h3 className="text-lg font-semibold text-base-content">{s.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-base-content/55">{s.body}</p>
                   {i < 2 && (
-                    <div className="mx-auto mt-8 h-px w-12 bg-gradient-to-r from-primary/5 via-primary/40 to-primary/5 md:hidden" />
+                    <div className="mx-auto mt-8 h-px w-12 bg-gradient-to-r from-transparent via-white/15 to-transparent md:hidden" />
                   )}
                 </div>
               ))}

@@ -60,6 +60,15 @@
 }
 
 @layer utilities {
+  /* Editorial section fade — use sparingly between blocks */
+  .xenora-section-fade {
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.02) 50%,
+      transparent 100%
+    );
+  }
   .glass {
     @apply bg-card/40 backdrop-blur-xl border border-border/30;
   }
