@@ -10,25 +10,35 @@ import { Reveal } from '@/components/motion/Reveal';
 const flowSteps = [
   {
     step: '01',
-    title: 'Learns your patterns',
-    body: 'Nora observes when you focus and when you drift. It builds a realistic picture of your day without judgment.',
+    title: 'Observe',
+    body: 'Tracks screen time, app switches, keyboard patterns, and deep work sessions with permission.',
   },
   {
     step: '02',
-    title: 'Builds your schedule',
-    body: 'Using your own rhythms, Nora creates practical deep-work blocks at times you can actually sustain.',
+    title: 'Analyze',
+    body: 'Local LLM processing identifies recurring distractions and predicts high-focus windows from your own activity.',
   },
   {
     step: '03',
-    title: 'Protects your focus',
-    body: 'During focus blocks, Nora reduces interruptions and starts music that helps you stay in the zone.',
+    title: 'Plan',
+    body: 'Builds a realistic daily schedule with protected deep-work windows and timed recovery intervals.',
+  },
+  {
+    step: '04',
+    title: 'Execute',
+    body: 'Applies configured controls, starts playlists/timers, and sends minimal prompts when drift is detected.',
+  },
+  {
+    step: '05',
+    title: 'Adapt',
+    body: 'Refines tomorrow based on outcomes, overrides, and session completion quality.',
   },
 ];
 
 const valueCards = [
-  { title: 'Real behavior, not guesses', desc: 'Your schedule adapts to your actual habits, not generic templates.' },
-  { title: 'Calm by default', desc: 'Fewer interruptions during deep-work windows, with less friction to stay on track.' },
-  { title: 'Private by design', desc: 'Pattern analysis happens locally on your device to keep your workflow data personal.' },
+  { title: 'Local LLM inference', desc: 'Pattern analysis runs on-device to reduce cloud dependency for core focus decisions.' },
+  { title: 'Hybrid coordination', desc: 'A secure coordination service syncs schedules and notifications across desktop and mobile.' },
+  { title: 'Privacy boundary', desc: 'Usage logs stay local by default and are not used to train remote models.' },
 ];
 
 const Index = () => {
@@ -78,12 +88,12 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-6 max-w-2xl text-base text-base-content/70 sm:text-lg">
-                Nora Focus learns your real work rhythm, builds practical focus blocks, and reduces distractions without adding friction.
+                Nora Focus runs a practical observe-analyze-plan-execute-adapt loop that helps you protect deep work without adding operational overhead.
               </p>
             </Reveal>
             <Reveal delay={0.15}>
               <p className="mx-auto mt-4 max-w-xl text-sm text-base-content/50 sm:text-base">
-                Built for calm, professional execution across high-priority work.
+                Built for professionals who need calm, repeatable output on high-priority work.
               </p>
             </Reveal>
 
@@ -115,11 +125,11 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-3 max-w-lg text-center text-sm text-base-content/50">
-                Three clear steps. Lightweight setup. Better focus that feels sustainable.
+                A coordinated five-step system that turns daily behavior into measurable focus gains.
               </p>
             </Reveal>
 
-            <div className="mt-14 grid gap-6 md:grid-cols-3">
+            <div className="mt-14 grid gap-6 md:grid-cols-5">
               {flowSteps.map((s, index) => (
                 <Reveal key={s.step} delay={0.08 * index}>
                   <article className="surface-panel h-full p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_14px_32px_rgba(0,212,255,0.1)]">
@@ -136,11 +146,11 @@ const Index = () => {
         <section className="border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-4xl">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-semibold sm:text-3xl">Why people choose Nora Focus</h2>
+              <h2 className="premium-heading text-center text-2xl font-semibold sm:text-3xl">System Architecture</h2>
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-base-content/55 sm:text-base">
-                Most focus tools ask you to force a routine. Nora Focus starts from your real day and builds structure that feels workable.
+                Local execution handles sensitive behavior data while a lightweight coordination layer keeps schedules and notifications synchronized across devices.
               </p>
             </Reveal>
 

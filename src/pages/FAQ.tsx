@@ -7,36 +7,36 @@ import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackgr
 
 const faqs = [
   {
-    q: 'What exactly does Nora Focus do?',
-    a: 'Nora Focus is a focus coach that runs on your Mac, iPhone, or Android device. It observes your work patterns — when you focus, when you drift — and builds personalized daily schedules with distraction-free deep work blocks. During those blocks, it manages notifications and suggests Spotify playlists to help you stay in flow.',
+    q: 'What is Nora Focus?',
+    a: 'Nora Focus is an AI focus system that continuously observes behavior signals, builds daily schedules, executes distraction controls, and adapts from results.',
   },
   {
-    q: 'How does the AI learn my patterns?',
-    a: 'Nora Focus tracks your app usage, focus sessions, and break patterns over time. After a few days, it identifies your natural productivity rhythms — when you do your best work, when you tend to lose focus, and what triggers distraction. All of this processing happens locally on your device.',
+    q: 'How does the 5-step loop work?',
+    a: 'Observe, Analyze, Plan, Execute, Adapt. Nora captures permissioned signals, processes them with a local model, generates schedule actions, applies controls, and refines each subsequent day.',
   },
   {
-    q: 'Is my data private?',
-    a: 'Yes. All behavior tracking and pattern analysis happens locally on your device. Your data is never sent to external servers. We designed Nora Focus with a local-first architecture specifically because focus data is deeply personal.',
+    q: 'Which data is observed?',
+    a: 'With your permission: screen-time context, app-switching patterns, activity rhythm, and session outcomes. The goal is scheduling quality and distraction prevention.',
   },
   {
-    q: 'What platforms are supported?',
-    a: "We're building for macOS first, with iOS and Android apps following closely. The beta will start with Mac, and mobile versions will be available shortly after.",
+    q: 'Does Nora run locally?',
+    a: 'Core behavior analysis and planning are designed for local execution. Sensitive usage logs remain on-device by default.',
   },
   {
-    q: 'How does the Spotify integration work?',
-    a: 'When a deep work block starts, Nora Focus can automatically play a focus playlist through your Spotify account. Over time, it learns which types of music help you focus best and adjusts its suggestions accordingly.',
+    q: 'What does execution automate?',
+    a: 'Nora can trigger configured controls such as distraction blocking, playlist start, timer setup, and concise notification prompts tied to plan windows.',
   },
   {
-    q: 'What will Nora Focus cost?',
-    a: 'We plan to offer Nora Focus at $9.99/month after the beta period. The first 100 beta users will receive lifetime Pro access for free. During beta, the app is completely free to use.',
+    q: 'How is this different from a timer app?',
+    a: 'Timer apps run fixed intervals. Nora adapts each day from your own outcomes and interruptions, then updates schedule logic accordingly.',
   },
   {
-    q: 'How is this different from a Pomodoro timer?',
-    a: "Pomodoro timers use fixed intervals regardless of your actual work patterns. Nora Focus learns when you naturally focus best, adapts to your energy levels throughout the day, and actively manages distractions during focus blocks. It's the difference between a generic alarm clock and a schedule built around how you actually work.",
+    q: 'Where is waitlist data stored?',
+    a: 'Waitlist records are stored in configured Supabase infrastructure for beta operations. This is separate from on-device focus telemetry.',
   },
   {
-    q: 'When will the beta launch?',
-    a: "We're currently in early validation. Join the waitlist and we'll reach out as spots open up. Beta users will have direct access to the team for feedback and feature requests.",
+    q: 'How do I join the beta?',
+    a: 'Submit your email through the waitlist form. Access is released in controlled batches as capacity opens.',
   },
 ];
 

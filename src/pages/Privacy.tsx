@@ -7,69 +7,49 @@ import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackgr
 
 const sections = [
   {
-    title: 'Scope and Canadian Privacy Framework',
+    title: 'Local Processing',
     content:
-      'This policy applies to XenoraAI products and waitlist communications. We align our practices with applicable Canadian private-sector privacy requirements, including PIPEDA, and with Quebec Law 25 expectations for transparency, governance, and individual rights where applicable.',
+      'Nora Focus is designed for local processing. Behavior analysis and schedule planning run on-device for the core focus loop.',
   },
   {
-    title: 'Information We Collect',
+    title: 'No Cloud Model Training',
     content:
-      'When you sign up for our waitlist, we collect your email address and an optional brief response about your focus challenges. When you use Nora Focus, usage patterns and focus-session signals are processed locally on your device. We do not collect or transmit this behavioral focus data to our servers unless we explicitly request your consent for a specific feature in the future.',
+      'Usage logs are not used to train remote models. Focus telemetry remains local unless you explicitly enable a feature that requires remote transfer.',
   },
   {
-    title: 'Local-First Processing',
+    title: 'Coordination Layer',
     content:
-      'Nora Focus is designed with a local-first architecture. Behavior tracking, pattern analysis, and schedule generation happen on your device. In normal operation, your focus history does not leave your Mac, iPhone, or Android device, which reduces collection risk and limits centralized profiling.',
+      'Nora can use a lightweight coordination service for cross-device schedule and notification consistency while keeping sensitive behavior logs on your device.',
   },
   {
-    title: 'Purpose and Legal Basis (Consent)',
+    title: 'What Data Is Collected',
     content:
-      'We use waitlist data to manage beta access, provide onboarding updates, and send product communications you requested. We rely on your consent for these uses, and you can withdraw consent at any time (for example, by unsubscribing or emailing us). We do not sell personal information and do not use waitlist data for third-party advertising.',
+      'For waitlist operations we collect your email and operational metadata. For product operation, permissioned local signals include screen-time context, app switching patterns, and focus session outcomes.',
   },
   {
-    title: 'Third-Party Services',
+    title: 'How Data Is Used',
     content:
-      "Nora Focus integrates with Spotify for playlist functionality. When you connect Spotify, we use Spotify's authorization flow and request only permissions needed for focus-playback features. Third-party providers process data under their own terms and privacy notices; we recommend reviewing those notices directly.",
+      'Data supports beta access operations, schedule quality improvements, and product reliability. We do not sell personal data.',
   },
   {
-    title: 'International and Cross-Border Processing',
+    title: 'Storage and Retention',
     content:
-      'Our service providers may process limited waitlist information outside your province or outside Canada (for example, cloud email or database infrastructure). When this occurs, information may be subject to the laws of those jurisdictions. We use contractual and security controls to protect personal information in transit and at rest.',
+      'Waitlist data is stored in Supabase infrastructure and retained only as long as needed for beta operations, then removed or anonymized unless law requires retention.',
   },
   {
-    title: 'Data Retention and Deletion',
+    title: 'Your Rights',
     content:
-      'Local focus data remains on your device and can be deleted through app settings. Waitlist data is retained only as long as needed for waitlist and beta operations, then securely deleted or anonymized unless a longer period is required by law. You can request deletion of waitlist data at any time by emailing xenoraai@gmail.com.',
-  },
-  {
-    title: 'Your Privacy Rights',
-    content:
-      'Subject to applicable law, you may request access to personal information we hold about you, request correction of inaccurate information, withdraw consent for certain uses, and request deletion where permitted. We aim to respond within 30 days. To submit a request, contact xenoraai@gmail.com.',
-  },
-  {
-    title: 'Automated Processing and AI',
-    content:
-      'Nora Focus uses automated methods to generate productivity suggestions from local on-device signals. We do not currently use solely automated processing to make legal or similarly significant decisions about eligibility, employment, credit, or access to essential services. If that changes, we will provide additional notice and rights information.',
+      'You may request access, correction, or deletion of personal data we hold in operational systems by contacting xenoraai@gmail.com.',
   },
   {
     title: 'Security',
     content:
-      'We use administrative, technical, and organizational safeguards appropriate to data sensitivity. Measures include least-privilege access controls, encrypted transport (TLS), provider security controls, and operational procedures for incident response. Local data protection also depends on your device security settings (such as passcode and disk encryption).',
-  },
-  {
-    title: 'Privacy Officer and Complaints',
-    content:
-      'Our privacy contact for requests, questions, and complaints is xenoraai@gmail.com. If you believe your concern was not resolved, you may contact the Office of the Privacy Commissioner of Canada (priv.gc.ca). Quebec residents may also contact the Commission d\'acces a l\'information du Quebec (cai.gouv.qc.ca).',
-  },
-  {
-    title: 'Changes to This Policy',
-    content:
-      'We may update this privacy policy from time to time. When we do, we\'ll update the "Last updated" date at the top of this page and notify active beta users via email. Continued use of Nora Focus after changes constitutes acceptance of the updated policy.',
+      'We apply encryption in transit, least-privilege access controls, and operational safeguards proportional to data sensitivity.',
   },
   {
     title: 'Contact',
     content:
-      'If you have questions about this privacy policy or how we handle your data, reach out to us at xenoraai@gmail.com. We\'re based in Montréal, Canada, and are committed to being transparent about our data practices.',
+      'For privacy questions or requests, contact xenoraai@gmail.com.',
   },
 ];
 
