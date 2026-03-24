@@ -6,9 +6,6 @@
 
 @layer base {
   :root {
-    --bg-primary: #0A0A0F;
-    --accent-color: #00D4FF;
-    --text-color: #FFFFFF;
     --bg-base: #0A0A0F;
     --background: 240 30% 4%;
     --foreground: 0 0% 96%;
@@ -19,7 +16,7 @@
     --popover: 240 20% 7%;
     --popover-foreground: 0 0% 96%;
 
-    --primary: 191 100% 50%;
+    --primary: 174 75% 40%;
     --primary-foreground: 240 30% 4%;
 
     --secondary: 240 12% 12%;
@@ -36,18 +33,18 @@
 
     --border: 240 12% 14%;
     --input: 240 12% 14%;
-    --ring: 191 100% 50%;
+    --ring: 174 75% 40%;
 
     --radius: 0.5rem;
 
     --sidebar-background: 240 30% 4%;
     --sidebar-foreground: 0 0% 96%;
-    --sidebar-primary: 191 100% 50%;
+    --sidebar-primary: 174 75% 40%;
     --sidebar-primary-foreground: 240 30% 4%;
     --sidebar-accent: 240 12% 10%;
     --sidebar-accent-foreground: 0 0% 96%;
     --sidebar-border: 240 12% 14%;
-    --sidebar-ring: 191 100% 50%;
+    --sidebar-ring: 174 75% 40%;
   }
 }
 

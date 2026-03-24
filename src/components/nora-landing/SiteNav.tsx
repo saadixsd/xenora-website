@@ -4,7 +4,7 @@ import { ThemeToggle } from '@/components/app/ThemeToggle';
 
 const links = [
   { label: 'Home', to: '/' },
-  { label: 'Nora Focus', to: '/nora/focus' },
+  { label: 'How it Works', to: '/#how-it-works' },
   { label: 'FAQ', to: '/faq' },
   { label: 'Privacy Policy', to: '/privacy' },
 ];

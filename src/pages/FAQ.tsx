@@ -1,69 +1,83 @@
 import { Link } from 'react-router-dom';
 import { Linkedin, Twitter } from 'lucide-react';
+import { Reveal } from '@/components/motion/Reveal';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
+import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackground';
 
 const faqs = [
   {
-    q: 'What is agentic AI in Nora Focus?',
-    a: 'Nora Focus is agentic because it does more than suggest tips. It observes your workflow, analyzes patterns locally, plans a realistic schedule, executes interventions like distraction blocking, and adapts the next day from results.',
+    q: 'What exactly does Nora Focus do?',
+    a: 'Nora Focus is a focus coach that runs on your Mac, iPhone, or Android device. It observes your work patterns — when you focus, when you drift — and builds personalized daily schedules with distraction-free deep work blocks. During those blocks, it manages notifications and suggests Spotify playlists to help you stay in flow.',
   },
   {
-    q: 'How does the 5-step loop work?',
-    a: 'Observe -> Analyze -> Plan -> Execute -> Adapt. Nora measures behavior, finds patterns with a local model, generates a schedule, applies controls and reminders, then refines the next-day plan.',
+    q: 'How does the AI learn my patterns?',
+    a: 'Nora Focus tracks your app usage, focus sessions, and break patterns over time. After a few days, it identifies your natural productivity rhythms — when you do your best work, when you tend to lose focus, and what triggers distraction. All of this processing happens locally on your device.',
   },
   {
-    q: 'Is processing local?',
-    a: 'Yes. Behavior analysis and planning are designed for local execution on your device. Your focus telemetry is not used for cloud model training.',
+    q: 'Is my data private?',
+    a: 'Yes. All behavior tracking and pattern analysis happens locally on your device. Your data is never sent to external servers. We designed Nora Focus with a local-first architecture specifically because focus data is deeply personal.',
   },
   {
-    q: 'What models are used?',
-    a: 'Nora Focus uses Ollama on macOS and MLC-LLM on mobile targets for local inference workloads.',
+    q: 'What platforms are supported?',
+    a: "We're building for macOS first, with iOS and Android apps following closely. The beta will start with Mac, and mobile versions will be available shortly after.",
   },
   {
-    q: 'What data is collected?',
-    a: 'With permission: screen-time signals, app switching behavior, keyboard/activity patterns, and deep-work session outcomes needed to optimize schedules.',
+    q: 'How does the Spotify integration work?',
+    a: 'When a deep work block starts, Nora Focus can automatically play a focus playlist through your Spotify account. Over time, it learns which types of music help you focus best and adjusts its suggestions accordingly.',
   },
   {
-    q: 'How does distraction blocking work?',
-    a: 'During focus windows, Nora can trigger configured app/site restrictions, launch timer routines, and run playlist automation through connected providers.',
+    q: 'What will Nora Focus cost?',
+    a: 'We plan to offer Nora Focus at $9.99/month after the beta period. The first 100 beta users will receive lifetime Pro access for free. During beta, the app is completely free to use.',
   },
   {
-    q: 'Where is waitlist data stored?',
-    a: 'Waitlist contact records are stored in Supabase infrastructure configured in the EU region for operational communications.',
+    q: 'How is this different from a Pomodoro timer?',
+    a: "Pomodoro timers use fixed intervals regardless of your actual work patterns. Nora Focus learns when you naturally focus best, adapts to your energy levels throughout the day, and actively manages distractions during focus blocks. It's the difference between a generic alarm clock and a schedule built around how you actually work.",
   },
   {
-    q: 'How do I join the beta?',
-    a: 'Use the Nora Focus beta form with your email. Access is released in controlled batches as capacity opens.',
+    q: 'When will the beta launch?',
+    a: "We're currently in early validation. Join the waitlist and we'll reach out as spots open up. Beta users will have direct access to the team for feedback and feature requests.",
   },
 ];
 
 const FAQ = () => {
   return (
     <div className="min-h-screen bg-base-100 text-base-content">
-      <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/92 backdrop-blur-md">
+      <NeuralMeshBackground />
+
+      <div className="pointer-events-none fixed inset-0 z-[1] flex items-center justify-center" aria-hidden>
+        <XenoraLogo decorative className="h-[min(44vh,320px)] w-auto max-w-[82vw] opacity-[0.14] sm:h-[min(50vh,400px)]" />
+      </div>
+
+      <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 backdrop-blur-xl">
         <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between gap-2 px-3 py-2 sm:px-6">
-          <Link to="/" className="flex items-center gap-2 sm:gap-2.5 cursor-pointer" aria-label="XenoraAI home">
-            <XenoraLogo decorative className="h-10 w-10 sm:h-12 sm:w-12" />
-            <span className="text-base font-semibold text-base-content sm:text-lg">XenoraAI</span>
+          <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2 sm:gap-2.5 cursor-pointer" aria-label="XenoraAI home">
+            <XenoraLogo decorative className="h-10 w-10 sm:h-14 sm:w-14" />
+            <span className="text-base font-semibold text-base-content sm:text-xl">XenoraAI</span>
           </Link>
           <SiteNav />
         </div>
       </header>
 
-      <main className="relative z-10 mx-auto max-w-4xl px-4 pb-20 pt-28 sm:px-8">
-        <h1 className="premium-heading text-3xl font-semibold sm:text-4xl">Frequently Asked Questions</h1>
-        <p className="mt-3 text-sm text-base-content/55">Technical and operational details for Nora Focus.</p>
+      <main className="relative z-10 mx-auto max-w-3xl px-4 pb-20 pt-28 sm:px-8">
+        <Reveal>
+          <h1 className="premium-heading text-3xl font-semibold sm:text-4xl">Frequently Asked Questions</h1>
+        </Reveal>
+        <Reveal delay={0.05}>
+          <p className="mt-3 text-sm text-base-content/55">Common questions about Nora Focus and how the beta works.</p>
+        </Reveal>
 
         <div className="mt-10 space-y-3">
           {faqs.map((faq, i) => (
-            <div key={faq.q} className="collapse collapse-arrow surface-panel">
-              <input type="checkbox" />
-              <div className="collapse-title text-sm font-medium text-base-content/85">{faq.q}</div>
-              <div className="collapse-content">
-                <p className="text-sm leading-relaxed text-base-content/60">{faq.a}</p>
+            <Reveal key={faq.q} delay={i * 0.03}>
+              <div className="collapse collapse-arrow surface-panel">
+                <input type="checkbox" />
+                <div className="collapse-title text-sm font-medium text-base-content/85">{faq.q}</div>
+                <div className="collapse-content">
+                  <p className="text-sm leading-relaxed text-base-content/60">{faq.a}</p>
+                </div>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </main>

@@ -1,85 +1,122 @@
 import { Link } from 'react-router-dom';
 import { Linkedin, Twitter } from 'lucide-react';
+import { Reveal } from '@/components/motion/Reveal';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
+import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackground';
 
 const sections = [
   {
-    title: 'Local Processing',
+    title: 'Scope and Canadian Privacy Framework',
     content:
-      'Nora Focus is built for local processing. Pattern analysis and planning run on-device. Focus telemetry is not used for cloud model training.',
+      'This policy applies to XenoraAI products and waitlist communications. We align our practices with applicable Canadian private-sector privacy requirements, including PIPEDA, and with Quebec Law 25 expectations for transparency, governance, and individual rights where applicable.',
   },
   {
-    title: 'Cloud Training',
+    title: 'Information We Collect',
     content:
-      'No cloud training is performed on your focus behavior data. Any optional remote services are used only for operational product features, not model training on personal activity streams.',
+      'When you sign up for our waitlist, we collect your email address and an optional brief response about your focus challenges. When you use Nora Focus, usage patterns and focus-session signals are processed locally on your device. We do not collect or transmit this behavioral focus data to our servers unless we explicitly request your consent for a specific feature in the future.',
   },
   {
-    title: 'EU Supabase',
+    title: 'Local-First Processing',
     content:
-      'Waitlist contact data is stored in Supabase infrastructure configured in the EU region. This is limited to operational communications about beta access.',
+      'Nora Focus is designed with a local-first architecture. Behavior tracking, pattern analysis, and schedule generation happen on your device. In normal operation, your focus history does not leave your Mac, iPhone, or Android device, which reduces collection risk and limits centralized profiling.',
   },
   {
-    title: 'Data We Collect',
+    title: 'Purpose and Legal Basis (Consent)',
     content:
-      'For waitlist operations we collect email and minimal metadata required to manage invitations. For app operation, permissioned local signals can include screen-time context, app switching behavior, and focus session outcomes.',
+      'We use waitlist data to manage beta access, provide onboarding updates, and send product communications you requested. We rely on your consent for these uses, and you can withdraw consent at any time (for example, by unsubscribing or emailing us). We do not sell personal information and do not use waitlist data for third-party advertising.',
   },
   {
-    title: 'How We Use Data',
+    title: 'Third-Party Services',
     content:
-      'Data is used for beta access communications, product reliability, and feature operation. We do not sell personal information.',
+      "Nora Focus integrates with Spotify for playlist functionality. When you connect Spotify, we use Spotify's authorization flow and request only permissions needed for focus-playback features. Third-party providers process data under their own terms and privacy notices; we recommend reviewing those notices directly.",
   },
   {
-    title: 'Retention and Deletion',
+    title: 'International and Cross-Border Processing',
     content:
-      'Waitlist records are retained only as long as needed for beta operations, then removed or anonymized unless required by law. Deletion requests can be sent to xenoraai@gmail.com.',
+      'Our service providers may process limited waitlist information outside your province or outside Canada (for example, cloud email or database infrastructure). When this occurs, information may be subject to the laws of those jurisdictions. We use contractual and security controls to protect personal information in transit and at rest.',
   },
   {
-    title: 'Your Rights',
+    title: 'Data Retention and Deletion',
     content:
-      'You may request access, correction, or deletion of the personal information we hold in operational systems. Contact xenoraai@gmail.com for privacy requests.',
+      'Local focus data remains on your device and can be deleted through app settings. Waitlist data is retained only as long as needed for waitlist and beta operations, then securely deleted or anonymized unless a longer period is required by law. You can request deletion of waitlist data at any time by emailing xenoraai@gmail.com.',
+  },
+  {
+    title: 'Your Privacy Rights',
+    content:
+      'Subject to applicable law, you may request access to personal information we hold about you, request correction of inaccurate information, withdraw consent for certain uses, and request deletion where permitted. We aim to respond within 30 days. To submit a request, contact xenoraai@gmail.com.',
+  },
+  {
+    title: 'Automated Processing and AI',
+    content:
+      'Nora Focus uses automated methods to generate productivity suggestions from local on-device signals. We do not currently use solely automated processing to make legal or similarly significant decisions about eligibility, employment, credit, or access to essential services. If that changes, we will provide additional notice and rights information.',
   },
   {
     title: 'Security',
     content:
-      'We apply administrative and technical safeguards including transport encryption, restricted access controls, and provider security controls appropriate to the sensitivity of the data.',
+      'We use administrative, technical, and organizational safeguards appropriate to data sensitivity. Measures include least-privilege access controls, encrypted transport (TLS), provider security controls, and operational procedures for incident response. Local data protection also depends on your device security settings (such as passcode and disk encryption).',
+  },
+  {
+    title: 'Privacy Officer and Complaints',
+    content:
+      'Our privacy contact for requests, questions, and complaints is xenoraai@gmail.com. If you believe your concern was not resolved, you may contact the Office of the Privacy Commissioner of Canada (priv.gc.ca). Quebec residents may also contact the Commission d\'acces a l\'information du Quebec (cai.gouv.qc.ca).',
+  },
+  {
+    title: 'Changes to This Policy',
+    content:
+      'We may update this privacy policy from time to time. When we do, we\'ll update the "Last updated" date at the top of this page and notify active beta users via email. Continued use of Nora Focus after changes constitutes acceptance of the updated policy.',
   },
   {
     title: 'Contact',
     content:
-      'Questions about privacy practices can be sent to xenoraai@gmail.com.',
+      'If you have questions about this privacy policy or how we handle your data, reach out to us at xenoraai@gmail.com. We\'re based in Montréal, Canada, and are committed to being transparent about our data practices.',
   },
 ];
 
 const Privacy = () => {
   return (
     <div className="min-h-screen bg-base-100 text-base-content">
-      <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/92 backdrop-blur-md">
+      <NeuralMeshBackground />
+
+      <div className="pointer-events-none fixed inset-0 z-[1] flex items-center justify-center" aria-hidden>
+        <XenoraLogo decorative className="h-[min(44vh,320px)] w-auto max-w-[82vw] opacity-[0.14] sm:h-[min(50vh,400px)]" />
+      </div>
+
+      <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 backdrop-blur-xl">
         <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between gap-2 px-3 py-2 sm:px-6">
-          <Link to="/" className="flex items-center gap-2 sm:gap-2.5 cursor-pointer" aria-label="XenoraAI home">
-            <XenoraLogo decorative className="h-10 w-10 sm:h-12 sm:w-12" />
-            <span className="text-base font-semibold text-base-content sm:text-lg">XenoraAI</span>
+          <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2 sm:gap-2.5 cursor-pointer" aria-label="XenoraAI home">
+            <XenoraLogo decorative className="h-10 w-10 sm:h-14 sm:w-14" />
+            <span className="text-base font-semibold text-base-content sm:text-xl">XenoraAI</span>
           </Link>
           <SiteNav />
         </div>
       </header>
 
-      <main className="relative z-10 mx-auto max-w-4xl px-4 pb-20 pt-28 sm:px-8">
-        <h1 className="premium-heading text-3xl font-semibold sm:text-4xl">Privacy Policy</h1>
-        <p className="mt-3 text-sm text-base-content/55">Local processing. No cloud training. EU Supabase.</p>
-        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-base-content/60">
-          Nora Focus is designed to minimize centralized data exposure while keeping operational systems transparent and auditable.
-        </p>
+      <main className="relative z-10 mx-auto max-w-3xl px-4 pb-20 pt-28 sm:px-8">
+        <Reveal>
+          <h1 className="premium-heading text-3xl font-semibold sm:text-4xl">Privacy Policy</h1>
+        </Reveal>
+        <Reveal delay={0.05}>
+          <p className="mt-3 text-sm text-base-content/55">Last updated: March 2026</p>
+        </Reveal>
+        <Reveal delay={0.08}>
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-base-content/60">
+            At XenoraAI, we treat focus data as personal. This page explains what we collect, how we use it, and why
+            most Nora Focus data stays on your device.
+          </p>
+        </Reveal>
 
         <div className="mt-10 space-y-3">
           {sections.map((section, i) => (
-            <div key={section.title} className="collapse collapse-arrow surface-panel">
-              <input type="checkbox" />
-              <div className="collapse-title text-sm font-medium text-base-content/85">{section.title}</div>
-              <div className="collapse-content">
-                <p className="text-sm leading-relaxed text-base-content/60">{section.content}</p>
+            <Reveal key={section.title} delay={i * 0.03}>
+              <div className="collapse collapse-arrow surface-panel">
+                <input type="checkbox" />
+                <div className="collapse-title text-sm font-medium text-base-content/85">{section.title}</div>
+                <div className="collapse-content">
+                  <p className="text-sm leading-relaxed text-base-content/60">{section.content}</p>
+                </div>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </main>
