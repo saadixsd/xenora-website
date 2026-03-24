@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import { Linkedin, Twitter } from 'lucide-react';
+import { Instagram, Linkedin } from 'lucide-react';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
 import { NoraWaitlistForm } from '@/components/nora-landing/NoraWaitlistForm';
@@ -193,8 +193,8 @@ const Index = () => {
                 <a href="https://www.linkedin.com/company/xenoraai" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="transition-colors hover:text-base-content/85">
                   <Linkedin className="h-4 w-4" />
                 </a>
-                <a href="https://twitter.com/xenoraai" target="_blank" rel="noreferrer" aria-label="Twitter" className="transition-colors hover:text-base-content/85">
-                  <Twitter className="h-4 w-4" />
+                <a href="https://www.instagram.com/xenoraai" target="_blank" rel="noreferrer" aria-label="Instagram" className="transition-colors hover:text-base-content/85">
+                  <Instagram className="h-4 w-4" />
                 </a>
                 <a href="https://x.com/xenoraai" target="_blank" rel="noreferrer" aria-label="X" className="transition-colors hover:text-base-content/85">
                   <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden>
