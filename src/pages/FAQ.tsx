@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Linkedin, Twitter } from 'lucide-react';
 import { Reveal } from '@/components/motion/Reveal';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
@@ -50,7 +51,7 @@ const FAQ = () => {
 
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 backdrop-blur-xl">
         <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between px-4 py-2 sm:px-6">
-          <Link to="/" className="flex items-center gap-2.5" aria-label="XenoraAI home">
+          <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2.5 cursor-pointer" aria-label="XenoraAI home">
             <XenoraLogo decorative className="h-12 w-12 sm:h-14 sm:w-14" />
             <span className="text-lg font-semibold text-base-content sm:text-xl">XenoraAI</span>
           </Link>
@@ -82,13 +83,30 @@ const FAQ = () => {
       </main>
 
       <footer className="relative z-10 border-t border-base-content/[0.07] px-4 py-10 sm:px-8">
-        <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 sm:flex-row">
-          <p className="text-sm text-base-content/45">XenoraAI · Montréal</p>
-          <div className="flex gap-5 text-xs text-base-content/45">
+        <div className="mx-auto grid max-w-5xl gap-6 text-center sm:grid-cols-3 sm:text-left">
+          <div className="flex flex-col items-center gap-3 sm:items-start">
+            <p className="text-sm font-medium text-base-content/60">XenoraAI</p>
+            <div className="flex items-center gap-3 text-base-content/50">
+              <a href="https://www.linkedin.com/company/xenoraai" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="transition-colors hover:text-base-content/85">
+                <Linkedin className="h-4 w-4" />
+              </a>
+              <a href="https://twitter.com/xenoraai" target="_blank" rel="noreferrer" aria-label="Twitter" className="transition-colors hover:text-base-content/85">
+                <Twitter className="h-4 w-4" />
+              </a>
+              <a href="https://x.com/xenoraai" target="_blank" rel="noreferrer" aria-label="X" className="transition-colors hover:text-base-content/85">
+                <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden>
+                  <path d="M18.9 2H22l-6.77 7.74L23 22h-6.2l-4.85-6.35L6.4 22H3.3l7.24-8.27L1 2h6.35l4.38 5.78L18.9 2z" />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div className="flex items-center justify-center">
+            <p className="text-xs text-base-content/40">XenoraAI 2026</p>
+          </div>
+          <div className="flex items-center justify-center gap-5 text-xs text-base-content/45 sm:justify-end">
             <Link to="/faq" className="transition-colors hover:text-base-content/85">FAQ</Link>
             <Link to="/privacy" className="transition-colors hover:text-base-content/85">Privacy Policy</Link>
           </div>
-          <p className="text-xs text-base-content/35">© {new Date().getFullYear()} XenoraAI</p>
         </div>
       </footer>
     </div>
