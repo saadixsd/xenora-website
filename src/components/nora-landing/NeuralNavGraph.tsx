@@ -85,9 +85,9 @@ export const NeuralNavGraph = ({ activeId, hoveredId, onNodeClick, onHover, comp
         >
           <defs>
             <linearGradient id="synapse" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="rgb(34 211 238 / 0.08)" />
-              <stop offset="50%" stopColor="rgb(34 211 238 / 0.5)" />
-              <stop offset="100%" stopColor="rgb(34 211 238 / 0.08)" />
+              <stop offset="0%" stopColor="rgb(20 184 166 / 0.08)" />
+              <stop offset="50%" stopColor="rgb(20 184 166 / 0.5)" />
+              <stop offset="100%" stopColor="rgb(20 184 166 / 0.08)" />
             </linearGradient>
             <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
               <feGaussianBlur stdDeviation="0.6" result="blur" />
@@ -108,7 +108,7 @@ export const NeuralNavGraph = ({ activeId, hoveredId, onNodeClick, onHover, comp
                   y1={cy}
                   x2={p.x}
                   y2={p.y}
-                  stroke={lit ? 'rgb(34 211 238 / 0.5)' : 'rgb(34 211 238 / 0.12)'}
+                  stroke={lit ? 'rgb(20 184 166 / 0.5)' : 'rgb(20 184 166 / 0.12)'}
                   strokeWidth={lit ? 0.5 : 0.32}
                   filter={lit ? 'url(#glow)' : undefined}
                   className="transition-all duration-300"
@@ -165,7 +165,7 @@ export const NeuralNavGraph = ({ activeId, hoveredId, onNodeClick, onHover, comp
               <span
                 className={`flex h-11 w-11 items-center justify-center rounded-full border bg-base-100/95 shadow-sm backdrop-blur-sm transition-all duration-300 ${
                   lit
-                    ? 'scale-105 border-primary/70 shadow-[0_0_24px_rgb(34_211_238_/_0.35)]'
+                    ? 'scale-105 border-primary/70 shadow-[0_0_24px_rgb(20_184_166_/_0.35)]'
                     : 'scale-100 border-base-content/15'
                 }`}
               >

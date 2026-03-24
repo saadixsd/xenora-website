@@ -83,7 +83,7 @@ const Index = () => {
               <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <a
                   href="#waitlist"
-                  className="btn btn-primary px-8 shadow-[0_10px_30px_rgba(0,212,255,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(0,212,255,0.28)]"
+                  className="btn btn-primary px-8 shadow-[0_10px_30px_rgba(14,165,164,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,165,164,0.28)]"
                 >
                   Join the beta waitlist
                 </a>

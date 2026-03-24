@@ -6,7 +6,7 @@ Minimal, dark cosmic landing page inspired by Perplexity/Claude's clean aestheti
 
 ## Design
 - **Dark-only** cosmic theme: black → deep purple gradient
-- **Teal/cyan accents** (#00D4FF, #00FF88) with neon glow effects
+- **Teal/green accents** (#14B8A6, #00FF88) with neon glow effects
 - **Inter font**, massive hero typography, glassmorphism cards
 - **Canvas neural network animation** in hero background (animated nodes + connections)
 - Minimal layout — lots of whitespace, Perplexity-style clarity
