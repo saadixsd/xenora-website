@@ -6,44 +6,44 @@
 
 @layer base {
   :root {
-    --background: 260 20% 4%;
+    --background: 240 30% 4%;
     --foreground: 0 0% 96%;
 
-    --card: 260 20% 8%;
+    --card: 240 20% 7%;
     --card-foreground: 0 0% 96%;
 
-    --popover: 260 20% 8%;
+    --popover: 240 20% 7%;
     --popover-foreground: 0 0% 96%;
 
-    --primary: 190 100% 44%;
-    --primary-foreground: 260 20% 4%;
+    --primary: 191 100% 50%;
+    --primary-foreground: 240 30% 4%;
 
-    --secondary: 260 15% 14%;
+    --secondary: 240 12% 12%;
     --secondary-foreground: 0 0% 96%;
 
-    --muted: 260 15% 12%;
-    --muted-foreground: 260 10% 50%;
+    --muted: 240 12% 10%;
+    --muted-foreground: 240 8% 46%;
 
-    --accent: 270 40% 20%;
+    --accent: 260 30% 16%;
     --accent-foreground: 0 0% 96%;
 
     --destructive: 0 70% 55%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 260 15% 16%;
-    --input: 260 15% 16%;
-    --ring: 190 100% 44%;
+    --border: 240 12% 14%;
+    --input: 240 12% 14%;
+    --ring: 191 100% 50%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    --sidebar-background: 260 20% 4%;
+    --sidebar-background: 240 30% 4%;
     --sidebar-foreground: 0 0% 96%;
-    --sidebar-primary: 190 100% 44%;
-    --sidebar-primary-foreground: 260 20% 4%;
-    --sidebar-accent: 260 15% 12%;
+    --sidebar-primary: 191 100% 50%;
+    --sidebar-primary-foreground: 240 30% 4%;
+    --sidebar-accent: 240 12% 10%;
     --sidebar-accent-foreground: 0 0% 96%;
-    --sidebar-border: 260 15% 16%;
-    --sidebar-ring: 190 100% 44%;
+    --sidebar-border: 240 12% 14%;
+    --sidebar-ring: 191 100% 50%;
   }
 }
 
@@ -53,29 +53,14 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 }
 
 @layer utilities {
-  /* Editorial section fade — use sparingly between blocks */
-  .xenora-section-fade {
-    background: linear-gradient(
-      180deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.02) 50%,
-      transparent 100%
-    );
-  }
   .glass {
-    @apply bg-card/40 backdrop-blur-xl border border-border/30;
-  }
-  .glow-teal {
-    box-shadow: 0 0 30px hsl(190 100% 44% / 0.15), 0 0 60px hsl(190 100% 44% / 0.05);
-  }
-  .text-glow {
-    text-shadow: 0 0 40px hsl(190 100% 44% / 0.3), 0 0 80px hsl(190 100% 44% / 0.1);
+    @apply bg-card/40 backdrop-blur-xl border border-border/40;
   }
 }
