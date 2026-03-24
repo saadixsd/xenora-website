@@ -37,7 +37,7 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
   };
 
   return (
-    <nav className={`flex items-center gap-1 ${className}`} aria-label="Main navigation">
+    <nav className={`flex items-center gap-1 sm:gap-2 ${className}`} aria-label="Main navigation">
       <ul className="menu menu-horizontal menu-sm hidden flex-nowrap px-0 md:flex">
         {links.map((link) => (
           <li key={link.to}>
@@ -53,7 +53,7 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
         <button
           type="button"
           tabIndex={0}
-          className="btn btn-ghost btn-sm border border-base-content/10 font-normal normal-case text-base-content/75"
+          className="btn btn-ghost btn-sm h-8 min-h-8 border border-base-content/10 px-2.5 font-normal normal-case text-xs text-base-content/75 sm:px-3 sm:text-sm"
           aria-haspopup="menu"
           aria-controls={menuId}
         >
@@ -62,7 +62,7 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
         <ul
           id={menuId}
           tabIndex={0}
-          className="dropdown-content menu z-[100] mt-2 w-48 rounded-lg border border-base-content/10 bg-base-200 p-2 shadow-lg"
+          className="dropdown-content menu z-[100] mt-2 w-44 rounded-lg border border-base-content/10 bg-base-200 p-2 shadow-lg sm:w-48"
         >
           {links.map((link) => (
             <li key={link.to}>
