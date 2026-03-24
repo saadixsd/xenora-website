@@ -106,7 +106,7 @@ export default {
       },
       {
         "xenora-light": {
-          primary: "#00A7D9",
+          primary: "#0EA5A4",
           "primary-content": "#ffffff",
           secondary: "#e8ecf6",
           "secondary-content": "#131722",
@@ -118,7 +118,7 @@ export default {
           "base-200": "#eef2f9",
           "base-300": "#e4e9f3",
           "base-content": "#141824",
-          info: "#00A7D9",
+          info: "#0EA5A4",
           success: "#16a34a",
           warning: "#ca8a04",
           error: "#dc2626",
