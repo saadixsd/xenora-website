@@ -35,6 +35,13 @@ const Index = () => {
   const { scrollYProgress } = useScroll();
   const reduceMotion = useReducedMotion();
   const watermarkY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : -36]);
+  const smoothTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  const scrollToSection = (id: string) => {
+    smoothTop();
+    window.setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 280);
+  };
 
   return (
     <div className="min-h-screen bg-base-100 text-base-content">
@@ -66,34 +73,36 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.05}>
               <h1 className="premium-heading mt-4 text-4xl font-semibold sm:text-6xl lg:text-7xl">
-                Protect your best work time.
+                Own your focus. Guard your time. Build greatness.
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-6 max-w-2xl text-base text-base-content/70 sm:text-lg">
-                Nora Focus learns how you work, helps shape realistic daily focus blocks, and quietly keeps distractions from taking over.
+                Nora Focus learns your real work rhythm, builds practical focus blocks, and reduces distractions without adding friction.
               </p>
             </Reveal>
             <Reveal delay={0.15}>
               <p className="mx-auto mt-4 max-w-xl text-sm text-base-content/50 sm:text-base">
-                Built for people who want calm, consistent deep work without rigid routines.
+                Built for calm, professional execution across high-priority work.
               </p>
             </Reveal>
 
             <Reveal delay={0.2}>
               <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <a
-                  href="#waitlist"
+                <button
+                  type="button"
                   className="btn btn-primary px-8 shadow-[0_10px_30px_rgba(14,165,164,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,165,164,0.28)]"
+                  onClick={() => scrollToSection('waitlist')}
                 >
                   Join the beta waitlist
-                </a>
-                <a
-                  href="#how-it-works"
+                </button>
+                <button
+                  type="button"
                   className="btn btn-ghost border border-base-content/15 px-7 text-base-content/80 transition-all duration-300 hover:border-primary/45 hover:bg-base-200/45 hover:text-base-content"
+                  onClick={() => scrollToSection('how-it-works')}
                 >
                   See how it works
-                </a>
+                </button>
               </div>
             </Reveal>
           </div>
@@ -113,7 +122,7 @@ const Index = () => {
             <div className="mt-14 grid gap-6 md:grid-cols-3">
               {flowSteps.map((s, index) => (
                 <Reveal key={s.step} delay={0.08 * index}>
-                  <article className="surface-panel h-full p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_18px_40px_rgba(0,0,0,0.35)]">
+                  <article className="surface-panel h-full p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_14px_32px_rgba(0,212,255,0.1)]">
                     <span className="font-mono text-xs text-primary/75">{s.step}</span>
                     <h3 className="mt-2 text-base font-semibold text-base-content">{s.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed text-base-content/55">{s.body}</p>
@@ -138,7 +147,7 @@ const Index = () => {
             <div className="mt-12 grid gap-5 sm:grid-cols-3">
               {valueCards.map((card, index) => (
                 <Reveal key={card.title} delay={0.08 * index}>
-                  <article className="surface-panel h-full p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/25 hover:bg-base-200/45">
+                  <article className="surface-panel h-full p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/25 hover:bg-base-200/45 hover:shadow-[0_12px_26px_rgba(0,212,255,0.08)]">
                     <h3 className="text-sm font-semibold text-base-content">{card.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed text-base-content/55">{card.desc}</p>
                   </article>
@@ -185,13 +194,12 @@ const Index = () => {
               </div>
             </div>
             <div className="flex flex-col items-center justify-center gap-1">
-              <p className="text-xs text-base-content/45">XenoraAI 2026</p>
               <p className="text-xs text-base-content/40">@XenoraAI 2026</p>
               <p className="text-[11px] tracking-[0.16em] text-base-content/35">~Know Beyond</p>
             </div>
             <div className="flex items-center justify-center gap-5 text-xs text-base-content/45 sm:justify-end">
-              <Link to="/faq" className="transition-colors hover:text-base-content/85">FAQ</Link>
-              <Link to="/privacy" className="transition-colors hover:text-base-content/85">Privacy Policy</Link>
+              <Link to="/faq" onClick={smoothTop} className="transition-colors hover:text-base-content/85">FAQ</Link>
+              <Link to="/privacy" onClick={smoothTop} className="transition-colors hover:text-base-content/85">Privacy Policy</Link>
             </div>
           </div>
         </footer>

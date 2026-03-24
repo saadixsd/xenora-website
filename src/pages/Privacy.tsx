@@ -74,6 +74,8 @@ const sections = [
 ];
 
 const Privacy = () => {
+  const smoothTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+
   return (
     <div className="min-h-screen bg-base-100 text-base-content">
       <NeuralMeshBackground />
@@ -84,7 +86,7 @@ const Privacy = () => {
 
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 backdrop-blur-xl">
         <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between gap-2 px-3 py-2 sm:px-6">
-          <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2 sm:gap-2.5 cursor-pointer" aria-label="XenoraAI home">
+          <Link to="/" onClick={smoothTop} className="flex items-center gap-2 sm:gap-2.5 cursor-pointer" aria-label="XenoraAI home">
             <XenoraLogo decorative className="h-10 w-10 sm:h-14 sm:w-14" />
             <span className="text-base font-semibold text-base-content sm:text-xl">XenoraAI</span>
           </Link>
@@ -140,13 +142,12 @@ const Privacy = () => {
             </div>
           </div>
           <div className="flex flex-col items-center justify-center gap-1">
-            <p className="text-xs text-base-content/45">XenoraAI 2026</p>
             <p className="text-xs text-base-content/40">@XenoraAI 2026</p>
             <p className="text-[11px] tracking-[0.16em] text-base-content/35">~Know Beyond</p>
           </div>
           <div className="flex items-center justify-center gap-5 text-xs text-base-content/45 sm:justify-end">
-            <Link to="/faq" className="transition-colors hover:text-base-content/85">FAQ</Link>
-            <Link to="/privacy" className="transition-colors hover:text-base-content/85">Privacy Policy</Link>
+            <Link to="/faq" onClick={smoothTop} className="transition-colors hover:text-base-content/85">FAQ</Link>
+            <Link to="/privacy" onClick={smoothTop} className="transition-colors hover:text-base-content/85">Privacy Policy</Link>
           </div>
         </div>
       </footer>
