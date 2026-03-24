@@ -39,12 +39,12 @@ const sections = [
   {
     title: 'Data Retention and Deletion',
     content:
-      'Local focus data remains on your device and can be deleted through app settings. Waitlist data is retained only as long as needed for waitlist and beta operations, then securely deleted or anonymized unless a longer period is required by law. You can request deletion of waitlist data at any time by emailing hello@xenoraai.com.',
+      'Local focus data remains on your device and can be deleted through app settings. Waitlist data is retained only as long as needed for waitlist and beta operations, then securely deleted or anonymized unless a longer period is required by law. You can request deletion of waitlist data at any time by emailing xenoraai@gmail.com.',
   },
   {
     title: 'Your Privacy Rights',
     content:
-      'Subject to applicable law, you may request access to personal information we hold about you, request correction of inaccurate information, withdraw consent for certain uses, and request deletion where permitted. We aim to respond within 30 days. To submit a request, contact hello@xenoraai.com.',
+      'Subject to applicable law, you may request access to personal information we hold about you, request correction of inaccurate information, withdraw consent for certain uses, and request deletion where permitted. We aim to respond within 30 days. To submit a request, contact xenoraai@gmail.com.',
   },
   {
     title: 'Automated Processing and AI',
@@ -59,7 +59,7 @@ const sections = [
   {
     title: 'Privacy Officer and Complaints',
     content:
-      'Our privacy contact for requests, questions, and complaints is hello@xenoraai.com. If you believe your concern was not resolved, you may contact the Office of the Privacy Commissioner of Canada (priv.gc.ca). Quebec residents may also contact the Commission d\'acces a l\'information du Quebec (cai.gouv.qc.ca).',
+      'Our privacy contact for requests, questions, and complaints is xenoraai@gmail.com. If you believe your concern was not resolved, you may contact the Office of the Privacy Commissioner of Canada (priv.gc.ca). Quebec residents may also contact the Commission d\'acces a l\'information du Quebec (cai.gouv.qc.ca).',
   },
   {
     title: 'Changes to This Policy',
@@ -69,7 +69,7 @@ const sections = [
   {
     title: 'Contact',
     content:
-      'If you have questions about this privacy policy or how we handle your data, reach out to us at hello@xenoraai.com. We\'re based in Montréal, Canada, and are committed to being transparent about our data practices.',
+      'If you have questions about this privacy policy or how we handle your data, reach out to us at xenoraai@gmail.com. We\'re based in Montréal, Canada, and are committed to being transparent about our data practices.',
   },
 ];
 
