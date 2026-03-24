@@ -44,13 +44,13 @@ const Index = () => {
         className="pointer-events-none fixed inset-0 z-[1] flex items-center justify-center"
         aria-hidden
       >
-        <XenoraLogo decorative className="h-[min(46vh,360px)] w-auto max-w-[78vw] opacity-[0.07]" />
+        <XenoraLogo decorative className="h-[min(52vh,420px)] w-auto max-w-[82vw] opacity-[0.14]" />
       </motion.div>
 
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 backdrop-blur-xl">
         <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between px-4 py-2 sm:px-6">
           <Link to="/" className="flex items-center gap-2.5" aria-label="XenoraAI home">
-            <XenoraLogo decorative className="h-7 w-7 sm:h-8 sm:w-8" />
+            <XenoraLogo decorative className="h-[72px] w-[72px] sm:h-20 sm:w-20" />
             <span className="text-sm font-semibold text-base-content">XenoraAI</span>
           </Link>
           <SiteNav />

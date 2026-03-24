@@ -6,39 +6,59 @@ import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackgr
 
 const sections = [
   {
+    title: 'Scope and Canadian Privacy Framework',
+    content:
+      'This policy applies to XenoraAI products and waitlist communications. We align our practices with applicable Canadian private-sector privacy requirements, including PIPEDA, and with Quebec Law 25 expectations for transparency, governance, and individual rights where applicable.',
+  },
+  {
     title: 'Information We Collect',
     content:
-      'When you sign up for our waitlist, we collect your email address and a brief response about your focus challenges. When you use Nora Focus, the app collects app usage patterns, focus session data, and break patterns — all of which are processed and stored locally on your device. We do not collect or transmit this behavioral data to our servers.',
+      'When you sign up for our waitlist, we collect your email address and an optional brief response about your focus challenges. When you use Nora Focus, usage patterns and focus-session signals are processed locally on your device. We do not collect or transmit this behavioral focus data to our servers unless we explicitly request your consent for a specific feature in the future.',
   },
   {
     title: 'Local-First Processing',
     content:
-      'Nora Focus is designed with a local-first architecture. All behavior tracking, pattern analysis, and schedule generation happens entirely on your device. Your focus data never leaves your Mac, iPhone, or Android device. This means we cannot access, read, or share your productivity data — because we never have it.',
+      'Nora Focus is designed with a local-first architecture. Behavior tracking, pattern analysis, and schedule generation happen on your device. In normal operation, your focus history does not leave your Mac, iPhone, or Android device, which reduces collection risk and limits centralized profiling.',
   },
   {
-    title: 'How We Use Your Information',
+    title: 'Purpose and Legal Basis (Consent)',
     content:
-      'Waitlist data (email and focus challenge response) is used solely to manage beta access and communicate product updates. We will never sell your information to third parties or use it for advertising. If you connect Spotify, we access only the minimum permissions needed to play and manage focus playlists.',
+      'We use waitlist data to manage beta access, provide onboarding updates, and send product communications you requested. We rely on your consent for these uses, and you can withdraw consent at any time (for example, by unsubscribing or emailing us). We do not sell personal information and do not use waitlist data for third-party advertising.',
   },
   {
     title: 'Third-Party Services',
     content:
-      "Nora Focus integrates with Spotify for playlist functionality. When you connect your Spotify account, we follow Spotify's authorization flow and request only the permissions necessary to play music during focus blocks. No other third-party services have access to your data.",
+      "Nora Focus integrates with Spotify for playlist functionality. When you connect Spotify, we use Spotify's authorization flow and request only permissions needed for focus-playback features. Third-party providers process data under their own terms and privacy notices; we recommend reviewing those notices directly.",
+  },
+  {
+    title: 'International and Cross-Border Processing',
+    content:
+      'Our service providers may process limited waitlist information outside your province or outside Canada (for example, cloud email or database infrastructure). When this occurs, information may be subject to the laws of those jurisdictions. We use contractual and security controls to protect personal information in transit and at rest.',
   },
   {
     title: 'Data Retention and Deletion',
     content:
-      'Your local focus data is stored on your device and can be deleted at any time through the app settings. Waitlist data is retained until you request removal or until the beta period concludes. To request deletion of your waitlist data, email us at hello@xenoraai.com.',
+      'Local focus data remains on your device and can be deleted through app settings. Waitlist data is retained only as long as needed for waitlist and beta operations, then securely deleted or anonymized unless a longer period is required by law. You can request deletion of waitlist data at any time by emailing hello@xenoraai.com.',
   },
   {
-    title: 'Your Rights',
+    title: 'Your Privacy Rights',
     content:
-      'You have the right to access, correct, or delete any personal data we hold about you. You can request a copy of your data, ask us to update incorrect information, or request complete deletion. We respond to all data requests within 30 days. Contact hello@xenoraai.com for any privacy-related requests.',
+      'Subject to applicable law, you may request access to personal information we hold about you, request correction of inaccurate information, withdraw consent for certain uses, and request deletion where permitted. We aim to respond within 30 days. To submit a request, contact hello@xenoraai.com.',
+  },
+  {
+    title: 'Automated Processing and AI',
+    content:
+      'Nora Focus uses automated methods to generate productivity suggestions from local on-device signals. We do not currently use solely automated processing to make legal or similarly significant decisions about eligibility, employment, credit, or access to essential services. If that changes, we will provide additional notice and rights information.',
   },
   {
     title: 'Security',
     content:
-      "We use industry-standard security practices to protect the limited data we do collect (email addresses and waitlist responses). All data in transit is encrypted via TLS. Local data on your device is protected by your operating system's built-in security features and encryption.",
+      'We use administrative, technical, and organizational safeguards appropriate to data sensitivity. Measures include least-privilege access controls, encrypted transport (TLS), provider security controls, and operational procedures for incident response. Local data protection also depends on your device security settings (such as passcode and disk encryption).',
+  },
+  {
+    title: 'Privacy Officer and Complaints',
+    content:
+      'Our privacy contact for requests, questions, and complaints is hello@xenoraai.com. If you believe your concern was not resolved, you may contact the Office of the Privacy Commissioner of Canada (priv.gc.ca). Quebec residents may also contact the Commission d\'acces a l\'information du Quebec (cai.gouv.qc.ca).',
   },
   {
     title: 'Changes to This Policy',
@@ -58,13 +78,13 @@ const Privacy = () => {
       <NeuralMeshBackground />
 
       <div className="pointer-events-none fixed inset-0 z-[1] flex items-center justify-center" aria-hidden>
-        <XenoraLogo decorative className="h-[min(44vh,340px)] w-auto max-w-[78vw] opacity-[0.07]" />
+        <XenoraLogo decorative className="h-[min(50vh,400px)] w-auto max-w-[82vw] opacity-[0.14]" />
       </div>
 
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 backdrop-blur-xl">
         <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between px-4 py-2 sm:px-6">
           <Link to="/" className="flex items-center gap-2.5" aria-label="XenoraAI home">
-            <XenoraLogo decorative className="h-7 w-7 sm:h-8 sm:w-8" />
+            <XenoraLogo decorative className="h-[72px] w-[72px] sm:h-20 sm:w-20" />
             <span className="text-sm font-semibold text-base-content">XenoraAI</span>
           </Link>
           <SiteNav />
