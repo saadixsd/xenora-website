@@ -84,8 +84,8 @@ const Privacy = () => {
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 backdrop-blur-xl">
         <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between px-4 py-2 sm:px-6">
           <Link to="/" className="flex items-center gap-2.5" aria-label="XenoraAI home">
-            <XenoraLogo decorative className="h-[72px] w-[72px] sm:h-20 sm:w-20" />
-            <span className="text-sm font-semibold text-base-content">XenoraAI</span>
+            <XenoraLogo decorative className="h-12 w-12 sm:h-14 sm:w-14" />
+            <span className="text-lg font-semibold text-base-content sm:text-xl">XenoraAI</span>
           </Link>
           <SiteNav />
         </div>
