@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useId } from 'react';
+import { ThemeToggle } from '@/components/app/ThemeToggle';
 
 const links = [
   { label: 'Home', to: '/' },
@@ -40,7 +41,10 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
       <ul className="menu menu-horizontal menu-sm hidden flex-nowrap px-0 md:flex">
         {links.map((link) => (
           <li key={link.to}>
-            {renderLink(link, 'rounded-md px-3 py-2 text-sm font-normal text-base-content/65 hover:text-base-content')}
+            {renderLink(
+              link,
+              'rounded-md px-3 py-2 text-sm font-normal text-base-content/65 transition-all duration-300 hover:bg-base-200/60 hover:text-base-content',
+            )}
           </li>
         ))}
       </ul>
@@ -67,6 +71,8 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
           ))}
         </ul>
       </div>
+
+      <ThemeToggle />
     </nav>
   );
 };

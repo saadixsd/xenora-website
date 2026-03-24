@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Reveal } from '@/components/motion/Reveal';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
 import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackground';
@@ -18,7 +19,7 @@ const faqs = [
   },
   {
     q: 'What platforms are supported?',
-    a: 'We\'re building for macOS first, with iOS and Android apps following closely. The beta will start with Mac, and mobile versions will be available shortly after.',
+    a: "We're building for macOS first, with iOS and Android apps following closely. The beta will start with Mac, and mobile versions will be available shortly after.",
   },
   {
     q: 'How does the Spotify integration work?',
@@ -30,25 +31,25 @@ const faqs = [
   },
   {
     q: 'How is this different from a Pomodoro timer?',
-    a: 'Pomodoro timers use fixed intervals regardless of your actual work patterns. Nora Focus learns when you naturally focus best, adapts to your energy levels throughout the day, and actively manages distractions during focus blocks. It\'s the difference between a generic alarm clock and a schedule built around how you actually work.',
+    a: "Pomodoro timers use fixed intervals regardless of your actual work patterns. Nora Focus learns when you naturally focus best, adapts to your energy levels throughout the day, and actively manages distractions during focus blocks. It's the difference between a generic alarm clock and a schedule built around how you actually work.",
   },
   {
     q: 'When will the beta launch?',
-    a: 'We\'re currently in early validation. Join the waitlist and we\'ll reach out as spots open up. Beta users will have direct access to the team for feedback and feature requests.',
+    a: "We're currently in early validation. Join the waitlist and we'll reach out as spots open up. Beta users will have direct access to the team for feedback and feature requests.",
   },
 ];
 
 const FAQ = () => {
   return (
-    <div data-theme="xenora" className="min-h-screen bg-[#0A0A0F] text-base-content">
+    <div className="min-h-screen bg-base-100 text-base-content">
       <NeuralMeshBackground />
 
       <div className="pointer-events-none fixed inset-0 z-[1] flex items-center justify-center" aria-hidden>
-        <XenoraLogo decorative className="h-[min(50vh,400px)] w-auto max-w-[80vw] opacity-[0.08]" />
+        <XenoraLogo decorative className="h-[min(44vh,340px)] w-auto max-w-[78vw] opacity-[0.07]" />
       </div>
 
-      <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.06] bg-[#0A0A0F]/80 backdrop-blur-md">
-        <div className="mx-auto flex min-h-14 max-w-5xl items-center justify-between px-4 py-2 sm:px-6">
+      <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 backdrop-blur-xl">
+        <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between px-4 py-2 sm:px-6">
           <Link to="/" className="flex items-center gap-2.5" aria-label="XenoraAI home">
             <XenoraLogo decorative className="h-7 w-7 sm:h-8 sm:w-8" />
             <span className="text-sm font-semibold text-base-content">XenoraAI</span>
@@ -57,31 +58,37 @@ const FAQ = () => {
         </div>
       </header>
 
-      <main className="relative z-10 mx-auto max-w-2xl px-4 pb-20 pt-28 sm:px-8">
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Frequently Asked Questions</h1>
-        <p className="mt-3 text-sm text-base-content/45">Common questions about Nora Focus.</p>
+      <main className="relative z-10 mx-auto max-w-3xl px-4 pb-20 pt-28 sm:px-8">
+        <Reveal>
+          <h1 className="premium-heading text-3xl font-semibold sm:text-4xl">Frequently Asked Questions</h1>
+        </Reveal>
+        <Reveal delay={0.05}>
+          <p className="mt-3 text-sm text-base-content/55">Common questions about Nora Focus and how the beta works.</p>
+        </Reveal>
 
         <div className="mt-10 space-y-3">
           {faqs.map((faq, i) => (
-            <div key={i} className="collapse collapse-arrow rounded-lg border border-base-content/[0.06] bg-base-200/20">
-              <input type="radio" name="faq-accordion" />
-              <div className="collapse-title text-sm font-medium text-base-content/80">{faq.q}</div>
-              <div className="collapse-content">
-                <p className="text-sm leading-relaxed text-base-content/45">{faq.a}</p>
+            <Reveal key={faq.q} delay={i * 0.03}>
+              <div className="collapse collapse-arrow surface-panel">
+                <input type="checkbox" />
+                <div className="collapse-title text-sm font-medium text-base-content/85">{faq.q}</div>
+                <div className="collapse-content">
+                  <p className="text-sm leading-relaxed text-base-content/60">{faq.a}</p>
+                </div>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </main>
 
-      <footer className="relative z-10 border-t border-base-content/[0.06] px-4 py-10 sm:px-8">
+      <footer className="relative z-10 border-t border-base-content/[0.07] px-4 py-10 sm:px-8">
         <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 sm:flex-row">
-          <p className="text-sm text-base-content/40">XenoraAI · Montréal</p>
-          <div className="flex gap-5 text-xs text-base-content/35">
-            <Link to="/faq" className="hover:text-base-content/60">FAQ</Link>
-            <Link to="/privacy" className="hover:text-base-content/60">Privacy Policy</Link>
+          <p className="text-sm text-base-content/45">XenoraAI · Montréal</p>
+          <div className="flex gap-5 text-xs text-base-content/45">
+            <Link to="/faq" className="transition-colors hover:text-base-content/85">FAQ</Link>
+            <Link to="/privacy" className="transition-colors hover:text-base-content/85">Privacy Policy</Link>
           </div>
-          <p className="text-xs text-base-content/25">© {new Date().getFullYear()} XenoraAI</p>
+          <p className="text-xs text-base-content/35">© {new Date().getFullYear()} XenoraAI</p>
         </div>
       </footer>
     </div>

@@ -6,6 +6,7 @@
 
 @layer base {
   :root {
+    --bg-base: #0A0A0F;
     --background: 240 30% 4%;
     --foreground: 0 0% 96%;
 
@@ -47,9 +48,16 @@
   }
 }
 
+:root[data-theme='xenora-light'] {
+  --bg-base: #f8fafd;
+}
+
 @layer base {
   * {
     @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
   }
   body {
     @apply bg-background text-foreground;
@@ -60,6 +68,17 @@
 }
 
 @layer utilities {
+  .surface-panel {
+    @apply rounded-xl border border-base-content/[0.08] bg-base-200/35 backdrop-blur-sm shadow-[0_8px_30px_rgba(0,0,0,0.2)];
+  }
+  .premium-heading {
+    @apply tracking-tight;
+    text-wrap: balance;
+  }
+  .muted-copy {
+    @apply text-base-content/55 leading-relaxed;
+    text-wrap: pretty;
+  }
   .glass {
     @apply bg-card/40 backdrop-blur-xl border border-border/40;
   }
