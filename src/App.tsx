@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/app/ThemeProvider";
 import { ScrollManager } from "@/components/app/ScrollManager";
 import Index from "./pages/Index.tsx";
+import NoraFocus from "./pages/NoraFocus.tsx";
 import FAQ from "./pages/FAQ.tsx";
 import Privacy from "./pages/Privacy.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -22,6 +23,7 @@ const App = () => (
           <ScrollManager />
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/nora/focus" element={<NoraFocus />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/privacy" element={<Privacy />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
