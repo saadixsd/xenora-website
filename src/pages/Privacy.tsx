@@ -140,7 +140,7 @@ const Privacy = () => {
             </div>
           </div>
           <div className="flex items-center justify-center">
-            <p className="text-xs text-base-content/40">XenoraAI 2026</p>
+            <p className="text-xs text-base-content/40">@XenoraAI 2026</p>
           </div>
           <div className="flex items-center justify-center gap-5 text-xs text-base-content/45 sm:justify-end">
             <Link to="/faq" className="transition-colors hover:text-base-content/85">FAQ</Link>
