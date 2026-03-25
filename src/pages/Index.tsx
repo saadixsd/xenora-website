@@ -79,7 +79,7 @@ const Index = () => {
         <section className="flex min-h-[100svh] flex-col items-center justify-center px-4 pb-24 pt-28 sm:px-8">
           <div className="w-full max-w-3xl text-center">
             <Reveal>
-              <p className="text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
+              <p className="font-playfair text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
                 Nora by XenoraAI — Agentic AI Engine
               </p>
             </Reveal>
