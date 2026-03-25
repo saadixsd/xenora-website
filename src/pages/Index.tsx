@@ -80,7 +80,7 @@ const Index = () => {
           <div className="w-full max-w-3xl text-center">
             <Reveal>
               <p className="font-playfair text-[12px] sm:text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
-                Nora by XenoraAI — Agentic AI Engine
+                Nora — AI Agentic Engine
               </p>
             </Reveal>
             <Reveal delay={0.05}>
@@ -90,7 +90,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-6 max-w-2xl text-base text-base-content/70 leading-relaxed sm:text-lg">
-                Observe→adapt→execute.
+                Observe→Adapt→Execute.
               </p>
             </Reveal>
             <Reveal delay={0.15}>
