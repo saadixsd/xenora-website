@@ -77,7 +77,7 @@ export const NoraWaitlistForm = () => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <label className="form-control w-full">
-        <span className="label-text text-xs text-base-content/50 mb-1">Name</span>
+        <span className="label-text text-[12px] sm:text-xs text-base-content/50 mb-1">Name</span>
         <input
           type="text"
           placeholder="Your name"
@@ -90,7 +90,7 @@ export const NoraWaitlistForm = () => {
       </label>
 
       <label className="form-control w-full">
-        <span className="label-text text-xs text-base-content/50 mb-1">Email address</span>
+        <span className="label-text text-[12px] sm:text-xs text-base-content/50 mb-1">Email address</span>
         <input
           type="email"
           placeholder="you@example.com"
@@ -103,7 +103,7 @@ export const NoraWaitlistForm = () => {
       </label>
 
       <label className="form-control w-full">
-        <span className="label-text text-xs text-base-content/50 mb-1">Role</span>
+        <span className="label-text text-[12px] sm:text-xs text-base-content/50 mb-1">Role</span>
         <select
           value={role}
           onChange={(e) => setRole(e.target.value)}
@@ -122,7 +122,7 @@ export const NoraWaitlistForm = () => {
       </label>
 
       <label className="form-control w-full">
-        <span className="label-text text-xs text-base-content/50 mb-1">Company Size</span>
+        <span className="label-text text-[12px] sm:text-xs text-base-content/50 mb-1">Company Size</span>
         <select
           value={companySize}
           onChange={(e) => setCompanySize(e.target.value)}

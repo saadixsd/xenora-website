@@ -79,7 +79,7 @@ const Index = () => {
         <section className="flex min-h-[100svh] flex-col items-center justify-center px-4 pb-24 pt-28 sm:px-8">
           <div className="w-full max-w-3xl text-center">
             <Reveal>
-              <p className="font-playfair text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
+              <p className="font-playfair text-[12px] sm:text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
                 Nora by XenoraAI — Agentic AI Engine
               </p>
             </Reveal>
@@ -89,7 +89,7 @@ const Index = () => {
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="mx-auto mt-6 max-w-2xl text-lg text-base-content/70 leading-relaxed sm:text-xl">
+              <p className="mx-auto mt-6 max-w-2xl text-base text-base-content/70 leading-relaxed sm:text-lg">
                 Observe→adapt→execute.
               </p>
             </Reveal>
@@ -204,7 +204,7 @@ const Index = () => {
             </div>
             <div className="flex flex-col items-center justify-center gap-1">
               <p className="text-xs text-base-content/40">@XenoraAI 2026</p>
-              <p className="text-[11px] tracking-[0.16em] text-base-content/35">~Know Beyond</p>
+              <p className="text-[12px] sm:text-[11px] tracking-[0.16em] text-base-content/35">~Know Beyond</p>
               <button
                 type="button"
                 onClick={() => scrollToSection('waitlist')}
