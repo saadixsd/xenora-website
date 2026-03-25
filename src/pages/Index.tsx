@@ -10,35 +10,35 @@ import { Reveal } from '@/components/motion/Reveal';
 const flowSteps = [
   {
     step: '01',
-    title: 'Observe',
-    body: 'Tracks screen time, app switches, keyboard patterns, and deep work sessions with permission.',
+    title: 'Email/Slack',
+    body: 'Indexes operational context from inbox + channels so Nora knows what matters and what changed.',
   },
   {
     step: '02',
-    title: 'Analyze',
-    body: 'Local LLM processing identifies recurring distractions and predicts high-focus windows from your own activity.',
+    title: 'Indexes Context',
+    body: 'Extracts intent, entities, and workflows into a usable knowledge layer for business operations.',
   },
   {
     step: '03',
-    title: 'Plan',
-    body: 'Builds a realistic daily schedule with protected deep-work windows and timed recovery intervals.',
+    title: 'Learns Patterns',
+    body: 'Learns your recurring playbooks, exceptions, and preferred outcomes across IT, HR, and finance.',
   },
   {
     step: '04',
-    title: 'Execute',
-    body: 'Applies configured controls, starts playlists/timers, and sends minimal prompts when drift is detected.',
+    title: 'Autonomous Execution',
+    body: 'Carries out approved actions with guardrails, triggers follow-ups, and keeps teams in control.',
   },
   {
     step: '05',
-    title: 'Adapt',
-    body: 'Refines tomorrow based on outcomes, overrides, and session completion quality.',
+    title: 'Results Dashboard',
+    body: 'Summarizes outcomes, audit trail, and next-best actions so you can move fast with confidence.',
   },
 ];
 
 const valueCards = [
-  { title: 'Local LLM inference', desc: 'Pattern analysis runs on-device to reduce cloud dependency for core focus decisions.' },
-  { title: 'Hybrid coordination', desc: 'A secure coordination service syncs schedules and notifications across desktop and mobile.' },
-  { title: 'Privacy boundary', desc: 'Usage logs stay local by default and are not used to train remote models.' },
+  { title: 'IT Agent', desc: 'Auto-resolve tickets, self-healing systems' },
+  { title: 'HR Agent', desc: 'Screen CVs, conduct interviews, onboard' },
+  { title: 'Finance Agent', desc: 'Invoices, collections, cashflow automation' },
 ];
 
 const Index = () => {
@@ -79,21 +79,23 @@ const Index = () => {
         <section className="flex min-h-[100svh] flex-col items-center justify-center px-4 pb-24 pt-28 sm:px-8">
           <div className="w-full max-w-3xl text-center">
             <Reveal>
-              <p className="text-xs font-medium uppercase tracking-[0.18em] text-base-content/45">Nora Focus</p>
+              <p className="text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
+                Nora by XenoraAI — Agentic AI Engine
+              </p>
             </Reveal>
             <Reveal delay={0.05}>
               <h1 className="premium-heading mt-4 text-4xl font-semibold sm:text-6xl lg:text-7xl">
-                Own your focus. Guard your time. Build greatness.
+                Automate IT/HR/Finance workflows.
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="mx-auto mt-6 max-w-2xl text-base text-base-content/70 sm:text-lg">
-                Nora Focus runs a practical observe-analyze-plan-execute-adapt loop that helps you protect deep work without adding operational overhead.
+              <p className="mx-auto mt-6 max-w-2xl text-lg text-base-content/70 leading-relaxed sm:text-xl">
+                Observe→adapt→execute.
               </p>
             </Reveal>
             <Reveal delay={0.15}>
               <p className="mx-auto mt-4 max-w-xl text-sm text-base-content/50 sm:text-base">
-                Built for professionals who need calm, repeatable output on high-priority work.
+                Knowledge-first, agentic operations for business velocity. Designed for founders and operators who want reliable outcomes.
               </p>
             </Reveal>
 
@@ -104,14 +106,14 @@ const Index = () => {
                   className="btn btn-primary px-8 shadow-[0_10px_30px_rgba(14,165,164,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,165,164,0.28)]"
                   onClick={() => scrollToSection('waitlist')}
                 >
-                  Join the beta waitlist
+                  Join Waitlist to Try Nora
                 </button>
                 <button
                   type="button"
                   className="btn btn-ghost border border-base-content/15 px-7 text-base-content/80 transition-all duration-300 hover:border-primary/45 hover:bg-base-200/45 hover:text-base-content"
                   onClick={() => scrollToSection('how-it-works')}
                 >
-                  See how it works
+                  See the workflow demo
                 </button>
               </div>
             </Reveal>
@@ -121,11 +123,11 @@ const Index = () => {
         <section id="how-it-works" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-4xl">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-semibold sm:text-3xl">How Nora Focus Works</h2>
+              <h2 className="premium-heading text-center text-2xl font-semibold sm:text-3xl">Workflow Demo</h2>
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-3 max-w-lg text-center text-sm text-base-content/50">
-                A coordinated five-step system that turns daily behavior into measurable focus gains.
+                Email/Slack → Nora indexes context → Learns patterns → Autonomous execution → Results dashboard
               </p>
             </Reveal>
 
@@ -150,7 +152,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-base-content/55 sm:text-base">
-                Local execution handles sensitive behavior data while a lightweight coordination layer keeps schedules and notifications synchronized across devices.
+                Know Beyond manual processes. Proprietary agentic engine for business velocity.
               </p>
             </Reveal>
 
@@ -170,12 +172,9 @@ const Index = () => {
         <section id="waitlist" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-md">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-semibold">Join the beta</h2>
+              <h2 className="premium-heading text-center text-2xl font-semibold">Join the waitlist</h2>
             </Reveal>
             <Reveal delay={0.05}>
-              <p className="mt-2 text-center text-sm text-base-content/55">
-                Nora Focus is in early beta. Join the waitlist and we’ll reach out when a spot opens.
-              </p>
             </Reveal>
             <Reveal delay={0.1}>
               <div className="surface-panel mt-8 p-6">
@@ -206,6 +205,13 @@ const Index = () => {
             <div className="flex flex-col items-center justify-center gap-1">
               <p className="text-xs text-base-content/40">@XenoraAI 2026</p>
               <p className="text-[11px] tracking-[0.16em] text-base-content/35">~Know Beyond</p>
+              <button
+                type="button"
+                onClick={() => scrollToSection('waitlist')}
+                className="btn btn-primary btn-sm mt-2 shadow-[0_10px_30px_rgba(14,165,164,0.14)]"
+              >
+                Waitlist Open — Try Nora Agents
+              </button>
             </div>
             <div className="flex items-center justify-center gap-5 text-xs text-base-content/45 sm:justify-end">
               <Link to="/faq" onClick={smoothTop} className="transition-colors hover:text-base-content/85">FAQ</Link>

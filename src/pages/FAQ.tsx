@@ -7,32 +7,32 @@ import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackgr
 
 const faqs = [
   {
-    q: 'What is Nora Focus?',
-    a: 'Nora Focus is an AI focus system that continuously observes behavior signals, builds daily schedules, executes distraction controls, and adapts from results.',
+    q: 'What is Nora?',
+    a: 'Nora is an agentic AI engine for business operations. It observes workflow context, adapts to patterns, and executes task workflows with guardrails so teams move faster without chaos.',
   },
   {
-    q: 'How does the 5-step loop work?',
-    a: 'Observe, Analyze, Plan, Execute, Adapt. Nora captures permissioned signals, processes them with a local model, generates schedule actions, applies controls, and refines each subsequent day.',
+    q: 'How does the agentic loop work?',
+    a: 'Nora runs a 5-stage loop: Email/Slack → Indexes Context → Learns Patterns → Autonomous Execution → Results dashboard. It uses permissioned inputs, learns your recurring playbooks, and keeps execution traceable.',
   },
   {
-    q: 'Which data is observed?',
-    a: 'With your permission: screen-time context, app-switching patterns, activity rhythm, and session outcomes. The goal is scheduling quality and distraction prevention.',
+    q: 'Which workflows can Nora help with?',
+    a: 'Nora is built to automate real business work: IT agents auto-resolve tickets and self-heal systems, HR agents screen CVs and support interview + onboarding flows, and Finance agents assist with invoices, collections, and cashflow automation.',
   },
   {
     q: 'Does Nora run locally?',
-    a: 'Core behavior analysis and planning are designed for local execution. Sensitive usage logs remain on-device by default.',
+    a: 'Core processing is designed for local execution. Sensitive operational context stays on your device by default, and we avoid using your data to train remote models for this beta.',
   },
   {
-    q: 'What does execution automate?',
-    a: 'Nora can trigger configured controls such as distraction blocking, playlist start, timer setup, and concise notification prompts tied to plan windows.',
+    q: 'What data is stored when I join the waitlist?',
+    a: 'Waitlist records are stored in your configured Supabase project for beta operations. We collect your name, email, role, and company size to coordinate early access.',
   },
   {
-    q: 'How is this different from a timer app?',
-    a: 'Timer apps run fixed intervals. Nora adapts each day from your own outcomes and interruptions, then updates schedule logic accordingly.',
+    q: 'How does Nora execute tasks?',
+    a: 'Execution happens through approved workflows with guardrails. Nora can prepare actions and trigger operations that you authorize, then provide a clear results summary so teams can review and iterate quickly.',
   },
   {
-    q: 'Where is waitlist data stored?',
-    a: 'Waitlist records are stored in configured Supabase infrastructure for beta operations. This is separate from on-device focus telemetry.',
+    q: 'Is Nora replacing my team?',
+    a: 'No. Nora is meant to remove busywork and coordination bottlenecks. Humans stay in control, and Nora focuses on reliable next actions, structured follow-ups, and faster throughput.',
   },
   {
     q: 'How do I join the beta?',
@@ -66,7 +66,7 @@ const FAQ = () => {
           <h1 className="premium-heading text-3xl font-semibold sm:text-4xl">Frequently Asked Questions</h1>
         </Reveal>
         <Reveal delay={0.05}>
-          <p className="mt-3 text-sm text-base-content/55">Common questions about Nora Focus and how the beta works.</p>
+          <p className="mt-3 text-sm text-base-content/55">Common questions about Nora’s agentic engine and how the beta works.</p>
         </Reveal>
 
         <div className="mt-10 space-y-3">

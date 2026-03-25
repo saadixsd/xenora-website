@@ -9,32 +9,32 @@ const sections = [
   {
     title: 'Local Processing',
     content:
-      'Nora Focus is designed for local processing. Behavior analysis and schedule planning run on-device for the core focus loop.',
+      'Nora is designed for local processing. Core workflow understanding and planning run on-device by default so operational context stays private.',
   },
   {
     title: 'No Cloud Model Training',
     content:
-      'Usage logs are not used to train remote models. Focus telemetry remains local unless you explicitly enable a feature that requires remote transfer.',
+      'Operational logs and inputs are not used to train remote models. Data stays local unless you explicitly enable features that require remote transfer.',
   },
   {
     title: 'Coordination Layer',
     content:
-      'Nora can use a lightweight coordination service for cross-device schedule and notification consistency while keeping sensitive behavior logs on your device.',
+      'Nora can use a lightweight coordination service to keep business workflow actions consistent across devices while keeping sensitive operational context on your device.',
   },
   {
     title: 'What Data Is Collected',
     content:
-      'For waitlist operations we collect your email and operational metadata. For product operation, permissioned local signals include screen-time context, app switching patterns, and focus session outcomes.',
+      'For waitlist operations we collect your name, email, role, and company size. For product operation, permissioned inputs you provide may include IT, HR, and finance workflow context needed to complete authorized tasks.',
   },
   {
     title: 'How Data Is Used',
     content:
-      'Data supports beta access operations, schedule quality improvements, and product reliability. We do not sell personal data.',
+      'Data supports beta access operations, reliability improvements, and safe execution of authorized workflows. We do not sell personal data.',
   },
   {
     title: 'Storage and Retention',
     content:
-      'Waitlist data is stored in Supabase infrastructure and retained only as long as needed for beta operations, then removed or anonymized unless law requires retention.',
+      'Waitlist data is stored in Supabase infrastructure and retained only as long as needed for beta operations, then removed or anonymized unless required by law.',
   },
   {
     title: 'Your Rights',
@@ -83,8 +83,8 @@ const Privacy = () => {
         </Reveal>
         <Reveal delay={0.08}>
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-base-content/60">
-            At XenoraAI, we treat focus data as personal. This page explains what we collect, how we use it, and why
-            most Nora Focus data stays on your device.
+            At XenoraAI, we treat operational context as personal. This page explains what we collect, how we use it, and why
+            most Nora data stays on your device.
           </p>
         </Reveal>
 

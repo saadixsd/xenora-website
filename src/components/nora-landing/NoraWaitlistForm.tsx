@@ -2,24 +2,22 @@ import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { z } from 'zod';
 
-const focusKillers = [
-  'Social media (Instagram, TikTok, etc.)',
-  'Email and Slack notifications',
-  'Context switching between tasks',
-  'No clear schedule or structure',
-  'Procrastination and low energy',
-  'Other',
-];
+const roleOptions = ['SMB', 'Founder', 'Creator', 'Op Manager'];
+const companySizeOptions = ['1-10', '11-25', '26-100', '101-500', '500+'];
 
 const schema = z.object({
+  name: z.string().trim().min(1, 'Enter your name').max(255),
   email: z.string().trim().email('Enter a valid email').max(255),
-  focus_killer: z.string().min(1, 'Pick one'),
+  role: z.string().min(1, 'Pick one'),
+  company_size: z.string().min(1, 'Pick one'),
 });
 
 export const NoraWaitlistForm = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [focusKiller, setFocusKiller] = useState('');
-  const [errors, setErrors] = useState<{ email?: string; focus_killer?: string }>({});
+  const [role, setRole] = useState('');
+  const [companySize, setCompanySize] = useState('');
+  const [errors, setErrors] = useState<{ name?: string; email?: string; role?: string; company_size?: string }>({});
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [serverError, setServerError] = useState('');
@@ -29,11 +27,11 @@ export const NoraWaitlistForm = () => {
     setErrors({});
     setServerError('');
 
-    const result = schema.safeParse({ email, focus_killer: focusKiller });
+    const result = schema.safeParse({ name, email, role, company_size: companySize });
     if (!result.success) {
-      const fieldErrors: { email?: string; focus_killer?: string } = {};
+      const fieldErrors: { name?: string; email?: string; role?: string; company_size?: string } = {};
       result.error.issues.forEach((issue) => {
-        const field = issue.path[0] as 'email' | 'focus_killer';
+        const field = issue.path[0] as 'name' | 'email' | 'role' | 'company_size';
         fieldErrors[field] = issue.message;
       });
       setErrors(fieldErrors);
@@ -43,7 +41,12 @@ export const NoraWaitlistForm = () => {
     setLoading(true);
     const { error } = await supabase
       .from('waitlist')
-      .insert({ name: result.data.email.split('@')[0], email: result.data.email, focus_killer: result.data.focus_killer });
+      .insert({
+        name: result.data.name,
+        email: result.data.email,
+        role: result.data.role,
+        company_size: result.data.company_size,
+      });
     setLoading(false);
 
     if (error) {
@@ -65,14 +68,27 @@ export const NoraWaitlistForm = () => {
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <p className="text-lg font-semibold text-base-content">You're on the list</p>
-        <p className="mt-2 text-sm text-base-content/55">We'll reach out when your spot opens up.</p>
+        <p className="text-lg font-semibold text-base-content">You're #42 on waitlist — Nora IT Agent first</p>
+        <p className="mt-2 text-sm text-base-content/55">We’ll reach out with early access details shortly.</p>
       </div>
     );
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <label className="form-control w-full">
+        <span className="label-text text-xs text-base-content/50 mb-1">Name</span>
+        <input
+          type="text"
+          placeholder="Your name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="input input-bordered w-full border-base-content/10 bg-base-200/60 focus:border-primary/40 focus:outline-none"
+          autoComplete="name"
+        />
+        {errors.name && <span className="label-text-alt text-error mt-1">{errors.name}</span>}
+      </label>
+
       <label className="form-control w-full">
         <span className="label-text text-xs text-base-content/50 mb-1">Email address</span>
         <input
@@ -87,28 +103,48 @@ export const NoraWaitlistForm = () => {
       </label>
 
       <label className="form-control w-full">
-        <span className="label-text text-xs text-base-content/50 mb-1">What kills your focus most?</span>
+        <span className="label-text text-xs text-base-content/50 mb-1">Role</span>
         <select
-          value={focusKiller}
-          onChange={(e) => setFocusKiller(e.target.value)}
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
           className={`select select-bordered w-full border-base-content/10 bg-base-200/60 focus:border-primary/40 focus:outline-none ${
-            !focusKiller ? 'text-base-content/40' : ''
+            !role ? 'text-base-content/40' : ''
           }`}
         >
           <option value="" disabled>Choose one</option>
-          {focusKillers.map((k) => (
-            <option key={k} value={k}>{k}</option>
+          {roleOptions.map((r) => (
+            <option key={r} value={r}>
+              {r}
+            </option>
           ))}
         </select>
-        {errors.focus_killer && <span className="label-text-alt text-error mt-1">{errors.focus_killer}</span>}
+        {errors.role && <span className="label-text-alt text-error mt-1">{errors.role}</span>}
+      </label>
+
+      <label className="form-control w-full">
+        <span className="label-text text-xs text-base-content/50 mb-1">Company Size</span>
+        <select
+          value={companySize}
+          onChange={(e) => setCompanySize(e.target.value)}
+          className={`select select-bordered w-full border-base-content/10 bg-base-200/60 focus:border-primary/40 focus:outline-none ${
+            !companySize ? 'text-base-content/40' : ''
+          }`}
+        >
+          <option value="" disabled>Choose one</option>
+          {companySizeOptions.map((s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
+        </select>
+        {errors.company_size && <span className="label-text-alt text-error mt-1">{errors.company_size}</span>}
       </label>
 
       {serverError && <p className="text-center text-sm text-primary">{serverError}</p>}
 
       <button type="submit" disabled={loading} className="btn btn-outline btn-primary btn-block">
-        {loading ? <span className="loading loading-spinner loading-sm" /> : 'Join the beta waitlist'}
+        {loading ? <span className="loading loading-spinner loading-sm" /> : 'Join the waitlist'}
       </button>
-      <p className="text-center text-xs text-base-content/40">500 spots · First 100 get lifetime Pro free</p>
     </form>
   );
 };
