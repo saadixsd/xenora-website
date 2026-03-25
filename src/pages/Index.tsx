@@ -85,7 +85,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.05}>
               <h1 className="premium-heading mt-4 text-4xl font-semibold sm:text-6xl lg:text-7xl">
-                Automate IT/HR/Finance workflows.
+                Automate Repetitive Workflows
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
@@ -106,7 +106,7 @@ const Index = () => {
                   className="btn btn-primary px-8 shadow-[0_10px_30px_rgba(14,165,164,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,165,164,0.28)]"
                   onClick={() => scrollToSection('waitlist')}
                 >
-                  Join Waitlist to Try Nora
+                  Join Waitlist to Ask Nora
                 </button>
                 <button
                   type="button"
@@ -210,7 +210,7 @@ const Index = () => {
                 onClick={() => scrollToSection('waitlist')}
                 className="btn btn-primary btn-sm mt-2 shadow-[0_10px_30px_rgba(14,165,164,0.14)]"
               >
-                Waitlist Open — Try Nora Agents
+                Waitlist Open — Ask Nora Agents
               </button>
             </div>
             <div className="flex items-center justify-center gap-5 text-xs text-base-content/45 sm:justify-end">
