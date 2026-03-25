@@ -152,7 +152,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-base-content/55 sm:text-base">
-                Know Beyond manual processes. Proprietary agentic engine for business velocity.
+                XenoraAI goes beyond manual processes. Proprietary agentic engine for business velocity.
               </p>
             </Reveal>
 
@@ -204,7 +204,7 @@ const Index = () => {
             </div>
             <div className="flex flex-col items-center justify-center gap-1">
               <p className="text-xs text-base-content/40">@XenoraAI 2026</p>
-              <p className="text-[12px] sm:text-[11px] tracking-[0.16em] text-base-content/35">~Know Beyond</p>
+              <p className="text-[12px] sm:text-[11px] tracking-[0.16em] text-base-content/35">XenoraAI</p>
               <button
                 type="button"
                 onClick={() => scrollToSection('waitlist')}

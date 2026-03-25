@@ -123,7 +123,7 @@ const Privacy = () => {
           </div>
           <div className="flex flex-col items-center justify-center gap-1">
             <p className="text-xs text-base-content/40">@XenoraAI 2026</p>
-            <p className="text-[12px] sm:text-[11px] tracking-[0.16em] text-base-content/35">~Know Beyond</p>
+            <p className="text-[12px] sm:text-[11px] tracking-[0.16em] text-base-content/35">XenoraAI</p>
           </div>
           <div className="flex items-center justify-center gap-5 text-xs text-base-content/45 sm:justify-end">
             <Link to="/faq" onClick={smoothTop} className="transition-colors hover:text-base-content/85">FAQ</Link>

@@ -139,7 +139,7 @@ export const NeuralNavGraph = ({ activeId, hoveredId, onNodeClick, onHover, comp
             className={`object-contain ${compact ? 'h-8 w-8' : 'h-10 w-10'}`}
           />
           <p className="text-center text-[9px] font-medium uppercase tracking-[0.32em] text-base-content/70 sm:text-[10px]">
-            Know Beyond
+            XenoraAI
           </p>
         </div>
 
