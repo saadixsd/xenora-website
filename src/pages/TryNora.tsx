@@ -119,7 +119,7 @@ const TryNora = () => {
   const chatActive = messages.length > 0;
 
   return (
-    <div className="fixed inset-0 flex w-full flex-col overflow-hidden bg-base-100 text-base-content">
+    <div className="fixed inset-0 flex w-full flex-col overflow-hidden bg-base-100 text-base-content" style={{ touchAction: 'manipulation', overscrollBehavior: 'none', height: '100dvh' }}>
       <NeuralMeshBackground />
 
       {/* Header */}
@@ -164,8 +164,8 @@ const TryNora = () => {
                   placeholder="Ask about automation..."
                   autoComplete="off"
                   autoCorrect="off"
-                  className="min-h-[44px] flex-1 bg-transparent text-sm text-base-content outline-none placeholder:text-base-content/30 sm:min-h-[40px]"
-                  disabled={sending || backendOk === false}
+                    className="min-h-[44px] flex-1 bg-transparent text-base text-base-content outline-none placeholder:text-base-content/30 sm:min-h-[40px]"
+                    disabled={sending || backendOk === false}
                 />
                 <button
                   type="submit"
@@ -260,7 +260,7 @@ const TryNora = () => {
                     placeholder="Follow up..."
                     autoComplete="off"
                     autoCorrect="off"
-                    className="min-h-[44px] flex-1 bg-transparent text-sm text-base-content outline-none placeholder:text-base-content/30 sm:min-h-[40px]"
+                    className="min-h-[44px] flex-1 bg-transparent text-base text-base-content outline-none placeholder:text-base-content/30 sm:min-h-[40px]"
                     disabled={sending || typingReply}
                     aria-label="Message to Nora"
                   />
