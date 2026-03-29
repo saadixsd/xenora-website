@@ -119,7 +119,7 @@ const TryNora = () => {
   const chatActive = messages.length > 0;
 
   return (
-    <div className="flex h-dvh max-h-dvh w-full flex-col overflow-hidden bg-base-100 text-base-content">
+    <div className="fixed inset-0 flex w-full flex-col overflow-hidden bg-base-100 text-base-content">
       <NeuralMeshBackground />
 
       {/* Header */}
