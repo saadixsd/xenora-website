@@ -1,37 +1,90 @@
 
 
-## Plan: Fix Build Error + Power "Ask Nora" with Claude via Lovable Cloud
+## Plan: Redesign Ask Nora Chat — Clean, Minimal, Perplexity-Inspired
 
-### Problem
-1. **Build error**: Line 177 in `Index.tsx` has `<Reveal delay={0.05}>` with no children — needs content or removal.
-2. **Claude API key storage**: You have a Claude API key and want Ask Nora to work on the deployed site.
+### Current Problems
+- Too much visual clutter: sidebar with session modes, quick-start bar, status badges, retry buttons, decorative blurs
+- Complex two-column layout on landing state
+- Not mobile-optimized
+- No markdown rendering for AI responses
+- No streaming (full response buffered then animated char-by-char)
 
-### Solution
+### Design Direction
+Inspired by Perplexity/Claude/Grok: centered, minimal, full-screen chat with a clean empty state.
 
-**Step 1: Fix build error**
-- Remove the empty `<Reveal delay={0.05}></Reveal>` on lines 177-178 of `src/pages/Index.tsx`.
+```text
+┌─────────────────────────────────────────┐
+│  Logo    XenoraAI           Nav  Menu   │  ← slim header
+├─────────────────────────────────────────┤
+│                                         │
+│           [XenoraAI logo 8% opacity]    │
+│                                         │
+│              Ask Nora                   │
+│     AI ops automation for SMBs          │
+│                                         │
+│   ┌─────────────────────────────┐       │
+│   │  Ask about automation...  → │       │  ← centered input
+│   └─────────────────────────────┘       │
+│                                         │
+│   [Jira tickets] [Invoicing] [Hiring]   │  ← suggestion chips
+│                                         │
+└─────────────────────────────────────────┘
 
-**Step 2: Store Claude API key securely**
-- Your project already has a backend function at `supabase/functions/nora-claude/index.ts` that proxies Claude API calls. This is exactly what you need.
-- Store your Claude API key as a backend secret using Lovable's secret management (the key will be available to the backend function as `CLAUDE_API_KEY`).
-- No code changes needed in the edge function — it already reads `CLAUDE_API_KEY` from the environment.
+After first message → transitions to chat:
 
-**Step 3: Update `TryNora.tsx` to call the backend function**
-- Replace the current Claude/Ollama switching logic with a single path that calls the `nora-claude` backend function via `supabase.functions.invoke()` or direct fetch to `${VITE_SUPABASE_URL}/functions/v1/nora-claude/claude`.
-- Remove the Ollama fallback and local-dev-only Claude logic — everything goes through the backend function.
-- Remove the `vite/plugin-claude-api.ts` dev plugin and its reference in `vite.config.ts` (no longer needed).
+┌─────────────────────────────────────────┐
+│  Logo    XenoraAI           Nav  Menu   │
+├─────────────────────────────────────────┤
+│                                         │
+│  User message (right-aligned)           │
+│                                         │
+│  Nora response with markdown rendering  │
+│  (left-aligned, prose styling)          │
+│                                         │
+│  ...scrollable...                       │
+│                                         │
+├─────────────────────────────────────────┤
+│   ┌─────────────────────────────┐       │
+│   │  Follow up...             → │       │  ← bottom input bar
+│   └─────────────────────────────┘       │
+└─────────────────────────────────────────┘
+```
 
-**Step 4: Simplify `src/lib/claude.ts`**
-- Update `claudeApiBasePath()` to always point to the backend function URL: `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/nora-claude`.
-- Remove the dev-server-only logic and `VITE_CLAUDE_API_BASE` complexity.
+### Implementation Steps
 
-### Files to modify
-- `src/pages/Index.tsx` — remove empty Reveal
-- `src/lib/claude.ts` — simplify to always use backend function
-- `src/pages/TryNora.tsx` — simplify provider logic
-- `vite.config.ts` — remove claude plugin import
-- `vite/plugin-claude-api.ts` — delete (optional cleanup)
+**Step 1: Add react-markdown dependency**
+- Install `react-markdown` for rendering AI responses with proper formatting.
 
-### Secret to add
-- `CLAUDE_API_KEY` — your Anthropic API key, stored securely as a backend secret
+**Step 2: Update edge function CORS headers**
+- Add the required Supabase client headers to `Access-Control-Allow-Headers` in `nora-claude/index.ts` for reliable cross-origin calls.
+
+**Step 3: Update system prompt**
+- Revise `buildNoraSystemPrompt` in `src/lib/claude.ts` to match the new personality spec (pricing $99/mo + $49/agent, ROI quantification, always end with waitlist CTA, more conversational tone).
+
+**Step 4: Redesign TryNora.tsx — full rewrite**
+- **Empty state**: Centered layout with logo watermark, "Ask Nora" heading, single input field, and 3 suggestion chips ("Jira tickets", "Invoicing", "Hiring").
+- **Chat state**: Clean scrollable message list. User messages right-aligned with subtle teal bg. Assistant messages left-aligned with markdown rendering (`react-markdown` + `prose` classes). Minimal typing indicator (3 animated dots, no spinner).
+- **Input bar**: Fixed to bottom in chat mode. Single text input with send arrow button. Clean, no borders except subtle separator line.
+- **Remove**: Session mode sidebar, quick-start header bar, status badge, retry connection button, decorative blur orbs, workflow focus selector. The system prompt handles domain routing automatically.
+- **Mobile**: Full-width, touch-friendly input (min-height 48px), safe-area padding.
+
+**Step 5: Keep existing backend infrastructure**
+- No changes to the edge function logic or Supabase tables.
+- Keep the existing `CLAUDE_API_KEY` secret and `nora-claude` function as-is (it works).
+- Keep the typing animation (char-by-char reveal) — it's a nice touch that doesn't require streaming infrastructure changes.
+
+### Files to Create/Modify
+| File | Action |
+|------|--------|
+| `src/pages/TryNora.tsx` | Full rewrite — minimal chat UI |
+| `src/lib/claude.ts` | Update system prompt with new personality |
+| `supabase/functions/nora-claude/index.ts` | Fix CORS headers |
+| `package.json` | Add `react-markdown` |
+
+### What's NOT changing
+- Edge function proxy logic (already working)
+- Claude API key storage (already configured)
+- Supabase waitlist table
+- Other pages (Index, FAQ, Privacy)
+- No new database tables (chat persistence deferred — MVP keeps in-memory conversations)
 
