@@ -42,27 +42,10 @@ const TryNora = () => {
 
   const refreshConnection = useCallback(async () => {
     setBackendOk(null);
-    if (useClaude) {
-      const ok = await checkClaudeBackend();
-      setBackendOk(ok);
-      if (!ok) {
-        setLastError(
-          import.meta.env.DEV
-            ? 'Claude backend not ready. Add CLAUDE_API_KEY to .env.local, set VITE_AI_PROVIDER=claude, restart npm run dev. Never commit your API key.'
-            : 'Claude is not reachable from this origin. On GitHub Pages there is no private server for your key. Run Ask Nora with Claude locally (npm run dev + .env.local), or host a small HTTPS proxy and set VITE_CLAUDE_API_BASE at build time.',
-        );
-      } else {
-        setLastError('');
-      }
-      return;
-    }
-
-    const ok = await checkOllamaConnection();
+    const ok = await checkClaudeBackend();
     setBackendOk(ok);
     if (!ok) {
-      setLastError(
-        'Cannot reach Ollama. Start it with `ollama serve`, ensure `ollama pull llama3.2:3b`, and use `npm run dev` so the /ollama proxy works.',
-      );
+      setLastError('Nora backend is not reachable. Please try again later.');
     } else {
       setLastError('');
     }
@@ -139,13 +122,7 @@ const TryNora = () => {
 
     try {
       const system = buildNoraSystemPrompt(effectiveFocus === 'general' ? undefined : effectiveFocus);
-      const reply = useClaude
-        ? await sendClaudeChat({ systemPrompt: system, messages: nextHistory })
-        : await sendOllamaChat({
-            model: DEFAULT_OLLAMA_MODEL,
-            messages: nextHistory,
-            systemPrompt: system,
-          });
+      const reply = await sendClaudeChat({ systemPrompt: system, messages: nextHistory });
       await animateAssistantReply(reply);
       setBackendOk(true);
     } catch (e) {
@@ -205,12 +182,10 @@ const TryNora = () => {
               aria-hidden
             />
             <div className="mb-2 shrink-0 sm:mb-3">
-              <p className="font-playfair text-[11px] font-medium uppercase tracking-[0.14em] text-base-content/45">Local demo</p>
+              <p className="font-playfair text-[11px] font-medium uppercase tracking-[0.14em] text-base-content/45">Beta</p>
               <h1 className="premium-heading mt-0.5 text-balance text-xl font-semibold sm:mt-1 sm:text-2xl">Ask Nora</h1>
               <p className="mt-0.5 line-clamp-2 text-[11px] text-base-content/55 sm:mt-1 sm:text-sm sm:line-clamp-none">
-                {useClaude
-                  ? 'Powered by Claude (Anthropic). Your API key stays on the dev server only, not in the browser bundle. Nothing is sent to Xenora servers.'
-                  : 'General chat powered by your machine. Nothing is saved or sent to Xenora servers.'}
+                Powered by Claude. Nothing is saved or sent to third parties beyond what's needed for the response.
               </p>
               <div className="mt-1.5 flex flex-wrap items-center gap-2 text-[11px]">
                 <span
@@ -222,17 +197,11 @@ const TryNora = () => {
                         : 'border-error/40 text-error'
                   }`}
                 >
-                  {useClaude
-                    ? backendOk === null
-                      ? 'Checking Claude…'
-                      : backendOk
-                        ? 'Claude ready'
-                        : 'Claude unavailable'
-                    : backendOk === null
-                      ? 'Checking Ollama…'
-                      : backendOk
-                        ? 'Ollama reachable'
-                        : 'Ollama offline'}
+                  {backendOk === null
+                    ? 'Checking Nora…'
+                    : backendOk
+                      ? 'Nora ready'
+                      : 'Nora unavailable'}
                 </span>
                 <Button type="button" variant="outline" size="sm" className="h-7 text-[11px]" onClick={() => void refreshConnection()}>
                   Retry connection
@@ -240,14 +209,6 @@ const TryNora = () => {
               </div>
             </div>
 
-            {claudeRequestedButStaticHosting && (
-              <div className="mb-2 shrink-0 rounded-lg border border-warning/30 bg-warning/5 px-3 py-2 text-[11px] text-base-content/80 sm:text-xs">
-                This site is static (e.g. GitHub Pages): it cannot run Claude with a secret API key. Use{' '}
-                <strong>npm run dev</strong> and <strong>.env.local</strong> for Claude, or leave{' '}
-                <strong>VITE_AI_PROVIDER=ollama</strong> for the public build. GitHub Actions secrets are not
-                available in the browser.
-              </div>
-            )}
             {lastError && (
               <div className="mb-2 shrink-0 rounded-lg border border-error/30 bg-error/5 px-3 py-2 text-[11px] text-base-content/80 sm:text-xs">
                 {lastError}

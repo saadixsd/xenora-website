@@ -6,9 +6,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), "");
-  const claudeApiKey = env.CLAUDE_API_KEY || env.ANTHROPIC_API_KEY;
-  const claudeModel = env.CLAUDE_MODEL?.trim() || env.ANTHROPIC_MODEL?.trim() || "claude-sonnet-4-20250514";
+  return {
 
   return {
   server: {
@@ -37,7 +35,7 @@ export default defineConfig(({ mode }) => {
   plugins: [
     react(),
     mode === "development" && componentTagger(),
-    mode === "development" && claudeDevApiPlugin(claudeApiKey, claudeModel),
+    
   ].filter(Boolean),
   resolve: {
     alias: {
