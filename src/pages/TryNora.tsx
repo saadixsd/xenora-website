@@ -5,8 +5,7 @@ import { SiteNav } from '@/components/nora-landing/SiteNav';
 import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackground';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { checkClaudeBackend, sendClaudeChat } from '@/lib/claude';
-import { buildNoraSystemPrompt, type ChatMessage } from '@/lib/ollama';
+import { checkClaudeBackend, sendClaudeChat, buildNoraSystemPrompt, type ChatMessage } from '@/lib/claude';
 
 type WorkflowFocus = 'general' | 'IT' | 'HR' | 'Finance';
 
