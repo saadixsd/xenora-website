@@ -1,48 +1,37 @@
-# XenoraAI Landing Page — Nora Agents
 
-Minimal, dark cosmic landing page inspired by Perplexity/Claude's clean aesthetic. Connected to Supabase for waitlist storage, pushed to GitHub as private repo `Xenora-website`.
 
-## Design
-- **Dark-only** cosmic theme: black → deep purple gradient
-- **Teal/green accents** (#14B8A6, #00FF88) with neon glow effects
-- **Playfair Display headings** + **Lora body**, massive hero typography, glassmorphism cards
-- **Canvas neural network animation** in hero background (animated nodes + connections)
-- Minimal layout — lots of whitespace, Perplexity-style clarity
+## Plan: Fix Build Error + Power "Ask Nora" with Claude via Lovable Cloud
 
-## Page Structure
+### Problem
+1. **Build error**: Line 177 in `Index.tsx` has `<Reveal delay={0.05}>` with no children — needs content or removal.
+2. **Claude API key storage**: You have a Claude API key and want Ask Nora to work on the deployed site.
 
-### 1. Hero Section (full viewport)
-- Animated neural network canvas background (abstract nodes expanding/connecting)
-- "Nora by XenoraAI — Agentic AI Engine" (large, clean)
-- Supporting line: "Automate IT/HR/Finance workflows. Observe→adapt→execute."
-- **"Join Waitlist to Try Nora"** CTA button → smooth scroll to form
+### Solution
 
-### 2. Waitlist Section (centered, glassmorphism card)
-- Name + Email fields with glowing focus states
-- Role (Founder/Op Manager/SMB/Creator) and Company Size fields
-- Submit to Supabase `waitlist` table
-- Live validation, success confetti animation
-- Fixed success message for early access
-- Loading and success micro-interactions
+**Step 1: Fix build error**
+- Remove the empty `<Reveal delay={0.05}></Reveal>` on lines 177-178 of `src/pages/Index.tsx`.
 
-### 3. Footer
-- Social icons: X, LinkedIn, Instagram (@xenoraai)
-- Minimal copyright
-- Minimal copyright
+**Step 2: Store Claude API key securely**
+- Your project already has a backend function at `supabase/functions/nora-claude/index.ts` that proxies Claude API calls. This is exactly what you need.
+- Store your Claude API key as a backend secret using Lovable's secret management (the key will be available to the backend function as `CLAUDE_API_KEY`).
+- No code changes needed in the edge function — it already reads `CLAUDE_API_KEY` from the environment.
 
-## Interactions & Polish
-- Cursor glow trail effect
-- Scroll-triggered fade-in reveals
-- Form field glow on focus, submit button pulse
-- Skeleton loading states
-- Fully responsive mobile-first design
-- 100% accessible (ARIA labels, focus states, contrast)
+**Step 3: Update `TryNora.tsx` to call the backend function**
+- Replace the current Claude/Ollama switching logic with a single path that calls the `nora-claude` backend function via `supabase.functions.invoke()` or direct fetch to `${VITE_SUPABASE_URL}/functions/v1/nora-claude/claude`.
+- Remove the Ollama fallback and local-dev-only Claude logic — everything goes through the backend function.
+- Remove the `vite/plugin-claude-api.ts` dev plugin and its reference in `vite.config.ts` (no longer needed).
 
-## Backend (Supabase)
-- Create `waitlist` table: id, name, email (unique), role, company_size, created_at (and legacy `focus_killer` column if present)
-- RLS policy: anyone can insert, no one can read (secure)
-- Simple client-side Supabase insert (no auth required)
+**Step 4: Simplify `src/lib/claude.ts`**
+- Update `claudeApiBasePath()` to always point to the backend function URL: `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/nora-claude`.
+- Remove the dev-server-only logic and `VITE_CLAUDE_API_BASE` complexity.
 
-## GitHub
-- Connect to GitHub, create private repo named `Xenora-website`
+### Files to modify
+- `src/pages/Index.tsx` — remove empty Reveal
+- `src/lib/claude.ts` — simplify to always use backend function
+- `src/pages/TryNora.tsx` — simplify provider logic
+- `vite.config.ts` — remove claude plugin import
+- `vite/plugin-claude-api.ts` — delete (optional cleanup)
+
+### Secret to add
+- `CLAUDE_API_KEY` — your Anthropic API key, stored securely as a backend secret
 
