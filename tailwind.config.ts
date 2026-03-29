@@ -82,7 +82,7 @@ export default {
       },
     },
   },
-  plugins: [daisyui, tailwindcssAnimate],
+  plugins: [daisyui, tailwindcssAnimate, typography],
   daisyui: {
     themes: [
       {
