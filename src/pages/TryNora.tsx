@@ -5,20 +5,8 @@ import { SiteNav } from '@/components/nora-landing/SiteNav';
 import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackground';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { checkClaudeBackend, isClaudeProvider, sendClaudeChat, shouldUseClaudeChat } from '@/lib/claude';
-import {
-  buildNoraSystemPrompt,
-  checkOllamaConnection,
-  DEFAULT_OLLAMA_MODEL,
-  sendOllamaChat,
-  type ChatMessage,
-} from '@/lib/ollama';
-
-const useClaude = shouldUseClaudeChat();
-const claudeRequestedButStaticHosting =
-  isClaudeProvider() &&
-  !import.meta.env.DEV &&
-  !String(import.meta.env.VITE_CLAUDE_API_BASE || '').trim();
+import { checkClaudeBackend, sendClaudeChat } from '@/lib/claude';
+import { buildNoraSystemPrompt, type ChatMessage } from '@/lib/ollama';
 
 type WorkflowFocus = 'general' | 'IT' | 'HR' | 'Finance';
 
