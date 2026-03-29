@@ -5,6 +5,7 @@ import { SiteNav } from '@/components/nora-landing/SiteNav';
 import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackground';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { checkClaudeBackend, isClaudeProvider, sendClaudeChat, shouldUseClaudeChat } from '@/lib/claude';
 import {
   buildNoraSystemPrompt,
   checkOllamaConnection,
@@ -12,6 +13,12 @@ import {
   sendOllamaChat,
   type ChatMessage,
 } from '@/lib/ollama';
+
+const useClaude = shouldUseClaudeChat();
+const claudeRequestedButStaticHosting =
+  isClaudeProvider() &&
+  !import.meta.env.DEV &&
+  !String(import.meta.env.VITE_CLAUDE_API_BASE || '').trim();
 
 type WorkflowFocus = 'general' | 'IT' | 'HR' | 'Finance';
 
@@ -40,15 +47,30 @@ const TryNora = () => {
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [typingReply, setTypingReply] = useState(false);
-  const [ollamaOk, setOllamaOk] = useState<boolean | null>(null);
+  const [backendOk, setBackendOk] = useState<boolean | null>(null);
   const [lastError, setLastError] = useState('');
   const transcriptRef = useRef<HTMLDivElement>(null);
   const typingTimerRef = useRef<number | null>(null);
 
   const refreshConnection = useCallback(async () => {
-    setOllamaOk(null);
+    setBackendOk(null);
+    if (useClaude) {
+      const ok = await checkClaudeBackend();
+      setBackendOk(ok);
+      if (!ok) {
+        setLastError(
+          import.meta.env.DEV
+            ? 'Claude backend not ready. Add CLAUDE_API_KEY to .env.local, set VITE_AI_PROVIDER=claude, restart npm run dev. Never commit your API key.'
+            : 'Claude is not reachable from this origin. On GitHub Pages there is no private server for your key. Run Ask Nora with Claude locally (npm run dev + .env.local), or host a small HTTPS proxy and set VITE_CLAUDE_API_BASE at build time.',
+        );
+      } else {
+        setLastError('');
+      }
+      return;
+    }
+
     const ok = await checkOllamaConnection();
-    setOllamaOk(ok);
+    setBackendOk(ok);
     if (!ok) {
       setLastError(
         'Cannot reach Ollama. Start it with `ollama serve`, ensure `ollama pull llama3.2:3b`, and use `npm run dev` so the /ollama proxy works.',
@@ -129,17 +151,19 @@ const TryNora = () => {
 
     try {
       const system = buildNoraSystemPrompt(effectiveFocus === 'general' ? undefined : effectiveFocus);
-      const reply = await sendOllamaChat({
-        model: DEFAULT_OLLAMA_MODEL,
-        messages: nextHistory,
-        systemPrompt: system,
-      });
+      const reply = useClaude
+        ? await sendClaudeChat({ systemPrompt: system, messages: nextHistory })
+        : await sendOllamaChat({
+            model: DEFAULT_OLLAMA_MODEL,
+            messages: nextHistory,
+            systemPrompt: system,
+          });
       await animateAssistantReply(reply);
-      setOllamaOk(true);
+      setBackendOk(true);
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Something went wrong';
       setLastError(msg);
-      setOllamaOk(false);
+      setBackendOk(false);
       if (typingTimerRef.current !== null) {
         window.clearInterval(typingTimerRef.current);
         typingTimerRef.current = null;
@@ -196,19 +220,31 @@ const TryNora = () => {
               <p className="font-playfair text-[11px] font-medium uppercase tracking-[0.14em] text-base-content/45">Local demo</p>
               <h1 className="premium-heading mt-0.5 text-balance text-xl font-semibold sm:mt-1 sm:text-2xl">Ask Nora</h1>
               <p className="mt-0.5 line-clamp-2 text-[11px] text-base-content/55 sm:mt-1 sm:text-sm sm:line-clamp-none">
-                General chat powered by your machine. Nothing is saved or sent to Xenora servers.
+                {useClaude
+                  ? 'Powered by Claude (Anthropic). Your API key stays on the dev server only, not in the browser bundle. Nothing is sent to Xenora servers.'
+                  : 'General chat powered by your machine. Nothing is saved or sent to Xenora servers.'}
               </p>
               <div className="mt-1.5 flex flex-wrap items-center gap-2 text-[11px]">
                 <span
                   className={`rounded-full border px-2 py-0.5 ${
-                    ollamaOk === null
+                    backendOk === null
                       ? 'border-base-content/15 text-base-content/50'
-                      : ollamaOk
+                      : backendOk
                         ? 'border-primary/40 text-primary'
                         : 'border-error/40 text-error'
                   }`}
                 >
-                  {ollamaOk === null ? 'Checking Ollama…' : ollamaOk ? 'Ollama reachable' : 'Ollama offline'}
+                  {useClaude
+                    ? backendOk === null
+                      ? 'Checking Claude…'
+                      : backendOk
+                        ? 'Claude ready'
+                        : 'Claude unavailable'
+                    : backendOk === null
+                      ? 'Checking Ollama…'
+                      : backendOk
+                        ? 'Ollama reachable'
+                        : 'Ollama offline'}
                 </span>
                 <Button type="button" variant="outline" size="sm" className="h-7 text-[11px]" onClick={() => void refreshConnection()}>
                   Retry connection
@@ -216,6 +252,14 @@ const TryNora = () => {
               </div>
             </div>
 
+            {claudeRequestedButStaticHosting && (
+              <div className="mb-2 shrink-0 rounded-lg border border-warning/30 bg-warning/5 px-3 py-2 text-[11px] text-base-content/80 sm:text-xs">
+                This site is static (e.g. GitHub Pages): it cannot run Claude with a secret API key. Use{' '}
+                <strong>npm run dev</strong> and <strong>.env.local</strong> for Claude, or leave{' '}
+                <strong>VITE_AI_PROVIDER=ollama</strong> for the public build. GitHub Actions secrets are not
+                available in the browser.
+              </div>
+            )}
             {lastError && (
               <div className="mb-2 shrink-0 rounded-lg border border-error/30 bg-error/5 px-3 py-2 text-[11px] text-base-content/80 sm:text-xs">
                 {lastError}

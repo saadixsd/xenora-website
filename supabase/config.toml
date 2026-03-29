@@ -1,1 +1,6 @@
 project_id = "bblzvdfztnxrebfupjtj"
+
+# Lets the static site call the function with fetch() without a Supabase JWT.
+# Anyone with the URL can use your Anthropic quota — consider rate limits / abuse protection later.
+[functions.nora-claude]
+verify_jwt = false
