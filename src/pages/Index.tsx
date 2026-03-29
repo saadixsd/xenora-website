@@ -100,21 +100,29 @@ const Index = () => {
             </Reveal>
 
             <Reveal delay={0.2}>
-              <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <button
-                  type="button"
-                  className="btn btn-primary px-8 shadow-[0_10px_30px_rgba(14,165,164,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,165,164,0.28)]"
-                  onClick={() => scrollToSection('waitlist')}
+              <div className="mt-10 flex w-full max-w-md flex-col items-stretch gap-3 sm:max-w-none sm:items-center">
+                <Link
+                  to="/try-nora"
+                  className="btn btn-outline btn-primary w-full px-8 shadow-[0_8px_24px_rgba(14,165,164,0.12)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/10 hover:shadow-[0_12px_28px_rgba(14,165,164,0.2)] sm:w-auto sm:min-w-[200px]"
                 >
-                  Join Waitlist to Ask Nora
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-ghost border border-base-content/15 px-7 text-base-content/80 transition-all duration-300 hover:border-primary/45 hover:bg-base-200/45 hover:text-base-content"
-                  onClick={() => scrollToSection('how-it-works')}
-                >
-                  See the workflow demo
-                </button>
+                  Ask Nora
+                </Link>
+                <div className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center sm:justify-center">
+                  <button
+                    type="button"
+                    className="btn btn-primary px-8 shadow-[0_10px_30px_rgba(14,165,164,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,165,164,0.28)]"
+                    onClick={() => scrollToSection('waitlist')}
+                  >
+                    Join Waitlist to Ask Nora
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-ghost border border-base-content/15 px-7 text-base-content/80 transition-all duration-300 hover:border-primary/45 hover:bg-base-200/45 hover:text-base-content"
+                    onClick={() => scrollToSection('how-it-works')}
+                  >
+                    See the workflow demo
+                  </button>
+                </div>
               </div>
             </Reveal>
           </div>
