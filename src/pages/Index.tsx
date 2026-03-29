@@ -174,8 +174,6 @@ const Index = () => {
             <Reveal>
               <h2 className="premium-heading text-center text-2xl font-semibold">Join the waitlist</h2>
             </Reveal>
-            <Reveal delay={0.05}>
-            </Reveal>
             <Reveal delay={0.1}>
               <div className="surface-panel mt-8 p-6">
                 <NoraWaitlistForm />

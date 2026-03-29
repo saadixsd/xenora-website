@@ -21,8 +21,6 @@ export type Database = {
           focus_killer: string | null
           id: string
           name: string
-          role: string | null
-          company_size: string | null
         }
         Insert: {
           created_at?: string
@@ -30,8 +28,6 @@ export type Database = {
           focus_killer?: string | null
           id?: string
           name: string
-          role?: string | null
-          company_size?: string | null
         }
         Update: {
           created_at?: string
@@ -39,8 +35,6 @@ export type Database = {
           focus_killer?: string | null
           id?: string
           name?: string
-          role?: string | null
-          company_size?: string | null
         }
         Relationships: []
       }
