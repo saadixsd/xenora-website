@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 import daisyui from "daisyui";
 import tailwindcssAnimate from "tailwindcss-animate";
+import typography from "@tailwindcss/typography";
 
 export default {
   darkMode: ["class"],
