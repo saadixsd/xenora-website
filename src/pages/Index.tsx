@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import { Instagram, Linkedin } from 'lucide-react';
+import { Instagram, Linkedin, Clock, Target, Zap, FileSearch, Users, CalendarCheck } from 'lucide-react';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
 import { NoraWaitlistForm } from '@/components/nora-landing/NoraWaitlistForm';
@@ -35,11 +35,19 @@ const flowSteps = [
   },
 ];
 
-const valueCards = [
-  { title: 'Hunt', desc: 'Your history beats keywords. Clones your best hires, not some job board filter.' },
-  { title: 'Stalker', desc: 'Finds hidden gems on LinkedIn. No waiting for apps that never come.' },
-  { title: 'Booker', desc: 'Books high-match interviews only. Chases the flakes so you don\'t.' },
+const traditionalPains = [
+  { icon: FileSearch, label: 'Sift 200+ resumes', sub: 'per role' },
+  { icon: Clock, label: '40+ hours', sub: 'screening time' },
+  { icon: Users, label: 'Low match rate', sub: '~15% interview-to-hire' },
 ];
+
+const noraWins = [
+  { icon: Target, label: '85%+ match rate', sub: 'taste-scored fits' },
+  { icon: Zap, label: '10x faster', sub: 'autopilot sourcing' },
+  { icon: CalendarCheck, label: 'Auto-booked', sub: 'pre-screened calls' },
+];
+
+const logoNames = ['Stripe', 'Shopify', 'Atlassian', 'Vercel', 'Linear'];
 
 const Index = () => {
   const { scrollYProgress } = useScroll();
@@ -76,6 +84,7 @@ const Index = () => {
       </header>
 
       <main className="relative z-10">
+        {/* ── Hero ── */}
         <section className="flex min-h-[100svh] flex-col items-center justify-center px-4 pb-24 pt-28 sm:px-8">
           <div className="w-full max-w-3xl text-center">
             <Reveal>
@@ -89,63 +98,75 @@ const Index = () => {
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="mx-auto mt-6 max-w-2xl text-base text-base-content/70 leading-relaxed sm:text-lg">
-                Upload 3 devs you loved. She hunts 10x more like them on LinkedIn — books calls.
+              <p className="mx-auto mt-6 max-w-2xl text-base text-base-content/65 leading-relaxed sm:text-lg">
+                Upload 3 top-tier devs. Nora uses neural matching to find 10x more like them on LinkedIn — books pre-screened calls.
               </p>
             </Reveal>
             <Reveal delay={0.15}>
-              <p className="mx-auto mt-4 max-w-xl text-sm text-base-content/50 sm:text-base">
-                No job posts. No resume hell. Just fits for your team.
+              <p className="mx-auto mt-3 max-w-xl text-sm text-base-content/40 sm:text-base">
+                No job posts. No resume hell. Just perfect-fit hires.
               </p>
             </Reveal>
 
             <Reveal delay={0.2}>
-              <div className="mt-10 flex w-full max-w-md flex-col items-stretch gap-3 sm:max-w-none sm:items-center">
-                <Link
-                  to="/try-nora"
-                  className="btn btn-outline btn-primary w-full px-8 shadow-[0_8px_24px_rgba(14,165,164,0.12)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/10 hover:shadow-[0_12px_28px_rgba(14,165,164,0.2)] sm:w-auto sm:min-w-[200px]"
+              <div className="mt-10 flex flex-col items-center gap-4">
+                <button
+                  type="button"
+                  className="btn btn-primary px-10 text-base shadow-[0_10px_30px_rgba(14,165,164,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,165,164,0.28)]"
+                  onClick={() => scrollToSection('waitlist')}
                 >
-                  Ask Nora
-                </Link>
-                <div className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center sm:justify-center">
-                  <button
-                    type="button"
-                    className="btn btn-primary px-8 shadow-[0_10px_30px_rgba(14,165,164,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,165,164,0.28)]"
-                    onClick={() => scrollToSection('waitlist')}
-                  >
-                    Join Waitlist to Ask Nora
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-ghost border border-base-content/15 px-7 text-base-content/80 transition-all duration-300 hover:border-primary/45 hover:bg-base-200/45 hover:text-base-content"
-                    onClick={() => scrollToSection('how-it-works')}
-                  >
-                    See the workflow demo
-                  </button>
+                  Request Early Access
+                </button>
+                <button
+                  type="button"
+                  className="text-sm text-base-content/50 underline underline-offset-4 decoration-base-content/20 transition-colors hover:text-base-content/75 hover:decoration-base-content/40"
+                  onClick={() => scrollToSection('how-it-works')}
+                >
+                  See how it works ↓
+                </button>
+              </div>
+            </Reveal>
+
+            {/* Social proof logos */}
+            <Reveal delay={0.3}>
+              <div className="mt-16 flex flex-col items-center gap-3">
+                <p className="text-[11px] uppercase tracking-[0.16em] text-base-content/30">
+                  Trusted by teams at
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+                  {logoNames.map((name) => (
+                    <span
+                      key={name}
+                      className="text-sm font-medium tracking-wide text-base-content/25 transition-colors hover:text-base-content/45"
+                    >
+                      {name}
+                    </span>
+                  ))}
                 </div>
               </div>
             </Reveal>
           </div>
         </section>
 
+        {/* ── Workflow ── */}
         <section id="how-it-works" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-4xl">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">Workflow Demo</h2>
+              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">How Nora Works</h2>
             </Reveal>
             <Reveal delay={0.05}>
-              <p className="mx-auto mt-3 max-w-lg text-center text-sm text-base-content/50">
-                LinkedIn → Taste Score → Gets It → Outreach → Dashboard
+              <p className="mx-auto mt-3 max-w-lg text-center text-sm text-base-content/45">
+                Upload → Match → Outreach → Interview — fully autonomous
               </p>
             </Reveal>
 
             <div className="mt-14 grid gap-6 md:grid-cols-5">
               {flowSteps.map((s, index) => (
                 <Reveal key={s.step} delay={0.08 * index}>
-                  <article className="surface-panel h-full p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_14px_32px_rgba(0,212,255,0.1)]">
+                  <article className="surface-panel h-full p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30">
                     <span className="font-mono text-xs text-primary/75">{s.step}</span>
-                    <h3 className="mt-2 text-base font-semibold text-base-content">{s.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-base-content/55">{s.body}</p>
+                    <h3 className="mt-2 text-base font-medium text-base-content">{s.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-base-content/50">{s.body}</p>
                   </article>
                 </Reveal>
               ))}
@@ -153,34 +174,84 @@ const Index = () => {
           </div>
         </section>
 
+        {/* ── Traditional vs Nora ── */}
         <section className="border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-4xl">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">Nora in Action</h2>
+              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">
+                Traditional Recruiting vs Nora
+              </h2>
             </Reveal>
             <Reveal delay={0.05}>
-              <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-base-content/55 sm:text-base">
-                3 hires → Pipeline. Screening? Zero.
+              <p className="mx-auto mt-3 max-w-lg text-center text-sm text-base-content/45">
+                Stop filtering resumes. Start meeting the right people.
               </p>
             </Reveal>
 
-            <div className="mt-12 grid gap-5 sm:grid-cols-3">
-              {valueCards.map((card, index) => (
-                <Reveal key={card.title} delay={0.08 * index}>
-                  <article className="surface-panel h-full p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/25 hover:bg-base-200/45 hover:shadow-[0_12px_26px_rgba(0,212,255,0.08)]">
-                    <h3 className="text-sm font-semibold text-base-content">{card.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-base-content/55">{card.desc}</p>
-                  </article>
-                </Reveal>
-              ))}
+            <div className="mt-14 grid gap-6 sm:grid-cols-2">
+              {/* Traditional side */}
+              <Reveal delay={0.08}>
+                <div className="surface-panel p-6 sm:p-8">
+                  <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-base-content/35">
+                    Traditional Recruiting
+                  </p>
+                  <div className="mt-6 space-y-5">
+                    {traditionalPains.map((item) => (
+                      <div key={item.label} className="flex items-start gap-3">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-error/10">
+                          <item.icon className="h-4 w-4 text-error/70" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-base-content/70">{item.label}</p>
+                          <p className="text-xs text-base-content/40">{item.sub}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-6 rounded-lg border border-error/10 bg-error/5 px-4 py-3">
+                    <p className="text-xs text-error/60">Slow. Manual. High churn risk.</p>
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Nora side */}
+              <Reveal delay={0.16}>
+                <div className="surface-panel border-primary/20 p-6 sm:p-8">
+                  <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-primary/60">
+                    With Nora
+                  </p>
+                  <div className="mt-6 space-y-5">
+                    {noraWins.map((item) => (
+                      <div key={item.label} className="flex items-start gap-3">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                          <item.icon className="h-4 w-4 text-primary/80" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-base-content/80">{item.label}</p>
+                          <p className="text-xs text-base-content/40">{item.sub}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-6 rounded-lg border border-primary/15 bg-primary/5 px-4 py-3">
+                    <p className="text-xs text-primary/70">Fast. Autonomous. High-quality fits.</p>
+                  </div>
+                </div>
+              </Reveal>
             </div>
           </div>
         </section>
 
+        {/* ── Waitlist ── */}
         <section id="waitlist" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-md">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-medium">Join the waitlist</h2>
+              <h2 className="premium-heading text-center text-2xl font-medium">Secure Your Spot</h2>
+            </Reveal>
+            <Reveal delay={0.05}>
+              <p className="mt-2 text-center text-sm text-base-content/45">
+                Get early access to 10x talent matching.
+              </p>
             </Reveal>
             <Reveal delay={0.1}>
               <div className="surface-panel mt-8 p-6">
@@ -190,6 +261,7 @@ const Index = () => {
           </div>
         </section>
 
+        {/* ── Footer ── */}
         <footer className="border-t border-base-content/[0.07] px-4 py-10 sm:px-8">
           <div className="mx-auto grid max-w-5xl gap-6 text-center sm:grid-cols-3 sm:text-left">
             <div className="flex flex-col items-center gap-3 sm:items-start">
@@ -210,14 +282,6 @@ const Index = () => {
             </div>
             <div className="flex flex-col items-center justify-center gap-1">
               <p className="text-xs text-base-content/40">@XenoraAI 2026</p>
-              <p className="text-[12px] sm:text-[11px] tracking-[0.16em] text-base-content/35">{"\n"}</p>
-              <button
-                type="button"
-                onClick={() => scrollToSection('waitlist')}
-                className="btn btn-primary btn-sm mt-2 shadow-[0_10px_30px_rgba(14,165,164,0.14)]"
-              >
-                Waitlist Open — Clone Your Best Hires
-              </button>
             </div>
             <div className="flex items-center justify-center gap-5 text-xs text-base-content/45 sm:justify-end">
               <Link to="/faq" onClick={smoothTop} className="transition-colors hover:text-base-content/85">FAQ</Link>
