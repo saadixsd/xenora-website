@@ -25,8 +25,8 @@ const ALLOWED_ORIGINS = [
 
 function isOriginAllowed(origin: string | null): boolean {
   if (!origin) return false;
-  // Also allow Lovable preview URLs
-  if (origin.endsWith(".lovable.app")) return true;
+  // Allow Lovable preview/project URLs
+  if (origin.endsWith(".lovable.app") || origin.endsWith(".lovableproject.com")) return true;
   return ALLOWED_ORIGINS.includes(origin);
 }
 
