@@ -131,7 +131,7 @@ const Index = () => {
         <section id="how-it-works" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-4xl">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-semibold sm:text-3xl">Workflow Demo</h2>
+              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">Workflow Demo</h2>
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-3 max-w-lg text-center text-sm text-base-content/50">
