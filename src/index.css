@@ -101,7 +101,7 @@
 }
 
 :root[data-theme='xenora-light'] {
-  --bg-base: #f8fafd;
+  --bg-base: #f4f2ee;
 }
 
 @layer base {
