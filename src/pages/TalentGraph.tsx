@@ -112,24 +112,24 @@ const TalentGraph = () => {
         </div>
       </header>
 
-      <main className="relative z-10 mx-auto max-w-5xl px-4 pb-20 pt-28 sm:px-8">
+      <main className="relative z-10 mx-auto max-w-5xl px-3 pb-20 pt-24 sm:px-6 md:px-8 md:pt-28">
         {/* Hero */}
         <Reveal>
-          <div className="flex flex-col items-center gap-4 text-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-muted/40 px-4 py-2 text-xs text-muted-foreground">
-              <Sparkles className="h-4 w-4" />
+          <div className="flex flex-col items-center gap-3 text-center sm:gap-4">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/40 px-3 py-1.5 text-[11px] text-muted-foreground sm:gap-2 sm:px-4 sm:py-2 sm:text-xs">
+              <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               TalentGraph demo
             </div>
-            <h1 className="premium-heading text-3xl font-medium sm:text-4xl">
+            <h1 className="premium-heading text-2xl font-medium sm:text-3xl md:text-4xl">
               Find 10 more hires like your best 3
             </h1>
-            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+            <p className="max-w-2xl text-xs leading-relaxed text-muted-foreground sm:text-sm md:text-base">
               Paste 3 GitHub profiles you loved working with. We build a taste profile and rank candidates from the open web starting with GitHub.
             </p>
           </div>
         </Reveal>
 
-        <section className="mt-10 grid gap-6 lg:grid-cols-[420px_1fr]">
+        <section className="mt-8 grid gap-4 sm:mt-10 sm:gap-6 lg:grid-cols-[400px_1fr]">
           {/* Left panel — inputs */}
           <Reveal delay={0.05}>
             <div className="surface-panel p-6">
