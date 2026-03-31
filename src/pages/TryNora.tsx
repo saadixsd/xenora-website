@@ -8,9 +8,9 @@ import { checkClaudeBackend, sendClaudeChat, buildNoraSystemPrompt, type ChatMes
 import { Send } from 'lucide-react';
 
 const SUGGESTIONS = [
-  { label: 'Jira tickets', text: 'How can Nora automate Jira ticket triage and resolution for my team?' },
-  { label: 'Invoicing', text: 'Show me how Nora handles overdue invoice chasing and collections.' },
-  { label: 'Hiring', text: 'How does Nora screen CVs and automate candidate pipelines?' },
+  { label: 'Taste matching', text: 'How does Nora learn my hiring taste from past hires?' },
+  { label: 'Sourcing', text: 'How does Nora find candidates on LinkedIn without job posts?' },
+  { label: 'Scheduling', text: 'Can Nora book interviews automatically via Calendly?' },
 ];
 
 const TryNora = () => {
