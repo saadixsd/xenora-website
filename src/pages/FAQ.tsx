@@ -50,7 +50,7 @@ const FAQ = () => {
           <h1 className="premium-heading text-3xl font-medium sm:text-4xl">Frequently Asked Questions</h1>
         </Reveal>
         <Reveal delay={0.05}>
-          <p className="mt-3 text-sm text-base-content/55">Common questions about Nora’s agentic engine and how the beta works.</p>
+          <p className="mt-3 text-sm text-base-content/55">Everything you need to know about TalentGraph™ and how early access works.</p>
         </Reveal>
 
         <div className="mt-10 space-y-3">
