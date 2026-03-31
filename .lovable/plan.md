@@ -1,51 +1,57 @@
 
 
-## Plan: Secure the Claude Edge Function
+## TalentGraph Dashboard Redesign + Nora Integration
 
-### The Problem
+### Problems identified
 
-The `nora-claude` edge function is publicly accessible (`verify_jwt = false`, CORS `*`) with your `CLAUDE_API_KEY` behind it. The existing rate limiter is in-memory and resets on every cold start — anyone can cycle through IPs or wait for resets to abuse your Anthropic quota.
+1. **Design inconsistency**: TalentGraph uses DaisyUI class names (`btn btn-primary`, `input input-bordered`, `btn-ghost`, `btn-outline`, `btn-sm`) that don't match the custom Tailwind/shadcn design system used on Index and TryNora pages. The site uses custom CSS variables (`--primary`, `--card`, etc.) with shadcn-style tokens, not DaisyUI.
+2. **No Nora integration**: TalentGraph has a simple "Ask Nora" link but no inline Nora assistant. When a user gets results, they can't ask Nora about a candidate.
+3. **Layout feels utilitarian**: The two-column layout with plain panels lacks the premium feel of the rest of the site.
 
-### The Fix: Origin Lock + Shared Secret
+### Plan
 
-Since this is a public-facing chat (no user auth), we can't require JWT auth. Instead we layer two defenses:
+#### 1. Redesign TalentGraph page with consistent design system
 
-1. **Origin allowlist** — restrict CORS to your actual domains only
-2. **Shared secret header** — the client sends a secret token the edge function validates, preventing raw `curl` abuse
-3. **Tighten rate limits** — lower to 5 req/min/IP and add a global daily cap
+Replace all DaisyUI classes with the project's own Tailwind tokens:
+- Inputs: custom styled with `rounded-xl border border-border bg-card/35` etc.
+- Buttons: use the same button patterns from Index page (not `btn btn-primary`)
+- Cards: use `surface-panel` utility + refined card layouts
+- Add avatar images for candidates (using `avatar_url` already in the data)
+- Add a proper loading/progress indicator during stages (animated steps bar)
+- Score display: circular or bar-style score badges instead of plain numbers
+- Responsive: stack to single column on mobile, side-by-side on desktop
 
-### Changes
+#### 2. Add inline Nora chat drawer
 
-#### 1. Edge function (`supabase/functions/nora-claude/index.ts`)
+- Add a floating "Ask Nora" button (bottom-right) on the TalentGraph page
+- Opens a slide-over panel with the Nora chat interface
+- Pre-populate context: when results are available, Nora's system prompt context includes the taste profile and top candidates so users can ask "Tell me more about candidate X" or "Why did this person score low?"
+- Reuse the existing `sendClaudeChat` function from `src/lib/claude.ts`
 
-- **CORS origin lock**: Replace `Access-Control-Allow-Origin: *` with a check against allowed origins (`xenoraai.com`, `xenora-ai-portal.lovable.app`, `localhost` for dev). Return 403 for unknown origins.
-- **App secret validation**: Read a `NORA_APP_SECRET` from env. Require the client to send it as `x-app-token` header. Reject requests without a valid token (401).
-- **Lower rate limit**: 5 req/min/IP instead of 10. Add a global counter capping total requests at 500/day across all IPs (resets on cold start, but provides a safety net).
-- **System prompt lock**: Instead of accepting a `system` field from the client (which lets attackers inject arbitrary system prompts), hardcode the system prompt server-side or ignore the client-sent one entirely. This prevents prompt injection.
+#### 3. Connect TalentGraph results to Nora context
 
-#### 2. Add the secret (`secrets` tool)
+- When user clicks "Ask Nora about this candidate" on a result card, it opens the Nora drawer with a pre-filled message like "Tell me about @username's fit for my team"
+- Pass candidate data as context in the chat message so Nora can give informed answers
 
-- Add `NORA_APP_SECRET` as a new Supabase secret (a random string).
+### Files to modify
 
-#### 3. Client (`src/lib/claude.ts`)
+| File | Changes |
+|------|---------|
+| `src/pages/TalentGraph.tsx` | Full redesign — replace DaisyUI with custom tokens, add avatar display, progress stepper, inline Nora drawer |
+| `src/index.css` | Potentially add a utility class for score badges |
 
-- Send `x-app-token` header with the secret value. Since this is a client-side app, the secret will be in the JS bundle — it's not true auth, but it stops casual `curl` abuse. The real protection is the origin check + rate limit.
-- Stop sending `system` in the request body (server handles it).
+### Files to create
 
-#### 4. System prompt server-side (`supabase/functions/nora-claude/index.ts`)
+| File | Purpose |
+|------|---------|
+| `src/components/talentgraph/NoraChatDrawer.tsx` | Slide-over Nora chat panel with context awareness |
+| `src/components/talentgraph/CandidateCard.tsx` | Extracted candidate result card component |
+| `src/components/talentgraph/StageProgress.tsx` | Visual progress indicator for parsing/matching/scoring stages |
 
-- Move the Nora system prompt into the edge function so clients can't override it. Keep `buildNoraSystemPrompt()` in `claude.ts` only as a reference/fallback.
+### Design details
 
-### Files
-
-| File | Change |
-|------|--------|
-| `supabase/functions/nora-claude/index.ts` | Origin allowlist, app secret check, server-side system prompt, lower rate limits, daily cap |
-| `src/lib/claude.ts` | Add `x-app-token` header, remove `system` from request body |
-| Secrets | Add `NORA_APP_SECRET` |
-
-### What this does NOT solve
-
-- The `x-app-token` is visible in the JS bundle — a determined attacker can extract it. But combined with origin checks and tight rate limits, it raises the bar significantly.
-- For true protection, you'd need user authentication (login before chatting). That's a bigger change for later.
+- **Score badges**: Circular ring with score number inside, color-coded (teal for 85+, green for 70+, amber for 55+, gray below)
+- **Candidate cards**: Show avatar, name, location, bio, language tags as pills, score ring, sub-scores as small bars, "Ask Nora" button per card
+- **Stage progress**: Horizontal stepper with 4 dots (Parse → Profile → Search → Score) that animate as stages progress
+- **Nora drawer**: 400px wide slide-in from right, same chat UI as TryNora but compact, with close button
 
