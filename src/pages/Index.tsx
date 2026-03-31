@@ -84,7 +84,7 @@ const Index = () => {
 
       <main className="relative z-10">
         {/* ── Hero ── */}
-        <section className="flex min-h-[100svh] flex-col items-center justify-center px-4 pb-24 pt-28 sm:px-8">
+        <section className="flex min-h-[100svh] flex-col items-center justify-center px-4 pb-20 pt-24 sm:px-8 sm:pb-24 sm:pt-28">
           <div className="w-full max-w-3xl text-center">
             <Reveal>
               <p className="font-playfair text-[12px] sm:text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
