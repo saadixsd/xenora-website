@@ -69,7 +69,7 @@ const Index = () => {
         className="pointer-events-none fixed inset-0 z-[1] flex items-center justify-center"
         aria-hidden
       >
-        <XenoraLogo decorative className="h-[min(44vh,320px)] w-auto max-w-[82vw] opacity-[0.14] sm:h-[min(52vh,420px)]" />
+        <XenoraLogo decorative className="h-[min(36vh,280px)] w-auto max-w-[82vw] opacity-[0.14] sm:h-[min(44vh,320px)] lg:h-[min(52vh,420px)]" />
       </motion.div>
 
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 backdrop-blur-xl">
