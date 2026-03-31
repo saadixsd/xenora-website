@@ -55,48 +55,48 @@
   }
 
   .light {
-    --bg-base: #f8fafd;
-    --background: 220 30% 98%;
-    --foreground: 222 20% 12%;
+    --bg-base: #f4f2ee;
+    --background: 36 18% 95%;
+    --foreground: 225 15% 15%;
 
-    --card: 220 20% 96%;
-    --card-foreground: 222 20% 12%;
+    --card: 36 14% 92%;
+    --card-foreground: 225 15% 15%;
 
-    --popover: 220 20% 96%;
-    --popover-foreground: 222 20% 12%;
+    --popover: 36 14% 92%;
+    --popover-foreground: 225 15% 15%;
 
-    --primary: 174 75% 36%;
+    --primary: 174 65% 32%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 14% 92%;
-    --secondary-foreground: 222 20% 12%;
+    --secondary: 36 10% 88%;
+    --secondary-foreground: 225 15% 15%;
 
-    --muted: 220 14% 94%;
-    --muted-foreground: 220 8% 46%;
+    --muted: 36 10% 90%;
+    --muted-foreground: 225 8% 40%;
 
-    --accent: 260 20% 93%;
-    --accent-foreground: 222 20% 12%;
+    --accent: 260 14% 90%;
+    --accent-foreground: 225 15% 15%;
 
-    --destructive: 0 70% 50%;
+    --destructive: 0 65% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 14% 88%;
-    --input: 220 14% 88%;
-    --ring: 174 75% 36%;
+    --border: 36 10% 84%;
+    --input: 36 10% 84%;
+    --ring: 174 65% 32%;
 
-    --sidebar-background: 220 30% 98%;
-    --sidebar-foreground: 222 20% 12%;
-    --sidebar-primary: 174 75% 36%;
+    --sidebar-background: 36 18% 95%;
+    --sidebar-foreground: 225 15% 15%;
+    --sidebar-primary: 174 65% 32%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 14% 94%;
-    --sidebar-accent-foreground: 222 20% 12%;
-    --sidebar-border: 220 14% 88%;
-    --sidebar-ring: 174 75% 36%;
+    --sidebar-accent: 36 10% 90%;
+    --sidebar-accent-foreground: 225 15% 15%;
+    --sidebar-border: 36 10% 84%;
+    --sidebar-ring: 174 65% 32%;
 
-    --mesh-grid: rgba(0, 0, 0, 0.035);
-    --mesh-diag: rgba(0, 0, 0, 0.02);
-    --mesh-vignette: rgba(248, 250, 253, 0.5);
-    --mesh-glow: rgba(124, 58, 237, 0.04);
+    --mesh-grid: rgba(0, 0, 0, 0.04);
+    --mesh-diag: rgba(0, 0, 0, 0.025);
+    --mesh-vignette: rgba(244, 242, 238, 0.6);
+    --mesh-glow: rgba(14, 165, 164, 0.06);
   }
 }
 
