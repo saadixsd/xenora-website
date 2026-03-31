@@ -5,26 +5,7 @@ import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
 import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackground';
 
-const faqs = [
-  {
-    q: 'How does TalentGraph™ find candidates without LinkedIn?',
-    a: 'Nora searches publicly available profiles across GitHub, X (Twitter), and personal portfolios — no scraping of platforms that prohibit it. TalentGraph™ indexes the open web to find people based on real output, not keyword-stuffed resumes.',
-  },
-  {
-    q: 'What happens to my data?',
-    a: 'Your uploads stay private to your account. We don\'t train on your hiring preferences or share them with anyone. Your taste profile is yours.',
-  },
-  {
-    q: 'How accurate is the 85% match rate?',
-    a: 'That\'s our target benchmark from internal testing. Your first 10 matches help Nora calibrate to your taste specifically — it gets sharper the more you use it.',
-  },
-  {
-    q: 'Is this free right now?',
-    a: 'Founding members get free access during our early build phase. Pricing will be announced before we close the waitlist.',
-  },
-];
-
-const FAQ = () => {
+const About = () => {
   const smoothTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 
   return (
@@ -45,27 +26,70 @@ const FAQ = () => {
         </div>
       </header>
 
-      <main className="relative z-10 mx-auto max-w-3xl px-4 pb-20 pt-28 sm:px-8">
+      <main className="relative z-10 mx-auto max-w-2xl px-4 pb-20 pt-28 sm:px-8">
         <Reveal>
-          <h1 className="premium-heading text-3xl font-medium sm:text-4xl">Frequently Asked Questions</h1>
-        </Reveal>
-        <Reveal delay={0.05}>
-          <p className="mt-3 text-sm text-base-content/55">Everything you need to know about TalentGraph™ and how early access works.</p>
+          <h1 className="premium-heading text-3xl font-medium sm:text-4xl">About</h1>
         </Reveal>
 
-        <div className="mt-10 space-y-3">
-          {faqs.map((faq, i) => (
-            <Reveal key={faq.q} delay={i * 0.03}>
-              <div className="collapse collapse-arrow surface-panel">
-                <input type="checkbox" />
-                <div className="collapse-title text-sm font-medium text-base-content/85">{faq.q}</div>
-                <div className="collapse-content">
-                  <p className="text-sm leading-relaxed text-base-content/60">{faq.a}</p>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
+        <Reveal delay={0.05}>
+          <div className="mt-10 flex flex-col items-center gap-6 sm:flex-row sm:items-start">
+            <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-full border border-base-content/10 bg-base-200/50">
+              <XenoraLogo decorative className="h-16 w-16 rounded-full" />
+            </div>
+            <div className="text-center sm:text-left">
+              <p className="text-lg font-medium text-base-content/85">XenoraAI</p>
+              <p className="mt-1 text-sm text-base-content/50">Built in Montreal</p>
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.1}>
+          <div className="mt-8 space-y-4 text-sm leading-relaxed text-base-content/60">
+            <p>
+              I built Nora because I watched founders — including myself — burn 40+ hours a week on hiring.
+              Scrolling profiles, reading resumes that say nothing, scheduling calls with people who ghost.
+              The whole process felt broken.
+            </p>
+            <p>
+              So I asked a simple question: what if you could just point at 3 people you already loved working with,
+              and let software find more of them? That's TalentGraph™. It searches the open web — GitHub, X, portfolios —
+              and scores candidates against your taste. Not keywords. Your actual gut feel, quantified.
+            </p>
+            <p>
+              Nora is early. We're building this in public with our first 10 founding teams.
+              If you're a bootstrapped founder who's tired of the hiring treadmill, I'd love to work with you.
+            </p>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.15}>
+          <div className="mt-8 flex items-center gap-4">
+            <a
+              href="https://x.com/xenoraai"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 text-sm text-base-content/50 transition-colors hover:text-base-content/85"
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden>
+                <path d="M18.9 2H22l-6.77 7.74L23 22h-6.2l-4.85-6.35L6.4 22H3.3l7.24-8.27L1 2h6.35l4.38 5.78L18.9 2z" />
+              </svg>
+              @xenoraai
+            </a>
+            <a
+              href="https://www.linkedin.com/company/xenoraai"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 text-sm text-base-content/50 transition-colors hover:text-base-content/85"
+            >
+              <Linkedin className="h-4 w-4" />
+              LinkedIn
+            </a>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.2}>
+          <p className="mt-12 text-center text-xs text-base-content/25 italic">Built with conviction.</p>
+        </Reveal>
       </main>
 
       <footer className="relative z-10 border-t border-base-content/[0.07] px-4 py-10 sm:px-8">
@@ -88,7 +112,6 @@ const FAQ = () => {
           </div>
           <div className="flex flex-col items-center justify-center gap-1">
             <p className="text-xs text-base-content/40">@XenoraAI 2026</p>
-            <p className="text-[12px] sm:text-[11px] tracking-[0.16em] text-base-content/35">XenoraAI</p>
           </div>
           <div className="flex items-center justify-center gap-5 text-xs text-base-content/45 sm:justify-end">
             <Link to="/faq" onClick={smoothTop} className="transition-colors hover:text-base-content/85">FAQ</Link>
@@ -100,4 +123,4 @@ const FAQ = () => {
   );
 };
 
-export default FAQ;
+export default About;

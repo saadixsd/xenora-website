@@ -7,6 +7,7 @@ import { ScrollManager } from "@/components/app/ScrollManager";
 import Index from "./pages/Index.tsx";
 import FAQ from "./pages/FAQ.tsx";
 import Privacy from "./pages/Privacy.tsx";
+import About from "./pages/About.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import TryNora from "./pages/TryNora.tsx";
 
@@ -20,6 +21,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/faq" element={<FAQ />} />
+          <Route path="/about" element={<About />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/try-nora" element={<TryNora />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
