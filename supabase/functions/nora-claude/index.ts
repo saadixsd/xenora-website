@@ -170,13 +170,7 @@ Deno.serve(async (req) => {
     return json({ error: "Forbidden" }, 403, origin);
   }
 
-  // 2. App secret check
-  const clientToken = req.headers.get("x-app-token");
-  if (!appSecret || clientToken !== appSecret) {
-    return json({ error: "Unauthorized" }, 401, origin);
-  }
-
-  // 3. Rate limiting
+  // 2. Rate limiting
   const clientIp =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     req.headers.get("cf-connecting-ip") ||
