@@ -153,7 +153,6 @@ Deno.serve(async (req) => {
   const isChat = req.method === "POST" && pathname.endsWith("/claude");
 
   const apiKey = Deno.env.get("CLAUDE_API_KEY") ?? Deno.env.get("ANTHROPIC_API_KEY");
-  const appSecret = Deno.env.get("NORA_APP_SECRET");
 
   if (req.method === "GET" && isHealth) {
     return json({ ok: Boolean(apiKey) }, 200, origin);
@@ -170,13 +169,7 @@ Deno.serve(async (req) => {
     return json({ error: "Forbidden" }, 403, origin);
   }
 
-  // 2. App secret check
-  const clientToken = req.headers.get("x-app-token");
-  if (!appSecret || clientToken !== appSecret) {
-    return json({ error: "Unauthorized" }, 401, origin);
-  }
-
-  // 3. Rate limiting
+  // 2. Rate limiting
   const clientIp =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     req.headers.get("cf-connecting-ip") ||

@@ -8,10 +8,6 @@ export function buildNoraSystemPrompt(): string {
 
 const EDGE_FN_BASE = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/nora-claude`;
 
-// App secret for edge function auth (embedded in JS bundle — not a true secret,
-// but raises the bar vs. unauthenticated access when combined with origin checks)
-const APP_TOKEN = import.meta.env.VITE_NORA_APP_TOKEN || '';
-
 export async function checkClaudeBackend(): Promise<boolean> {
   try {
     const res = await fetch(`${EDGE_FN_BASE}/claude/health`);
@@ -33,7 +29,6 @@ export async function sendClaudeChat(params: {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-app-token': APP_TOKEN,
     },
     body: JSON.stringify({
       // System prompt is server-side — only send messages
