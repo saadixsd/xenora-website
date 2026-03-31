@@ -146,7 +146,7 @@ const TryNora = () => {
 
             <h1 className="text-2xl font-semibold text-base-content sm:text-3xl">Ask Nora</h1>
             <p className="mt-2 max-w-md text-center text-sm text-base-content/50">
-              AI ops automation for SMBs. Ask about IT, HR, or Finance workflows.
+              AI recruiter that clones your best hires. Ask about sourcing, screening, or scheduling.
             </p>
 
             {/* Status */}
