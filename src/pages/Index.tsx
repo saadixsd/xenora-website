@@ -180,7 +180,7 @@ const Index = () => {
         <section id="waitlist" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-md">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-semibold">Join the waitlist</h2>
+              <h2 className="premium-heading text-center text-2xl font-medium">Join the waitlist</h2>
             </Reveal>
             <Reveal delay={0.1}>
               <div className="surface-panel mt-8 p-6">

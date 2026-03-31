@@ -76,7 +76,7 @@ const Privacy = () => {
 
       <main className="relative z-10 mx-auto max-w-3xl px-4 pb-20 pt-28 sm:px-8">
         <Reveal>
-          <h1 className="premium-heading text-3xl font-semibold sm:text-4xl">Privacy Policy</h1>
+          <h1 className="premium-heading text-3xl font-medium sm:text-4xl">Privacy Policy</h1>
         </Reveal>
         <Reveal delay={0.05}>
           <p className="mt-3 text-sm text-base-content/55">Last updated: March 2026</p>

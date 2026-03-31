@@ -63,7 +63,7 @@ const FAQ = () => {
 
       <main className="relative z-10 mx-auto max-w-3xl px-4 pb-20 pt-28 sm:px-8">
         <Reveal>
-          <h1 className="premium-heading text-3xl font-semibold sm:text-4xl">Frequently Asked Questions</h1>
+          <h1 className="premium-heading text-3xl font-medium sm:text-4xl">Frequently Asked Questions</h1>
         </Reveal>
         <Reveal delay={0.05}>
           <p className="mt-3 text-sm text-base-content/55">Common questions about Nora’s agentic engine and how the beta works.</p>
