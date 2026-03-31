@@ -78,19 +78,19 @@ export function CandidateCard({
   const score = c.score ?? 0;
 
   return (
-    <article className="surface-panel p-5 transition-shadow hover:shadow-lg">
-      <div className="flex gap-4">
+    <article className="surface-panel p-3.5 sm:p-5 transition-shadow hover:shadow-lg">
+      <div className="flex gap-3 sm:gap-4">
         {/* Avatar */}
         <div className="shrink-0">
           {avatarUrl ? (
             <img
               src={avatarUrl}
               alt={c.user.login}
-              className="h-12 w-12 rounded-full border border-border object-cover"
+              className="h-10 w-10 sm:h-12 sm:w-12 rounded-full border border-border object-cover"
               loading="lazy"
             />
           ) : (
-            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-border bg-muted text-lg font-semibold text-muted-foreground">
+            <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border border-border bg-muted text-base sm:text-lg font-semibold text-muted-foreground">
               {c.user.login[0]?.toUpperCase()}
             </div>
           )}
@@ -134,7 +134,7 @@ export function CandidateCard({
           )}
 
           {/* Sub-scores */}
-          <div className="mt-3 grid grid-cols-3 gap-3">
+          <div className="mt-3 grid grid-cols-3 gap-2 sm:gap-3">
             <SubScore label="Skills" value={c.skillsScore} />
             <SubScore label="Output" value={c.outputScore} />
             <SubScore label="Vibe" value={c.vibeScore} />
