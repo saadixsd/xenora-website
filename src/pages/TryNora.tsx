@@ -192,6 +192,21 @@ const TryNora = () => {
                 </button>
               ))}
             </div>
+
+            <div className="mt-6 flex flex-col items-center justify-center gap-2 sm:flex-row">
+              <Link
+                to="/talentgraph"
+                className="btn btn-outline btn-primary btn-sm"
+              >
+                Open TalentGraph dashboard
+              </Link>
+              <Link
+                to="/#waitlist"
+                className="btn btn-ghost btn-sm"
+              >
+                Get early access
+              </Link>
+            </div>
           </div>
         )}
 

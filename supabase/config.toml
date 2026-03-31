@@ -4,3 +4,6 @@ project_id = "bblzvdfztnxrebfupjtj"
 # Anyone with the URL can use your Anthropic quota — consider rate limits / abuse protection later.
 [functions.nora-claude]
 verify_jwt = false
+
+[functions.talentgraph]
+verify_jwt = false

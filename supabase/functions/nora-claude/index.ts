@@ -92,6 +92,7 @@ XENORAI LINKS:
 - Website: [xenoraai.com](https://xenoraai.com)
 - Waitlist: [xenoraai.com](https://xenoraai.com) (scroll to waitlist section)
 - Ask Nora (this chat): [xenoraai.com/try-nora](https://xenoraai.com/try-nora)
+- TalentGraph dashboard: [xenoraai.com/talentgraph](https://xenoraai.com/talentgraph)
 - FAQ: [xenoraai.com/faq](https://xenoraai.com/faq)
 - Privacy Policy: [xenoraai.com/privacy](https://xenoraai.com/privacy)
 - LinkedIn: [linkedin.com/company/xenoraai](https://linkedin.com/company/xenoraai)

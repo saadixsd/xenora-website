@@ -10,6 +10,7 @@ import Privacy from "./pages/Privacy.tsx";
 import About from "./pages/About.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import TryNora from "./pages/TryNora.tsx";
+import TalentGraph from "./pages/TalentGraph.tsx";
 
 const App = () => (
   <ThemeProvider>
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/try-nora" element={<TryNora />} />
+          <Route path="/talentgraph" element={<TalentGraph />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
