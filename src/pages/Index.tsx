@@ -135,7 +135,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-3 max-w-lg text-center text-sm text-base-content/50">
-                LinkedIn → Taste Index → Learns You → Outreach → Dashboard
+                LinkedIn → Taste Score → Gets It → Outreach → Dashboard
               </p>
             </Reveal>
 
