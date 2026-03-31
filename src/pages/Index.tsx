@@ -84,7 +84,7 @@ const Index = () => {
               </p>
             </Reveal>
             <Reveal delay={0.05}>
-              <h1 className="premium-heading mt-4 text-4xl font-semibold sm:text-6xl lg:text-7xl">
+              <h1 className="premium-heading mt-4 text-4xl font-medium sm:text-6xl lg:text-7xl">
                 Clone Your Best Hires on Autopilot
               </h1>
             </Reveal>
@@ -131,7 +131,7 @@ const Index = () => {
         <section id="how-it-works" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-4xl">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-semibold sm:text-3xl">Workflow Demo</h2>
+              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">Workflow Demo</h2>
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-3 max-w-lg text-center text-sm text-base-content/50">
@@ -156,7 +156,7 @@ const Index = () => {
         <section className="border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-4xl">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-semibold sm:text-3xl">How I Use Nora</h2>
+              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">Nora in Action</h2>
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-base-content/55 sm:text-base">
@@ -180,7 +180,7 @@ const Index = () => {
         <section id="waitlist" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-md">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-semibold">Join the waitlist</h2>
+              <h2 className="premium-heading text-center text-2xl font-medium">Join the waitlist</h2>
             </Reveal>
             <Reveal delay={0.1}>
               <div className="surface-panel mt-8 p-6">

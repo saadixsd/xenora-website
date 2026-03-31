@@ -221,7 +221,7 @@ const TryNora = () => {
                       }`}
                     >
                       {m.role === 'assistant' ? (
-                        <div className="prose prose-sm prose-invert max-w-none prose-p:my-1.5 prose-ul:my-1.5 prose-li:my-0.5 prose-strong:text-base-content prose-a:text-primary prose-headings:text-base-content">
+                        <div className="prose prose-sm dark:prose-invert max-w-none prose-p:my-1.5 prose-ul:my-1.5 prose-li:my-0.5 prose-strong:text-base-content prose-a:text-primary prose-headings:text-base-content">
                           <ReactMarkdown>{m.content}</ReactMarkdown>
                         </div>
                       ) : (
