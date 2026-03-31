@@ -97,7 +97,7 @@ const Index = () => {
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="mx-auto mt-6 max-w-2xl text-base text-base-content/65 leading-relaxed sm:text-lg">
+              <p className="mx-auto mt-4 max-w-2xl text-sm text-base-content/65 leading-relaxed sm:mt-6 sm:text-base lg:text-lg">
                 Upload 3 hires you loved. Nora's TalentGraph™ scours GitHub, X, and portfolios to find 10 more just like them — and books the calls.
               </p>
             </Reveal>
