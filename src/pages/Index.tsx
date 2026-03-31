@@ -85,17 +85,17 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.05}>
               <h1 className="premium-heading mt-4 text-4xl font-semibold sm:text-6xl lg:text-7xl">
-                Nora Clones Your Best Hires
+                I Built Nora to Clone My Best Hires
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-6 max-w-2xl text-base text-base-content/70 leading-relaxed sm:text-lg">
-                Feed her 3 past hires. Get 10x lookalikes sourced & scheduled — autonomously.
+                Upload 3 devs you loved. She hunts 10x more like them on LinkedIn — books calls.
               </p>
             </Reveal>
             <Reveal delay={0.15}>
               <p className="mx-auto mt-4 max-w-xl text-sm text-base-content/50 sm:text-base">
-                No job posts needed. No manual screening. Just candidates that feel like your team.
+                No job posts. No resume hell. Just fits for your team.
               </p>
             </Reveal>
 
