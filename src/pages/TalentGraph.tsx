@@ -132,8 +132,8 @@ const TalentGraph = () => {
         <section className="mt-8 grid gap-4 sm:mt-10 sm:gap-6 lg:grid-cols-[400px_1fr]">
           {/* Left panel — inputs */}
           <Reveal delay={0.05}>
-            <div className="surface-panel p-6">
-              <div className="flex items-center justify-between">
+            <div className="surface-panel p-4 sm:p-6">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <h2 className="text-sm font-semibold text-foreground">Your 3 examples</h2>
                 {isRunning && <StageProgress stage={stage} />}
               </div>
