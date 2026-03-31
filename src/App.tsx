@@ -7,6 +7,7 @@ import { ScrollManager } from "@/components/app/ScrollManager";
 import Index from "./pages/Index.tsx";
 import FAQ from "./pages/FAQ.tsx";
 import Privacy from "./pages/Privacy.tsx";
+import About from "./pages/About.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import TryNora from "./pages/TryNora.tsx";
 
