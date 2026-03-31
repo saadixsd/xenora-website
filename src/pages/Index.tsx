@@ -278,6 +278,7 @@ const Index = () => {
             </div>
             <div className="flex flex-col items-center justify-center gap-1">
               <p className="text-xs text-base-content/40">@XenoraAI 2026</p>
+              <p className="text-[11px] text-base-content/25">Built by XenoraAI</p>
             </div>
             <div className="flex items-center justify-center gap-5 text-xs text-base-content/45 sm:justify-end">
               <Link to="/faq" onClick={smoothTop} className="transition-colors hover:text-base-content/85">FAQ</Link>
