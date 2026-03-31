@@ -47,10 +47,6 @@ const noraWins = [
   { icon: CalendarCheck, label: '85% pre-vetted, booked', sub: 'fits that stick' },
 ];
 
-const earlyUsers = [
-  '"Hired 3 React devs in 2 weeks. No recruiter."',
-  '"Cut screening time from 30h to zero."',
-];
 
 const Index = () => {
   const { scrollYProgress } = useScroll();
