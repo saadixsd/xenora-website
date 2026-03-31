@@ -92,7 +92,7 @@ const Index = () => {
               </p>
             </Reveal>
             <Reveal delay={0.05}>
-              <h1 className="premium-heading mt-4 text-4xl font-medium sm:text-6xl lg:text-7xl">
+              <h1 className="premium-heading mt-4 text-[1.75rem] font-medium leading-tight sm:text-4xl md:text-5xl lg:text-7xl">
                 Stop Screening. Start Meeting Your People.
               </h1>
             </Reveal>
