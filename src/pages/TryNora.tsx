@@ -8,9 +8,9 @@ import { checkClaudeBackend, sendClaudeChat, buildNoraSystemPrompt, type ChatMes
 import { Send } from 'lucide-react';
 
 const SUGGESTIONS = [
-  { label: 'Jira tickets', text: 'How can Nora automate Jira ticket triage and resolution for my team?' },
-  { label: 'Invoicing', text: 'Show me how Nora handles overdue invoice chasing and collections.' },
-  { label: 'Hiring', text: 'How does Nora screen CVs and automate candidate pipelines?' },
+  { label: 'Taste matching', text: 'How does Nora learn my hiring taste from past hires?' },
+  { label: 'Sourcing', text: 'How does Nora find candidates on LinkedIn without job posts?' },
+  { label: 'Scheduling', text: 'Can Nora book interviews automatically via Calendly?' },
 ];
 
 const TryNora = () => {
@@ -146,7 +146,7 @@ const TryNora = () => {
 
             <h1 className="text-2xl font-semibold text-base-content sm:text-3xl">Ask Nora</h1>
             <p className="mt-2 max-w-md text-center text-sm text-base-content/50">
-              AI ops automation for SMBs. Ask about IT, HR, or Finance workflows.
+              AI recruiter that clones your best hires. Ask about sourcing, screening, or scheduling.
             </p>
 
             {/* Status */}
@@ -161,7 +161,7 @@ const TryNora = () => {
                   ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask about automation..."
+                  placeholder="Ask about hiring automation..."
                   autoComplete="off"
                   autoCorrect="off"
                     className="min-h-[44px] flex-1 bg-transparent text-base text-base-content outline-none placeholder:text-base-content/30 sm:min-h-[40px]"

@@ -10,35 +10,35 @@ import { Reveal } from '@/components/motion/Reveal';
 const flowSteps = [
   {
     step: '01',
-    title: 'Email/Slack',
-    body: 'Indexes operational context from inbox + channels so Nora knows what matters and what changed.',
+    title: 'LinkedIn Scan',
+    body: 'Hunts profiles matching your past hires\' patterns — skills, experience, and vibe.',
   },
   {
     step: '02',
-    title: 'Indexes Context',
-    body: 'Extracts intent, entities, and workflows into a usable knowledge layer for business operations.',
+    title: 'Taste Index',
+    body: 'Builds a "clone score" from your examples — who feels like your team, quantified.',
   },
   {
     step: '03',
-    title: 'Learns Patterns',
-    body: 'Learns your recurring playbooks, exceptions, and preferred outcomes across IT, HR, and finance.',
+    title: 'Learns You',
+    body: 'Adapts from your feedback across roles. Tell her "no MBAs" once — she remembers.',
   },
   {
     step: '04',
-    title: 'Autonomous Execution',
-    body: 'Carries out approved actions with guardrails, triggers follow-ups, and keeps teams in control.',
+    title: 'Outreach & Book',
+    body: 'Sends personalized messages, books Calendly interviews for 85%+ matches.',
   },
   {
     step: '05',
-    title: 'Results Dashboard',
-    body: 'Summarizes outcomes, audit trail, and next-best actions so you can move fast with confidence.',
+    title: 'Taste Dashboard',
+    body: 'Ranked clones, "why this one?" explanations, and interview prep notes.',
   },
 ];
 
 const valueCards = [
-  { title: 'IT Agent', desc: 'Auto-resolve tickets, self-healing systems' },
-  { title: 'HR Agent', desc: 'Screen CVs, conduct interviews, onboard' },
-  { title: 'Finance Agent', desc: 'Invoices, collections, cashflow automation' },
+  { title: 'Taste Matcher', desc: 'Clones ideal hires from your history, not generic keyword filters' },
+  { title: 'Proactive Hunter', desc: 'Finds hidden talent on LinkedIn — no waiting for applications' },
+  { title: 'Vibe Scheduler', desc: 'Books only high-match interviews, auto-follows up on no-replies' },
 ];
 
 const Index = () => {
@@ -80,22 +80,22 @@ const Index = () => {
           <div className="w-full max-w-3xl text-center">
             <Reveal>
               <p className="font-playfair text-[12px] sm:text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
-                Nora — AI Agentic Engine
+                Nora — AI Recruiter
               </p>
             </Reveal>
             <Reveal delay={0.05}>
               <h1 className="premium-heading mt-4 text-4xl font-semibold sm:text-6xl lg:text-7xl">
-                Automate Repetitive Workflows
+                Nora Clones Your Best Hires
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-6 max-w-2xl text-base text-base-content/70 leading-relaxed sm:text-lg">
-                Observe→Adapt→Execute.
+                Feed her 3 past hires. Get 10x lookalikes sourced & scheduled — autonomously.
               </p>
             </Reveal>
             <Reveal delay={0.15}>
               <p className="mx-auto mt-4 max-w-xl text-sm text-base-content/50 sm:text-base">
-                Knowledge-first, agentic operations for business velocity. Designed for founders and operators who want reliable outcomes.
+                No job posts needed. No manual screening. Just candidates that feel like your team.
               </p>
             </Reveal>
 
@@ -135,7 +135,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-3 max-w-lg text-center text-sm text-base-content/50">
-                Email/Slack → Nora indexes context → Learns patterns → Autonomous execution → Results dashboard
+                LinkedIn → Taste Index → Learns You → Outreach → Dashboard
               </p>
             </Reveal>
 
@@ -156,11 +156,11 @@ const Index = () => {
         <section className="border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-4xl">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-semibold sm:text-3xl">System Architecture</h2>
+              <h2 className="premium-heading text-center text-2xl font-semibold sm:text-3xl">How Nora Hires For You</h2>
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-base-content/55 sm:text-base">
-                XenoraAI goes beyond manual processes. Proprietary agentic engine for business velocity.
+                From 3 past hires to a pipeline of lookalikes — no screening, no scheduling.
               </p>
             </Reveal>
 
@@ -216,7 +216,7 @@ const Index = () => {
                 onClick={() => scrollToSection('waitlist')}
                 className="btn btn-primary btn-sm mt-2 shadow-[0_10px_30px_rgba(14,165,164,0.14)]"
               >
-                Waitlist Open — Ask Nora Agents
+                Waitlist Open — Clone Your Best Hires
               </button>
             </div>
             <div className="flex items-center justify-center gap-5 text-xs text-base-content/45 sm:justify-end">
