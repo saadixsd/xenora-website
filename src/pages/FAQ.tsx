@@ -7,36 +7,20 @@ import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackgr
 
 const faqs = [
   {
-    q: 'What is Nora?',
-    a: 'Nora is an agentic AI engine for business operations. It observes workflow context, adapts to patterns, and executes task workflows with guardrails so teams move faster without chaos.',
+    q: 'How does TalentGraph™ find candidates without LinkedIn?',
+    a: 'Nora searches publicly available profiles across GitHub, X (Twitter), and personal portfolios — no scraping of platforms that prohibit it. TalentGraph™ indexes the open web to find people based on real output, not keyword-stuffed resumes.',
   },
   {
-    q: 'How does the agentic loop work?',
-    a: 'Nora runs a 5-stage loop: Email/Slack → Indexes Context → Learns Patterns → Autonomous Execution → Results dashboard. It uses permissioned inputs, learns your recurring playbooks, and keeps execution traceable.',
+    q: 'What happens to my data?',
+    a: 'Your uploads stay private to your account. We don\'t train on your hiring preferences or share them with anyone. Your taste profile is yours.',
   },
   {
-    q: 'Which workflows can Nora help with?',
-    a: 'Nora is built to automate real business work: IT agents auto-resolve tickets and self-heal systems, HR agents screen CVs and support interview + onboarding flows, and Finance agents assist with invoices, collections, and cashflow automation.',
+    q: 'How accurate is the 85% match rate?',
+    a: 'That\'s our target benchmark from internal testing. Your first 10 matches help Nora calibrate to your taste specifically — it gets sharper the more you use it.',
   },
   {
-    q: 'Does Nora run locally?',
-    a: 'Core processing is designed for local execution. Sensitive operational context stays on your device by default, and we avoid using your data to train remote models for this beta.',
-  },
-  {
-    q: 'What data is stored when I join the waitlist?',
-    a: 'Waitlist records are stored in your configured Supabase project for beta operations. We collect your name, email, role, and company size to coordinate early access.',
-  },
-  {
-    q: 'How does Nora execute tasks?',
-    a: 'Execution happens through approved workflows with guardrails. Nora can prepare actions and trigger operations that you authorize, then provide a clear results summary so teams can review and iterate quickly.',
-  },
-  {
-    q: 'Is Nora replacing my team?',
-    a: 'No. Nora is meant to remove busywork and coordination bottlenecks. Humans stay in control, and Nora focuses on reliable next actions, structured follow-ups, and faster throughput.',
-  },
-  {
-    q: 'How do I join the beta?',
-    a: 'Submit your email through the waitlist form. Access is released in controlled batches as capacity opens.',
+    q: 'Is this free right now?',
+    a: 'Founding members get free access during our early build phase. Pricing will be announced before we close the waitlist.',
   },
 ];
 
