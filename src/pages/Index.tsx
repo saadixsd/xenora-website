@@ -108,17 +108,17 @@ const Index = () => {
             </Reveal>
 
             <Reveal delay={0.2}>
-              <div className="mt-10 flex flex-col items-center gap-3">
-                <div className="flex items-center gap-3">
+              <div className="mt-8 flex flex-col items-center gap-3 sm:mt-10">
+                <div className="flex flex-col items-center gap-3 sm:flex-row">
                   <Link
                     to="/try-nora"
-                    className="btn btn-outline border-base-content/15 px-8 text-base text-base-content/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:text-primary"
+                    className="btn btn-outline w-full border-base-content/15 px-8 text-base text-base-content/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:text-primary sm:w-auto"
                   >
                     Ask Nora
                   </Link>
                   <button
                     type="button"
-                    className="btn btn-primary px-10 text-base shadow-[0_10px_30px_rgba(14,165,164,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,165,164,0.28)]"
+                    className="btn btn-primary w-full px-10 text-base shadow-[0_10px_30px_rgba(14,165,164,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,165,164,0.28)] sm:w-auto"
                     onClick={() => scrollToSection('waitlist')}
                   >
                     Get Early Access
