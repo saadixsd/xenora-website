@@ -1,28 +1,76 @@
 
 
-## Plan: Fix Mobile Zoom/Scroll Issues on Ask Nora Chat
+## Plan: Pivot to "Nora Clones Your Best Hires" — Landing Page + System Prompt + Chat Demo
 
-### Problem
-On mobile, when the keyboard opens (tapping the input), the browser auto-zooms and the viewport shifts — making it hard to see messages or type. This is a classic mobile web issue caused by two things:
+Three files updated — text only on landing page and chat, full system prompt rewrite. No design changes.
 
-1. **Auto-zoom on focus**: iOS Safari zooms in when an input has `font-size < 16px` (current inputs use `text-sm` = 14px)
-2. **Viewport resize on keyboard open**: The mobile keyboard shrinks the viewport, causing layout jumps with `fixed inset-0`
-3. **Missing touch prevention**: No meta tag or CSS to prevent pinch-zoom on the chat interface
+---
 
-### Changes
+### 1. Landing Page (`src/pages/Index.tsx`)
 
-**`index.html`** — Prevent pinch-zoom on mobile:
-- Update viewport meta to add `maximum-scale=1, user-scalable=no` (prevents accidental zoom while chatting)
+**Hero:**
+- Tagline: `Nora — AI Recruiter`
+- Headline: `Nora Clones Your Best Hires`
+- Subline: `Feed her 3 past hires. Get 10x lookalikes sourced & scheduled — autonomously.`
+- Secondary: `No job posts needed. No manual screening. Just candidates that feel like your team.`
+- Footer CTA button: `Waitlist Open — Clone Your Best Hires`
 
-**`src/pages/TryNora.tsx`** — Fix input font size + viewport stability:
-- Change input `text-sm` → `text-base` (16px) on both input fields to prevent iOS auto-zoom on focus
-- Add `touch-action: manipulation` on the outer container to prevent double-tap zoom
-- Use `dvh` (dynamic viewport height) via CSS to handle keyboard resize properly
-- Add `overscroll-behavior: none` on the container to prevent pull-to-refresh and bounce effects
+**Workflow steps (`flowSteps`):**
+| Step | Title | Body |
+|------|-------|------|
+| 01 | LinkedIn Scan | Hunts profiles matching your past hires' patterns — skills, experience, and vibe. |
+| 02 | Taste Index | Builds a "clone score" from your examples — who feels like your team, quantified. |
+| 03 | Learns You | Adapts from your feedback across roles. Tell her "no MBAs" once — she remembers. |
+| 04 | Outreach & Book | Sends personalized messages, books Calendly interviews for 85%+ matches. |
+| 05 | Taste Dashboard | Ranked clones, "why this one?" explanations, and interview prep notes. |
+
+**Value cards (`valueCards`):**
+| Card | Description |
+|------|-------------|
+| Taste Matcher | Clones ideal hires from your history, not generic keyword filters |
+| Proactive Hunter | Finds hidden talent on LinkedIn — no waiting for applications |
+| Vibe Scheduler | Books only high-match interviews, auto-follows up on no-replies |
+
+**Section titles:**
+- "How It Works" subtitle: `LinkedIn → Taste Index → Learns You → Outreach → Dashboard`
+- "System Architecture" → `How Nora Hires For You`
+- Subtitle: `From 3 past hires to a pipeline of lookalikes — no screening, no scheduling.`
+
+---
+
+### 2. System Prompt (`src/lib/claude.ts`)
+
+Full rewrite of `buildNoraSystemPrompt()`:
+
+- **Identity:** Nora, XenoraAI's AI Recruiter Who Learns Your Taste
+- **Core mission:** Clone a founder's hiring playbook from 3-5 past examples, proactively source LinkedIn lookalikes, schedule interviews
+- **Engagement hook:** "Always ask for 3 past hire examples to personalize" when users ask about getting started
+- **How it works:** OBSERVE (scan LinkedIn), ADAPT (build clone score: skills 40%, experience 30%, vibe 30%), EXECUTE (outreach, score, book Calendly)
+- **Pricing** (only when asked): $49/mo starter (10 clones/week), $99/mo pro (unlimited)
+- **Scope:** Only Nora, XenoraAI, taste-based hiring, sourcing, scheduling. Redirect everything else.
+- **Remove:** All IT/Finance/Jira/Stripe/invoice references, "based in Montréal"
+- **Keep:** All links, response style rules, contextual waitlist mentions
+
+---
+
+### 3. Chat Demo Alignment (`src/pages/TryNora.tsx`)
+
+**Suggestion chips** — update to hiring-focused:
+- `Taste matching` → "How does Nora learn my hiring taste from past hires?"
+- `Sourcing` → "How does Nora find candidates on LinkedIn without job posts?"
+- `Scheduling` → "Can Nora book interviews automatically via Calendly?"
+
+**Empty state text:**
+- Headline stays: `Ask Nora`
+- Subtitle: `AI recruiter that clones your best hires. Ask about sourcing, screening, or scheduling.`
+- Placeholder: `Ask about hiring automation...`
+
+---
 
 ### Files to modify
 | File | Change |
 |------|--------|
-| `index.html` | Add `maximum-scale=1, user-scalable=no` to viewport meta |
-| `src/pages/TryNora.tsx` | Input font size → 16px, add touch-action/overscroll CSS |
+| `src/pages/Index.tsx` | Hero text, `flowSteps`, `valueCards`, section titles, footer CTA |
+| `src/lib/claude.ts` | Full `buildNoraSystemPrompt()` rewrite |
+| `src/pages/TryNora.tsx` | Suggestion chips, empty state text, placeholder |
 
