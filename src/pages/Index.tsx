@@ -216,7 +216,7 @@ const Index = () => {
                 onClick={() => scrollToSection('waitlist')}
                 className="btn btn-primary btn-sm mt-2 shadow-[0_10px_30px_rgba(14,165,164,0.14)]"
               >
-                Waitlist Open — Ask Nora Agents
+                Waitlist Open — Clone Your Best Hires
               </button>
             </div>
             <div className="flex items-center justify-center gap-5 text-xs text-base-content/45 sm:justify-end">

@@ -161,7 +161,7 @@ const TryNora = () => {
                   ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask about automation..."
+                  placeholder="Ask about hiring automation..."
                   autoComplete="off"
                   autoCorrect="off"
                     className="min-h-[44px] flex-1 bg-transparent text-base text-base-content outline-none placeholder:text-base-content/30 sm:min-h-[40px]"
