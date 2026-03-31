@@ -80,7 +80,7 @@ const Index = () => {
           <div className="w-full max-w-3xl text-center">
             <Reveal>
               <p className="font-playfair text-[12px] sm:text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
-                Nora — AI Recruiter
+                Nora — Recruit Authentically 
               </p>
             </Reveal>
             <Reveal delay={0.05}>
