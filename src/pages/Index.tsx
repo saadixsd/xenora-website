@@ -85,7 +85,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.05}>
               <h1 className="premium-heading mt-4 text-4xl font-semibold sm:text-6xl lg:text-7xl">
-                I Built Nora to Clone My Best Hires
+                Clone Your Best Hires on Autopilot
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
@@ -210,7 +210,7 @@ const Index = () => {
             </div>
             <div className="flex flex-col items-center justify-center gap-1">
               <p className="text-xs text-base-content/40">@XenoraAI 2026</p>
-              <p className="text-[12px] sm:text-[11px] tracking-[0.16em] text-base-content/35">XenoraAI</p>
+              <p className="text-[12px] sm:text-[11px] tracking-[0.16em] text-base-content/35">{"\n"}</p>
               <button
                 type="button"
                 onClick={() => scrollToSection('waitlist')}
