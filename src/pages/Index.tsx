@@ -88,58 +88,42 @@ const Index = () => {
           <div className="w-full max-w-3xl text-center">
             <Reveal>
               <p className="font-playfair text-[12px] sm:text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
-                Nora — Recruit Authentically
+                Nora by XenoraAI
               </p>
             </Reveal>
             <Reveal delay={0.05}>
               <h1 className="premium-heading mt-4 text-4xl font-medium sm:text-6xl lg:text-7xl">
-                Clone Your Best Hires on Autopilot
+                Stop Screening. Start Meeting Your People.
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-6 max-w-2xl text-base text-base-content/65 leading-relaxed sm:text-lg">
-                Upload 3 devs you loved. Nora's TalentGraph™ finds 10x lookalikes across GitHub, X, and portfolios — books pre-screened calls.
+                Upload 3 hires you loved. Nora's TalentGraph™ scours GitHub, X, and portfolios to find 10 more just like them — and books the calls.
               </p>
             </Reveal>
             <Reveal delay={0.15}>
               <p className="mx-auto mt-3 max-w-xl text-sm text-base-content/40 sm:text-base">
-                No posts. No resume hell. Just your people.
+                No job posts. No resume hell. No recruiters.
               </p>
             </Reveal>
 
             <Reveal delay={0.2}>
-              <div className="mt-10 flex flex-col items-center gap-4">
+              <div className="mt-10 flex flex-col items-center gap-3">
                 <button
                   type="button"
                   className="btn btn-primary px-10 text-base shadow-[0_10px_30px_rgba(14,165,164,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,165,164,0.28)]"
                   onClick={() => scrollToSection('waitlist')}
                 >
-                  Request Early Access
+                  Get Early Access
                 </button>
-                <button
-                  type="button"
-                  className="text-sm text-base-content/50 underline underline-offset-4 decoration-base-content/20 transition-colors hover:text-base-content/75 hover:decoration-base-content/40"
-                  onClick={() => scrollToSection('how-it-works')}
-                >
-                  See how it works ↓
-                </button>
+                <p className="text-xs text-base-content/35">Founding access — limited spots.</p>
               </div>
             </Reveal>
 
-            {/* Early user quotes — no fake logos */}
             <Reveal delay={0.3}>
-              <div className="mt-16 flex flex-col items-center gap-3">
-                <p className="text-[11px] uppercase tracking-[0.16em] text-base-content/30">
-                  Early users
-                </p>
-                <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-6">
-                  {earlyUsers.map((quote) => (
-                    <p key={quote} className="text-xs italic text-base-content/35">
-                      {quote}
-                    </p>
-                  ))}
-                </div>
-              </div>
+              <p className="mt-14 mx-auto max-w-md text-center text-xs text-base-content/30 italic">
+                Nora is in early access. We're working with our first 10 founding teams to get this right.
+              </p>
             </Reveal>
           </div>
         </section>
