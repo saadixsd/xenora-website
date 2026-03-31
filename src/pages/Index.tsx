@@ -164,7 +164,7 @@ const Index = () => {
               </div>
             </Reveal>
 
-            <div className="mt-14 grid gap-6 md:grid-cols-5">
+            <div className="mt-14 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 sm:gap-6">
               {flowSteps.map((s, index) => (
                 <Reveal key={s.step} delay={0.08 * index}>
                   <article className="surface-panel h-full p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30">
