@@ -80,22 +80,22 @@ const Index = () => {
           <div className="w-full max-w-3xl text-center">
             <Reveal>
               <p className="font-playfair text-[12px] sm:text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
-                Nora — AI Agentic Engine
+                Nora — AI Recruiter
               </p>
             </Reveal>
             <Reveal delay={0.05}>
               <h1 className="premium-heading mt-4 text-4xl font-semibold sm:text-6xl lg:text-7xl">
-                Automate Repetitive Workflows
+                Nora Clones Your Best Hires
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-6 max-w-2xl text-base text-base-content/70 leading-relaxed sm:text-lg">
-                Observe→Adapt→Execute.
+                Feed her 3 past hires. Get 10x lookalikes sourced & scheduled — autonomously.
               </p>
             </Reveal>
             <Reveal delay={0.15}>
               <p className="mx-auto mt-4 max-w-xl text-sm text-base-content/50 sm:text-base">
-                Knowledge-first, agentic operations for business velocity. Designed for founders and operators who want reliable outcomes.
+                No job posts needed. No manual screening. Just candidates that feel like your team.
               </p>
             </Reveal>
 
