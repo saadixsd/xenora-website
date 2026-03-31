@@ -1,50 +1,55 @@
 
 
-## Plan: Fix Light Mode + Refine Typography Weight
+## Plan: Hero Rewrite, Honest Social Proof, FAQ Overhaul, About Page
 
-### Problems Identified
-
-1. **Light mode is broken**: The CSS in `index.css` only overrides `--bg-base` for light theme but never overrides the shadcn HSL variables (`--background`, `--foreground`, `--card`, `--border`, etc.). These stay dark regardless of theme. The NeuralMeshBackground also uses hardcoded dark colors (`rgba(10,10,15,...)`, `rgba(255,255,255,...)`).
-
-2. **Text feels too heavy/robust**: Playfair Display + Lora serif combo at `font-semibold` (600) across headings and body creates a dense, heavy feel. Modern premium landing pages (Linear, Vercel, Figma) use lighter weights, more whitespace, and sans-serif for body.
-
-### What Makes Top Sites Feel Light and Premium
-Sites like Linear, Vercel, Raycast, and Figma share: thinner font weights (400-500 for headings, 400 for body), generous letter-spacing, high contrast but soft muted text, clean sans-serif body with one accent serif, and light modes with warm whites (#fafafa-#f8fafd) and soft gray borders.
+Based on the critique, there are four actionable changes. No design changes — text and content only, plus one new page.
 
 ---
 
-### Changes
+### 1. Hero copy rewrite (`src/pages/Index.tsx`)
 
-#### 1. `src/index.css` — Add full light-mode CSS variable overrides
+**Current**: "Clone Your Best Hires on Autopilot" — confusing "clone" connotation.
 
-Add a `.light` class block that overrides all shadcn HSL variables for light mode:
-- `--background`: warm white
-- `--foreground`: dark charcoal
-- `--card`, `--popover`: slightly off-white
-- `--border`, `--input`: soft gray
-- `--muted`, `--muted-foreground`: light grays
-- `--primary`: keep teal, adjust `--primary-foreground` to white
-- Update `surface-panel` shadow from black to a softer gray for light mode
+**New hero**:
+- Tagline: `Nora by XenoraAI`
+- Headline: `Stop Screening. Start Meeting Your People.`
+- Subline: `Upload 3 hires you loved. Nora's TalentGraph™ scours GitHub, X, and portfolios to find 10 more just like them — and books the calls.`
+- Secondary: `No job posts. No resume hell. No recruiters.`
+- CTA label: `Get Early Access` (single CTA, remove secondary "See how it works" link)
+- Below CTA: `Founding access — limited spots.`
 
-#### 2. `src/index.css` — Swap body font to Inter (sans-serif)
+### 2. Replace fake "Early Users" with honest framing (`src/pages/Index.tsx`)
 
-Replace Lora with Inter for body text. Keep Playfair Display for `.premium-heading` only. This immediately lightens the text feel.
+Remove the `earlyUsers` array and the "Early users" section. Replace with a single honest line:
 
-#### 3. `src/components/nora-landing/NeuralMeshBackground.tsx` — Theme-aware colors
+`Nora is in early access. We're working with our first 10 founding teams to get this right.`
 
-Replace hardcoded `rgba(10,10,15,...)` and `rgba(255,255,255,...)` with CSS custom properties so the grid and vignette adapt to light/dark.
+No fake quotes, no placeholder logos.
 
-#### 4. `src/pages/Index.tsx` — Reduce heading weight
+### 3. FAQ page overhaul (`src/pages/FAQ.tsx`)
 
-Change `font-semibold` (600) to `font-medium` (500) on the hero h1 and section h2s. Reduce body text opacity classes slightly for a lighter feel.
+Replace the outdated "agentic engine / IT / HR / Finance" FAQs with four focused, TalentGraph-aligned questions:
 
-#### 5. `src/pages/TryNora.tsx` — Light mode prose fix
+1. **How does TalentGraph™ find candidates without LinkedIn?** — Searches publicly available profiles across GitHub, X, and personal portfolios. No scraping of platforms that prohibit it.
+2. **What happens to my data?** — Uploads stay private to your account. We don't train on your hiring preferences or share them.
+3. **How accurate is the 85% match rate?** — Target benchmark from internal testing. Your first 10 matches help Nora calibrate to your taste.
+4. **Is this free right now?** — Founding members get free access during early build phase. Pricing announced before waitlist closes.
 
-The chat uses `prose-invert` unconditionally. Add a conditional class so light mode gets normal prose styling.
+Also update the subtitle from "agentic engine" to match the recruiting focus.
 
-#### 6. `src/pages/FAQ.tsx` + `src/pages/Privacy.tsx` — Same heading weight reduction
+### 4. Add About page (`src/pages/About.tsx`)
 
-Match the lighter typography from Index.
+New page with:
+- Photo placeholder (or XenoraLogo as stand-in)
+- One honest paragraph: why you built this, who you are
+- Link to X account
+- "Built with conviction" tagline in footer area
+
+Add `/about` route in `App.tsx` and add "About" link in `SiteNav.tsx` navigation.
+
+### 5. Footer addition (`src/pages/Index.tsx`)
+
+Add `Built by XenoraAI` text in the footer center column.
 
 ---
 
@@ -52,10 +57,9 @@ Match the lighter typography from Index.
 
 | File | Change |
 |------|--------|
-| `src/index.css` | Add `.light` CSS variable overrides, swap body font to Inter, add light-mode surface-panel |
-| `src/components/nora-landing/NeuralMeshBackground.tsx` | Use CSS vars for grid/vignette colors, theme-aware |
-| `src/pages/Index.tsx` | Reduce heading weights, adjust text opacity |
-| `src/pages/TryNora.tsx` | Conditional `prose-invert` for dark only |
-| `src/pages/FAQ.tsx` | Lighter heading weights |
-| `src/pages/Privacy.tsx` | Lighter heading weights |
+| `src/pages/Index.tsx` | Hero rewrite, remove fake quotes, honest early access line, footer text |
+| `src/pages/FAQ.tsx` | Replace all FAQ content with 4 focused questions |
+| `src/pages/About.tsx` | New page — founder story, photo placeholder, X link |
+| `src/App.tsx` | Add `/about` route |
+| `src/components/nora-landing/SiteNav.tsx` | Add "About" nav link |
 
