@@ -1,76 +1,61 @@
 
 
-## Plan: Pivot to "Nora Clones Your Best Hires" — Landing Page + System Prompt + Chat Demo
+## Plan: Fix Light Mode + Refine Typography Weight
 
-Three files updated — text only on landing page and chat, full system prompt rewrite. No design changes.
+### Problems Identified
 
----
+1. **Light mode is broken**: The CSS in `index.css` only overrides `--bg-base` for light theme but never overrides the shadcn HSL variables (`--background`, `--foreground`, `--card`, `--border`, etc.). These stay dark regardless of theme. The NeuralMeshBackground also uses hardcoded dark colors (`rgba(10,10,15,...)`, `rgba(255,255,255,...)`).
 
-### 1. Landing Page (`src/pages/Index.tsx`)
+2. **Text feels too heavy/robust**: Playfair Display + Lora serif combo at `font-semibold` (600) across headings and body creates a dense, heavy feel. Modern premium landing pages (Linear, Vercel, Figma) use lighter weights, more whitespace, and sans-serif for body.
 
-**Hero:**
-- Tagline: `Nora — AI Recruiter`
-- Headline: `Nora Clones Your Best Hires`
-- Subline: `Feed her 3 past hires. Get 10x lookalikes sourced & scheduled — autonomously.`
-- Secondary: `No job posts needed. No manual screening. Just candidates that feel like your team.`
-- Footer CTA button: `Waitlist Open — Clone Your Best Hires`
-
-**Workflow steps (`flowSteps`):**
-| Step | Title | Body |
-|------|-------|------|
-| 01 | LinkedIn Scan | Hunts profiles matching your past hires' patterns — skills, experience, and vibe. |
-| 02 | Taste Index | Builds a "clone score" from your examples — who feels like your team, quantified. |
-| 03 | Learns You | Adapts from your feedback across roles. Tell her "no MBAs" once — she remembers. |
-| 04 | Outreach & Book | Sends personalized messages, books Calendly interviews for 85%+ matches. |
-| 05 | Taste Dashboard | Ranked clones, "why this one?" explanations, and interview prep notes. |
-
-**Value cards (`valueCards`):**
-| Card | Description |
-|------|-------------|
-| Taste Matcher | Clones ideal hires from your history, not generic keyword filters |
-| Proactive Hunter | Finds hidden talent on LinkedIn — no waiting for applications |
-| Vibe Scheduler | Books only high-match interviews, auto-follows up on no-replies |
-
-**Section titles:**
-- "How It Works" subtitle: `LinkedIn → Taste Index → Learns You → Outreach → Dashboard`
-- "System Architecture" → `How Nora Hires For You`
-- Subtitle: `From 3 past hires to a pipeline of lookalikes — no screening, no scheduling.`
+### What Makes Top Sites Feel Light and Premium
+Sites like Linear, Vercel, Raycast, and Figma share: thinner font weights (400-500 for headings, 400 for body), generous letter-spacing, high contrast but soft muted text, clean sans-serif body with one accent serif, and light modes with warm whites (#fafafa-#f8fafd) and soft gray borders.
 
 ---
 
-### 2. System Prompt (`src/lib/claude.ts`)
+### Changes
 
-Full rewrite of `buildNoraSystemPrompt()`:
+#### 1. `src/index.css` — Add full light-mode CSS variable overrides
 
-- **Identity:** Nora, XenoraAI's AI Recruiter Who Learns Your Taste
-- **Core mission:** Clone a founder's hiring playbook from 3-5 past examples, proactively source LinkedIn lookalikes, schedule interviews
-- **Engagement hook:** "Always ask for 3 past hire examples to personalize" when users ask about getting started
-- **How it works:** OBSERVE (scan LinkedIn), ADAPT (build clone score: skills 40%, experience 30%, vibe 30%), EXECUTE (outreach, score, book Calendly)
-- **Pricing** (only when asked): $49/mo starter (10 clones/week), $99/mo pro (unlimited)
-- **Scope:** Only Nora, XenoraAI, taste-based hiring, sourcing, scheduling. Redirect everything else.
-- **Remove:** All IT/Finance/Jira/Stripe/invoice references, "based in Montréal"
-- **Keep:** All links, response style rules, contextual waitlist mentions
+Add a `.light` class block that overrides all shadcn HSL variables for light mode:
+- `--background`: warm white
+- `--foreground`: dark charcoal
+- `--card`, `--popover`: slightly off-white
+- `--border`, `--input`: soft gray
+- `--muted`, `--muted-foreground`: light grays
+- `--primary`: keep teal, adjust `--primary-foreground` to white
+- Update `surface-panel` shadow from black to a softer gray for light mode
 
----
+#### 2. `src/index.css` — Swap body font to Inter (sans-serif)
 
-### 3. Chat Demo Alignment (`src/pages/TryNora.tsx`)
+Replace Lora with Inter for body text. Keep Playfair Display for `.premium-heading` only. This immediately lightens the text feel.
 
-**Suggestion chips** — update to hiring-focused:
-- `Taste matching` → "How does Nora learn my hiring taste from past hires?"
-- `Sourcing` → "How does Nora find candidates on LinkedIn without job posts?"
-- `Scheduling` → "Can Nora book interviews automatically via Calendly?"
+#### 3. `src/components/nora-landing/NeuralMeshBackground.tsx` — Theme-aware colors
 
-**Empty state text:**
-- Headline stays: `Ask Nora`
-- Subtitle: `AI recruiter that clones your best hires. Ask about sourcing, screening, or scheduling.`
-- Placeholder: `Ask about hiring automation...`
+Replace hardcoded `rgba(10,10,15,...)` and `rgba(255,255,255,...)` with CSS custom properties so the grid and vignette adapt to light/dark.
+
+#### 4. `src/pages/Index.tsx` — Reduce heading weight
+
+Change `font-semibold` (600) to `font-medium` (500) on the hero h1 and section h2s. Reduce body text opacity classes slightly for a lighter feel.
+
+#### 5. `src/pages/TryNora.tsx` — Light mode prose fix
+
+The chat uses `prose-invert` unconditionally. Add a conditional class so light mode gets normal prose styling.
+
+#### 6. `src/pages/FAQ.tsx` + `src/pages/Privacy.tsx` — Same heading weight reduction
+
+Match the lighter typography from Index.
 
 ---
 
 ### Files to modify
+
 | File | Change |
 |------|--------|
-| `src/pages/Index.tsx` | Hero text, `flowSteps`, `valueCards`, section titles, footer CTA |
-| `src/lib/claude.ts` | Full `buildNoraSystemPrompt()` rewrite |
-| `src/pages/TryNora.tsx` | Suggestion chips, empty state text, placeholder |
+| `src/index.css` | Add `.light` CSS variable overrides, swap body font to Inter, add light-mode surface-panel |
+| `src/components/nora-landing/NeuralMeshBackground.tsx` | Use CSS vars for grid/vignette colors, theme-aware |
+| `src/pages/Index.tsx` | Reduce heading weights, adjust text opacity |
+| `src/pages/TryNora.tsx` | Conditional `prose-invert` for dark only |
+| `src/pages/FAQ.tsx` | Lighter heading weights |
+| `src/pages/Privacy.tsx` | Lighter heading weights |
 
