@@ -69,7 +69,7 @@ const Index = () => {
         className="pointer-events-none fixed inset-0 z-[1] flex items-center justify-center"
         aria-hidden
       >
-        <XenoraLogo decorative className="h-[min(44vh,320px)] w-auto max-w-[82vw] opacity-[0.14] sm:h-[min(52vh,420px)]" />
+        <XenoraLogo decorative className="h-[min(36vh,280px)] w-auto max-w-[82vw] opacity-[0.14] sm:h-[min(44vh,320px)] lg:h-[min(52vh,420px)]" />
       </motion.div>
 
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 backdrop-blur-xl">
@@ -84,7 +84,7 @@ const Index = () => {
 
       <main className="relative z-10">
         {/* ── Hero ── */}
-        <section className="flex min-h-[100svh] flex-col items-center justify-center px-4 pb-24 pt-28 sm:px-8">
+        <section className="flex min-h-[100svh] flex-col items-center justify-center px-4 pb-20 pt-24 sm:px-8 sm:pb-24 sm:pt-28">
           <div className="w-full max-w-3xl text-center">
             <Reveal>
               <p className="font-playfair text-[12px] sm:text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
@@ -92,12 +92,12 @@ const Index = () => {
               </p>
             </Reveal>
             <Reveal delay={0.05}>
-              <h1 className="premium-heading mt-4 text-4xl font-medium sm:text-6xl lg:text-7xl">
+              <h1 className="premium-heading mt-4 text-[1.75rem] font-medium leading-tight sm:text-4xl md:text-5xl lg:text-7xl">
                 Stop Screening. Start Meeting Your People.
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="mx-auto mt-6 max-w-2xl text-base text-base-content/65 leading-relaxed sm:text-lg">
+              <p className="mx-auto mt-4 max-w-2xl text-sm text-base-content/65 leading-relaxed sm:mt-6 sm:text-base lg:text-lg">
                 Upload 3 hires you loved. Nora's TalentGraph™ scours GitHub, X, and portfolios to find 10 more just like them — and books the calls.
               </p>
             </Reveal>
@@ -108,17 +108,17 @@ const Index = () => {
             </Reveal>
 
             <Reveal delay={0.2}>
-              <div className="mt-10 flex flex-col items-center gap-3">
-                <div className="flex items-center gap-3">
+              <div className="mt-8 flex flex-col items-center gap-3 sm:mt-10">
+                <div className="flex flex-col items-center gap-3 sm:flex-row">
                   <Link
                     to="/try-nora"
-                    className="btn btn-outline border-base-content/15 px-8 text-base text-base-content/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:text-primary"
+                    className="btn btn-outline w-full border-base-content/15 px-8 text-base text-base-content/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:text-primary sm:w-auto"
                   >
                     Ask Nora
                   </Link>
                   <button
                     type="button"
-                    className="btn btn-primary px-10 text-base shadow-[0_10px_30px_rgba(14,165,164,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,165,164,0.28)]"
+                    className="btn btn-primary w-full px-10 text-base shadow-[0_10px_30px_rgba(14,165,164,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,165,164,0.28)] sm:w-auto"
                     onClick={() => scrollToSection('waitlist')}
                   >
                     Get Early Access
@@ -164,7 +164,7 @@ const Index = () => {
               </div>
             </Reveal>
 
-            <div className="mt-14 grid gap-6 md:grid-cols-5">
+            <div className="mt-14 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 sm:gap-6">
               {flowSteps.map((s, index) => (
                 <Reveal key={s.step} delay={0.08 * index}>
                   <article className="surface-panel h-full p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30">
