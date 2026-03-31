@@ -10,35 +10,35 @@ import { Reveal } from '@/components/motion/Reveal';
 const flowSteps = [
   {
     step: '01',
-    title: 'LinkedIn Scan',
-    body: 'Hunts profiles matching your past hires\' patterns — skills, experience, and vibe.',
+    title: 'LinkedIn Hunt',
+    body: 'Crawls profiles that look like your winners — same skills, same vibe, same energy.',
   },
   {
     step: '02',
-    title: 'Taste Index',
-    body: 'Builds a "clone score" from your examples — who feels like your team, quantified.',
+    title: 'Taste Score',
+    body: 'Built from your 3 examples. That "feels right" gut call? Now it\'s a number.',
   },
   {
     step: '03',
-    title: 'Learns You',
-    body: 'Adapts from your feedback across roles. Tell her "no MBAs" once — she remembers.',
+    title: 'Gets It',
+    body: 'Say "no MBAs" once. She remembers. Forever. Across every role you open.',
   },
   {
     step: '04',
-    title: 'Outreach & Book',
-    body: 'Sends personalized messages, books Calendly interviews for 85%+ matches.',
+    title: 'Real Outreach',
+    body: 'DMs that actually land. Calendly link drops at 85%+ match. No spam.',
   },
   {
     step: '05',
-    title: 'Taste Dashboard',
-    body: 'Ranked clones, "why this one?" explanations, and interview prep notes.',
+    title: 'Your Dash',
+    body: 'Ranked candidates. "Why this one?" explained. Interview notes ready before you hop on.',
   },
 ];
 
 const valueCards = [
-  { title: 'Taste Matcher', desc: 'Clones ideal hires from your history, not generic keyword filters' },
-  { title: 'Proactive Hunter', desc: 'Finds hidden talent on LinkedIn — no waiting for applications' },
-  { title: 'Vibe Scheduler', desc: 'Books only high-match interviews, auto-follows up on no-replies' },
+  { title: 'Hunt', desc: 'Your history beats keywords. Clones your best hires, not some job board filter.' },
+  { title: 'Stalker', desc: 'Finds hidden gems on LinkedIn. No waiting for apps that never come.' },
+  { title: 'Booker', desc: 'Books high-match interviews only. Chases the flakes so you don\'t.' },
 ];
 
 const Index = () => {
@@ -85,17 +85,17 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.05}>
               <h1 className="premium-heading mt-4 text-4xl font-semibold sm:text-6xl lg:text-7xl">
-                Nora Clones Your Best Hires
+                I Built Nora to Clone My Best Hires
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-6 max-w-2xl text-base text-base-content/70 leading-relaxed sm:text-lg">
-                Feed her 3 past hires. Get 10x lookalikes sourced & scheduled — autonomously.
+                Upload 3 devs you loved. She hunts 10x more like them on LinkedIn — books calls.
               </p>
             </Reveal>
             <Reveal delay={0.15}>
               <p className="mx-auto mt-4 max-w-xl text-sm text-base-content/50 sm:text-base">
-                No job posts needed. No manual screening. Just candidates that feel like your team.
+                No job posts. No resume hell. Just fits for your team.
               </p>
             </Reveal>
 
@@ -135,7 +135,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-3 max-w-lg text-center text-sm text-base-content/50">
-                LinkedIn → Taste Index → Learns You → Outreach → Dashboard
+                LinkedIn → Taste Score → Gets It → Outreach → Dashboard
               </p>
             </Reveal>
 
@@ -156,11 +156,11 @@ const Index = () => {
         <section className="border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-4xl">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-semibold sm:text-3xl">How Nora Hires For You</h2>
+              <h2 className="premium-heading text-center text-2xl font-semibold sm:text-3xl">How I Use Nora</h2>
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-base-content/55 sm:text-base">
-                From 3 past hires to a pipeline of lookalikes — no screening, no scheduling.
+                3 hires → Pipeline. Screening? Zero.
               </p>
             </Reveal>
 
