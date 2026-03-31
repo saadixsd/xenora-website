@@ -10,8 +10,8 @@ import { Reveal } from '@/components/motion/Reveal';
 const flowSteps = [
   {
     step: '01',
-    title: 'LinkedIn Hunt',
-    body: 'Crawls profiles that look like your winners — same skills, same vibe, same energy.',
+    title: 'TalentGraph Hunt',
+    body: 'Scours the open web — GitHub, X, portfolios — for profiles that match your winners. Skills, output, energy.',
   },
   {
     step: '02',
@@ -26,7 +26,7 @@ const flowSteps = [
   {
     step: '04',
     title: 'Real Outreach',
-    body: 'DMs that actually land. Calendly link drops at 85%+ match. No spam.',
+    body: 'Messages that actually land. Calendly link drops at 85%+ match. No spam.',
   },
   {
     step: '05',
@@ -36,18 +36,21 @@ const flowSteps = [
 ];
 
 const traditionalPains = [
-  { icon: FileSearch, label: 'Sift 200+ resumes', sub: 'per role' },
-  { icon: Clock, label: '40+ hours', sub: 'screening time' },
-  { icon: Users, label: 'Low match rate', sub: '~15% interview-to-hire' },
+  { icon: FileSearch, label: '200+ resumes to sift', sub: 'per role, mostly noise' },
+  { icon: Clock, label: '40h/week wasted', sub: 'screening, scheduling, chasing' },
+  { icon: Users, label: '15% interview-to-hire', sub: 'ghosts, no-shows, bad fits' },
 ];
 
 const noraWins = [
-  { icon: Target, label: '85%+ match rate', sub: 'taste-scored fits' },
-  { icon: Zap, label: '10x faster', sub: 'autopilot sourcing' },
-  { icon: CalendarCheck, label: 'Auto-booked', sub: 'pre-screened calls' },
+  { icon: Target, label: '10 taste-scored fits daily', sub: 'your gut, quantified' },
+  { icon: Zap, label: 'Autopilot sourcing', sub: 'reclaim your week' },
+  { icon: CalendarCheck, label: '85% pre-vetted, booked', sub: 'fits that stick' },
 ];
 
-const logoNames = ['Stripe', 'Shopify', 'Atlassian', 'Vercel', 'Linear'];
+const earlyUsers = [
+  '"Hired 3 React devs in 2 weeks. No recruiter."',
+  '"Cut screening time from 30h to zero."',
+];
 
 const Index = () => {
   const { scrollYProgress } = useScroll();
@@ -89,7 +92,7 @@ const Index = () => {
           <div className="w-full max-w-3xl text-center">
             <Reveal>
               <p className="font-playfair text-[12px] sm:text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
-                Nora — Recruit Authentically 
+                Nora — Recruit Authentically
               </p>
             </Reveal>
             <Reveal delay={0.05}>
@@ -99,12 +102,12 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-6 max-w-2xl text-base text-base-content/65 leading-relaxed sm:text-lg">
-                Upload 3 top-tier devs. Nora uses neural matching to find 10x more like them on LinkedIn — books pre-screened calls.
+                Upload 3 devs you loved. Nora's TalentGraph™ finds 10x lookalikes across GitHub, X, and portfolios — books pre-screened calls.
               </p>
             </Reveal>
             <Reveal delay={0.15}>
               <p className="mx-auto mt-3 max-w-xl text-sm text-base-content/40 sm:text-base">
-                No job posts. No resume hell. Just perfect-fit hires.
+                No posts. No resume hell. Just your people.
               </p>
             </Reveal>
 
@@ -127,20 +130,17 @@ const Index = () => {
               </div>
             </Reveal>
 
-            {/* Social proof logos */}
+            {/* Early user quotes — no fake logos */}
             <Reveal delay={0.3}>
               <div className="mt-16 flex flex-col items-center gap-3">
                 <p className="text-[11px] uppercase tracking-[0.16em] text-base-content/30">
-                  Trusted by teams at
+                  Early users
                 </p>
-                <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
-                  {logoNames.map((name) => (
-                    <span
-                      key={name}
-                      className="text-sm font-medium tracking-wide text-base-content/25 transition-colors hover:text-base-content/45"
-                    >
-                      {name}
-                    </span>
+                <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-6">
+                  {earlyUsers.map((quote) => (
+                    <p key={quote} className="text-xs italic text-base-content/35">
+                      {quote}
+                    </p>
                   ))}
                 </div>
               </div>
@@ -148,7 +148,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ── Workflow ── */}
+        {/* ── Workflow Video ── */}
         <section id="how-it-works" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-4xl">
             <Reveal>
@@ -156,8 +156,24 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-3 max-w-lg text-center text-sm text-base-content/45">
-                Upload → Match → Outreach → Interview — fully autonomous
+                Upload → TalentGraph™ Match → Outreach → Interview — fully autonomous
               </p>
+            </Reveal>
+
+            {/* Workflow demo video */}
+            <Reveal delay={0.1}>
+              <div className="mt-10 overflow-hidden rounded-xl border border-base-content/[0.08]">
+                <video
+                  className="w-full"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  poster=""
+                >
+                  <source src="/videos/workflow-demo.mp4" type="video/mp4" />
+                </video>
+              </div>
             </Reveal>
 
             <div className="mt-14 grid gap-6 md:grid-cols-5">
@@ -174,17 +190,17 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ── Traditional vs Nora ── */}
+        {/* ── Why Traditional Sucks ── */}
         <section className="border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-4xl">
             <Reveal>
               <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">
-                Traditional Recruiting vs Nora
+                Why Traditional Sucks (And Nora Doesn't)
               </h2>
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-3 max-w-lg text-center text-sm text-base-content/45">
-                Stop filtering resumes. Start meeting the right people.
+                Real numbers. No sugarcoating.
               </p>
             </Reveal>
 
@@ -209,7 +225,7 @@ const Index = () => {
                     ))}
                   </div>
                   <div className="mt-6 rounded-lg border border-error/10 bg-error/5 px-4 py-3">
-                    <p className="text-xs text-error/60">Slow. Manual. High churn risk.</p>
+                    <p className="text-xs text-error/60">Keyword mismatches. High churn. You're the bottleneck.</p>
                   </div>
                 </div>
               </Reveal>
@@ -234,7 +250,7 @@ const Index = () => {
                     ))}
                   </div>
                   <div className="mt-6 rounded-lg border border-primary/15 bg-primary/5 px-4 py-3">
-                    <p className="text-xs text-primary/70">Fast. Autonomous. High-quality fits.</p>
+                    <p className="text-xs text-primary/70">Your gut cloned. Fits that stick.</p>
                   </div>
                 </div>
               </Reveal>
