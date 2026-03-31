@@ -9,7 +9,7 @@ import { Send } from 'lucide-react';
 
 const SUGGESTIONS = [
   { label: 'Taste matching', text: 'How does Nora learn my hiring taste from past hires?' },
-  { label: 'Sourcing', text: 'How does Nora find candidates on LinkedIn without job posts?' },
+  { label: 'TalentGraph', text: 'How does TalentGraph source candidates from GitHub and the open web?' },
   { label: 'Scheduling', text: 'Can Nora book interviews automatically via Calendly?' },
 ];
 
