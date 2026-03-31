@@ -10,35 +10,35 @@ import { Reveal } from '@/components/motion/Reveal';
 const flowSteps = [
   {
     step: '01',
-    title: 'LinkedIn Scan',
-    body: 'Hunts profiles matching your past hires\' patterns — skills, experience, and vibe.',
+    title: 'LinkedIn Hunt',
+    body: 'Crawls profiles that look like your winners — same skills, same vibe, same energy.',
   },
   {
     step: '02',
-    title: 'Taste Index',
-    body: 'Builds a "clone score" from your examples — who feels like your team, quantified.',
+    title: 'Taste Score',
+    body: 'Built from your 3 examples. That "feels right" gut call? Now it\'s a number.',
   },
   {
     step: '03',
-    title: 'Learns You',
-    body: 'Adapts from your feedback across roles. Tell her "no MBAs" once — she remembers.',
+    title: 'Gets It',
+    body: 'Say "no MBAs" once. She remembers. Forever. Across every role you open.',
   },
   {
     step: '04',
-    title: 'Outreach & Book',
-    body: 'Sends personalized messages, books Calendly interviews for 85%+ matches.',
+    title: 'Real Outreach',
+    body: 'DMs that actually land. Calendly link drops at 85%+ match. No spam.',
   },
   {
     step: '05',
-    title: 'Taste Dashboard',
-    body: 'Ranked clones, "why this one?" explanations, and interview prep notes.',
+    title: 'Your Dash',
+    body: 'Ranked candidates. "Why this one?" explained. Interview notes ready before you hop on.',
   },
 ];
 
 const valueCards = [
-  { title: 'Taste Matcher', desc: 'Clones ideal hires from your history, not generic keyword filters' },
-  { title: 'Proactive Hunter', desc: 'Finds hidden talent on LinkedIn — no waiting for applications' },
-  { title: 'Vibe Scheduler', desc: 'Books only high-match interviews, auto-follows up on no-replies' },
+  { title: 'Hunt', desc: 'Your history beats keywords. Clones your best hires, not some job board filter.' },
+  { title: 'Stalker', desc: 'Finds hidden gems on LinkedIn. No waiting for apps that never come.' },
+  { title: 'Booker', desc: 'Books high-match interviews only. Chases the flakes so you don\'t.' },
 ];
 
 const Index = () => {
