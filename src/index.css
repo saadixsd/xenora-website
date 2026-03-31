@@ -125,7 +125,8 @@
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
   }
   .light .surface-panel {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04), 0 1px 4px rgba(0, 0, 0, 0.03);
+    @apply bg-card/60;
   }
   .premium-heading {
     @apply tracking-[-0.01em] leading-[1.06];
