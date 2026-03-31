@@ -156,11 +156,11 @@ const Index = () => {
         <section className="border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-4xl">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-semibold sm:text-3xl">System Architecture</h2>
+              <h2 className="premium-heading text-center text-2xl font-semibold sm:text-3xl">How Nora Hires For You</h2>
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-base-content/55 sm:text-base">
-                XenoraAI goes beyond manual processes. Proprietary agentic engine for business velocity.
+                From 3 past hires to a pipeline of lookalikes — no screening, no scheduling.
               </p>
             </Reveal>
 
