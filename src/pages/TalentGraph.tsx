@@ -189,7 +189,7 @@ const TalentGraph = () => {
           <Reveal delay={0.08}>
             <div className="space-y-6">
               {/* Taste profile */}
-              <div className="surface-panel p-6">
+              <div className="surface-panel p-4 sm:p-6">
                 <h2 className="text-sm font-semibold text-foreground">Taste profile</h2>
                 {!taste ? (
                   <p className="mt-3 text-sm text-muted-foreground">Run a search to generate a taste profile.</p>
