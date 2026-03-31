@@ -216,7 +216,7 @@ const TalentGraph = () => {
               </div>
 
               {/* Candidates */}
-              <div className="surface-panel p-6">
+              <div className="surface-panel p-4 sm:p-6">
                 <div className="flex items-center justify-between">
                   <h2 className="text-sm font-semibold text-foreground">Ranked candidates</h2>
                   {results.length > 0 && (

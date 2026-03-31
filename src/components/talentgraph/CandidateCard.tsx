@@ -134,7 +134,7 @@ export function CandidateCard({
           )}
 
           {/* Sub-scores */}
-          <div className="mt-3 grid grid-cols-3 gap-3">
+          <div className="mt-3 grid grid-cols-3 gap-2 sm:gap-3">
             <SubScore label="Skills" value={c.skillsScore} />
             <SubScore label="Output" value={c.outputScore} />
             <SubScore label="Vibe" value={c.vibeScore} />

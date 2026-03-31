@@ -94,7 +94,7 @@ export function NoraChatDrawer({ open, onClose, taste, results, initialMessage }
       {/* Drawer */}
       <div
         className={cn(
-          'fixed right-0 top-0 z-[70] flex h-full w-full max-w-[420px] flex-col border-l border-border bg-background shadow-2xl transition-transform duration-300',
+          'fixed right-0 top-0 z-[70] flex h-full w-full flex-col border-l border-border bg-background shadow-2xl transition-transform duration-300 max-w-full sm:max-w-[420px]',
           open ? 'translate-x-0' : 'translate-x-full',
         )}
       >
