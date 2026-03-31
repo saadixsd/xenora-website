@@ -85,7 +85,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.05}>
               <h1 className="premium-heading mt-4 text-4xl font-semibold sm:text-6xl lg:text-7xl">
-                I Built Nora to Clone My Best Hires
+                Clone Your Best Hires on Autopilot
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
