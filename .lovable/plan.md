@@ -1,65 +1,51 @@
 
 
-## Plan: Hero Rewrite, Honest Social Proof, FAQ Overhaul, About Page
+## Plan: Secure the Claude Edge Function
 
-Based on the critique, there are four actionable changes. No design changes — text and content only, plus one new page.
+### The Problem
 
----
+The `nora-claude` edge function is publicly accessible (`verify_jwt = false`, CORS `*`) with your `CLAUDE_API_KEY` behind it. The existing rate limiter is in-memory and resets on every cold start — anyone can cycle through IPs or wait for resets to abuse your Anthropic quota.
 
-### 1. Hero copy rewrite (`src/pages/Index.tsx`)
+### The Fix: Origin Lock + Shared Secret
 
-**Current**: "Clone Your Best Hires on Autopilot" — confusing "clone" connotation.
+Since this is a public-facing chat (no user auth), we can't require JWT auth. Instead we layer two defenses:
 
-**New hero**:
-- Tagline: `Nora by XenoraAI`
-- Headline: `Stop Screening. Start Meeting Your People.`
-- Subline: `Upload 3 hires you loved. Nora's TalentGraph™ scours GitHub, X, and portfolios to find 10 more just like them — and books the calls.`
-- Secondary: `No job posts. No resume hell. No recruiters.`
-- CTA label: `Get Early Access` (single CTA, remove secondary "See how it works" link)
-- Below CTA: `Founding access — limited spots.`
+1. **Origin allowlist** — restrict CORS to your actual domains only
+2. **Shared secret header** — the client sends a secret token the edge function validates, preventing raw `curl` abuse
+3. **Tighten rate limits** — lower to 5 req/min/IP and add a global daily cap
 
-### 2. Replace fake "Early Users" with honest framing (`src/pages/Index.tsx`)
+### Changes
 
-Remove the `earlyUsers` array and the "Early users" section. Replace with a single honest line:
+#### 1. Edge function (`supabase/functions/nora-claude/index.ts`)
 
-`Nora is in early access. We're working with our first 10 founding teams to get this right.`
+- **CORS origin lock**: Replace `Access-Control-Allow-Origin: *` with a check against allowed origins (`xenoraai.com`, `xenora-ai-portal.lovable.app`, `localhost` for dev). Return 403 for unknown origins.
+- **App secret validation**: Read a `NORA_APP_SECRET` from env. Require the client to send it as `x-app-token` header. Reject requests without a valid token (401).
+- **Lower rate limit**: 5 req/min/IP instead of 10. Add a global counter capping total requests at 500/day across all IPs (resets on cold start, but provides a safety net).
+- **System prompt lock**: Instead of accepting a `system` field from the client (which lets attackers inject arbitrary system prompts), hardcode the system prompt server-side or ignore the client-sent one entirely. This prevents prompt injection.
 
-No fake quotes, no placeholder logos.
+#### 2. Add the secret (`secrets` tool)
 
-### 3. FAQ page overhaul (`src/pages/FAQ.tsx`)
+- Add `NORA_APP_SECRET` as a new Supabase secret (a random string).
 
-Replace the outdated "agentic engine / IT / HR / Finance" FAQs with four focused, TalentGraph-aligned questions:
+#### 3. Client (`src/lib/claude.ts`)
 
-1. **How does TalentGraph™ find candidates without LinkedIn?** — Searches publicly available profiles across GitHub, X, and personal portfolios. No scraping of platforms that prohibit it.
-2. **What happens to my data?** — Uploads stay private to your account. We don't train on your hiring preferences or share them.
-3. **How accurate is the 85% match rate?** — Target benchmark from internal testing. Your first 10 matches help Nora calibrate to your taste.
-4. **Is this free right now?** — Founding members get free access during early build phase. Pricing announced before waitlist closes.
+- Send `x-app-token` header with the secret value. Since this is a client-side app, the secret will be in the JS bundle — it's not true auth, but it stops casual `curl` abuse. The real protection is the origin check + rate limit.
+- Stop sending `system` in the request body (server handles it).
 
-Also update the subtitle from "agentic engine" to match the recruiting focus.
+#### 4. System prompt server-side (`supabase/functions/nora-claude/index.ts`)
 
-### 4. Add About page (`src/pages/About.tsx`)
+- Move the Nora system prompt into the edge function so clients can't override it. Keep `buildNoraSystemPrompt()` in `claude.ts` only as a reference/fallback.
 
-New page with:
-- Photo placeholder (or XenoraLogo as stand-in)
-- One honest paragraph: why you built this, who you are
-- Link to X account
-- "Built with conviction" tagline in footer area
-
-Add `/about` route in `App.tsx` and add "About" link in `SiteNav.tsx` navigation.
-
-### 5. Footer addition (`src/pages/Index.tsx`)
-
-Add `Built by XenoraAI` text in the footer center column.
-
----
-
-### Files to modify
+### Files
 
 | File | Change |
 |------|--------|
-| `src/pages/Index.tsx` | Hero rewrite, remove fake quotes, honest early access line, footer text |
-| `src/pages/FAQ.tsx` | Replace all FAQ content with 4 focused questions |
-| `src/pages/About.tsx` | New page — founder story, photo placeholder, X link |
-| `src/App.tsx` | Add `/about` route |
-| `src/components/nora-landing/SiteNav.tsx` | Add "About" nav link |
+| `supabase/functions/nora-claude/index.ts` | Origin allowlist, app secret check, server-side system prompt, lower rate limits, daily cap |
+| `src/lib/claude.ts` | Add `x-app-token` header, remove `system` from request body |
+| Secrets | Add `NORA_APP_SECRET` |
+
+### What this does NOT solve
+
+- The `x-app-token` is visible in the JS bundle — a determined attacker can extract it. But combined with origin checks and tight rate limits, it raises the bar significantly.
+- For true protection, you'd need user authentication (login before chatting). That's a bigger change for later.
 
