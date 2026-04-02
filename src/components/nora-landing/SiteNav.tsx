@@ -102,6 +102,21 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
         </ul>
       </div>
 
+      {user ? (
+        <Link
+          to="/dashboard"
+          className="rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90 sm:text-sm"
+        >
+          Dashboard
+        </Link>
+      ) : (
+        <Link
+          to="/login"
+          className="rounded-md border border-border px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground sm:text-sm"
+        >
+          Sign In
+        </Link>
+      )}
       <ThemeToggle />
     </nav>
   );
