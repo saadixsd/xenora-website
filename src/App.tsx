@@ -31,7 +31,6 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/try-nora" element={<TryNora />} />
-          <Route path="/talentgraph" element={<TalentGraph />} />
           <Route path="/login" element={<Login />} />
 
           {/* Protected dashboard routes */}
