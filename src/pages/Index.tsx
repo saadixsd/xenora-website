@@ -99,7 +99,7 @@ const Index = () => {
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 2, duration: 0.5 }}
-        className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 sm:bottom-6"
+        className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 flex justify-center sm:bottom-6"
       >
         <button
           type="button"
