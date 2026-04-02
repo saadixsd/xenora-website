@@ -88,7 +88,7 @@ const Index = () => {
         <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between gap-2 px-3 py-2 sm:px-6">
           <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2 sm:gap-2.5 cursor-pointer" aria-label="Nora by XenoraAI home">
             <XenoraLogo decorative className="h-10 w-10 sm:h-14 sm:w-14" />
-            <span className="text-base font-semibold text-base-content sm:text-xl">Nora</span>
+            <span className="text-base font-semibold text-base-content sm:text-xl">XenoraAI</span>
           </Link>
           <SiteNav />
         </div>
