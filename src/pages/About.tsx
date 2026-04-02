@@ -18,9 +18,9 @@ const About = () => {
 
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 backdrop-blur-xl">
         <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between gap-2 px-3 py-2 sm:px-6">
-          <Link to="/" onClick={smoothTop} className="flex items-center gap-2 sm:gap-2.5 cursor-pointer" aria-label="XenoraAI home">
+          <Link to="/" onClick={smoothTop} className="flex items-center gap-2 sm:gap-2.5 cursor-pointer" aria-label="Nora home">
             <XenoraLogo decorative className="h-10 w-10 sm:h-14 sm:w-14" />
-            <span className="text-base font-semibold text-base-content sm:text-xl">XenoraAI</span>
+            <span className="text-base font-semibold text-base-content sm:text-xl">Nora</span>
           </Link>
           <SiteNav />
         </div>
@@ -37,8 +37,8 @@ const About = () => {
               <XenoraLogo decorative className="h-16 w-16 rounded-full" />
             </div>
             <div className="text-center sm:text-left">
-              <p className="text-lg font-medium text-base-content/85">XenoraAI</p>
-              <p className="mt-1 text-sm text-base-content/50">Built in Montreal</p>
+              <p className="text-lg font-medium text-base-content/85">Nora by XenoraAI</p>
+              <p className="mt-1 text-sm text-base-content/50">AI workflow workspace for founders</p>
             </div>
           </div>
         </Reveal>
@@ -46,18 +46,21 @@ const About = () => {
         <Reveal delay={0.1}>
           <div className="mt-8 space-y-4 text-sm leading-relaxed text-base-content/60">
             <p>
-              I built Nora because I watched founders — including myself — burn 40+ hours a week on hiring.
-              Scrolling profiles, reading resumes that say nothing, scheduling calls with people who ghost.
-              The whole process felt broken.
+              I built Nora because I watched founders — including myself — burn hours every week on repetitive work.
+              Writing content, drafting follow-ups, researching competitors. The kind of work that feels productive
+              but eats into the time you should be building.
             </p>
             <p>
-              So I asked a simple question: what if you could just point at 3 people you already loved working with,
-              and let software find more of them? That's TalentGraph™. It searches the open web — GitHub, X, portfolios —
-              and scores candidates against your taste. Not keywords. Your actual gut feel, quantified.
+              Most AI tools feel like black boxes. You paste something in, hope for the best, and get something back
+              that might work. There's no transparency, no control, no understanding of what just happened.
             </p>
             <p>
-              Nora is early. We're building this in public with our first 10 founding teams.
-              If you're a bootstrapped founder who's tired of the hiring treadmill, I'd love to work with you.
+              Nora is different. Every workflow shows you exactly what's happening at each step — from input classification
+              to content generation to output formatting. You see the process, you trust the output, and you ship faster.
+            </p>
+            <p>
+              We're in beta. Building in public with our first 50 founding users.
+              If you're a solo founder tired of the AI guessing game, I'd love to hear from you.
             </p>
           </div>
         </Reveal>
@@ -95,7 +98,7 @@ const About = () => {
       <footer className="relative z-10 border-t border-base-content/[0.07] px-4 py-10 sm:px-8">
         <div className="mx-auto grid max-w-5xl gap-6 text-center sm:grid-cols-3 sm:text-left">
           <div className="flex flex-col items-center gap-3 sm:items-start">
-            <p className="text-sm font-medium text-base-content/60">XenoraAI</p>
+            <p className="text-sm font-medium text-base-content/60">Nora by XenoraAI</p>
             <div className="flex items-center gap-3 text-base-content/50">
               <a href="https://www.linkedin.com/company/xenoraai" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="transition-colors hover:text-base-content/85">
                 <Linkedin className="h-4 w-4" />
@@ -111,11 +114,11 @@ const About = () => {
             </div>
           </div>
           <div className="flex flex-col items-center justify-center gap-1">
-            <p className="text-xs text-base-content/40">@XenoraAI 2026</p>
+            <p className="text-xs text-base-content/40">XenoraAI 2026</p>
           </div>
           <div className="flex items-center justify-center gap-5 text-xs text-base-content/45 sm:justify-end">
             <Link to="/faq" onClick={smoothTop} className="transition-colors hover:text-base-content/85">FAQ</Link>
-            <Link to="/privacy" onClick={smoothTop} className="transition-colors hover:text-base-content/85">Privacy Policy</Link>
+            <Link to="/privacy" onClick={smoothTop} className="transition-colors hover:text-base-content/85">Privacy</Link>
           </div>
         </div>
       </footer>
