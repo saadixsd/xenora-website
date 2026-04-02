@@ -1,16 +1,14 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useId } from 'react';
+import { useId, useState } from 'react';
 import { ThemeToggle } from '@/components/app/ThemeToggle';
 import { useAuth } from '@/hooks/useAuth';
+import { X, Menu } from 'lucide-react';
 
 const links = [
   { label: 'Home', to: '/' },
   { label: 'How it Works', to: '/#how-it-works' },
-  { label: 'Ask Nora', to: '/try-nora' },
-  { label: 'TalentGraph', to: '/talentgraph' },
   { label: 'About', to: '/about' },
   { label: 'FAQ', to: '/faq' },
-  { label: 'Privacy Policy', to: '/privacy' },
 ];
 
 export const SiteNav = ({ className = '' }: { className?: string }) => {
@@ -18,12 +16,18 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const smoothTop = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   };
 
-  const renderLink = (link: typeof links[0], extraClass = '') => {
+  const handleNavClick = () => {
+    setMobileOpen(false);
+    smoothTop();
+  };
+
+  const renderLink = (link: typeof links[0], extraClass = '', onClick?: () => void) => {
     if (link.to.startsWith('/#')) {
       const hash = link.to.slice(1);
       const id = hash.replace('#', '');
@@ -34,6 +38,7 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
             className={extraClass}
             onClick={(e) => {
               e.preventDefault();
+              onClick?.();
               smoothTop();
               window.setTimeout(() => {
                 const target = document.getElementById(id);
@@ -51,6 +56,7 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
           type="button"
           className={extraClass}
           onClick={() => {
+            onClick?.();
             smoothTop();
             window.setTimeout(() => navigate(link.to), 220);
           }}
@@ -60,7 +66,7 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
       );
     }
     return (
-      <Link to={link.to} className={extraClass} onClick={smoothTop}>
+      <Link to={link.to} className={extraClass} onClick={() => { onClick?.(); smoothTop(); }}>
         {link.label}
       </Link>
     );
@@ -68,7 +74,7 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
 
   return (
     <nav className={`flex items-center gap-1 sm:gap-2 ${className}`} aria-label="Main navigation">
-      <ul className="menu menu-horizontal menu-sm hidden flex-nowrap px-0 md:flex">
+      <ul className="hidden flex-nowrap px-0 md:flex md:items-center md:gap-0.5">
         {links.map((link) => (
           <li key={link.to}>
             {renderLink(
@@ -79,28 +85,33 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
         ))}
       </ul>
 
-      <div className="dropdown dropdown-end md:hidden">
-        <button
-          type="button"
-          tabIndex={0}
-          className="btn btn-ghost btn-sm h-8 min-h-8 border border-base-content/10 px-2.5 font-normal normal-case text-xs text-base-content/75 sm:px-3 sm:text-sm"
-          aria-haspopup="menu"
-          aria-controls={menuId}
-        >
-          Menu
-        </button>
-        <ul
+      {/* Mobile menu button */}
+      <button
+        type="button"
+        onClick={() => setMobileOpen(!mobileOpen)}
+        className="flex h-8 w-8 items-center justify-center rounded-lg border border-base-content/10 text-base-content/75 md:hidden"
+        aria-haspopup="menu"
+        aria-controls={menuId}
+        aria-expanded={mobileOpen}
+      >
+        {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+      </button>
+
+      {/* Mobile dropdown */}
+      {mobileOpen && (
+        <div
           id={menuId}
-          tabIndex={0}
-          className="dropdown-content menu z-[100] mt-2 w-44 rounded-lg border border-base-content/10 bg-base-200 p-2 shadow-lg sm:w-48"
+          className="absolute left-0 right-0 top-full z-[100] border-b border-base-content/10 bg-base-100/95 backdrop-blur-xl p-4 md:hidden"
         >
-          {links.map((link) => (
-            <li key={link.to}>
-              {renderLink(link, 'text-sm')}
-            </li>
-          ))}
-        </ul>
-      </div>
+          <ul className="space-y-1">
+            {links.map((link) => (
+              <li key={link.to}>
+                {renderLink(link, 'block rounded-lg px-3 py-2.5 text-sm text-base-content/70 hover:bg-base-200/60 hover:text-base-content', handleNavClick)}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {user ? (
         <Link

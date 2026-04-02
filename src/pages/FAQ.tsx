@@ -1,28 +1,65 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Linkedin } from 'lucide-react';
+import { useState } from 'react';
+import { Instagram, Linkedin, ChevronDown } from 'lucide-react';
 import { Reveal } from '@/components/motion/Reveal';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
 import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackground';
+import { cn } from '@/lib/utils';
 
 const faqs = [
   {
-    q: 'How does TalentGraph™ find candidates without LinkedIn?',
-    a: 'Nora searches publicly available profiles across GitHub, X (Twitter), and personal portfolios — no scraping of platforms that prohibit it. TalentGraph™ indexes the open web to find people based on real output, not keyword-stuffed resumes.',
+    q: 'What is Nora?',
+    a: 'Nora is an AI workflow workspace for solo founders. It takes raw ideas, meeting notes, or voice-note transcripts and runs them through visible, step-by-step AI workflows to produce publish-ready content, research briefs, and follow-up emails.',
   },
   {
-    q: 'What happens to my data?',
-    a: 'Your uploads stay private to your account. We don\'t train on your hiring preferences or share them with anyone. Your taste profile is yours.',
+    q: 'How is this different from ChatGPT or other AI tools?',
+    a: "Nora isn't a chatbot. It's a workflow engine. Instead of a chat window where you hope for the best, Nora shows you every step of the process — input classification, content generation, formatting. You see what's happening, so you trust what ships.",
   },
   {
-    q: 'How accurate is the 85% match rate?',
-    a: 'That\'s our target benchmark from internal testing. Your first 10 matches help Nora calibrate to your taste specifically — it gets sharper the more you use it.',
+    q: 'What workflows are available?',
+    a: 'The Content Agent is fully live — it turns a raw founder thought into an X post, 3 hooks, a LinkedIn post, and a CTA. Research Agent and Lead Follow-up Agent are coming soon.',
   },
   {
-    q: 'Is this free right now?',
-    a: 'Founding members get free access during our early build phase. Pricing will be announced before we close the waitlist.',
+    q: 'What does the Content Agent produce?',
+    a: 'From a single raw input, you get: 1 X/Twitter post (max 280 chars), 3 short hooks, 1 LinkedIn post (2-3 paragraphs), and 1 call-to-action. All publish-ready, all in your chosen tone.',
+  },
+  {
+    q: 'Is my data private?',
+    a: "Your workflow inputs and outputs are tied to your account and protected by row-level security. We don't train on your data or share it with anyone.",
+  },
+  {
+    q: 'Is the beta free?',
+    a: 'Yes. The first 50 founding users get premium features free during the beta period. Pricing will be announced before we close beta access.',
+  },
+  {
+    q: 'Who is Nora built for?',
+    a: 'Solo founders, indie hackers, and creators building in public. People who need to ship content consistently but hate spending hours on repetitive work.',
   },
 ];
+
+function FaqItem({ q, a, delay }: { q: string; a: string; delay: number }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <Reveal delay={delay}>
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="surface-panel w-full text-left p-0 overflow-hidden"
+      >
+        <div className="flex items-center justify-between px-5 py-4">
+          <span className="text-sm font-medium text-base-content/85 pr-4">{q}</span>
+          <ChevronDown className={cn('h-4 w-4 shrink-0 text-base-content/40 transition-transform duration-200', open && 'rotate-180')} />
+        </div>
+        {open && (
+          <div className="border-t border-border/50 px-5 py-4">
+            <p className="text-sm leading-relaxed text-base-content/60">{a}</p>
+          </div>
+        )}
+      </button>
+    </Reveal>
+  );
+}
 
 const FAQ = () => {
   const smoothTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -37,9 +74,9 @@ const FAQ = () => {
 
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 backdrop-blur-xl">
         <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between gap-2 px-3 py-2 sm:px-6">
-          <Link to="/" onClick={smoothTop} className="flex items-center gap-2 sm:gap-2.5 cursor-pointer" aria-label="XenoraAI home">
+          <Link to="/" onClick={smoothTop} className="flex items-center gap-2 sm:gap-2.5 cursor-pointer" aria-label="Nora home">
             <XenoraLogo decorative className="h-10 w-10 sm:h-14 sm:w-14" />
-            <span className="text-base font-semibold text-base-content sm:text-xl">XenoraAI</span>
+            <span className="text-base font-semibold text-base-content sm:text-xl">Nora</span>
           </Link>
           <SiteNav />
         </div>
@@ -50,20 +87,12 @@ const FAQ = () => {
           <h1 className="premium-heading text-3xl font-medium sm:text-4xl">Frequently Asked Questions</h1>
         </Reveal>
         <Reveal delay={0.05}>
-          <p className="mt-3 text-sm text-base-content/55">Everything you need to know about TalentGraph™ and how early access works.</p>
+          <p className="mt-3 text-sm text-base-content/55">Everything you need to know about Nora's AI workflows and the beta.</p>
         </Reveal>
 
         <div className="mt-10 space-y-3">
           {faqs.map((faq, i) => (
-            <Reveal key={faq.q} delay={i * 0.03}>
-              <div className="collapse collapse-arrow surface-panel">
-                <input type="checkbox" />
-                <div className="collapse-title text-sm font-medium text-base-content/85">{faq.q}</div>
-                <div className="collapse-content">
-                  <p className="text-sm leading-relaxed text-base-content/60">{faq.a}</p>
-                </div>
-              </div>
-            </Reveal>
+            <FaqItem key={faq.q} q={faq.q} a={faq.a} delay={i * 0.03} />
           ))}
         </div>
       </main>
@@ -71,7 +100,7 @@ const FAQ = () => {
       <footer className="relative z-10 border-t border-base-content/[0.07] px-4 py-10 sm:px-8">
         <div className="mx-auto grid max-w-5xl gap-6 text-center sm:grid-cols-3 sm:text-left">
           <div className="flex flex-col items-center gap-3 sm:items-start">
-            <p className="text-sm font-medium text-base-content/60">XenoraAI</p>
+            <p className="text-sm font-medium text-base-content/60">Nora by XenoraAI</p>
             <div className="flex items-center gap-3 text-base-content/50">
               <a href="https://www.linkedin.com/company/xenoraai" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="transition-colors hover:text-base-content/85">
                 <Linkedin className="h-4 w-4" />
@@ -87,12 +116,11 @@ const FAQ = () => {
             </div>
           </div>
           <div className="flex flex-col items-center justify-center gap-1">
-            <p className="text-xs text-base-content/40">@XenoraAI 2026</p>
-            <p className="text-[12px] sm:text-[11px] tracking-[0.16em] text-base-content/35">XenoraAI</p>
+            <p className="text-xs text-base-content/40">XenoraAI 2026</p>
           </div>
           <div className="flex items-center justify-center gap-5 text-xs text-base-content/45 sm:justify-end">
-            <Link to="/faq" onClick={smoothTop} className="transition-colors hover:text-base-content/85">FAQ</Link>
-            <Link to="/privacy" onClick={smoothTop} className="transition-colors hover:text-base-content/85">Privacy Policy</Link>
+            <Link to="/about" onClick={smoothTop} className="transition-colors hover:text-base-content/85">About</Link>
+            <Link to="/privacy" onClick={smoothTop} className="transition-colors hover:text-base-content/85">Privacy</Link>
           </div>
         </div>
       </footer>
