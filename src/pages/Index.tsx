@@ -401,7 +401,7 @@ const Index = () => {
         <footer className="border-t border-base-content/[0.07] px-4 py-10 sm:px-8">
           <div className="mx-auto grid max-w-5xl gap-6 text-center sm:grid-cols-3 sm:text-left">
             <div className="flex flex-col items-center gap-3 sm:items-start">
-              <p className="text-sm font-medium text-base-content/60">Nora by XenoraAI — Know Beyond Manual</p>
+              <p className="text-sm font-medium text-base-content/60">Nora by XenoraAI — Know Beyond</p>
               <p className="text-xs text-base-content/30">Built by a solo founder. Designed for solo founders.</p>
               <div className="flex items-center gap-3 text-base-content/50">
                 <a href="https://www.linkedin.com/company/xenoraai" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="transition-colors hover:text-base-content/85"><Linkedin className="h-4 w-4" /></a>
