@@ -1,17 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { StatsCards } from '@/components/dashboard/StatsCards';
-import { TemplateCard } from '@/components/dashboard/TemplateCard';
-import { Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { AgentCards } from '@/components/dashboard/AgentCards';
+import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
+import { QuickRunInput } from '@/components/dashboard/QuickRunInput';
 
 interface Template {
   id: string;
   name: string;
-  description: string;
-  icon: string;
   status: string;
 }
 
@@ -21,6 +19,23 @@ interface Run {
   status: string;
   created_at: string;
   workflow_templates: { name: string } | null;
+}
+
+function getGreeting(): string {
+  const h = new Date().getHours();
+  if (h < 12) return 'Good morning';
+  if (h < 17) return 'Good afternoon';
+  return 'Good evening';
+}
+
+function timeAgo(dateStr: string): string {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'Just now';
+  if (mins < 60) return `${mins} min ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs} hr ago`;
+  return 'Yesterday';
 }
 
 const Dashboard = () => {
@@ -35,13 +50,13 @@ const Dashboard = () => {
 
     const fetchData = async () => {
       const [tRes, rRes, oRes] = await Promise.all([
-        supabase.from('workflow_templates').select('*').order('created_at'),
+        supabase.from('workflow_templates').select('id, name, status').order('created_at'),
         supabase
           .from('workflow_runs')
           .select('id, input_text, status, created_at, workflow_templates(name)')
           .eq('user_id', user.id)
           .order('created_at', { ascending: false })
-          .limit(5),
+          .limit(10),
         supabase
           .from('workflow_outputs')
           .select('id', { count: 'exact', head: true })
@@ -61,102 +76,73 @@ const Dashboard = () => {
     fetchData();
   }, [user]);
 
-  const startRun = (templateId: string) => {
-    navigate(`/dashboard/run/new?template=${templateId}`);
-  };
+  const displayName = user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'there';
+  const contentTemplate = templates.find((t) => t.name?.toLowerCase().includes('content'));
+
+  const feedItems = useMemo(() => {
+    return runs.slice(0, 4).map((run) => ({
+      id: run.id,
+      title: run.input_text.length > 60 ? run.input_text.slice(0, 60) + '…' : run.input_text,
+      meta: `${(run.workflow_templates as any)?.name || 'Workflow'} · ${run.status}`,
+      time: timeAgo(run.created_at),
+      type: (run.status === 'completed' ? 'success' : run.status === 'running' ? 'warning' : 'action') as 'success' | 'warning' | 'action',
+      runId: run.id,
+      approved: run.status === 'completed',
+    }));
+  }, [runs]);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8">
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="mx-auto max-w-5xl px-4 py-5 sm:px-6 lg:px-8 font-dm-sans">
+      {/* Top bar */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-border bg-card px-5 py-4 mb-4">
         <div>
-          <h1 className="text-xl font-semibold text-foreground sm:text-2xl">Dashboard</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Turn rough ideas into publish-ready outputs.
+          <h1 className="font-dm-serif text-xl tracking-tight text-foreground">
+            {getGreeting()}, {displayName}.
+          </h1>
+          <p className="text-[12.5px] text-muted-foreground mt-0.5">
+            Here's what Nora handled while you were building.
           </p>
         </div>
-        <Button onClick={() => navigate('/dashboard/run/new')} className="gap-2">
-          <Plus className="h-4 w-4" />
-          New Workflow Run
-        </Button>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => navigate('/dashboard/settings')}
+            className="rounded-lg border border-border bg-card px-3.5 py-2 text-[13px] text-foreground transition-colors hover:bg-muted"
+          >
+            Connect tools
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/dashboard/run/new')}
+            className="rounded-lg bg-primary px-3.5 py-2 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90"
+          >
+            + New workflow
+          </button>
+        </div>
       </div>
 
       {/* Stats */}
-      <div className="mt-6">
-        <StatsCards totalRuns={runs.length} draftsGenerated={outputCount} />
+      <StatsCards totalRuns={runs.length} draftsGenerated={outputCount} />
+
+      {/* Agents */}
+      <div className="mt-4">
+        <div className="flex items-baseline justify-between mb-2.5">
+          <p className="text-[13px] font-medium text-foreground">Your agents</p>
+          <button type="button" className="text-[12px] text-primary hover:underline">
+            Manage →
+          </button>
+        </div>
+        <AgentCards
+          draftsCount={outputCount}
+          leadsCount={0}
+          contentTemplateId={contentTemplate?.id}
+        />
       </div>
 
-      {/* Templates */}
-      <div className="mt-8">
-        <h2 className="text-sm font-medium text-foreground">Workflow Templates</h2>
-        <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {templates.map((t) => (
-            <TemplateCard
-              key={t.id}
-              name={t.name}
-              description={t.description}
-              icon={t.icon}
-              status={t.status}
-              onSelect={() => startRun(t.id)}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Recent runs */}
-      <div className="mt-8">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-medium text-foreground">Recent Runs</h2>
-          {runs.length > 0 && (
-            <button
-              type="button"
-              onClick={() => navigate('/dashboard/history')}
-              className="text-xs text-primary hover:underline"
-            >
-              View all
-            </button>
-          )}
-        </div>
-
-        {runs.length === 0 ? (
-          <div className="surface-panel mt-3 flex flex-col items-center py-10 text-center">
-            <p className="text-sm text-muted-foreground">No runs yet.</p>
-            <p className="mt-1 text-xs text-muted-foreground/60">
-              Start your first workflow to see results here.
-            </p>
-          </div>
-        ) : (
-          <div className="mt-3 space-y-2">
-            {runs.map((run) => (
-              <button
-                key={run.id}
-                type="button"
-                onClick={() => navigate(`/dashboard/run/${run.id}`)}
-                className="surface-panel flex w-full items-center gap-4 p-4 text-left transition-colors hover:border-primary/20"
-              >
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm text-foreground">{run.input_text}</p>
-                  <p className="mt-0.5 text-xs text-muted-foreground">
-                    {(run.workflow_templates as any)?.name} · {new Date(run.created_at).toLocaleDateString()}
-                  </p>
-                </div>
-                <span
-                  className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                    run.status === 'completed'
-                      ? 'bg-primary/10 text-primary'
-                      : run.status === 'running'
-                      ? 'bg-amber-500/10 text-amber-500'
-                      : run.status === 'failed'
-                      ? 'bg-destructive/10 text-destructive'
-                      : 'bg-muted text-muted-foreground'
-                  }`}
-                >
-                  {run.status}
-                </span>
-              </button>
-            ))}
-          </div>
-        )}
+      {/* Two-column: Feed + Quick Run */}
+      <div className="mt-4 grid gap-3 lg:grid-cols-[1fr_340px]">
+        <ActivityFeed items={feedItems} />
+        <QuickRunInput contentTemplateId={contentTemplate?.id} />
       </div>
     </div>
   );
