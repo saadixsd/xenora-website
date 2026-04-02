@@ -12,7 +12,6 @@ import Privacy from "./pages/Privacy.tsx";
 import About from "./pages/About.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import TryNora from "./pages/TryNora.tsx";
-import TalentGraph from "./pages/TalentGraph.tsx";
 import Login from "./pages/Login.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import WorkflowRun from "./pages/WorkflowRun.tsx";
