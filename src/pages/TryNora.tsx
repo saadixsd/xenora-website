@@ -195,16 +195,16 @@ const TryNora = () => {
 
             <div className="mt-6 flex flex-col items-center justify-center gap-2 sm:flex-row">
               <Link
-                to="/talentgraph"
-                className="btn btn-outline btn-primary btn-sm"
+                to="/dashboard"
+                className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
               >
-                Open TalentGraph dashboard
+                Open Dashboard
               </Link>
               <Link
                 to="/#waitlist"
-                className="btn btn-ghost btn-sm"
+                className="rounded-lg border border-base-content/15 px-4 py-2 text-sm text-base-content/60 transition-colors hover:text-base-content"
               >
-                Get early access
+                Join the beta
               </Link>
             </div>
           </div>
