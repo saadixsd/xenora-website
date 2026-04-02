@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import { Instagram, Linkedin, Clock, Zap, Eye, PenLine, Search, Mail, ArrowRight } from 'lucide-react';
+import { Instagram, Linkedin, PenLine, Search, Zap, ArrowRight, Check, X as XIcon, Users, Rocket, Mic, Target } from 'lucide-react';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
 import { NoraWaitlistForm } from '@/components/nora-landing/NoraWaitlistForm';
@@ -10,42 +10,113 @@ import { Reveal } from '@/components/motion/Reveal';
 const flowSteps = [
   {
     step: '01',
-    title: 'Drop Your Thought',
-    body: 'Paste a raw idea, meeting note, or voice-note transcript. No formatting needed.',
+    title: 'Input',
+    body: 'Drop in a rough idea, voice note transcript, email thread, or lead list.',
   },
   {
     step: '02',
-    title: 'Choose a Workflow',
-    body: 'Content Agent, Research Agent, Lead Follow-up — pick the right engine for the job.',
+    title: 'Classify',
+    body: 'Nora reads the context and decides: is this content, a lead, or a workflow task?',
   },
   {
     step: '03',
-    title: 'Watch It Work',
-    body: 'See every step: classifying, generating, formatting. No black box. Full transparency.',
+    title: 'Execute',
+    body: 'Nora runs the right agent — Content, Lead, or Research — with no manual setup.',
   },
   {
     step: '04',
-    title: 'Get Your Outputs',
-    body: 'Publish-ready X posts, LinkedIn content, hooks, CTAs. Copy, edit, or regenerate instantly.',
+    title: 'Review',
+    body: 'See every step Nora took. Approve, edit, or regenerate. You stay in control.',
+  },
+  {
+    step: '05',
+    title: 'Done',
+    body: 'Outputs land in your dashboard: posts ready to publish, replies ready to send, leads scored and followed up.',
   },
 ];
 
-const painPoints = [
-  { icon: Clock, label: '10-20 hrs/week wasted', sub: 'on repetitive content, emails, follow-ups' },
-  { icon: Eye, label: 'AI black boxes', sub: 'no idea what the model is doing or why' },
-  { icon: Search, label: 'Tool overload', sub: '$50-300/mo on scattered SaaS stacks' },
+const testimonials = [
+  {
+    quote: 'Nora handles my inbox + content queue — frees 15hr/wk to build.',
+    author: 'Solo SaaS founder, early access',
+  },
+  {
+    quote: 'Visible AI steps make it trustworthy vs generic chatbots.',
+    author: 'Indie hacker, micro-SaaS',
+  },
+  {
+    quote: 'Turned rough notes into 10 posts/week — growth unlocked.',
+    author: 'Creator founder, 8k audience',
+  },
 ];
 
-const noraWins = [
-  { icon: PenLine, label: 'One input, multiple outputs', sub: 'X post, hooks, LinkedIn, CTA — done' },
-  { icon: Eye, label: 'Visible workflows', sub: 'see every step so you trust what ships' },
-  { icon: Zap, label: 'Instant ROI', sub: 'save hours on day one, no learning curve' },
+const agents = [
+  {
+    icon: PenLine,
+    name: 'Content Agent',
+    body: 'Drop a rough thought. Get back a Twitter post, 3 hooks, a LinkedIn post, and a CTA. Consistent output without the blank page.',
+    tag: 'Live in beta',
+    active: true,
+  },
+  {
+    icon: Zap,
+    name: 'Lead Agent',
+    body: 'Form submission or DM comes in. Nora scores the lead, drafts a reply, and queues a follow-up if they go quiet.',
+    tag: 'Coming soon',
+    active: false,
+  },
+  {
+    icon: Search,
+    name: 'Research Agent',
+    body: 'Point Nora at Reddit, comments, or your niche. Get back real pain signals, content ideas, and offer angles from actual conversations.',
+    tag: 'Coming soon',
+    active: false,
+  },
 ];
 
-const workflows = [
-  { icon: PenLine, name: 'Content Agent', desc: 'Raw thought to publish-ready posts', active: true },
-  { icon: Search, name: 'Research Agent', desc: 'Topic deep-dives and structured briefs', active: false },
-  { icon: Mail, name: 'Lead Follow-up', desc: 'Personalized follow-ups from meeting notes', active: false },
+const personas = [
+  {
+    icon: Rocket,
+    title: 'Solo Indie Hackers',
+    body: 'Building your first product under $10k MRR. Emails and lead chaos are eating your coding time. Nora handles it.',
+  },
+  {
+    icon: Target,
+    title: 'Micro-SaaS Founders',
+    body: '1-3 person team hitting an ops ceiling. No ops hire in budget. Nora is your first workflow person.',
+  },
+  {
+    icon: Mic,
+    title: 'Creator Founders',
+    body: 'Audience between 1k-50k. Content consistency is your growth lever. Nora turns ideas into posts while you focus on the product.',
+  },
+  {
+    icon: Users,
+    title: 'Early Bootstrappers',
+    body: "Side hustle going full-time. Can't afford a VA. $29/mo gets you the same output.",
+  },
+];
+
+const comparisonRows = [
+  ['10-20 hours/week on emails, content, follow-ups', 'That time goes back to building'],
+  ['Generic AI chat that forgets context instantly', 'Visible agent steps you can audit and edit'],
+  ['Zapier workflows you have to build and maintain', 'Nora figures out the workflow from your input'],
+  ['Blank page every time you need content', 'Rough note in, publish-ready post out'],
+  ['Leads that go cold because follow-up slips', 'Nora queues the nudge automatically'],
+];
+
+const starterFeatures = [
+  'Content Agent access',
+  'Up to 100 workflow runs/month',
+  'Visible step-by-step execution',
+  'Dashboard + history',
+];
+
+const proFeatures = [
+  'All agents',
+  'Unlimited runs',
+  'Integrations: Notion, Slack, Gmail',
+  'Priority support',
 ];
 
 const Index = () => {
@@ -83,56 +154,75 @@ const Index = () => {
       </header>
 
       <main className="relative z-10">
-        {/* Hero */}
+        {/* ── HERO ── */}
         <section className="flex min-h-[100svh] flex-col items-center justify-center px-4 pb-20 pt-24 sm:px-8 sm:pb-24 sm:pt-28">
           <div className="w-full max-w-3xl text-center">
             <Reveal>
               <p className="font-playfair text-[12px] sm:text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
-                AI Workflow Workspace
+                AI Workflow Engine — Early Access
               </p>
             </Reveal>
             <Reveal delay={0.05}>
               <h1 className="premium-heading mt-4 text-[1.75rem] font-medium leading-tight sm:text-4xl md:text-5xl lg:text-7xl">
-                Turn Rough Ideas Into Publish-Ready Outputs
+                Stop Doing Work{' '}
+                <br className="hidden sm:block" />
+                Nora Does Automatically
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-4 max-w-2xl text-sm text-base-content/65 leading-relaxed sm:mt-6 sm:text-base lg:text-lg">
-                Nora is an AI workflow engine for solo founders. Drop a raw thought, pick a workflow, and watch every step happen — from input to polished content. No black boxes. No guesswork.
+                Drop a rough idea, a messy inbox, or a lead list into Nora.
+                Get back content, replies, and follow-ups — without lifting a finger.
+                Built for solo founders who build instead of admin.
               </p>
             </Reveal>
 
             <Reveal delay={0.2}>
               <div className="mt-8 flex flex-col items-center gap-3 sm:mt-10">
                 <div className="flex flex-col items-center gap-3 sm:flex-row">
-                  <Link
-                    to="/login"
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-10 py-3 text-base font-medium text-primary-foreground shadow-[0_10px_30px_rgba(14,165,164,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,165,164,0.28)] sm:w-auto"
-                  >
-                    Start Building
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
                   <button
                     type="button"
-                    className="inline-flex w-full items-center justify-center rounded-lg border border-base-content/15 px-8 py-3 text-base text-base-content/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:text-primary sm:w-auto"
+                    className="btn btn-primary w-full px-10 text-base shadow-[0_10px_30px_rgba(14,165,164,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,165,164,0.28)] sm:w-auto"
+                    onClick={() => scrollToSection('waitlist')}
+                  >
+                    Join the Waitlist
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline w-full border-base-content/15 px-8 text-base text-base-content/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:text-primary sm:w-auto"
                     onClick={() => scrollToSection('how-it-works')}
                   >
                     See How It Works
                   </button>
                 </div>
-                <p className="text-xs text-base-content/35">Free beta access — limited spots.</p>
+                <p className="text-xs text-base-content/35">Free during beta — no card required.</p>
               </div>
-            </Reveal>
-
-            <Reveal delay={0.3}>
-              <p className="mt-14 mx-auto max-w-md text-center text-xs text-base-content/30 italic">
-                Solo founders use Nora to save 10-20 hrs/week on content, emails, and lead follow-ups.
-              </p>
             </Reveal>
           </div>
         </section>
 
-        {/* How It Works */}
+        {/* ── SOCIAL PROOF ── */}
+        <section className="border-t border-base-content/[0.07] px-4 py-16 sm:px-8">
+          <div className="mx-auto max-w-4xl">
+            <Reveal>
+              <p className="text-center text-[11px] font-medium uppercase tracking-[0.14em] text-base-content/35">
+                What early testers say
+              </p>
+            </Reveal>
+            <div className="mt-8 grid gap-4 sm:grid-cols-3">
+              {testimonials.map((t, i) => (
+                <Reveal key={i} delay={0.06 * i}>
+                  <div className="surface-panel p-5 transition-all duration-300 hover:-translate-y-0.5">
+                    <p className="text-sm leading-relaxed text-base-content/70 italic">"{t.quote}"</p>
+                    <p className="mt-3 text-xs text-base-content/40">— {t.author}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── HOW NORA WORKS ── */}
         <section id="how-it-works" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-4xl">
             <Reveal>
@@ -140,11 +230,11 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-3 max-w-lg text-center text-sm text-base-content/45">
-                Input → Visible AI Processing → Publish-Ready Outputs
+                One input. Multiple outputs. Every step visible.
               </p>
             </Reveal>
 
-            <div className="mt-14 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 sm:gap-6">
+            <div className="mt-14 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 sm:gap-6">
               {flowSteps.map((s, index) => (
                 <Reveal key={s.step} delay={0.08 * index}>
                   <article className="surface-panel h-full p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30">
@@ -158,32 +248,32 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Workflows */}
+        {/* ── AGENT CARDS ── */}
         <section className="border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-4xl">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">Workflow Agents</h2>
-            </Reveal>
-            <Reveal delay={0.05}>
-              <p className="mx-auto mt-3 max-w-lg text-center text-sm text-base-content/45">
-                Each agent is purpose-built for a specific founder workflow.
+              <p className="text-center text-[11px] font-medium uppercase tracking-[0.14em] text-base-content/35">
+                Nora's Agent Stack
               </p>
+            </Reveal>
+            <Reveal delay={0.03}>
+              <h2 className="premium-heading mt-3 text-center text-2xl font-medium sm:text-3xl">
+                Three agents. Every founder workflow.
+              </h2>
             </Reveal>
 
             <div className="mt-14 grid gap-4 sm:grid-cols-3 sm:gap-6">
-              {workflows.map((w, i) => (
-                <Reveal key={w.name} delay={0.08 * i}>
-                  <div className={`surface-panel relative p-6 ${!w.active ? 'opacity-60' : 'hover:-translate-y-1 hover:border-primary/30'} transition-all duration-300`}>
-                    {!w.active && (
-                      <span className="absolute right-3 top-3 rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                        Coming soon
-                      </span>
-                    )}
+              {agents.map((a, i) => (
+                <Reveal key={a.name} delay={0.08 * i}>
+                  <div className={`surface-panel relative h-full p-6 transition-all duration-300 ${a.active ? 'hover:-translate-y-1 hover:border-primary/30' : 'opacity-70'}`}>
+                    <span className={`absolute right-4 top-4 rounded-full px-2.5 py-0.5 text-[10px] font-medium ${a.active ? 'bg-primary/10 text-primary' : 'bg-base-content/5 text-base-content/40'}`}>
+                      {a.tag}
+                    </span>
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                      <w.icon className="h-5 w-5 text-primary" />
+                      <a.icon className="h-5 w-5 text-primary" />
                     </div>
-                    <h3 className="mt-3 text-base font-medium text-base-content">{w.name}</h3>
-                    <p className="mt-1 text-sm text-base-content/50">{w.desc}</p>
+                    <h3 className="mt-3 text-base font-medium text-base-content">{a.name}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-base-content/50">{a.body}</p>
                   </div>
                 </Reveal>
               ))}
@@ -191,73 +281,143 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Why Nora */}
+        {/* ── WHO THIS IS FOR ── */}
         <section className="border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-4xl">
             <Reveal>
               <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">
-                Why Founders Switch to Nora
+                Built for founders who wear all the hats
               </h2>
             </Reveal>
 
-            <div className="mt-14 grid gap-6 sm:grid-cols-2">
-              <Reveal delay={0.08}>
-                <div className="surface-panel p-6 sm:p-8">
-                  <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-base-content/35">
-                    The Old Way
-                  </p>
-                  <div className="mt-6 space-y-5">
-                    {painPoints.map((item) => (
-                      <div key={item.label} className="flex items-start gap-3">
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-destructive/10">
-                          <item.icon className="h-4 w-4 text-destructive/70" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-base-content/70">{item.label}</p>
-                          <p className="text-xs text-base-content/40">{item.sub}</p>
-                        </div>
-                      </div>
-                    ))}
+            <div className="mt-14 grid gap-4 sm:grid-cols-2">
+              {personas.map((p, i) => (
+                <Reveal key={p.title} delay={0.08 * i}>
+                  <div className="surface-panel flex items-start gap-4 p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/20">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                      <p.icon className="h-5 w-5 text-primary/80" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-medium text-base-content">{p.title}</h3>
+                      <p className="mt-1 text-sm leading-relaxed text-base-content/50">{p.body}</p>
+                    </div>
                   </div>
-                </div>
-              </Reveal>
-
-              <Reveal delay={0.16}>
-                <div className="surface-panel border-primary/20 p-6 sm:p-8">
-                  <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-primary/60">
-                    With Nora
-                  </p>
-                  <div className="mt-6 space-y-5">
-                    {noraWins.map((item) => (
-                      <div key={item.label} className="flex items-start gap-3">
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                          <item.icon className="h-4 w-4 text-primary/80" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-base-content/80">{item.label}</p>
-                          <p className="text-xs text-base-content/40">{item.sub}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-6 rounded-lg border border-primary/15 bg-primary/5 px-4 py-3">
-                    <p className="text-xs text-primary/70">Visible workflows. Instant outputs. Real trust.</p>
-                  </div>
-                </div>
-              </Reveal>
+                </Reveal>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Waitlist */}
+        {/* ── COMPARISON TABLE ── */}
+        <section className="border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
+          <div className="mx-auto max-w-4xl">
+            <Reveal>
+              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">
+                Why Nora, not another AI tool
+              </h2>
+            </Reveal>
+
+            <Reveal delay={0.08}>
+              <div className="surface-panel mt-14 overflow-hidden">
+                {/* Header */}
+                <div className="grid grid-cols-2 border-b border-border/50">
+                  <div className="px-5 py-3">
+                    <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-base-content/35">Without Nora</p>
+                  </div>
+                  <div className="border-l border-border/50 px-5 py-3">
+                    <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-primary/60">With Nora</p>
+                  </div>
+                </div>
+                {/* Rows */}
+                {comparisonRows.map((row, i) => (
+                  <div key={i} className={`grid grid-cols-2 ${i < comparisonRows.length - 1 ? 'border-b border-border/30' : ''}`}>
+                    <div className="flex items-start gap-2.5 px-5 py-4">
+                      <XIcon className="mt-0.5 h-3.5 w-3.5 shrink-0 text-destructive/50" />
+                      <p className="text-sm text-base-content/50">{row[0]}</p>
+                    </div>
+                    <div className="flex items-start gap-2.5 border-l border-border/50 px-5 py-4">
+                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary/70" />
+                      <p className="text-sm text-base-content/70">{row[1]}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ── PRICING ── */}
+        <section className="border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
+          <div className="mx-auto max-w-3xl">
+            <Reveal>
+              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">Simple pricing</h2>
+            </Reveal>
+
+            <div className="mt-14 grid gap-4 sm:grid-cols-2">
+              {/* Starter */}
+              <Reveal delay={0.06}>
+                <div className="surface-panel border-primary/25 p-6 sm:p-8">
+                  <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-primary/60">Starter</p>
+                  <p className="mt-3 text-3xl font-semibold text-base-content">$29<span className="text-base font-normal text-base-content/40">/mo</span></p>
+                  <ul className="mt-6 space-y-3">
+                    {starterFeatures.map((f) => (
+                      <li key={f} className="flex items-center gap-2.5 text-sm text-base-content/60">
+                        <Check className="h-3.5 w-3.5 text-primary/70" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <button
+                    type="button"
+                    onClick={() => scrollToSection('waitlist')}
+                    className="btn btn-primary btn-block mt-6"
+                  >
+                    Join Waitlist
+                  </button>
+                </div>
+              </Reveal>
+
+              {/* Pro */}
+              <Reveal delay={0.12}>
+                <div className="surface-panel p-6 sm:p-8">
+                  <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-base-content/35">Pro</p>
+                  <p className="mt-3 text-3xl font-semibold text-base-content">$79<span className="text-base font-normal text-base-content/40">/mo</span></p>
+                  <ul className="mt-6 space-y-3">
+                    {proFeatures.map((f) => (
+                      <li key={f} className="flex items-center gap-2.5 text-sm text-base-content/60">
+                        <Check className="h-3.5 w-3.5 text-base-content/30" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <button
+                    type="button"
+                    onClick={() => scrollToSection('waitlist')}
+                    className="btn btn-outline btn-block mt-6 border-base-content/15 text-base-content/60 hover:border-primary/40 hover:text-primary"
+                  >
+                    Join Waitlist
+                  </button>
+                </div>
+              </Reveal>
+            </div>
+
+            <Reveal delay={0.16}>
+              <p className="mt-6 text-center text-xs text-base-content/35">
+                Founding member pricing locked in for first 50 signups. Free during current beta — no card required.
+              </p>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ── WAITLIST ── */}
         <section id="waitlist" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-20 sm:px-8">
           <div className="mx-auto max-w-md">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-medium">Join the Beta</h2>
+              <h2 className="premium-heading text-center text-2xl font-medium">Get early access to Nora</h2>
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mt-2 text-center text-sm text-base-content/45">
-                First 50 founders get premium features free. Shape the product.
+                First 50 founders get founding member pricing. We'll reach out personally before launch.
               </p>
             </Reveal>
             <Reveal delay={0.1}>
@@ -268,11 +428,12 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Footer */}
+        {/* ── FOOTER ── */}
         <footer className="border-t border-base-content/[0.07] px-4 py-10 sm:px-8">
           <div className="mx-auto grid max-w-5xl gap-6 text-center sm:grid-cols-3 sm:text-left">
             <div className="flex flex-col items-center gap-3 sm:items-start">
-              <p className="text-sm font-medium text-base-content/60">Nora by XenoraAI</p>
+              <p className="text-sm font-medium text-base-content/60">Nora by XenoraAI — Know Beyond Manual</p>
+              <p className="text-xs text-base-content/30">Built by a solo founder. Designed for solo founders.</p>
               <div className="flex items-center gap-3 text-base-content/50">
                 <a href="https://www.linkedin.com/company/xenoraai" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="transition-colors hover:text-base-content/85">
                   <Linkedin className="h-4 w-4" />
@@ -289,6 +450,7 @@ const Index = () => {
             </div>
             <div className="flex flex-col items-center justify-center gap-1">
               <p className="text-xs text-base-content/40">XenoraAI 2026</p>
+              <a href="mailto:xenoraai@gmail.com" className="text-xs text-base-content/35 transition-colors hover:text-base-content/60">xenoraai@gmail.com</a>
             </div>
             <div className="flex items-center justify-center gap-5 text-xs text-base-content/45 sm:justify-end">
               <Link to="/about" onClick={smoothTop} className="transition-colors hover:text-base-content/85">About</Link>

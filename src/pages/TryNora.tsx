@@ -8,9 +8,11 @@ import { checkClaudeBackend, sendClaudeChat, buildNoraSystemPrompt, type ChatMes
 import { Send } from 'lucide-react';
 
 const SUGGESTIONS = [
-  { label: 'Taste matching', text: 'How does Nora learn my hiring taste from past hires?' },
-  { label: 'TalentGraph', text: 'How does TalentGraph source candidates from GitHub and the open web?' },
-  { label: 'Scheduling', text: 'Can Nora book interviews automatically via Calendly?' },
+  { label: 'Content Agent', text: 'How does the Content Agent work?' },
+  { label: 'Lead handling', text: 'What does Nora do with my leads?' },
+  { label: 'vs Zapier', text: 'How is this different from Zapier?' },
+  { label: 'Research Agent', text: "What's the Research Agent?" },
+  { label: 'Getting started', text: 'How do I get started?' },
 ];
 
 const TryNora = () => {
@@ -125,9 +127,9 @@ const TryNora = () => {
       {/* Header */}
       <header className="fixed left-0 right-0 top-0 z-50 shrink-0 border-b border-base-content/[0.08] bg-base-100/95 backdrop-blur-sm pt-[env(safe-area-inset-top,0px)]">
         <div className="mx-auto flex min-h-[3.25rem] max-w-5xl items-center justify-between gap-2 px-4 py-2 sm:min-h-14 sm:px-6">
-          <Link to="/" className="flex items-center gap-2 cursor-pointer" aria-label="XenoraAI home">
+          <Link to="/" className="flex items-center gap-2 cursor-pointer" aria-label="Nora home">
             <XenoraLogo decorative className="h-8 w-8 sm:h-10 sm:w-10" />
-            <span className="text-sm font-semibold text-base-content sm:text-base">XenoraAI</span>
+            <span className="text-sm font-semibold text-base-content sm:text-base">Nora</span>
           </Link>
           <SiteNav />
         </div>
@@ -144,9 +146,9 @@ const TryNora = () => {
               <XenoraLogo decorative className="h-32 w-32 sm:h-44 sm:w-44" />
             </div>
 
-            <h1 className="text-2xl font-semibold text-base-content sm:text-3xl">Ask Nora</h1>
+            <h1 className="text-2xl font-semibold text-base-content sm:text-3xl">Ask Nora anything about founder workflows</h1>
             <p className="mt-2 max-w-md text-center text-sm text-base-content/50">
-              AI recruiter that clones your best hires. Ask about sourcing, screening, or scheduling.
+              AI workflow engine for solo founders. Ask about content, leads, research, or how to get started.
             </p>
 
             {/* Status */}
@@ -161,7 +163,7 @@ const TryNora = () => {
                   ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask about hiring automation..."
+                  placeholder="Ask about workflows, agents, or getting started..."
                   autoComplete="off"
                   autoCorrect="off"
                     className="min-h-[44px] flex-1 bg-transparent text-base text-base-content outline-none placeholder:text-base-content/30 sm:min-h-[40px]"
