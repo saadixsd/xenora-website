@@ -4,6 +4,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/app/ThemeProvider";
 import { ScrollManager } from "@/components/app/ScrollManager";
+import { AuthGuard } from "@/components/auth/AuthGuard";
+import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import Index from "./pages/Index.tsx";
 import FAQ from "./pages/FAQ.tsx";
 import Privacy from "./pages/Privacy.tsx";
@@ -11,6 +13,11 @@ import About from "./pages/About.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import TryNora from "./pages/TryNora.tsx";
 import TalentGraph from "./pages/TalentGraph.tsx";
+import Login from "./pages/Login.tsx";
+import Dashboard from "./pages/Dashboard.tsx";
+import WorkflowRun from "./pages/WorkflowRun.tsx";
+import History from "./pages/History.tsx";
+import Settings from "./pages/Settings.tsx";
 
 const App = () => (
   <ThemeProvider>
@@ -26,6 +33,23 @@ const App = () => (
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/try-nora" element={<TryNora />} />
           <Route path="/talentgraph" element={<TalentGraph />} />
+          <Route path="/login" element={<Login />} />
+
+          {/* Protected dashboard routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <AuthGuard>
+                <DashboardLayout />
+              </AuthGuard>
+            }
+          >
+            <Route index element={<Dashboard />} />
+            <Route path="run/:id" element={<WorkflowRun />} />
+            <Route path="history" element={<History />} />
+            <Route path="settings" element={<Settings />} />
+          </Route>
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

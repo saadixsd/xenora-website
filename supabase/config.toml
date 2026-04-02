@@ -7,3 +7,6 @@ verify_jwt = false
 
 [functions.talentgraph]
 verify_jwt = false
+
+[functions.nora-workflow]
+verify_jwt = false

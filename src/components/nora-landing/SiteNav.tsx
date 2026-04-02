@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useId } from 'react';
 import { ThemeToggle } from '@/components/app/ThemeToggle';
+import { useAuth } from '@/hooks/useAuth';
 
 const links = [
   { label: 'Home', to: '/' },
@@ -16,6 +17,7 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
   const menuId = useId();
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const smoothTop = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -100,6 +102,21 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
         </ul>
       </div>
 
+      {user ? (
+        <Link
+          to="/dashboard"
+          className="rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90 sm:text-sm"
+        >
+          Dashboard
+        </Link>
+      ) : (
+        <Link
+          to="/login"
+          className="rounded-md border border-border px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground sm:text-sm"
+        >
+          Sign In
+        </Link>
+      )}
       <ThemeToggle />
     </nav>
   );
