@@ -86,7 +86,7 @@ const Index = () => {
 
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 backdrop-blur-xl">
         <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between gap-2 px-3 py-2 sm:px-6">
-          <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2 sm:gap-2.5 cursor-pointer" aria-label="Nora by XenoraAI home">
+          <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2 sm:gap-2.5 cursor-pointer" aria-label="XenoraAI home">
             <XenoraLogo decorative className="h-10 w-10 sm:h-14 sm:w-14" />
             <span className="text-base font-semibold text-base-content sm:text-xl">XenoraAI</span>
           </Link>
@@ -401,8 +401,8 @@ const Index = () => {
         <footer className="border-t border-base-content/[0.07] px-4 py-10 sm:px-8">
           <div className="mx-auto grid max-w-5xl gap-6 text-center sm:grid-cols-3 sm:text-left">
             <div className="flex flex-col items-center gap-3 sm:items-start">
-              <p className="text-sm font-medium text-base-content/60">Nora by XenoraAI — Know Beyond</p>
-              <p className="text-xs text-base-content/30">Built by a solo founder. Designed for solo founders.</p>
+              <p className="text-sm font-medium text-base-content/60">XenoraAI</p>
+              <p className="text-xs text-base-content/40">Know Beyond</p>
               <div className="flex items-center gap-3 text-base-content/50">
                 <a href="https://www.linkedin.com/company/xenoraai" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="transition-colors hover:text-base-content/85"><Linkedin className="h-4 w-4" /></a>
                 <a href="https://www.instagram.com/xenoraai" target="_blank" rel="noreferrer" aria-label="Instagram" className="transition-colors hover:text-base-content/85"><Instagram className="h-4 w-4" /></a>
