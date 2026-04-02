@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useId } from 'react';
 import { ThemeToggle } from '@/components/app/ThemeToggle';
+import { useAuth } from '@/hooks/useAuth';
 
 const links = [
   { label: 'Home', to: '/' },
