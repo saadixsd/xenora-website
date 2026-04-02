@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      profiles: {
+        Row: {
+          created_at: string
+          default_audience: string | null
+          display_name: string | null
+          id: string
+          preferred_tone: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          default_audience?: string | null
+          display_name?: string | null
+          id?: string
+          preferred_tone?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          default_audience?: string | null
+          display_name?: string | null
+          id?: string
+          preferred_tone?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       waitlist: {
         Row: {
           created_at: string
@@ -35,6 +62,118 @@ export type Database = {
           focus_killer?: string | null
           id?: string
           name?: string
+        }
+        Relationships: []
+      }
+      workflow_outputs: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          output_type: string
+          position: number
+          run_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          output_type: string
+          position?: number
+          run_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          output_type?: string
+          position?: number
+          run_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_outputs_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workflow_runs: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          current_step: string | null
+          goal: string | null
+          id: string
+          input_text: string
+          status: string
+          template_id: string
+          tone: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          current_step?: string | null
+          goal?: string | null
+          id?: string
+          input_text: string
+          status?: string
+          template_id: string
+          tone?: string | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          current_step?: string | null
+          goal?: string | null
+          id?: string
+          input_text?: string
+          status?: string
+          template_id?: string
+          tone?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_runs_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workflow_templates: {
+        Row: {
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          name: string
+          status: string
+          steps: Json
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          icon?: string
+          id?: string
+          name: string
+          status?: string
+          steps?: Json
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          name?: string
+          status?: string
+          steps?: Json
         }
         Relationships: []
       }
