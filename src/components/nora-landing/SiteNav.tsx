@@ -17,6 +17,7 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
   const menuId = useId();
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const smoothTop = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
