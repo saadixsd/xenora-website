@@ -19,7 +19,9 @@ This repo contains the XenoraAI marketing site for **Nora**, an agentic AI engin
 2. Create/update `.env` with:
    - `VITE_SUPABASE_URL`
    - `VITE_SUPABASE_PUBLISHABLE_KEY`
-3. `npm run dev`
+3. `npm run dev` (default [http://localhost:8080](http://localhost:8080))
+
+**Ask Nora (`/try-nora`)** calls the Supabase Edge Function `nora-claude`. For chat to work: deploy that function, set **`CLAUDE_API_KEY`** (or **`ANTHROPIC_API_KEY`**) under **Project Settings → Edge Functions → Secrets**, and use a `.env` with the same project’s `VITE_SUPABASE_URL` / `VITE_SUPABASE_PUBLISHABLE_KEY`. Local dev uses any `http://localhost:*` origin (CORS).
 
 ## Notes
 - Page metadata (title/description/OG/Twitter) is in `index.html`.

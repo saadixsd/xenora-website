@@ -49,7 +49,7 @@ const SignUp = () => {
 
       if (data.session) {
         toast({
-          title: 'Welcome to Nora',
+          title: 'Welcome to XenoraAI',
           description: "You're signed in.",
         });
         navigate('/dashboard', { replace: true });

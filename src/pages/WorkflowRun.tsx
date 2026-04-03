@@ -268,7 +268,7 @@ const WorkflowRun = () => {
               <textarea
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                placeholder="e.g. building Nora taught me most founders don't need more ideas, they need better execution loops"
+                placeholder="e.g. building XenoraAI taught me most founders don't need more ideas, they need better execution loops"
                 rows={4}
                 className="w-full resize-none rounded-lg border border-border bg-card/50 p-3 text-sm text-foreground outline-none placeholder:text-muted-foreground/50 focus:border-primary/30"
               />
@@ -316,7 +316,7 @@ const WorkflowRun = () => {
                 className="gap-2"
               >
                 <Play className="h-4 w-4" />
-                {running ? 'Running...' : 'Run Nora'}
+                {running ? 'Running...' : 'Run workflow'}
               </Button>
             </div>
           </div>

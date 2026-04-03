@@ -52,7 +52,7 @@ export function QuickRunInput({ contentTemplateId }: QuickRunInputProps) {
         disabled={!input.trim()}
         className="mt-3 w-full rounded-lg bg-primary py-2.5 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
       >
-        Run Nora →
+        Run workflow →
       </button>
       <p className="mt-2 text-center text-[11px] text-muted-foreground">
         Runs the Content Agent workflow — steps are visible on the run page.

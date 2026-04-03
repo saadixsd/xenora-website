@@ -149,7 +149,7 @@ Deno.serve(async (req) => {
 
         await updateStep("generating");
 
-        const systemPrompt = `You are Nora, an AI content agent for founders. Generate content from the user's raw thought.
+        const systemPrompt = `You are Nora, XenoraAI's content agent for founders. Generate content from the user's raw thought.
 
 Output EXACTLY this JSON structure (no markdown, no code fences):
 {

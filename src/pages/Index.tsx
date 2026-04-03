@@ -9,9 +9,9 @@ import { Reveal } from '@/components/motion/Reveal';
 
 const flowSteps = [
   { step: '01', title: 'Input', body: 'Drop in a rough idea, voice note transcript, email thread, or lead list.' },
-  { step: '02', title: 'Classify', body: 'Nora reads the context and decides: is this content, a lead, or a workflow task?' },
-  { step: '03', title: 'Execute', body: 'Nora runs the right agent — Content, Lead, or Research — with no manual setup.' },
-  { step: '04', title: 'Review', body: 'See every step Nora took. Approve, edit, or regenerate. You stay in control.' },
+  { step: '02', title: 'Classify', body: 'XenoraAI reads the context and decides: is this content, a lead, or a workflow task?' },
+  { step: '03', title: 'Execute', body: 'XenoraAI runs the right agent — Content, Lead, or Research — with no manual setup.' },
+  { step: '04', title: 'Review', body: 'See every step XenoraAI took. Approve, edit, or regenerate. You stay in control.' },
   { step: '05', title: 'Done', body: 'Outputs land in your dashboard: posts ready to publish, replies ready to send, leads scored and followed up.' },
 ];
 
@@ -24,23 +24,23 @@ const agents = [
   },
   {
     icon: Zap, name: 'Lead Agent',
-    body: 'Form submission or DM comes in. Nora scores the lead, drafts a reply, and queues a follow-up if they go quiet.',
+    body: 'Form submission or DM comes in. XenoraAI scores the lead, drafts a reply, and queues a follow-up if they go quiet.',
     outputs: ['Lead score', 'Draft reply', 'Follow-up queue'],
     tag: 'Coming soon', active: false,
   },
   {
     icon: Search, name: 'Research Agent',
-    body: 'Point Nora at Reddit, comments, or your niche. Get back real pain signals, content ideas, and offer angles from actual conversations.',
+    body: 'Point XenoraAI at Reddit, comments, or your niche. Get back real pain signals, content ideas, and offer angles from actual conversations.',
     outputs: ['Pain signals', 'Content ideas', 'Offer angles'],
     tag: 'Coming soon', active: false,
   },
 ];
 
 const personas = [
-  { icon: Rocket, title: 'Solo Indie Hackers', body: 'Building your first product while juggling everything else. Emails and lead chaos are eating your coding time. Nora handles it.' },
-  { icon: Target, title: 'Micro-SaaS Founders', body: '1-3 person team hitting an ops ceiling. No ops hire in budget. Nora is your first workflow person.' },
-  { icon: Mic, title: 'Creator Founders', body: 'Audience between 1k-50k. Content consistency is your growth lever. Nora turns ideas into posts while you focus on the product.' },
-  { icon: Users, title: 'Early Bootstrappers', body: "Side hustle going full-time. Can't afford a VA. Nora is built to replace repetitive ops work as you scale." },
+  { icon: Rocket, title: 'Solo Indie Hackers', body: 'Building your first product while juggling everything else. Emails and lead chaos are eating your coding time. XenoraAI handles it.' },
+  { icon: Target, title: 'Micro-SaaS Founders', body: '1-3 person team hitting an ops ceiling. No ops hire in budget. XenoraAI is your first workflow person.' },
+  { icon: Mic, title: 'Creator Founders', body: 'Audience between 1k-50k. Content consistency is your growth lever. XenoraAI turns ideas into posts while you focus on the product.' },
+  { icon: Users, title: 'Early Bootstrappers', body: "Side hustle going full-time. Can't afford a VA. XenoraAI is built to replace repetitive ops work as you scale." },
 ];
 
 const comparisonRows = [
@@ -115,12 +115,12 @@ const Index = () => {
               <h1 className="premium-heading mt-4 text-[1.75rem] font-medium leading-tight sm:text-4xl md:text-5xl lg:text-7xl">
                 Stop Doing Work{' '}
                 <br className="hidden sm:block" />
-                Nora Does Automatically
+                XenoraAI Does Automatically
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-4 max-w-2xl text-sm text-base-content/65 leading-relaxed sm:mt-6 sm:text-base lg:text-lg">
-                Drop a rough idea into Nora and get back publish-ready posts — X, hooks, LinkedIn, and a CTA — with every step visible.
+                Drop a rough idea into XenoraAI and get back publish-ready posts — X, hooks, LinkedIn, and a CTA — with every step visible.
                 More agents are on the way. Built for solo founders who build instead of admin.
               </p>
             </Reveal>
@@ -167,7 +167,7 @@ const Index = () => {
         <section id="how-it-works" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-12 sm:px-8 sm:py-14">
           <div className="mx-auto max-w-4xl">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">How Nora Works</h2>
+              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">How XenoraAI Works</h2>
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-3 max-w-lg text-center text-sm text-base-content/45">
@@ -194,7 +194,7 @@ const Index = () => {
           <div className="mx-auto max-w-4xl">
             <Reveal>
               <p className="text-center text-[11px] font-medium uppercase tracking-[0.14em] text-base-content/35">
-                Nora's Agent Stack
+                XenoraAI agent stack
               </p>
             </Reveal>
             <Reveal delay={0.03}>
@@ -274,7 +274,7 @@ const Index = () => {
           <div className="mx-auto max-w-4xl">
             <Reveal>
               <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">
-                Why Nora, not another AI tool
+                Why XenoraAI, not another AI tool
               </h2>
             </Reveal>
 
@@ -282,10 +282,10 @@ const Index = () => {
               <div className="surface-panel mt-10 overflow-hidden">
                 <div className="grid grid-cols-2 border-b border-border/50">
                   <div className="px-4 py-3 sm:px-5">
-                    <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-base-content/35">Without Nora</p>
+                    <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-base-content/35">Without XenoraAI</p>
                   </div>
                   <div className="border-l border-border/50 px-4 py-3 sm:px-5">
-                    <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-primary/60">With Nora</p>
+                    <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-primary/60">With XenoraAI</p>
                   </div>
                 </div>
                 {comparisonRows.map((row, i) => (
@@ -333,7 +333,7 @@ const Index = () => {
         <section id="waitlist" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-14 sm:px-8 sm:py-20">
           <div className="mx-auto max-w-md">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">Get early access to Nora</h2>
+              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">Get early access to XenoraAI</h2>
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mt-2 text-center text-sm text-base-content/45">

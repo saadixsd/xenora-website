@@ -129,7 +129,7 @@ export const NoraWaitlistForm = () => {
         </span>
         <input
           type="text"
-          placeholder="What takes the most time you wish Nora could handle?"
+          placeholder="What takes the most time you wish XenoraAI could handle?"
           value={biggestPain}
           onChange={(e) => setBiggestPain(e.target.value)}
           className={inputClass}

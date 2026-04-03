@@ -30,7 +30,7 @@ const TryNora = () => {
     setBackendOk(null);
     const ok = await checkClaudeBackend();
     setBackendOk(ok);
-    if (!ok) setLastError('Nora is having trouble right now. Try again in a moment.');
+    if (!ok) setLastError('XenoraAI is having trouble right now. Try again in a moment.');
     else setLastError('');
   }, []);
 
@@ -131,9 +131,9 @@ const TryNora = () => {
       {/* Header */}
       <header className="fixed left-0 right-0 top-0 z-50 shrink-0 border-b border-base-content/[0.08] bg-base-100/95 backdrop-blur-sm pt-[env(safe-area-inset-top,0px)]">
         <div className="mx-auto flex min-h-[3.25rem] max-w-5xl items-center justify-between gap-2 px-4 py-2 sm:min-h-14 sm:px-6">
-          <Link to="/" className="flex items-center gap-2 cursor-pointer" aria-label="Nora home">
+          <Link to="/" className="flex items-center gap-2 cursor-pointer" aria-label="XenoraAI home">
             <XenoraLogo decorative className="h-8 w-8 sm:h-10 sm:w-10" />
-            <span className="text-sm font-semibold text-base-content sm:text-base">Nora</span>
+            <span className="text-sm font-semibold text-base-content sm:text-base">XenoraAI</span>
           </Link>
           <SiteNav />
         </div>
@@ -152,12 +152,12 @@ const TryNora = () => {
 
             <h1 className="text-2xl font-semibold text-base-content sm:text-3xl">Ask Nora anything about founder workflows</h1>
             <p className="mt-2 max-w-md text-center text-sm text-base-content/50">
-              AI workflow engine for solo founders. Ask about content, leads, research, or how to get started.
+              <span className="font-medium text-base-content/65">Nora</span> is XenoraAI&apos;s assistant. Ask about the Content Agent, lead handling, research, your dashboard, or founder ops.
             </p>
 
             {/* Status */}
-            {backendOk === false && (
-              <p className="mt-3 text-xs text-error">{lastError}</p>
+            {backendOk === false && lastError && (
+              <p className="mt-3 max-w-xl text-center text-xs text-amber-600 dark:text-amber-500 leading-relaxed">{lastError}</p>
             )}
 
             {/* Input */}
@@ -171,11 +171,11 @@ const TryNora = () => {
                   autoComplete="off"
                   autoCorrect="off"
                     className="min-h-[44px] flex-1 bg-transparent text-base text-base-content outline-none placeholder:text-base-content/30 sm:min-h-[40px]"
-                    disabled={sending || backendOk === false}
+                    disabled={sending}
                 />
                 <button
                   type="submit"
-                  disabled={sending || !input.trim() || backendOk === false}
+                  disabled={sending || !input.trim()}
                   className="flex h-11 w-11 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg bg-primary text-primary-content transition-opacity disabled:opacity-30"
                   aria-label="Send"
                 >
@@ -191,7 +191,7 @@ const TryNora = () => {
                   key={s.label}
                   type="button"
                   onClick={() => void send(s.text)}
-                  disabled={sending || backendOk === false}
+                  disabled={sending}
                   className="min-h-[44px] rounded-full border border-base-content/10 bg-base-200/40 px-3.5 py-2 text-sm text-base-content/60 transition-colors hover:border-primary/25 hover:text-base-content/80 disabled:opacity-40"
                 >
                   {s.label}

@@ -37,7 +37,7 @@ export function DashboardLayout() {
           >
             <Menu className="h-5 w-5" />
           </button>
-          <span className="ml-3 text-sm font-medium text-foreground">Nora</span>
+          <span className="ml-3 text-sm font-medium text-foreground">XenoraAI</span>
         </header>
 
         {/* Page content */}
