@@ -22,7 +22,7 @@ const SignUp = () => {
 
   useEffect(() => {
     if (!authLoading && user) {
-      navigate('/dashboard', { replace: true });
+      navigate('/dashboard/nora', { replace: true });
     }
   }, [authLoading, user, navigate]);
 
@@ -52,7 +52,7 @@ const SignUp = () => {
           title: 'Welcome to XenoraAI',
           description: "You're signed in.",
         });
-        navigate('/dashboard', { replace: true });
+        navigate('/dashboard/nora', { replace: true });
       } else {
         setAwaitingEmailConfirmation(true);
       }

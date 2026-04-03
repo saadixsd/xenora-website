@@ -1,9 +1,8 @@
 project_id = "bblzvdfztnxrebfupjtj"
 
-# Lets the static site call the function with fetch() without a Supabase JWT.
-# Anyone with the URL can use your Anthropic quota — consider rate limits / abuse protection later.
+# Requires signed-in user JWT; per-user daily quota enforced in the function.
 [functions.nora-claude]
-verify_jwt = false
+verify_jwt = true
 
 # Require a valid Supabase user JWT; client sends session access_token (not the anon key).
 [functions.nora-workflow]

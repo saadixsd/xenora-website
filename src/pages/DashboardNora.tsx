@@ -1,0 +1,355 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
+import { Send } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
+import { checkClaudeBackend, sendClaudeChat, DailyQueryLimitError, type ChatMessage } from '@/lib/claude';
+import { cn } from '@/lib/utils';
+
+const DAILY_LIMIT = 3;
+
+const SUGGESTIONS = [
+  { label: 'Content Agent', text: 'How does the Content Agent work?' },
+  { label: 'Lead handling', text: 'What does Nora do with my leads?' },
+  { label: 'vs Zapier', text: 'How is this different from Zapier?' },
+  { label: 'Research Agent', text: "What's the Research Agent?" },
+  { label: 'Getting started', text: 'How do I get started?' },
+];
+
+export default function DashboardNora() {
+  const { user, session } = useAuth();
+  const navigate = useNavigate();
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [input, setInput] = useState('');
+  const [sending, setSending] = useState(false);
+  const [typingReply, setTypingReply] = useState(false);
+  const [backendOk, setBackendOk] = useState<boolean | null>(null);
+  const [lastError, setLastError] = useState('');
+  const [queriesUsedToday, setQueriesUsedToday] = useState<number | null>(null);
+  const [dailyLimitReached, setDailyLimitReached] = useState(false);
+  const [sessionExpired, setSessionExpired] = useState(false);
+  const transcriptRef = useRef<HTMLDivElement>(null);
+  const typingTimerRef = useRef<number | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const token = session?.access_token;
+  const remaining =
+    queriesUsedToday === null ? null : Math.max(0, DAILY_LIMIT - queriesUsedToday);
+
+  const loadQueryCount = useCallback(async () => {
+    if (!user?.id) return;
+    const { data, error } = await supabase.rpc('get_daily_query_count', { p_user_id: user.id });
+    if (error) {
+      console.error(error);
+      return;
+    }
+    if (typeof data === 'number') {
+      setQueriesUsedToday(data);
+      if (data >= DAILY_LIMIT) setDailyLimitReached(true);
+    }
+  }, [user?.id]);
+
+  useEffect(() => {
+    void loadQueryCount();
+  }, [loadQueryCount]);
+
+  const refreshConnection = useCallback(async () => {
+    setBackendOk(null);
+    const ok = await checkClaudeBackend(token);
+    setBackendOk(ok);
+    if (!ok && token) setLastError('Nora chat is unavailable. Check your connection or try again.');
+    else setLastError('');
+  }, [token]);
+
+  useEffect(() => {
+    void refreshConnection();
+  }, [refreshConnection]);
+
+  useEffect(() => {
+    const el = transcriptRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [messages, sending, typingReply]);
+
+  useEffect(() => {
+    return () => {
+      if (typingTimerRef.current !== null) {
+        window.clearInterval(typingTimerRef.current);
+      }
+    };
+  }, []);
+
+  const animateAssistantReply = (reply: string) =>
+    new Promise<void>((resolve) => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) {
+        setMessages((prev) => [...prev, { role: 'assistant', content: reply }]);
+        resolve();
+        return;
+      }
+      const charsPerTick = reply.length > 1400 ? 12 : reply.length > 700 ? 8 : 5;
+      const tickMs = 14;
+      let index = 0;
+      setTypingReply(true);
+      setMessages((prev) => [...prev, { role: 'assistant', content: '' }]);
+
+      typingTimerRef.current = window.setInterval(() => {
+        index = Math.min(reply.length, index + charsPerTick);
+        const partial = reply.slice(0, index);
+        setMessages((prev) => {
+          if (!prev.length) return prev;
+          const last = prev[prev.length - 1];
+          if (last.role !== 'assistant') return prev;
+          return [...prev.slice(0, -1), { ...last, content: partial }];
+        });
+        if (index >= reply.length && typingTimerRef.current !== null) {
+          window.clearInterval(typingTimerRef.current);
+          typingTimerRef.current = null;
+          setTypingReply(false);
+          resolve();
+        }
+      }, tickMs);
+    });
+
+  const send = async (text: string) => {
+    const trimmed = text.trim();
+    if (!trimmed || sending || typingReply || dailyLimitReached) return;
+
+    setSessionExpired(false);
+    setLastError('');
+    const t = session?.access_token;
+    if (!t) {
+      setSessionExpired(true);
+      return;
+    }
+
+    const userMsg: ChatMessage = { role: 'user', content: trimmed };
+    const nextHistory = [...messages, userMsg];
+    setMessages(nextHistory);
+    setInput('');
+    setSending(true);
+
+    try {
+      const result = await sendClaudeChat({ messages: nextHistory, accessToken: t });
+      setQueriesUsedToday(result.queries_used);
+      if (result.queries_remaining <= 0) setDailyLimitReached(true);
+      await animateAssistantReply(result.content);
+      setBackendOk(true);
+    } catch (e) {
+      if (e instanceof DailyQueryLimitError) {
+        setDailyLimitReached(true);
+        setQueriesUsedToday(e.queries_used);
+        const limitMsg =
+          "You've used all 3 of your queries for today. Come back tomorrow — your limit resets at midnight UTC. While you wait, browse what Nora can do on the dashboard.";
+        setMessages((prev) => [...prev, { role: 'assistant', content: limitMsg }]);
+        setBackendOk(true);
+      } else if (e instanceof Error && e.message === 'SESSION_EXPIRED') {
+        setSessionExpired(true);
+        setMessages((prev) => prev.slice(0, -1));
+        setInput(trimmed);
+      } else {
+        const msg = e instanceof Error ? e.message : '';
+        if (msg === 'RATE_LIMIT') {
+          setLastError("You've hit the rate limit. Please wait a moment and try again.");
+        } else {
+          setLastError('Nora is having trouble right now. Try again in a moment.');
+        }
+        setBackendOk(false);
+        if (typingTimerRef.current !== null) {
+          window.clearInterval(typingTimerRef.current);
+          typingTimerRef.current = null;
+        }
+        setTypingReply(false);
+        setMessages((prev) => prev.slice(0, -1));
+        setInput(trimmed);
+      }
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    void send(input);
+  };
+
+  const chatActive = messages.length > 0;
+  const inputDisabled = sending || typingReply || dailyLimitReached || sessionExpired;
+
+  const bannerClass =
+    remaining === null
+      ? 'border-border/50 bg-muted/40 text-muted-foreground'
+      : remaining === 0
+        ? 'border-destructive/30 bg-destructive/5 text-destructive'
+        : remaining === 1
+          ? 'border-amber-500/35 bg-amber-500/10 text-amber-900 dark:text-amber-200'
+          : 'border-border/50 bg-muted/30 text-muted-foreground';
+
+  return (
+    <div
+      className="flex min-h-0 flex-1 flex-col bg-background"
+      style={{ touchAction: 'manipulation', maxHeight: 'calc(100dvh - 3.5rem)' }}
+    >
+      {sessionExpired && (
+        <div className="shrink-0 border-b border-border bg-card px-4 py-3 sm:px-6">
+          <p className="text-sm text-foreground">Your session expired. Sign in again to continue.</p>
+          <button
+            type="button"
+            onClick={() => navigate('/login', { state: { message: 'Sign in to continue chatting with Nora.' } })}
+            className="mt-2 text-sm font-medium text-primary underline-offset-4 hover:underline"
+          >
+            Sign in
+          </button>
+        </div>
+      )}
+
+      <div className={cn('shrink-0 border-b border-border px-4 py-2.5 text-center text-xs sm:px-6', bannerClass)}>
+        {remaining === null ? (
+          <span>Loading your quota…</span>
+        ) : remaining === 0 ? (
+          <span>
+            No queries remaining today. Your limit resets at midnight UTC.{' '}
+            <Link to="/dashboard" className="font-medium underline-offset-2 hover:underline">
+              Back to dashboard
+            </Link>
+          </span>
+        ) : (
+          <span>
+            {remaining} {remaining === 1 ? 'query' : 'queries'} remaining today
+          </span>
+        )}
+      </div>
+
+      {!chatActive && (
+        <div className="flex flex-1 flex-col items-center justify-center overflow-y-auto px-4 pb-8 pt-4">
+          <h1 className="text-center font-dm-serif text-xl text-foreground sm:text-2xl">Ask Nora</h1>
+          <p className="mt-2 max-w-md text-center text-sm text-muted-foreground">
+            Founder workflows, agents, and how Nora fits your stack.
+          </p>
+
+          {backendOk === false && lastError && (
+            <p className="mt-3 max-w-xl text-center text-xs text-amber-600 dark:text-amber-500">{lastError}</p>
+          )}
+
+          <form onSubmit={onSubmit} className="mt-8 w-full max-w-xl">
+            <div className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 focus-within:border-primary/30">
+              <input
+                ref={inputRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Ask about workflows, agents, or getting started..."
+                autoComplete="off"
+                autoCorrect="off"
+                className="min-h-[44px] flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground"
+                disabled={inputDisabled}
+              />
+              <button
+                type="submit"
+                disabled={inputDisabled || !input.trim()}
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-opacity disabled:opacity-30"
+                aria-label="Send"
+              >
+                <Send className="h-4 w-4" />
+              </button>
+            </div>
+            {dailyLimitReached && (
+              <p className="mt-1.5 text-center text-[11px] text-muted-foreground">Resets tomorrow (midnight UTC)</p>
+            )}
+          </form>
+
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            {SUGGESTIONS.map((s) => (
+              <button
+                key={s.label}
+                type="button"
+                onClick={() => void send(s.text)}
+                disabled={inputDisabled}
+                className="min-h-[44px] rounded-full border border-border bg-muted/40 px-3.5 py-2 text-sm text-muted-foreground transition-colors hover:border-primary/25 hover:text-foreground disabled:opacity-40"
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {chatActive && (
+        <div className="flex min-h-0 flex-1 flex-col">
+          {lastError && (
+            <div className="shrink-0 border-b border-destructive/20 bg-destructive/5 px-4 py-2 text-center text-xs text-destructive">
+              {lastError}
+            </div>
+          )}
+
+          <div
+            ref={transcriptRef}
+            className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain px-4 py-4 sm:px-6"
+          >
+            <div className="mx-auto max-w-2xl space-y-5">
+              {messages.map((m, i) => (
+                <div key={`${i}-${m.role}`} className={cn('flex flex-col gap-1', m.role === 'user' ? 'items-end' : 'items-start')}>
+                  <span className="px-1 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+                    {m.role === 'user' ? 'You' : 'Nora'}
+                  </span>
+                  <div
+                    className={cn(
+                      'max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[80%]',
+                      m.role === 'user' ? 'bg-primary/15 text-foreground' : 'bg-muted/80 text-foreground',
+                    )}
+                  >
+                    {m.role === 'assistant' ? (
+                      <div className="prose prose-sm dark:prose-invert max-w-none prose-p:my-1.5 prose-ul:my-1.5 prose-li:my-0.5 prose-strong:text-foreground prose-a:text-primary prose-headings:text-foreground">
+                        <ReactMarkdown>{m.content}</ReactMarkdown>
+                      </div>
+                    ) : (
+                      m.content
+                    )}
+                  </div>
+                </div>
+              ))}
+
+              {sending && !typingReply && (
+                <div className="flex flex-col gap-1 items-start" aria-live="polite" aria-label="Nora is typing">
+                  <span className="px-1 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">Nora</span>
+                  <div className="flex items-center gap-1.5 rounded-2xl bg-muted/80 px-4 py-3">
+                    <span className="h-2 w-2 animate-bounce rounded-full bg-muted-foreground/40 [animation-duration:0.55s]" />
+                    <span className="h-2 w-2 animate-bounce rounded-full bg-muted-foreground/40 [animation-duration:0.55s] [animation-delay:0.12s]" />
+                    <span className="h-2 w-2 animate-bounce rounded-full bg-muted-foreground/40 [animation-duration:0.55s] [animation-delay:0.24s]" />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="shrink-0 border-t border-border bg-background/95 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] backdrop-blur-sm sm:px-6">
+            <form onSubmit={onSubmit} className="mx-auto max-w-2xl">
+              <div className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 focus-within:border-primary/30">
+                <input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Follow up..."
+                  autoComplete="off"
+                  autoCorrect="off"
+                  className="min-h-[44px] flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground"
+                  disabled={inputDisabled}
+                  aria-label="Message to Nora"
+                />
+                <button
+                  type="submit"
+                  disabled={inputDisabled || !input.trim()}
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-opacity disabled:opacity-30"
+                  aria-label="Send"
+                >
+                  <Send className="h-4 w-4" />
+                </button>
+              </div>
+              {dailyLimitReached && (
+                <p className="mt-1.5 text-center text-[11px] text-muted-foreground">Resets tomorrow (midnight UTC)</p>
+              )}
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

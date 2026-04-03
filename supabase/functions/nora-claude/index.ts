@@ -1,20 +1,15 @@
 /**
- * Claude proxy for Nora chat — hardened.
- *
- * Security layers:
- *   1. Origin allowlist (blocks non-browser / foreign-origin requests)
- *   2. Shared app secret via x-app-token header
- *   3. In-memory rate limiting (per-IP, 6 req/min, 60 req/day)
- *   4. Server-side system prompt (clients can't override)
- *   5. Model locked to ALLOWED_MODEL
+ * Claude proxy for Nora chat — JWT required; 3 queries/user/day (UTC).
  */
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 
 const ALLOWED_MODEL = "claude-sonnet-4-20250514";
 const MAX_BODY_BYTES = 64_000;
 const MAX_MESSAGES = 30;
 const MAX_MESSAGE_LENGTH = 4_000;
+const DAILY_QUERY_LIMIT = 3;
+const QUERY_TEXT_MAX = 200;
 
-// --- Origin allowlist ---
 const ALLOWED_ORIGINS = [
   "https://xenoraai.com",
   "https://www.xenoraai.com",
@@ -25,9 +20,7 @@ const ALLOWED_ORIGINS = [
 
 function isOriginAllowed(origin: string | null): boolean {
   if (!origin) return false;
-  // Allow Lovable preview/project URLs
   if (origin.endsWith(".lovable.app") || origin.endsWith(".lovableproject.com")) return true;
-  // Any localhost / 127.0.0.1 port (Vite may use 8080, 8081, 5173, etc.)
   try {
     const u = new URL(origin);
     if (u.protocol === "http:" && (u.hostname === "localhost" || u.hostname === "127.0.0.1")) {
@@ -39,39 +32,23 @@ function isOriginAllowed(origin: string | null): boolean {
   return ALLOWED_ORIGINS.includes(origin);
 }
 
-// --- Rate limiting (per-IP) ---
-const rateLimitMap = new Map<string, { count: number; resetAt: number; dailyCount: number; dailyResetAt: number }>();
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT_WINDOW_MS = 60_000;
-const RATE_LIMIT_MAX = 6; // 6 per minute
-const DAILY_LIMIT = 60;
-const DAY_MS = 86_400_000;
+const RATE_LIMIT_MAX = 30;
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
   let entry = rateLimitMap.get(ip);
-
-  if (!entry || now > entry.dailyResetAt) {
-    entry = { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS, dailyCount: 1, dailyResetAt: now + DAY_MS };
+  if (!entry || now > entry.resetAt) {
+    entry = { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS };
     rateLimitMap.set(ip, entry);
     return false;
   }
-
-  if (now > entry.resetAt) {
-    entry.count = 1;
-    entry.resetAt = now + RATE_LIMIT_WINDOW_MS;
-  } else {
-    entry.count++;
-  }
-
-  entry.dailyCount++;
-
-  if (entry.count > RATE_LIMIT_MAX || entry.dailyCount > DAILY_LIMIT) {
-    return true;
-  }
+  entry.count++;
+  if (entry.count > RATE_LIMIT_MAX) return true;
   return false;
 }
 
-// --- Server-side system prompt (never sent from client) ---
 function getSystemPrompt(): string {
   return `You are **Nora**, the core product of **XenoraAI** (the company). Speak as Nora (first person: "I"). **Nora is a workflow engine**, not a generic chatbot and not a Zapier clone.
 
@@ -112,7 +89,7 @@ function getSystemPrompt(): string {
 
 ## Links
 - Site & waitlist: [xenoraai.com](https://xenoraai.com)
-- Ask Nora: [xenoraai.com/try-nora](https://xenoraai.com/try-nora)
+- Ask Nora (signed in): [xenoraai.com/dashboard/nora](https://xenoraai.com/dashboard/nora)
 - FAQ: [xenoraai.com/faq](https://xenoraai.com/faq)
 - Privacy: [xenoraai.com/privacy](https://xenoraai.com/privacy)
 
@@ -151,18 +128,33 @@ function json(data: unknown, status = 200, origin?: string | null): Response {
 
 Deno.serve(async (req) => {
   const origin = req.headers.get("origin");
+  const pathname = new URL(req.url).pathname;
 
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders(origin) });
   }
 
-  const pathname = new URL(req.url).pathname;
-  const isHealth = pathname.endsWith("/claude/health");
+  const isHealth = req.method === "GET" && pathname.endsWith("/claude/health");
   const isChat = req.method === "POST" && pathname.endsWith("/claude");
 
+  const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
+  const anonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
+  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
   const apiKey = Deno.env.get("CLAUDE_API_KEY") ?? Deno.env.get("ANTHROPIC_API_KEY");
 
-  if (req.method === "GET" && isHealth) {
+  const authHeader = req.headers.get("Authorization") ?? "";
+
+  if (isHealth) {
+    if (!authHeader.startsWith("Bearer ")) {
+      return json({ error: "Unauthorized" }, 401, origin);
+    }
+    const userClient = createClient(supabaseUrl, anonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: { user } } = await userClient.auth.getUser();
+    if (!user) {
+      return json({ error: "Unauthorized" }, 401, origin);
+    }
     return json({ ok: Boolean(apiKey) }, 200, origin);
   }
 
@@ -170,14 +162,10 @@ Deno.serve(async (req) => {
     return new Response("Not found", { status: 404, headers: corsHeaders(origin) });
   }
 
-  // --- Security checks ---
-
-  // 1. Origin check
   if (!isOriginAllowed(origin)) {
     return json({ error: "Forbidden" }, 403, origin);
   }
 
-  // 2. Rate limiting
   const clientIp =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     req.headers.get("cf-connecting-ip") ||
@@ -186,8 +174,49 @@ Deno.serve(async (req) => {
     return json({ error: "Too many requests. Please wait a moment." }, 429, origin);
   }
 
+  if (!authHeader.startsWith("Bearer ")) {
+    return json({ error: "Unauthorized" }, 401, origin);
+  }
+
+  const userClient = createClient(supabaseUrl, anonKey, {
+    global: { headers: { Authorization: authHeader } },
+  });
+  const { data: { user }, error: userErr } = await userClient.auth.getUser();
+  if (userErr || !user) {
+    return json({ error: "Unauthorized" }, 401, origin);
+  }
+
   if (!apiKey) {
     return json({ error: "AI backend is not configured." }, 503, origin);
+  }
+
+  if (!serviceKey) {
+    return json({ error: "Server misconfiguration." }, 500, origin);
+  }
+
+  const admin = createClient(supabaseUrl, serviceKey);
+
+  const { data: countBefore, error: countErr } = await admin.rpc("get_daily_query_count", {
+    p_user_id: user.id,
+  });
+  if (countErr) {
+    console.error("get_daily_query_count", countErr);
+    return json({ error: "Could not verify quota." }, 500, origin);
+  }
+
+  const used = typeof countBefore === "number" ? countBefore : 0;
+  if (used >= DAILY_QUERY_LIMIT) {
+    return json(
+      {
+        error: "daily_limit_reached",
+        message:
+          "You have used all 3 of your daily Nora queries. Your limit resets at midnight UTC.",
+        queries_used: DAILY_QUERY_LIMIT,
+        limit: DAILY_QUERY_LIMIT,
+      },
+      429,
+      origin,
+    );
   }
 
   let raw: string;
@@ -208,9 +237,7 @@ Deno.serve(async (req) => {
     return json({ error: "Invalid JSON" }, 400, origin);
   }
 
-  // System prompt is SERVER-SIDE only — ignore any client-sent system field
   const system = getSystemPrompt();
-
   const rawMsgs = Array.isArray(body.messages) ? body.messages.slice(0, MAX_MESSAGES) : [];
   const messages: AnthropicMessage[] = rawMsgs
     .filter((m) => m.role === "user" || m.role === "assistant")
@@ -221,6 +248,14 @@ Deno.serve(async (req) => {
 
   if (messages.length === 0) {
     return json({ error: "At least one message is required" }, 400, origin);
+  }
+
+  let lastUserContent = "";
+  for (let i = messages.length - 1; i >= 0; i--) {
+    if (messages[i].role === "user") {
+      lastUserContent = messages[i].content;
+      break;
+    }
   }
 
   const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
@@ -255,5 +290,31 @@ Deno.serve(async (req) => {
     return json({ error: "Empty response from AI" }, 502, origin);
   }
 
-  return json({ content: text }, 200, origin);
+  const querySnippet = lastUserContent.slice(0, QUERY_TEXT_MAX);
+  const { error: insErr } = await admin.from("nora_query_logs").insert({
+    user_id: user.id,
+    query_text: querySnippet || null,
+    agent_type: "chat",
+  });
+
+  if (insErr) {
+    console.error("nora_query_logs insert", insErr);
+    return json({ error: "Could not record query." }, 500, origin);
+  }
+
+  const { data: countAfter } = await admin.rpc("get_daily_query_count", {
+    p_user_id: user.id,
+  });
+  const queriesUsed = typeof countAfter === "number" ? countAfter : used + 1;
+
+  return json(
+    {
+      content: text,
+      queries_used: queriesUsed,
+      limit: DAILY_QUERY_LIMIT,
+      queries_remaining: Math.max(0, DAILY_QUERY_LIMIT - queriesUsed),
+    },
+    200,
+    origin,
+  );
 });

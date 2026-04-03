@@ -150,7 +150,11 @@ const Index = () => {
                 </div>
                 <p className="text-xs text-base-content/35">Free during beta — no card required.</p>
                 <p className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-base-content/45">
-                  <Link to="/try-nora" className="text-primary transition-colors hover:underline">
+                  <Link
+                    to="/login"
+                    state={{ message: 'Sign in to chat with Nora.' }}
+                    className="text-primary transition-colors hover:underline"
+                  >
                     Ask Nora
                   </Link>
                   <span className="text-base-content/25" aria-hidden>

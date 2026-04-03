@@ -7,7 +7,6 @@ import { X, Menu } from 'lucide-react';
 const links = [
   { label: 'Home', to: '/' },
   { label: 'How it Works', to: '/#how-it-works' },
-  { label: 'Ask Nora', to: '/try-nora' },
   { label: 'About', to: '/about' },
   { label: 'FAQ', to: '/faq' },
 ];
@@ -28,7 +27,28 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
     smoothTop();
   };
 
-  const renderLink = (link: typeof links[0], extraClass = '', onClick?: () => void) => {
+  const askNoraLoginState = { message: 'Sign in to chat with Nora.' };
+
+  const renderAskNora = (extraClass: string, onClick?: () => void) =>
+    user ? (
+      <Link to="/dashboard/nora" className={extraClass} onClick={() => { onClick?.(); smoothTop(); }}>
+        Ask Nora
+      </Link>
+    ) : (
+      <Link
+        to="/login"
+        state={askNoraLoginState}
+        className={extraClass}
+        onClick={() => {
+          onClick?.();
+          smoothTop();
+        }}
+      >
+        Ask Nora
+      </Link>
+    );
+
+  const renderLink = (link: (typeof links)[0], extraClass = '', onClick?: () => void) => {
     if (link.to.startsWith('/#')) {
       const hash = link.to.slice(1);
       const id = hash.replace('#', '');
@@ -76,7 +96,20 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
   return (
     <nav className={`relative flex items-center gap-1 sm:gap-2 ${className}`} aria-label="Main navigation">
       <ul className="hidden flex-nowrap px-0 md:flex md:items-center md:gap-0.5">
-        {links.map((link) => (
+        {links.slice(0, 2).map((link) => (
+          <li key={link.to}>
+            {renderLink(
+              link,
+              'inline-flex min-h-[44px] items-center rounded-md px-3 py-3 text-sm font-normal text-base-content/65 transition-all duration-300 hover:bg-base-200/60 hover:text-base-content',
+            )}
+          </li>
+        ))}
+        <li key="ask-nora">
+          {renderAskNora(
+            'inline-flex min-h-[44px] items-center rounded-md px-3 py-3 text-sm font-normal text-base-content/65 transition-all duration-300 hover:bg-base-200/60 hover:text-base-content',
+          )}
+        </li>
+        {links.slice(2).map((link) => (
           <li key={link.to}>
             {renderLink(
               link,
@@ -106,7 +139,18 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
           className="absolute left-0 right-0 top-full z-[100] border-b border-base-content/10 bg-base-100/95 backdrop-blur-xl p-4 md:hidden"
         >
           <ul className="space-y-1">
-            {links.map((link) => (
+            {links.slice(0, 2).map((link) => (
+              <li key={link.to}>
+                {renderLink(link, 'block rounded-lg px-3 py-2.5 text-sm text-base-content/70 hover:bg-base-200/60 hover:text-base-content', handleNavClick)}
+              </li>
+            ))}
+            <li key="ask-nora-mobile">
+              {renderAskNora(
+                'block rounded-lg px-3 py-2.5 text-sm text-base-content/70 hover:bg-base-200/60 hover:text-base-content',
+                handleNavClick,
+              )}
+            </li>
+            {links.slice(2).map((link) => (
               <li key={link.to}>
                 {renderLink(link, 'block rounded-lg px-3 py-2.5 text-sm text-base-content/70 hover:bg-base-200/60 hover:text-base-content', handleNavClick)}
               </li>

@@ -21,12 +21,12 @@ export default function AuthCallback() {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session?.user && (event === 'SIGNED_IN' || event === 'USER_UPDATED')) {
-        go('/dashboard');
+        go('/dashboard/nora');
       }
     });
 
     void supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) go('/dashboard');
+      if (session?.user) go('/dashboard/nora');
     });
 
     const timeout = window.setTimeout(() => {

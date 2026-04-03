@@ -186,12 +186,41 @@ export type Database = {
         }
         Relationships: []
       }
+      nora_query_logs: {
+        Row: {
+          agent_type: string
+          created_at: string
+          id: string
+          query_text: string | null
+          user_id: string
+        }
+        Insert: {
+          agent_type?: string
+          created_at?: string
+          id?: string
+          query_text?: string | null
+          user_id: string
+        }
+        Update: {
+          agent_type?: string
+          created_at?: string
+          id?: string
+          query_text?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_daily_query_count: {
+        Args: {
+          p_user_id: string
+        }
+        Returns: number
+      }
     }
     Enums: {
       [_ in never]: never

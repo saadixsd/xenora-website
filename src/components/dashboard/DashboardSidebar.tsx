@@ -1,11 +1,12 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, History, Settings, LogOut, X, List, Clock } from 'lucide-react';
+import { LayoutDashboard, History, Settings, LogOut, X, List, Clock, MessageCircle } from 'lucide-react';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 
 const mainNav = [
   { label: 'Dashboard', to: '/dashboard', icon: LayoutDashboard },
+  { label: 'Ask Nora', to: '/dashboard/nora', icon: MessageCircle },
   { label: 'Workflow Runs', to: '/dashboard/run/new', icon: List },
   { label: 'History', to: '/dashboard/history', icon: Clock },
 ];
@@ -27,6 +28,7 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
 
   const isActive = (path: string) => {
     if (path === '/dashboard') return location.pathname === '/dashboard';
+    if (path === '/dashboard/nora') return location.pathname === '/dashboard/nora';
     return location.pathname.startsWith(path);
   };
 

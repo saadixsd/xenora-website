@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
@@ -8,17 +8,22 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 
+type LoginLocationState = { message?: string };
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const { user, loading: authLoading } = useAuth();
 
+  const bannerMessage = (location.state as LoginLocationState | null)?.message;
+
   useEffect(() => {
     if (!authLoading && user) {
-      navigate('/dashboard', { replace: true });
+      navigate('/dashboard/nora', { replace: true });
     }
   }, [authLoading, user, navigate]);
 
@@ -29,7 +34,7 @@ const Login = () => {
     try {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
-      navigate('/dashboard');
+      navigate('/dashboard/nora');
     } catch (err: unknown) {
       toast({
         title: 'Error',
@@ -59,6 +64,12 @@ const Login = () => {
           <XenoraLogo decorative className="h-14 w-14" />
           <h1 className="text-xl font-semibold text-foreground">Sign in</h1>
         </Link>
+
+        {bannerMessage && (
+          <div className="mb-4 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2.5 text-center text-sm text-foreground/85">
+            {bannerMessage}
+          </div>
+        )}
 
         <div className="surface-panel p-6">
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -94,8 +105,9 @@ const Login = () => {
           </form>
 
           <p className="mt-4 text-center text-sm text-muted-foreground">
-            <Link to="/signup" className="text-primary underline-offset-4 hover:underline">
-              Create an account
+            Don&apos;t have an account?{' '}
+            <Link to="/signup" className="font-medium text-primary underline-offset-4 hover:underline">
+              Get early access →
             </Link>
           </p>
         </div>

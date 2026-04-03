@@ -1,17 +1,17 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/app/ThemeProvider";
 import { ScrollManager } from "@/components/app/ScrollManager";
-import { AuthGuard } from "@/components/auth/AuthGuard";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import Index from "./pages/Index.tsx";
 import FAQ from "./pages/FAQ.tsx";
 import Privacy from "./pages/Privacy.tsx";
 import About from "./pages/About.tsx";
 import NotFound from "./pages/NotFound.tsx";
-import TryNora from "./pages/TryNora.tsx";
+import DashboardNora from "./pages/DashboardNora.tsx";
 import Login from "./pages/Login.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import AuthCallback from "./pages/AuthCallback.tsx";
@@ -31,7 +31,14 @@ const App = () => (
           <Route path="/faq" element={<FAQ />} />
           <Route path="/about" element={<About />} />
           <Route path="/privacy" element={<Privacy />} />
-          <Route path="/try-nora" element={<TryNora />} />
+          <Route
+            path="/try-nora"
+            element={
+              <ProtectedRoute loginMessage="Sign in to access Nora.">
+                <Navigate to="/dashboard/nora" replace />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
@@ -40,12 +47,13 @@ const App = () => (
           <Route
             path="/dashboard"
             element={
-              <AuthGuard>
+              <ProtectedRoute loginMessage="Sign in to access the dashboard.">
                 <DashboardLayout />
-              </AuthGuard>
+              </ProtectedRoute>
             }
           >
             <Route index element={<Dashboard />} />
+            <Route path="nora" element={<DashboardNora />} />
             <Route path="run/:id" element={<WorkflowRun />} />
             <Route path="history" element={<History />} />
             <Route path="settings" element={<Settings />} />
