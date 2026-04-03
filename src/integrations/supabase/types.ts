@@ -43,25 +43,34 @@ export type Database = {
       }
       waitlist: {
         Row: {
+          biggest_pain: string | null
+          company_size: string | null
           created_at: string
           email: string
           focus_killer: string | null
           id: string
           name: string
+          role: string | null
         }
         Insert: {
+          biggest_pain?: string | null
+          company_size?: string | null
           created_at?: string
           email: string
           focus_killer?: string | null
           id?: string
           name: string
+          role?: string | null
         }
         Update: {
+          biggest_pain?: string | null
+          company_size?: string | null
           created_at?: string
           email?: string
           focus_killer?: string | null
           id?: string
           name?: string
+          role?: string | null
         }
         Relationships: []
       }

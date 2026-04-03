@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 const faqs = [
   {
     q: 'What is Nora?',
-    a: 'Nora is an AI workflow workspace for solo founders. It takes raw ideas, meeting notes, or voice-note transcripts and runs them through visible, step-by-step AI workflows to produce publish-ready content, research briefs, and follow-up emails.',
+    a: 'Nora is an AI workflow workspace for solo founders. Today the Content Agent turns raw ideas into publish-ready X posts, hooks, a LinkedIn post, and a CTA — with every step visible. Research and lead workflows are on the roadmap.',
   },
   {
     q: 'How is this different from ChatGPT or other AI tools?',

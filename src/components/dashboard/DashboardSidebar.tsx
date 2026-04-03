@@ -12,8 +12,8 @@ const mainNav = [
 
 const agentNav = [
   { label: 'Content Agent', dot: 'bg-emerald-500', to: '/dashboard' },
-  { label: 'Lead Agent', dot: 'bg-amber-500', to: '/dashboard' },
-  { label: 'Research Agent', dot: 'bg-border', to: '/dashboard' },
+  { label: 'Lead Agent (soon)', dot: 'bg-amber-500', to: '/dashboard' },
+  { label: 'Research Agent (soon)', dot: 'bg-border', to: '/dashboard' },
 ];
 
 const accountNav = [
@@ -38,6 +38,12 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
     .slice(0, 2);
 
   const displayName = user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'User';
+
+  const handleSignOut = async () => {
+    await signOut();
+    onClose?.();
+    navigate('/login', { replace: true });
+  };
 
   return (
     <div className="flex h-full flex-col font-dm-sans">
@@ -125,13 +131,13 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
           </div>
           <div className="min-w-0 flex-1">
             <p className="truncate text-[13px] font-medium text-foreground">{displayName}</p>
-            <p className="truncate text-[11px] text-muted-foreground">Founding member</p>
+            <p className="truncate text-[11px] text-muted-foreground">Signed in</p>
           </div>
         </div>
         <button
           type="button"
-          onClick={signOut}
-          className="mt-0.5 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-[13.5px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          onClick={() => void handleSignOut()}
+          className="mt-0.5 flex min-h-[44px] w-full items-center gap-2.5 rounded-lg px-3 py-2 text-[13.5px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         >
           <LogOut className="h-4 w-4" />
           Sign out

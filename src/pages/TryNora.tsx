@@ -30,7 +30,7 @@ const TryNora = () => {
     setBackendOk(null);
     const ok = await checkClaudeBackend();
     setBackendOk(ok);
-    if (!ok) setLastError('Nora is unavailable right now. Please try again later.');
+    if (!ok) setLastError('Nora is having trouble right now. Try again in a moment.');
     else setLastError('');
   }, []);
 
@@ -98,8 +98,12 @@ const TryNora = () => {
       await animateAssistantReply(reply);
       setBackendOk(true);
     } catch (e) {
-      const msg = e instanceof Error ? e.message : 'Something went wrong';
-      setLastError(msg);
+      const msg = e instanceof Error ? e.message : '';
+      if (msg === 'RATE_LIMIT') {
+        setLastError("You've hit the chat limit for now. Please wait a minute and try again.");
+      } else {
+        setLastError('Nora is having trouble right now. Try again in a moment.');
+      }
       setBackendOk(false);
       if (typingTimerRef.current !== null) {
         window.clearInterval(typingTimerRef.current);
@@ -172,7 +176,7 @@ const TryNora = () => {
                 <button
                   type="submit"
                   disabled={sending || !input.trim() || backendOk === false}
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-content transition-opacity disabled:opacity-30"
+                  className="flex h-11 w-11 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg bg-primary text-primary-content transition-opacity disabled:opacity-30"
                   aria-label="Send"
                 >
                   <Send className="h-4 w-4" />
@@ -188,7 +192,7 @@ const TryNora = () => {
                   type="button"
                   onClick={() => void send(s.text)}
                   disabled={sending || backendOk === false}
-                  className="rounded-full border border-base-content/10 bg-base-200/40 px-3.5 py-1.5 text-xs text-base-content/60 transition-colors hover:border-primary/25 hover:text-base-content/80 disabled:opacity-40"
+                  className="min-h-[44px] rounded-full border border-base-content/10 bg-base-200/40 px-3.5 py-2 text-sm text-base-content/60 transition-colors hover:border-primary/25 hover:text-base-content/80 disabled:opacity-40"
                 >
                   {s.label}
                 </button>
@@ -198,13 +202,13 @@ const TryNora = () => {
             <div className="mt-6 flex flex-col items-center justify-center gap-2 sm:flex-row">
               <Link
                 to="/dashboard"
-                className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                className="inline-flex min-h-[44px] items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
               >
                 Open Dashboard
               </Link>
               <Link
                 to="/#waitlist"
-                className="rounded-lg border border-base-content/15 px-4 py-2 text-sm text-base-content/60 transition-colors hover:text-base-content"
+                className="inline-flex min-h-[44px] items-center justify-center rounded-lg border border-base-content/15 px-4 py-2 text-sm text-base-content/60 transition-colors hover:text-base-content"
               >
                 Join the beta
               </Link>
@@ -250,11 +254,11 @@ const TryNora = () => {
 
                 {/* Typing indicator */}
                 {sending && !typingReply && (
-                  <div className="flex justify-start">
+                  <div className="flex justify-start" aria-live="polite" aria-label="Nora is typing">
                     <div className="flex items-center gap-1.5 rounded-2xl bg-base-200/70 px-4 py-3">
-                      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-base-content/30" style={{ animationDelay: '0ms' }} />
-                      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-base-content/30" style={{ animationDelay: '150ms' }} />
-                      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-base-content/30" style={{ animationDelay: '300ms' }} />
+                      <span className="h-2 w-2 animate-bounce rounded-full bg-base-content/35 [animation-duration:0.55s]" />
+                      <span className="h-2 w-2 animate-bounce rounded-full bg-base-content/35 [animation-duration:0.55s] [animation-delay:0.12s]" />
+                      <span className="h-2 w-2 animate-bounce rounded-full bg-base-content/35 [animation-duration:0.55s] [animation-delay:0.24s]" />
                     </div>
                   </div>
                 )}
@@ -268,12 +272,6 @@ const TryNora = () => {
                   <input
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        void send(input);
-                      }
-                    }}
                     placeholder="Follow up..."
                     autoComplete="off"
                     autoCorrect="off"
@@ -284,7 +282,7 @@ const TryNora = () => {
                   <button
                     type="submit"
                     disabled={sending || typingReply || !input.trim()}
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-content transition-opacity disabled:opacity-30"
+                    className="flex h-11 w-11 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg bg-primary text-primary-content transition-opacity disabled:opacity-30"
                     aria-label="Send"
                   >
                     <Send className="h-4 w-4" />

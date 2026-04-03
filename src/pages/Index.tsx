@@ -15,12 +15,6 @@ const flowSteps = [
   { step: '05', title: 'Done', body: 'Outputs land in your dashboard: posts ready to publish, replies ready to send, leads scored and followed up.' },
 ];
 
-const testimonials = [
-  { quote: 'Nora handles my inbox + content queue — frees 15hr/wk to build.', author: 'Solo SaaS founder, early access' },
-  { quote: 'Visible AI steps make it trustworthy vs generic chatbots.', author: 'Indie hacker, micro-SaaS' },
-  { quote: 'Turned rough notes into 10 posts/week — growth unlocked.', author: 'Creator founder, 8k audience' },
-];
-
 const agents = [
   {
     icon: PenLine, name: 'Content Agent',
@@ -43,22 +37,19 @@ const agents = [
 ];
 
 const personas = [
-  { icon: Rocket, title: 'Solo Indie Hackers', body: 'Building your first product under $10k MRR. Emails and lead chaos are eating your coding time. Nora handles it.' },
+  { icon: Rocket, title: 'Solo Indie Hackers', body: 'Building your first product while juggling everything else. Emails and lead chaos are eating your coding time. Nora handles it.' },
   { icon: Target, title: 'Micro-SaaS Founders', body: '1-3 person team hitting an ops ceiling. No ops hire in budget. Nora is your first workflow person.' },
   { icon: Mic, title: 'Creator Founders', body: 'Audience between 1k-50k. Content consistency is your growth lever. Nora turns ideas into posts while you focus on the product.' },
-  { icon: Users, title: 'Early Bootstrappers', body: "Side hustle going full-time. Can't afford a VA. $29/mo gets you the same output." },
+  { icon: Users, title: 'Early Bootstrappers', body: "Side hustle going full-time. Can't afford a VA. Nora is built to replace repetitive ops work as you scale." },
 ];
 
 const comparisonRows = [
-  ['10-20 hours/week on emails, content, follow-ups', 'That time goes back to building'],
-  ['Generic AI chat that forgets context instantly', 'Visible agent steps you can audit and edit'],
-  ['Zapier workflows you have to build and maintain', 'Nora figures out the workflow from your input'],
-  ['Blank page every time you need content', 'Rough note in, publish-ready post out'],
-  ['Leads that go cold because follow-up slips', 'Nora queues the nudge automatically'],
+  ['Hours lost polishing the same kind of posts', 'Content Agent: one input → X + hooks + LinkedIn + CTA'],
+  ['Generic AI chat with no audit trail', 'Visible steps on each run so you can trust the output'],
+  ['Reinventing the prompt every time', 'Same structured Content Agent workflow every time'],
+  ['Blank page every time you need content', 'Rough note in, publish-ready bundle out'],
+  ['Lead and inbox automation', 'Lead Agent — on the roadmap (not in the product yet)'],
 ];
-
-const starterFeatures = ['Content Agent access', 'Up to 100 workflow runs/month', 'Visible step-by-step execution', 'Dashboard + history'];
-const proFeatures = ['All agents', 'Unlimited runs', 'Integrations: Notion, Slack, Gmail', 'Priority support'];
 
 const Index = () => {
   const { scrollYProgress } = useScroll();
@@ -104,7 +95,7 @@ const Index = () => {
         <button
           type="button"
           onClick={() => scrollToSection('waitlist')}
-          className="flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-[0_8px_30px_rgba(14,165,164,0.35)] transition-all duration-300 hover:scale-105 hover:shadow-[0_12px_40px_rgba(14,165,164,0.45)] sm:px-6 sm:py-3"
+          className="flex min-h-[44px] items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-[0_8px_30px_rgba(14,165,164,0.35)] transition-all duration-300 hover:scale-105 hover:shadow-[0_12px_40px_rgba(14,165,164,0.45)] sm:px-6 sm:py-3"
         >
           Join the Waitlist — It's Free
           <ArrowRight className="h-4 w-4" />
@@ -129,9 +120,8 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-4 max-w-2xl text-sm text-base-content/65 leading-relaxed sm:mt-6 sm:text-base lg:text-lg">
-                Drop a rough idea, a messy inbox, or a lead list into Nora.
-                Get back content, replies, and follow-ups — without lifting a finger.
-                Built for solo founders who build instead of admin.
+                Drop a rough idea into Nora and get back publish-ready posts — X, hooks, LinkedIn, and a CTA — with every step visible.
+                More agents are on the way. Built for solo founders who build instead of admin.
               </p>
             </Reveal>
 
@@ -140,7 +130,7 @@ const Index = () => {
                 <div className="flex flex-col items-center gap-3 sm:flex-row">
                   <button
                     type="button"
-                    className="group relative w-full overflow-hidden rounded-lg bg-primary px-10 py-3.5 text-base font-medium text-primary-foreground shadow-[0_10px_30px_rgba(14,165,164,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,165,164,0.28)] sm:w-auto"
+                    className="group relative min-h-[44px] w-full overflow-hidden rounded-lg bg-primary px-10 py-3.5 text-base font-medium text-primary-foreground shadow-[0_10px_30px_rgba(14,165,164,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,165,164,0.28)] sm:w-auto"
                     onClick={() => scrollToSection('waitlist')}
                   >
                     <span className="relative z-10 flex items-center justify-center gap-2">
@@ -150,36 +140,26 @@ const Index = () => {
                   </button>
                   <button
                     type="button"
-                    className="w-full rounded-lg border border-base-content/15 px-8 py-3 text-base text-base-content/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:text-primary sm:w-auto"
+                    className="min-h-[44px] w-full rounded-lg border border-base-content/15 px-8 py-3 text-base text-base-content/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:text-primary sm:w-auto"
                     onClick={() => scrollToSection('how-it-works')}
                   >
                     See How It Works
                   </button>
                 </div>
                 <p className="text-xs text-base-content/35">Free during beta — no card required.</p>
+                <p className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-base-content/45">
+                  <Link to="/try-nora" className="text-primary transition-colors hover:underline">
+                    Ask Nora
+                  </Link>
+                  <span className="text-base-content/25" aria-hidden>
+                    ·
+                  </span>
+                  <Link to="/talentgraph" className="text-primary transition-colors hover:underline">
+                    TalentGraph demo
+                  </Link>
+                </p>
               </div>
             </Reveal>
-          </div>
-        </section>
-
-        {/* ── SOCIAL PROOF ── */}
-        <section className="border-t border-base-content/[0.07] px-4 py-10 sm:px-8 sm:py-12">
-          <div className="mx-auto max-w-4xl">
-            <Reveal>
-              <p className="text-center text-[11px] font-medium uppercase tracking-[0.14em] text-base-content/35">
-                What early testers say
-              </p>
-            </Reveal>
-            <div className="mt-6 grid gap-3 sm:grid-cols-3 sm:gap-4">
-              {testimonials.map((t, i) => (
-                <Reveal key={i} delay={0.06 * i}>
-                  <div className="surface-panel p-5 transition-all duration-300 hover:-translate-y-0.5">
-                    <p className="text-sm leading-relaxed text-base-content/70 italic">"{t.quote}"</p>
-                    <p className="mt-3 text-xs text-base-content/40">— {t.author}</p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -325,55 +305,26 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ── PRICING ── */}
+        {/* ── EARLY ACCESS ── */}
         <section className="border-t border-base-content/[0.07] px-4 py-12 sm:px-8 sm:py-14">
-          <div className="mx-auto max-w-3xl">
+          <div className="mx-auto max-w-xl text-center">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">Simple pricing</h2>
+              <h2 className="premium-heading text-2xl font-medium sm:text-3xl">Early access</h2>
             </Reveal>
-
-            <div className="mt-10 grid gap-4 sm:grid-cols-2">
-              <Reveal delay={0.06}>
-                <div className="surface-panel border-primary/25 p-6 sm:p-8">
-                  <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-primary/60">Starter</p>
-                  <p className="mt-3 text-3xl font-semibold text-base-content">$29<span className="text-base font-normal text-base-content/40">/mo</span></p>
-                  <ul className="mt-5 space-y-2.5">
-                    {starterFeatures.map((f) => (
-                      <li key={f} className="flex items-center gap-2.5 text-sm text-base-content/60">
-                        <Check className="h-3.5 w-3.5 text-primary/70" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <button type="button" onClick={() => scrollToSection('waitlist')} className="mt-6 w-full rounded-lg bg-primary py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">
-                    Join Waitlist
-                  </button>
-                </div>
-              </Reveal>
-
-              <Reveal delay={0.12}>
-                <div className="surface-panel p-6 sm:p-8">
-                  <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-base-content/35">Pro</p>
-                  <p className="mt-3 text-3xl font-semibold text-base-content">$79<span className="text-base font-normal text-base-content/40">/mo</span></p>
-                  <ul className="mt-5 space-y-2.5">
-                    {proFeatures.map((f) => (
-                      <li key={f} className="flex items-center gap-2.5 text-sm text-base-content/60">
-                        <Check className="h-3.5 w-3.5 text-base-content/30" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <button type="button" onClick={() => scrollToSection('waitlist')} className="mt-6 w-full rounded-lg border border-base-content/15 py-2.5 text-sm font-medium text-base-content/60 transition-colors hover:border-primary/40 hover:text-primary">
-                    Join Waitlist
-                  </button>
-                </div>
-              </Reveal>
-            </div>
-
-            <Reveal delay={0.16}>
-              <p className="mt-5 text-center text-xs text-base-content/35">
-                Founding member pricing locked in for first 50 signups. Free during current beta — no card required.
+            <Reveal delay={0.06}>
+              <p className="mt-3 text-sm text-base-content/55 leading-relaxed">
+                Pricing will be announced at launch. Join the waitlist for updates — free during beta, no card required.
               </p>
+            </Reveal>
+            <Reveal delay={0.12}>
+              <button
+                type="button"
+                onClick={() => scrollToSection('waitlist')}
+                className="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 min-h-[44px]"
+              >
+                Join the waitlist
+                <ArrowRight className="h-4 w-4" />
+              </button>
             </Reveal>
           </div>
         </section>
@@ -386,7 +337,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mt-2 text-center text-sm text-base-content/45">
-                First 50 founders get founding member pricing. We'll reach out personally before launch.
+                We'll reach out personally before launch.
               </p>
             </Reveal>
             <Reveal delay={0.1}>

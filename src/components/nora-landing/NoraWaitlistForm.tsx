@@ -8,14 +8,14 @@ const schema = z.object({
   name: z.string().trim().min(1, 'Enter your name').max(255),
   email: z.string().trim().email('Enter a valid email').max(255),
   role: z.string().min(1, 'Pick one'),
-  ops_pain: z.string().max(500).optional(),
+  biggest_pain: z.string().max(500).optional(),
 });
 
 export const NoraWaitlistForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('');
-  const [opsPain, setOpsPain] = useState('');
+  const [biggestPain, setBiggestPain] = useState('');
   const [errors, setErrors] = useState<{ name?: string; email?: string; role?: string }>({});
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -26,7 +26,7 @@ export const NoraWaitlistForm = () => {
     setErrors({});
     setServerError('');
 
-    const result = schema.safeParse({ name, email, role, ops_pain: opsPain });
+    const result = schema.safeParse({ name, email, role, biggest_pain: biggestPain });
     if (!result.success) {
       const fieldErrors: { name?: string; email?: string; role?: string } = {};
       result.error.issues.forEach((issue) => {
@@ -39,16 +39,12 @@ export const NoraWaitlistForm = () => {
 
     setLoading(true);
 
-    // Store role + ops pain in focus_killer column (existing schema)
-    const focusKiller = [result.data.role, result.data.ops_pain].filter(Boolean).join(' | ');
-
-    const { error } = await supabase
-      .from('waitlist')
-      .insert({
-        name: result.data.name,
-        email: result.data.email,
-        focus_killer: focusKiller || null,
-      });
+    const { error } = await supabase.from('waitlist').insert({
+      name: result.data.name,
+      email: result.data.email,
+      role: result.data.role,
+      biggest_pain: result.data.biggest_pain?.trim() || null,
+    });
     setLoading(false);
 
     if (error) {
@@ -70,52 +66,54 @@ export const NoraWaitlistForm = () => {
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <p className="text-lg font-semibold text-base-content">You're on the list.</p>
-        <p className="mt-2 text-sm text-base-content/55">
-          We'll reach out personally — not a mass email. Building something real here.
-        </p>
+        <p className="text-lg font-semibold text-base-content">You're on the list. We'll reach out personally.</p>
       </div>
     );
   }
 
+  const inputClass =
+    'input input-bordered w-full min-h-[44px] text-base border-base-content/10 bg-base-200/60 focus:border-primary/40 focus:outline-none';
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <label className="form-control w-full">
-        <span className="label-text text-[12px] sm:text-xs text-base-content/50 mb-1">Name</span>
+        <span className="label-text text-sm text-base-content/50 mb-1">Name</span>
         <input
           type="text"
           placeholder="Your name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="input input-bordered w-full border-base-content/10 bg-base-200/60 focus:border-primary/40 focus:outline-none"
+          className={inputClass}
           autoComplete="name"
         />
         {errors.name && <span className="label-text-alt text-error mt-1">{errors.name}</span>}
       </label>
 
       <label className="form-control w-full">
-        <span className="label-text text-[12px] sm:text-xs text-base-content/50 mb-1">Email address</span>
+        <span className="label-text text-sm text-base-content/50 mb-1">Email address</span>
         <input
           type="email"
           placeholder="you@example.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="input input-bordered w-full border-base-content/10 bg-base-200/60 focus:border-primary/40 focus:outline-none"
+          className={inputClass}
           autoComplete="email"
         />
         {errors.email && <span className="label-text-alt text-error mt-1">{errors.email}</span>}
       </label>
 
       <label className="form-control w-full">
-        <span className="label-text text-[12px] sm:text-xs text-base-content/50 mb-1">Role</span>
+        <span className="label-text text-sm text-base-content/50 mb-1">Role</span>
         <select
           value={role}
           onChange={(e) => setRole(e.target.value)}
-          className={`select select-bordered w-full border-base-content/10 bg-base-200/60 focus:border-primary/40 focus:outline-none ${
+          className={`select select-bordered w-full min-h-[44px] text-base border-base-content/10 bg-base-200/60 focus:border-primary/40 focus:outline-none ${
             !role ? 'text-base-content/40' : ''
           }`}
         >
-          <option value="" disabled>Choose one</option>
+          <option value="" disabled>
+            Choose one
+          </option>
           {roleOptions.map((r) => (
             <option key={r} value={r}>
               {r}
@@ -126,22 +124,22 @@ export const NoraWaitlistForm = () => {
       </label>
 
       <label className="form-control w-full">
-        <span className="label-text text-[12px] sm:text-xs text-base-content/50 mb-1">
+        <span className="label-text text-sm text-base-content/50 mb-1">
           Biggest ops pain <span className="text-base-content/30">(optional)</span>
         </span>
         <input
           type="text"
           placeholder="What takes the most time you wish Nora could handle?"
-          value={opsPain}
-          onChange={(e) => setOpsPain(e.target.value)}
-          className="input input-bordered w-full border-base-content/10 bg-base-200/60 focus:border-primary/40 focus:outline-none"
+          value={biggestPain}
+          onChange={(e) => setBiggestPain(e.target.value)}
+          className={inputClass}
         />
       </label>
 
-      {serverError && <p className="text-center text-sm text-primary">{serverError}</p>}
+      {serverError && <p className="text-center text-sm text-error">{serverError}</p>}
 
-      <button type="submit" disabled={loading} className="btn btn-primary btn-block">
-        {loading ? <span className="loading loading-spinner loading-sm" /> : 'Secure My Spot'}
+      <button type="submit" disabled={loading} className="btn btn-primary btn-block min-h-[44px]">
+        {loading ? 'Joining...' : 'Secure My Spot'}
       </button>
     </form>
   );

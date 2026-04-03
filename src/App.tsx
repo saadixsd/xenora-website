@@ -13,10 +13,13 @@ import About from "./pages/About.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import TryNora from "./pages/TryNora.tsx";
 import Login from "./pages/Login.tsx";
+import SignUp from "./pages/SignUp.tsx";
+import AuthCallback from "./pages/AuthCallback.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import WorkflowRun from "./pages/WorkflowRun.tsx";
 import History from "./pages/History.tsx";
 import Settings from "./pages/Settings.tsx";
+import TalentGraph from "./pages/TalentGraph.tsx";
 
 const App = () => (
   <ThemeProvider>
@@ -31,7 +34,10 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/try-nora" element={<TryNora />} />
+          <Route path="/talentgraph" element={<TalentGraph />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
 
           {/* Protected dashboard routes */}
           <Route

@@ -8,5 +8,6 @@ verify_jwt = false
 [functions.talentgraph]
 verify_jwt = false
 
+# Require a valid Supabase user JWT; client sends session access_token (not the anon key).
 [functions.nora-workflow]
-verify_jwt = false
+verify_jwt = true

@@ -38,6 +38,10 @@ export async function sendClaudeChat(params: {
 
   const data = (await res.json().catch(() => ({}))) as { content?: string; error?: string };
 
+  if (res.status === 429) {
+    throw new Error('RATE_LIMIT');
+  }
+
   if (!res.ok) {
     throw new Error(data.error || res.statusText || 'Claude request failed');
   }

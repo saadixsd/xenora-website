@@ -25,7 +25,7 @@ const History = () => {
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .then(({ data }) => {
-        if (data) setRuns(data as any);
+        if (data) setRuns(data as Run[]);
         setLoading(false);
       });
   }, [user]);
@@ -62,7 +62,7 @@ const History = () => {
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm text-foreground">{run.input_text}</p>
                 <p className="mt-0.5 text-xs text-muted-foreground">
-                  {(run.workflow_templates as any)?.name} · {new Date(run.created_at).toLocaleDateString()}
+                  {run.workflow_templates?.name ?? 'Workflow'} · {new Date(run.created_at).toLocaleDateString()}
                 </p>
               </div>
               <span

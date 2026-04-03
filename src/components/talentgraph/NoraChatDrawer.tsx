@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { X, Send } from 'lucide-react';
 import { sendClaudeChat, type ChatMessage } from '@/lib/claude';
@@ -35,6 +35,36 @@ export function NoraChatDrawer({ open, onClose, taste, results, initialMessage }
   const scrollRef = useRef<HTMLDivElement>(null);
   const didSendInitial = useRef(false);
 
+  const sendMessage = useCallback(
+    async (text: string) => {
+      const trimmed = text.trim();
+      if (!trimmed || sending) return;
+
+      const context = buildContext(taste, results);
+      const userContent = context ? `${context}\n\nUser question: ${trimmed}` : trimmed;
+      const userMsg: ChatMessage = { role: 'user', content: userContent };
+      const displayMsg: ChatMessage = { role: 'user', content: trimmed };
+
+      const nextHistory = [...messages, userMsg];
+      setMessages((prev) => [...prev, displayMsg]);
+      setInput('');
+      setSending(true);
+
+      try {
+        const reply = await sendClaudeChat({ messages: nextHistory });
+        setMessages((prev) => [...prev, { role: 'assistant', content: reply }]);
+      } catch (e) {
+        setMessages((prev) => [
+          ...prev,
+          { role: 'assistant', content: `⚠️ ${e instanceof Error ? e.message : 'Something went wrong'}` },
+        ]);
+      } finally {
+        setSending(false);
+      }
+    },
+    [messages, taste, results, sending],
+  );
+
   // Auto-send initial message when opened with one
   useEffect(() => {
     if (open && initialMessage && !didSendInitial.current) {
@@ -42,39 +72,12 @@ export function NoraChatDrawer({ open, onClose, taste, results, initialMessage }
       void sendMessage(initialMessage);
     }
     if (!open) didSendInitial.current = false;
-  }, [open, initialMessage]);
+  }, [open, initialMessage, sendMessage]);
 
   useEffect(() => {
     const el = scrollRef.current;
     if (el) el.scrollTop = el.scrollHeight;
   }, [messages, sending]);
-
-  const sendMessage = async (text: string) => {
-    const trimmed = text.trim();
-    if (!trimmed || sending) return;
-
-    const context = buildContext(taste, results);
-    const userContent = context ? `${context}\n\nUser question: ${trimmed}` : trimmed;
-    const userMsg: ChatMessage = { role: 'user', content: userContent };
-    const displayMsg: ChatMessage = { role: 'user', content: trimmed };
-
-    const nextHistory = [...messages, userMsg];
-    setMessages((prev) => [...prev, displayMsg]);
-    setInput('');
-    setSending(true);
-
-    try {
-      const reply = await sendClaudeChat({ messages: nextHistory });
-      setMessages((prev) => [...prev, { role: 'assistant', content: reply }]);
-    } catch (e) {
-      setMessages((prev) => [
-        ...prev,
-        { role: 'assistant', content: `⚠️ ${e instanceof Error ? e.message : 'Something went wrong'}` },
-      ]);
-    } finally {
-      setSending(false);
-    }
-  };
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();

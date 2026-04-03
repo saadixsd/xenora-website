@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackground';
 import { Button } from '@/components/ui/button';
@@ -8,48 +9,46 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 
 const Login = () => {
-  const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [displayName, setDisplayName] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user, loading: authLoading } = useAuth();
+
+  useEffect(() => {
+    if (!authLoading && user) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [authLoading, user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { display_name: displayName || email.split('@')[0] },
-            emailRedirectTo: window.location.origin,
-          },
-        });
-        if (error) throw error;
-        toast({
-          title: 'Check your email',
-          description: 'We sent you a verification link. Please confirm your email to sign in.',
-        });
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        navigate('/dashboard');
-      }
-    } catch (err: any) {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      navigate('/dashboard');
+    } catch (err: unknown) {
       toast({
         title: 'Error',
-        description: err.message || 'Something went wrong',
+        description: err instanceof Error ? err.message : 'Something went wrong',
         variant: 'destructive',
       });
     } finally {
       setLoading(false);
     }
   };
+
+  if (authLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <NeuralMeshBackground />
+        <span className="relative z-10 text-sm text-muted-foreground">Loading…</span>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4">
@@ -58,32 +57,11 @@ const Login = () => {
       <div className="relative z-10 w-full max-w-sm">
         <Link to="/" className="mb-8 flex flex-col items-center gap-3">
           <XenoraLogo decorative className="h-14 w-14" />
-          <div className="text-center">
-            <h1 className="text-xl font-semibold text-foreground">Nora</h1>
-            <p className="text-xs text-muted-foreground">AI workflow workspace for founders</p>
-          </div>
+          <h1 className="text-xl font-semibold text-foreground">Sign in</h1>
         </Link>
 
         <div className="surface-panel p-6">
-          <h2 className="text-lg font-medium text-foreground">
-            {isSignUp ? 'Create your account' : 'Sign in to Nora'}
-          </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {isSignUp ? 'Start building workflows in minutes.' : 'Welcome back.'}
-          </p>
-
-          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-            {isSignUp && (
-              <div>
-                <label className="mb-1.5 block text-sm text-muted-foreground">Name</label>
-                <Input
-                  value={displayName}
-                  onChange={(e) => setDisplayName(e.target.value)}
-                  placeholder="Your name"
-                  className="bg-card/50 border-border"
-                />
-              </div>
-            )}
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="mb-1.5 block text-sm text-muted-foreground">Email</label>
               <Input
@@ -92,7 +70,8 @@ const Login = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="bg-card/50 border-border"
+                autoComplete="email"
+                className="min-h-[44px] bg-card/50 text-base border-border md:text-base"
               />
             </div>
             <div>
@@ -101,35 +80,25 @@ const Login = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Min 6 characters"
+                placeholder="Your password"
                 required
                 minLength={6}
-                className="bg-card/50 border-border"
+                autoComplete="current-password"
+                className="min-h-[44px] bg-card/50 text-base border-border md:text-base"
               />
             </div>
 
-            <Button type="submit" disabled={loading} className="w-full">
-              {loading ? 'Please wait...' : isSignUp ? 'Create account' : 'Sign in'}
+            <Button type="submit" disabled={loading} className="min-h-[44px] w-full">
+              {loading ? 'Signing in…' : 'Sign in'}
             </Button>
           </form>
 
-          <div className="mt-4 text-center">
-            <button
-              type="button"
-              onClick={() => setIsSignUp(!isSignUp)}
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
-            </button>
-          </div>
+          <p className="mt-4 text-center text-sm text-muted-foreground">
+            <Link to="/signup" className="text-primary underline-offset-4 hover:underline">
+              Create an account
+            </Link>
+          </p>
         </div>
-
-        <p className="mt-6 text-center text-xs text-muted-foreground/50">
-          By continuing, you agree to our{' '}
-          <Link to="/privacy" className="underline hover:text-muted-foreground">
-            Privacy Policy
-          </Link>
-        </p>
       </div>
     </div>
   );

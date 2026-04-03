@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const chips = [
-  { label: 'Twitter thread', prompt: 'Make this a Twitter thread' },
-  { label: 'Score lead', prompt: 'Score this lead and draft a reply' },
+  { label: 'X post', prompt: 'Turn this into a punchy X post under 280 characters' },
   { label: 'LinkedIn post', prompt: 'Turn this into a LinkedIn post' },
-  { label: 'Content angles', prompt: 'Find content angles from this' },
+  { label: '3 hooks', prompt: 'Give me 3 short hooks for this idea' },
+  { label: 'Tighten', prompt: 'Tighten this into one sharp paragraph' },
 ];
 
 interface QuickRunInputProps {
@@ -55,7 +55,7 @@ export function QuickRunInput({ contentTemplateId }: QuickRunInputProps) {
         Run Nora →
       </button>
       <p className="mt-2 text-center text-[11px] text-muted-foreground">
-        Every step is visible. You approve before anything goes out.
+        Runs the Content Agent workflow — steps are visible on the run page.
       </p>
     </div>
   );

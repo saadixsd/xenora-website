@@ -57,7 +57,7 @@ const WorkflowRun = () => {
   // Load templates for wizard
   useEffect(() => {
     supabase.from('workflow_templates').select('*').order('created_at').then(({ data }) => {
-      if (data) setTemplates(data as any);
+      if (data) setTemplates(data as Template[]);
     });
   }, []);
 
@@ -75,7 +75,10 @@ const WorkflowRun = () => {
       setInputText(run.input_text);
       setGoal(run.goal || '');
       setTone(run.tone || 'professional');
-      setSteps((run.workflow_templates as any)?.steps || []);
+      {
+        const wt = run.workflow_templates as { steps?: string[] } | null;
+        setSteps(Array.isArray(wt?.steps) ? wt.steps : []);
+      }
 
       if (run.status === 'completed') {
         const { data: outs } = await supabase
@@ -104,9 +107,9 @@ const WorkflowRun = () => {
         table: 'workflow_runs',
         filter: `id=eq.${runId}`,
       }, (payload) => {
-        const updated = payload.new as any;
+        const updated = payload.new as { current_step?: string; status?: string };
         setCurrentStep(updated.current_step || 'done');
-        setStatus(updated.status);
+        if (typeof updated.status === 'string') setStatus(updated.status);
         if (updated.status === 'completed') {
           supabase
             .from('workflow_outputs')
@@ -156,12 +159,19 @@ const WorkflowRun = () => {
       setStatus('running');
       setCurrentStep('input_received');
 
-      // Call the edge function with streaming
+      const { data: sessionData, error: sessionErr } = await supabase.auth.getSession();
+      const accessToken = sessionData.session?.access_token;
+      if (sessionErr || !accessToken) {
+        throw new Error('Your session expired. Sign in again.');
+      }
+
+      // Edge function uses verify_jwt: user access token (not the anon key).
       const resp = await fetch(WORKFLOW_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          Authorization: `Bearer ${accessToken}`,
+          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
         },
         body: JSON.stringify({
           run_id: run.id,
@@ -208,8 +218,8 @@ const WorkflowRun = () => {
 
       // Navigate to the run detail
       navigate(`/dashboard/run/${run.id}`, { replace: true });
-    } catch (e: any) {
-      setError(e.message || 'Something went wrong');
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Something went wrong');
       setStatus('failed');
     } finally {
       setRunning(false);

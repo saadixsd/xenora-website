@@ -44,12 +44,17 @@ const Dashboard = () => {
   const [templates, setTemplates] = useState<Template[]>([]);
   const [runs, setRuns] = useState<Run[]>([]);
   const [outputCount, setOutputCount] = useState(0);
+  const [totalRuns, setTotalRuns] = useState(0);
+  const [runsThisWeek, setRunsThisWeek] = useState(0);
 
   useEffect(() => {
     if (!user) return;
 
     const fetchData = async () => {
-      const [tRes, rRes, oRes] = await Promise.all([
+      const weekAgo = new Date();
+      weekAgo.setDate(weekAgo.getDate() - 7);
+
+      const [tRes, rRes, allRunsRes] = await Promise.all([
         supabase.from('workflow_templates').select('id, name, status').order('created_at'),
         supabase
           .from('workflow_runs')
@@ -57,20 +62,26 @@ const Dashboard = () => {
           .eq('user_id', user.id)
           .order('created_at', { ascending: false })
           .limit(10),
-        supabase
-          .from('workflow_outputs')
-          .select('id', { count: 'exact', head: true })
-          .in(
-            'run_id',
-            (await supabase.from('workflow_runs').select('id').eq('user_id', user.id)).data?.map(
-              (r: any) => r.id
-            ) || []
-          ),
+        supabase.from('workflow_runs').select('id, created_at').eq('user_id', user.id),
       ]);
 
       if (tRes.data) setTemplates(tRes.data);
-      if (rRes.data) setRuns(rRes.data as any);
-      setOutputCount(oRes.count || 0);
+      if (rRes.data) setRuns(rRes.data as Run[]);
+
+      const allRows = allRunsRes.data ?? [];
+      setTotalRuns(allRows.length);
+      setRunsThisWeek(allRows.filter((r) => new Date(r.created_at).getTime() >= weekAgo.getTime()).length);
+
+      const runIds = allRows.map((r) => r.id);
+      if (runIds.length === 0) {
+        setOutputCount(0);
+      } else {
+        const { count } = await supabase
+          .from('workflow_outputs')
+          .select('id', { count: 'exact', head: true })
+          .in('run_id', runIds);
+        setOutputCount(count ?? 0);
+      }
     };
 
     fetchData();
@@ -83,11 +94,10 @@ const Dashboard = () => {
     return runs.slice(0, 4).map((run) => ({
       id: run.id,
       title: run.input_text.length > 60 ? run.input_text.slice(0, 60) + '…' : run.input_text,
-      meta: `${(run.workflow_templates as any)?.name || 'Workflow'} · ${run.status}`,
+      meta: `${run.workflow_templates?.name || 'Workflow'} · ${run.status}`,
       time: timeAgo(run.created_at),
       type: (run.status === 'completed' ? 'success' : run.status === 'running' ? 'warning' : 'action') as 'success' | 'warning' | 'action',
       runId: run.id,
-      approved: run.status === 'completed',
     }));
   }, [runs]);
 
@@ -103,18 +113,18 @@ const Dashboard = () => {
             Here's what Nora handled while you were building.
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => navigate('/dashboard/settings')}
-            className="rounded-lg border border-border bg-card px-3.5 py-2 text-[13px] text-foreground transition-colors hover:bg-muted"
+            className="min-h-[44px] rounded-lg border border-border bg-card px-3.5 py-2 text-[13px] text-foreground transition-colors hover:bg-muted"
           >
-            Connect tools
+            Settings
           </button>
           <button
             type="button"
             onClick={() => navigate('/dashboard/run/new')}
-            className="rounded-lg bg-primary px-3.5 py-2 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            className="min-h-[44px] rounded-lg bg-primary px-3.5 py-2 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90"
           >
             + New workflow
           </button>
@@ -122,21 +132,21 @@ const Dashboard = () => {
       </div>
 
       {/* Stats */}
-      <StatsCards totalRuns={runs.length} draftsGenerated={outputCount} />
+      <StatsCards totalRuns={totalRuns} runsThisWeek={runsThisWeek} draftsGenerated={outputCount} />
 
       {/* Agents */}
       <div className="mt-4">
         <div className="flex items-baseline justify-between mb-2.5">
           <p className="text-[13px] font-medium text-foreground">Your agents</p>
-          <button type="button" className="text-[12px] text-primary hover:underline">
+          <button
+            type="button"
+            onClick={() => navigate('/dashboard/settings')}
+            className="text-[12px] text-primary hover:underline"
+          >
             Manage →
           </button>
         </div>
-        <AgentCards
-          draftsCount={outputCount}
-          leadsCount={0}
-          contentTemplateId={contentTemplate?.id}
-        />
+        <AgentCards draftsCount={outputCount} contentTemplateId={contentTemplate?.id} />
       </div>
 
       {/* Two-column: Feed + Quick Run */}

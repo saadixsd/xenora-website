@@ -5,10 +5,9 @@ interface Agent {
   name: string;
   description: string;
   status: 'live' | 'beta' | 'soon';
-  stat: string | number;
-  statLabel: string;
   actionLabel: string;
   templateId?: string;
+  footer: 'drafts' | 'beta' | 'soon';
 }
 
 const agents: Agent[] = [
@@ -16,25 +15,22 @@ const agents: Agent[] = [
     name: 'Content Agent',
     description: 'Rough notes in. Posts, hooks, and captions out — ready to review.',
     status: 'live',
-    stat: 0,
-    statLabel: 'drafts this week',
     actionLabel: 'Run →',
+    footer: 'drafts',
   },
   {
     name: 'Lead Agent',
     description: 'Scores inbound. Drafts replies. Follows up when they go quiet.',
     status: 'beta',
-    stat: 0,
-    statLabel: 'leads queued',
     actionLabel: 'Learn →',
+    footer: 'beta',
   },
   {
     name: 'Research Agent',
     description: 'Scans Reddit and comments. Returns real pain signals and content angles.',
     status: 'soon',
-    stat: '—',
-    statLabel: 'not yet active',
     actionLabel: 'Notify →',
+    footer: 'soon',
   },
 ];
 
@@ -44,20 +40,18 @@ const statusStyle = {
   beta: 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400',
   soon: 'bg-muted text-muted-foreground',
 };
-const statusLabel = { live: 'Live', beta: 'Beta', soon: 'Soon' };
+const statusLabel = { live: 'Live', beta: 'Beta', soon: 'Coming soon' };
 
 interface AgentCardsProps {
   draftsCount?: number;
-  leadsCount?: number;
   contentTemplateId?: string;
 }
 
-export function AgentCards({ draftsCount = 0, leadsCount = 0, contentTemplateId }: AgentCardsProps) {
+export function AgentCards({ draftsCount = 0, contentTemplateId }: AgentCardsProps) {
   const navigate = useNavigate();
 
   const data = agents.map((a, i) => ({
     ...a,
-    stat: i === 0 ? draftsCount : i === 1 ? leadsCount : '—',
     templateId: i === 0 ? contentTemplateId : undefined,
   }));
 
@@ -65,18 +59,27 @@ export function AgentCards({ draftsCount = 0, leadsCount = 0, contentTemplateId 
     if (agent.status === 'live' && agent.templateId) {
       navigate(`/dashboard/run/new?template=${agent.templateId}`);
     }
+    if (agent.footer === 'beta') {
+      navigate('/dashboard/settings');
+    }
   };
 
   return (
     <div className="grid gap-3 sm:grid-cols-3">
-      {data.map((a) => (
+      {data.map((a) => {
+        const interactive = a.status !== 'soon';
+        return (
         <div
           key={a.name}
           className={cn(
-            'cursor-pointer rounded-xl border border-border bg-card p-4 transition-all duration-200 hover:border-primary/40 hover:shadow-[0_2px_12px_rgba(45,90,61,0.08)]',
-            a.status === 'soon' && 'opacity-60'
+            'rounded-xl border border-border bg-card p-4 transition-all duration-200',
+            interactive && 'cursor-pointer hover:border-primary/40 hover:shadow-[0_2px_12px_rgba(45,90,61,0.08)]',
+            a.status === 'soon' && 'opacity-70',
           )}
-          onClick={() => handleAction(a)}
+          onClick={interactive ? () => handleAction(a) : undefined}
+          onKeyDown={interactive ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleAction(a); } } : undefined}
+          role={interactive ? 'button' : undefined}
+          tabIndex={interactive ? 0 : undefined}
         >
           <div className="flex items-center justify-between mb-2.5">
             <span className={cn('h-2 w-2 rounded-full', dotColor[a.status])} />
@@ -86,21 +89,55 @@ export function AgentCards({ draftsCount = 0, leadsCount = 0, contentTemplateId 
           </div>
           <h3 className="text-sm font-medium text-foreground">{a.name}</h3>
           <p className="mt-1 text-[12px] leading-relaxed text-muted-foreground">{a.description}</p>
-          <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
-            <div>
-              <p className="font-dm-serif text-lg text-foreground">{a.stat}</p>
-              <p className="text-[11px] text-muted-foreground">{a.statLabel}</p>
-            </div>
-            <button
-              type="button"
-              className="rounded-md border border-border bg-muted/50 px-2.5 py-1 text-[11.5px] text-muted-foreground transition-colors hover:border-primary hover:bg-primary/10 hover:text-primary"
-              onClick={(e) => { e.stopPropagation(); handleAction(a); }}
-            >
-              {a.actionLabel}
-            </button>
+          <div className="mt-3 border-t border-border pt-3">
+            {a.footer === 'drafts' && (
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  {draftsCount > 0 ? (
+                    <>
+                      <p className="font-dm-serif text-lg text-foreground">{draftsCount}</p>
+                      <p className="text-[11px] text-muted-foreground">outputs from your runs</p>
+                    </>
+                  ) : (
+                    <p className="text-[12px] text-muted-foreground leading-snug">
+                      No outputs yet — run the Content Agent to generate drafts.
+                    </p>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  className="shrink-0 rounded-md border border-border bg-muted/50 px-2.5 py-1 text-[11.5px] text-muted-foreground transition-colors hover:border-primary hover:bg-primary/10 hover:text-primary"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAction(a);
+                  }}
+                >
+                  {a.actionLabel}
+                </button>
+              </div>
+            )}
+            {a.footer === 'beta' && (
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-[12px] text-muted-foreground leading-snug">In beta — availability may vary.</p>
+                <button
+                  type="button"
+                  className="shrink-0 rounded-md border border-border bg-muted/50 px-2.5 py-1 text-[11.5px] text-muted-foreground transition-colors hover:border-primary hover:bg-primary/10 hover:text-primary"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAction(a);
+                  }}
+                >
+                  {a.actionLabel}
+                </button>
+              </div>
+            )}
+            {a.footer === 'soon' && (
+              <p className="text-[12px] text-muted-foreground leading-snug">Coming soon — not in the product yet.</p>
+            )}
           </div>
         </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

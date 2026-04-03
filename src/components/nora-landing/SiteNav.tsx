@@ -7,6 +7,8 @@ import { X, Menu } from 'lucide-react';
 const links = [
   { label: 'Home', to: '/' },
   { label: 'How it Works', to: '/#how-it-works' },
+  { label: 'Ask Nora', to: '/try-nora' },
+  { label: 'TalentGraph', to: '/talentgraph' },
   { label: 'About', to: '/about' },
   { label: 'FAQ', to: '/faq' },
 ];
@@ -73,13 +75,13 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
   };
 
   return (
-    <nav className={`flex items-center gap-1 sm:gap-2 ${className}`} aria-label="Main navigation">
+    <nav className={`relative flex items-center gap-1 sm:gap-2 ${className}`} aria-label="Main navigation">
       <ul className="hidden flex-nowrap px-0 md:flex md:items-center md:gap-0.5">
         {links.map((link) => (
           <li key={link.to}>
             {renderLink(
               link,
-              'rounded-md px-3 py-2 text-sm font-normal text-base-content/65 transition-all duration-300 hover:bg-base-200/60 hover:text-base-content',
+              'inline-flex min-h-[44px] items-center rounded-md px-3 py-3 text-sm font-normal text-base-content/65 transition-all duration-300 hover:bg-base-200/60 hover:text-base-content',
             )}
           </li>
         ))}
@@ -89,7 +91,8 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
       <button
         type="button"
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="flex h-8 w-8 items-center justify-center rounded-lg border border-base-content/10 text-base-content/75 md:hidden"
+        className="flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-base-content/10 text-base-content/75 md:hidden"
+        aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
         aria-haspopup="menu"
         aria-controls={menuId}
         aria-expanded={mobileOpen}

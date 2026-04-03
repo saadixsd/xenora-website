@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
@@ -9,7 +8,6 @@ interface FeedItem {
   time: string;
   type: 'success' | 'warning' | 'action';
   runId?: string;
-  approved?: boolean;
 }
 
 interface ActivityFeedProps {
@@ -25,18 +23,13 @@ const iconChar = { success: '✓', warning: '!', action: '↻' };
 
 export function ActivityFeed({ items }: ActivityFeedProps) {
   const navigate = useNavigate();
-  const [approved, setApproved] = useState<Record<string, boolean>>({});
-
-  const handleApprove = (id: string) => {
-    setApproved((prev) => ({ ...prev, [id]: true }));
-  };
 
   if (items.length === 0) {
     return (
       <div className="rounded-xl border border-border bg-card p-4">
         <p className="text-[13px] font-medium text-foreground mb-3">Recent activity</p>
         <p className="text-[12.5px] text-muted-foreground py-6 text-center">
-          No activity yet. Run your first workflow to see results here.
+          Nothing here yet. Run your first workflow above.
         </p>
       </div>
     );
@@ -64,15 +57,16 @@ export function ActivityFeed({ items }: ActivityFeedProps) {
               <span className="text-[11px] text-muted-foreground whitespace-nowrap">{item.time}</span>
               <button
                 type="button"
-                onClick={() => handleApprove(item.id)}
+                onClick={() => item.runId && navigate(`/dashboard/run/${item.runId}`)}
+                disabled={!item.runId}
                 className={cn(
                   'rounded-md px-2.5 py-1 text-[11.5px] border transition-colors',
-                  (approved[item.id] || item.approved)
-                    ? 'bg-primary/10 text-primary border-transparent'
-                    : 'bg-muted/50 text-muted-foreground border-border hover:bg-primary/10 hover:text-primary hover:border-primary'
+                  item.runId
+                    ? 'border-border bg-muted/50 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary'
+                    : 'cursor-not-allowed border-transparent opacity-40',
                 )}
               >
-                {(approved[item.id] || item.approved) ? 'Done ✓' : 'Approve'}
+                Open
               </button>
             </div>
           </div>
