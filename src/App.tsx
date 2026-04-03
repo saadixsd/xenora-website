@@ -19,8 +19,6 @@ import Dashboard from "./pages/Dashboard.tsx";
 import WorkflowRun from "./pages/WorkflowRun.tsx";
 import History from "./pages/History.tsx";
 import Settings from "./pages/Settings.tsx";
-import TalentGraph from "./pages/TalentGraph.tsx";
-
 const App = () => (
   <ThemeProvider>
     <TooltipProvider>
@@ -34,7 +32,6 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/try-nora" element={<TryNora />} />
-          <Route path="/talentgraph" element={<TalentGraph />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/auth/callback" element={<AuthCallback />} />

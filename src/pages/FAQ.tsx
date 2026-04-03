@@ -10,15 +10,15 @@ import { cn } from '@/lib/utils';
 const faqs = [
   {
     q: 'What is Nora?',
-    a: 'Nora is an AI workflow workspace for solo founders. Today the Content Agent turns raw ideas into publish-ready X posts, hooks, a LinkedIn post, and a CTA — with every step visible. Research and lead workflows are on the roadmap.',
+    a: 'Nora is XenoraAI’s workflow engine for solo founders and small teams — not a chatbot and not Zapier. The Content Agent is live: raw input in, X post, 3 hooks, LinkedIn post, and CTA out, with every step visible and nothing published until you approve. The Lead Agent is in beta (reply drafts and follow-ups; you approve before send). Research Agent is coming soon.',
   },
   {
     q: 'How is this different from ChatGPT or other AI tools?',
-    a: "Nora isn't a chatbot. It's a workflow engine. Instead of a chat window where you hope for the best, Nora shows you every step of the process — input classification, content generation, formatting. You see what's happening, so you trust what ships.",
+    a: "Nora isn't a freeform chat. It's a structured workflow: classify → execute → format → review. You see each stage, edit outputs, and approve before anything goes out.",
   },
   {
     q: 'What workflows are available?',
-    a: 'The Content Agent is fully live — it turns a raw founder thought into an X post, 3 hooks, a LinkedIn post, and a CTA. Research Agent and Lead Follow-up Agent are coming soon.',
+    a: 'Content Agent — live. Lead Agent — beta (scoring, draft replies, ~48h follow-up queue; approve before send). Research Agent — coming soon (pain signals and angles from real conversations).',
   },
   {
     q: 'What does the Content Agent produce?',
@@ -29,8 +29,8 @@ const faqs = [
     a: "Your workflow inputs and outputs are tied to your account and protected by row-level security. We don't train on your data or share it with anyone.",
   },
   {
-    q: 'Is the beta free?',
-    a: 'Yes. The first 50 founding users get premium features free during the beta period. Pricing will be announced before we close beta access.',
+    q: 'Is the beta free? What will pricing be?',
+    a: 'Yes — free during beta, no card required. When paid plans ship: Starter is $29/mo (Content Agent, up to 100 runs/mo, dashboard + history) and Pro is $79/mo (all agents including beta Lead, unlimited runs, integrations when available, priority support). The first 50 waitlist signups lock founding-member pricing.',
   },
   {
     q: 'Who is Nora built for?',
@@ -74,9 +74,9 @@ const FAQ = () => {
 
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 backdrop-blur-xl">
         <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between gap-2 px-3 py-2 sm:px-6">
-          <Link to="/" onClick={smoothTop} className="flex items-center gap-2 sm:gap-2.5 cursor-pointer" aria-label="Nora home">
+          <Link to="/" onClick={smoothTop} className="flex items-center gap-2 sm:gap-2.5 cursor-pointer" aria-label="XenoraAI home">
             <XenoraLogo decorative className="h-10 w-10 sm:h-14 sm:w-14" />
-            <span className="text-base font-semibold text-base-content sm:text-xl">Nora</span>
+            <span className="text-base font-semibold text-base-content sm:text-xl">XenoraAI</span>
           </Link>
           <SiteNav />
         </div>

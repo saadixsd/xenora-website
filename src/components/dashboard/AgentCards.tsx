@@ -20,7 +20,7 @@ const agents: Agent[] = [
   },
   {
     name: 'Lead Agent',
-    description: 'Scores inbound. Drafts replies. Follows up when they go quiet.',
+    description: 'Scores inbound, drafts a reply, queues follow-up after ~48h if needed. You approve before send.',
     status: 'beta',
     actionLabel: 'Learn →',
     footer: 'beta',

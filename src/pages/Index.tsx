@@ -8,48 +8,51 @@ import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackgr
 import { Reveal } from '@/components/motion/Reveal';
 
 const flowSteps = [
-  { step: '01', title: 'Input', body: 'Drop in a rough idea, voice note transcript, email thread, or lead list.' },
-  { step: '02', title: 'Classify', body: 'XenoraAI reads the context and decides: is this content, a lead, or a workflow task?' },
-  { step: '03', title: 'Execute', body: 'XenoraAI runs the right agent — Content, Lead, or Research — with no manual setup.' },
-  { step: '04', title: 'Review', body: 'See every step XenoraAI took. Approve, edit, or regenerate. You stay in control.' },
-  { step: '05', title: 'Done', body: 'Outputs land in your dashboard: posts ready to publish, replies ready to send, leads scored and followed up.' },
+  { step: '01', title: 'Input received', body: 'Nora confirms she got your rough idea, transcript, thread, or lead signal.' },
+  { step: '02', title: 'Classifying', body: 'Nora reads context and routes the job to the right agent — Content, Lead, or Research.' },
+  { step: '03', title: 'Executing', body: 'The agent runs with visible progress. No black box.' },
+  { step: '04', title: 'Formatting', body: 'Outputs are structured — posts, hooks, replies — ready for you to scan.' },
+  { step: '05', title: 'Ready to review', body: 'You approve, edit, or regenerate. Nothing publishes or sends until you say so.' },
 ];
 
 const agents = [
   {
     icon: PenLine, name: 'Content Agent',
-    body: 'Drop a rough thought. Get back a Twitter post, 3 hooks, a LinkedIn post, and a CTA. Consistent output without the blank page.',
+    body: 'Drop a rough thought. Get back an X post, 3 hooks, a LinkedIn post, and a CTA — then approve before publish.',
     outputs: ['1 X post', '3 hooks', '1 LinkedIn post', '1 CTA'],
-    tag: 'Live in beta', active: true,
+    tag: 'Live', active: true,
   },
   {
     icon: Zap, name: 'Lead Agent',
-    body: 'Form submission or DM comes in. XenoraAI scores the lead, drafts a reply, and queues a follow-up if they go quiet.',
+    body: 'Inbound form or DM → Nora scores, drafts a personalized reply, and queues follow-up after 48h if needed. You approve before send.',
     outputs: ['Lead score', 'Draft reply', 'Follow-up queue'],
-    tag: 'Coming soon', active: false,
+    tag: 'Beta', active: true,
   },
   {
     icon: Search, name: 'Research Agent',
-    body: 'Point XenoraAI at Reddit, comments, or your niche. Get back real pain signals, content ideas, and offer angles from actual conversations.',
+    body: 'Point Nora at Reddit, comments, or a niche. Pain signals, content angles, and offer ideas from real conversations.',
     outputs: ['Pain signals', 'Content ideas', 'Offer angles'],
     tag: 'Coming soon', active: false,
   },
 ];
 
 const personas = [
-  { icon: Rocket, title: 'Solo Indie Hackers', body: 'Building your first product while juggling everything else. Emails and lead chaos are eating your coding time. XenoraAI handles it.' },
-  { icon: Target, title: 'Micro-SaaS Founders', body: '1-3 person team hitting an ops ceiling. No ops hire in budget. XenoraAI is your first workflow person.' },
-  { icon: Mic, title: 'Creator Founders', body: 'Audience between 1k-50k. Content consistency is your growth lever. XenoraAI turns ideas into posts while you focus on the product.' },
-  { icon: Users, title: 'Early Bootstrappers', body: "Side hustle going full-time. Can't afford a VA. XenoraAI is built to replace repetitive ops work as you scale." },
+  { icon: Rocket, title: 'Solo Indie Hackers', body: 'Building your first product while juggling everything else. Emails and lead chaos eat your build time — Nora handles the workflow.' },
+  { icon: Target, title: 'Micro-SaaS Founders', body: '1–3 people at an ops ceiling. No hire in budget. Nora is your first workflow layer.' },
+  { icon: Mic, title: 'Creator Founders', body: 'Audience 1k–50k. Consistency is the lever. Nora turns ideas into posts while you ship product.' },
+  { icon: Users, title: 'Early Bootstrappers', body: "Side hustle to full-time. Can't afford a VA. Nora replaces repetitive ops with visible, approvable runs." },
 ];
 
 const comparisonRows = [
-  ['Hours lost polishing the same kind of posts', 'Content Agent: one input → X + hooks + LinkedIn + CTA'],
-  ['Generic AI chat with no audit trail', 'Visible steps on each run so you can trust the output'],
-  ['Reinventing the prompt every time', 'Same structured Content Agent workflow every time'],
+  ['Hours lost polishing the same posts', 'Content Agent: one input → X + hooks + LinkedIn + CTA'],
+  ['Generic AI chat with no audit trail', 'Every stage visible — you trust what ships'],
+  ['Reinventing the prompt every time', 'Same structured workflow every run'],
   ['Blank page every time you need content', 'Rough note in, publish-ready bundle out'],
-  ['Lead and inbox automation', 'Lead Agent — on the roadmap (not in the product yet)'],
+  ['Zapier-style DIY wiring', 'Nora: observe → adapt → execute — built for founder workflows'],
 ];
+
+const starterFeatures = ['Content Agent access', 'Up to 100 workflow runs/month', 'Visible step-by-step execution', 'Dashboard + history'];
+const proFeatures = ['All agents (incl. beta Lead Agent)', 'Unlimited runs', 'Integrations: Notion, Slack, Gmail (when available)', 'Priority support'];
 
 const Index = () => {
   const { scrollYProgress } = useScroll();
@@ -108,20 +111,19 @@ const Index = () => {
           <div className="w-full max-w-3xl text-center">
             <Reveal>
               <p className="font-playfair text-[12px] sm:text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
-                AI Workflow Engine — Early Access
+                Nora · Know Beyond · Observe → Adapt → Execute
               </p>
             </Reveal>
             <Reveal delay={0.05}>
               <h1 className="premium-heading mt-4 text-[1.75rem] font-medium leading-tight sm:text-4xl md:text-5xl lg:text-7xl">
-                Stop Doing Work{' '}
+                Stop losing build time{' '}
                 <br className="hidden sm:block" />
-                XenoraAI Does Automatically
+                to repetitive work
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-4 max-w-2xl text-sm text-base-content/65 leading-relaxed sm:mt-6 sm:text-base lg:text-lg">
-                Drop a rough idea into XenoraAI and get back publish-ready posts — X, hooks, LinkedIn, and a CTA — with every step visible.
-                More agents are on the way. Built for solo founders who build instead of admin.
+                Nora is XenoraAI&apos;s workflow engine — not a chatbot, not Zapier. Drop a rough idea and get back posts ready to publish, with every step visible. You approve before anything goes out.
               </p>
             </Reveal>
 
@@ -154,8 +156,8 @@ const Index = () => {
                   <span className="text-base-content/25" aria-hidden>
                     ·
                   </span>
-                  <Link to="/talentgraph" className="text-primary transition-colors hover:underline">
-                    TalentGraph demo
+                  <Link to="/dashboard" className="text-primary transition-colors hover:underline">
+                    Dashboard
                   </Link>
                 </p>
               </div>
@@ -167,11 +169,11 @@ const Index = () => {
         <section id="how-it-works" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-12 sm:px-8 sm:py-14">
           <div className="mx-auto max-w-4xl">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">How XenoraAI Works</h2>
+              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">How Nora works</h2>
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-3 max-w-lg text-center text-sm text-base-content/45">
-                One input. Multiple outputs. Every step visible.
+                Visible AI, not magic AI — every stage on every run.
               </p>
             </Reveal>
 
@@ -194,12 +196,12 @@ const Index = () => {
           <div className="mx-auto max-w-4xl">
             <Reveal>
               <p className="text-center text-[11px] font-medium uppercase tracking-[0.14em] text-base-content/35">
-                XenoraAI agent stack
+                Nora agents
               </p>
             </Reveal>
             <Reveal delay={0.03}>
               <h2 className="premium-heading mt-3 text-center text-2xl font-medium sm:text-3xl">
-                Three agents. Every founder workflow.
+                Content live. Lead in beta. Research next.
               </h2>
             </Reveal>
 
@@ -274,7 +276,7 @@ const Index = () => {
           <div className="mx-auto max-w-4xl">
             <Reveal>
               <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">
-                Why XenoraAI, not another AI tool
+                Why Nora, not another AI tool
               </h2>
             </Reveal>
 
@@ -282,10 +284,10 @@ const Index = () => {
               <div className="surface-panel mt-10 overflow-hidden">
                 <div className="grid grid-cols-2 border-b border-border/50">
                   <div className="px-4 py-3 sm:px-5">
-                    <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-base-content/35">Without XenoraAI</p>
+                    <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-base-content/35">Without Nora</p>
                   </div>
                   <div className="border-l border-border/50 px-4 py-3 sm:px-5">
-                    <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-primary/60">With XenoraAI</p>
+                    <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-primary/60">With Nora</p>
                   </div>
                 </div>
                 {comparisonRows.map((row, i) => (
@@ -305,26 +307,62 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ── EARLY ACCESS ── */}
-        <section className="border-t border-base-content/[0.07] px-4 py-12 sm:px-8 sm:py-14">
-          <div className="mx-auto max-w-xl text-center">
+        {/* ── PRICING ── */}
+        <section id="pricing" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-12 sm:px-8 sm:py-14">
+          <div className="mx-auto max-w-4xl">
             <Reveal>
-              <h2 className="premium-heading text-2xl font-medium sm:text-3xl">Early access</h2>
+              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">Pricing</h2>
             </Reveal>
             <Reveal delay={0.06}>
-              <p className="mt-3 text-sm text-base-content/55 leading-relaxed">
-                Pricing will be announced at launch. Join the waitlist for updates — free during beta, no card required.
+              <p className="mx-auto mt-3 max-w-xl text-center text-sm text-base-content/55 leading-relaxed">
+                Free during beta — no card required. First 50 waitlist signups lock founding-member pricing.
               </p>
             </Reveal>
-            <Reveal delay={0.12}>
-              <button
-                type="button"
-                onClick={() => scrollToSection('waitlist')}
-                className="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 min-h-[44px]"
-              >
-                Join the waitlist
-                <ArrowRight className="h-4 w-4" />
-              </button>
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 sm:gap-5">
+              <Reveal delay={0.08}>
+                <article className="surface-panel flex h-full flex-col p-6 text-left">
+                  <h3 className="text-base font-semibold text-base-content">Starter</h3>
+                  <p className="mt-2 font-dm-serif text-3xl text-base-content">
+                    $29<span className="text-base font-normal text-base-content/50">/mo</span>
+                  </p>
+                  <ul className="mt-4 space-y-2 text-sm text-base-content/55">
+                    {starterFeatures.map((f) => (
+                      <li key={f} className="flex gap-2">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary/70" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              </Reveal>
+              <Reveal delay={0.12}>
+                <article className="surface-panel flex h-full flex-col border-primary/25 p-6 text-left ring-1 ring-primary/15">
+                  <h3 className="text-base font-semibold text-base-content">Pro</h3>
+                  <p className="mt-2 font-dm-serif text-3xl text-base-content">
+                    $79<span className="text-base font-normal text-base-content/50">/mo</span>
+                  </p>
+                  <ul className="mt-4 space-y-2 text-sm text-base-content/55">
+                    {proFeatures.map((f) => (
+                      <li key={f} className="flex gap-2">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary/70" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              </Reveal>
+            </div>
+            <Reveal delay={0.16}>
+              <div className="mt-8 text-center">
+                <button
+                  type="button"
+                  onClick={() => scrollToSection('waitlist')}
+                  className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                >
+                  Join the waitlist
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              </div>
             </Reveal>
           </div>
         </section>
@@ -333,11 +371,11 @@ const Index = () => {
         <section id="waitlist" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-14 sm:px-8 sm:py-20">
           <div className="mx-auto max-w-md">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">Get early access to XenoraAI</h2>
+              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">Join the waitlist</h2>
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mt-2 text-center text-sm text-base-content/45">
-                We'll reach out personally before launch.
+                We&apos;ll reach out personally. Founding pricing for the first 50 signups.
               </p>
             </Reveal>
             <Reveal delay={0.1}>

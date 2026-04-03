@@ -110,7 +110,7 @@ const Dashboard = () => {
             {getGreeting()}, {displayName}.
           </h1>
           <p className="text-[12.5px] text-muted-foreground mt-0.5">
-            Here's what XenoraAI handled while you were building.
+            Here&apos;s what Nora handled while you were building.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">

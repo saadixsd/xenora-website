@@ -1,6 +1,6 @@
-# XenoraAI — Nora (Knowledge-First Agentic AI)
+# XenoraAI — Nora
 
-This repo contains the XenoraAI marketing site for **Nora**, an agentic AI engine designed to automate business operations across IT, HR, and Finance.
+Marketing site and app shell for **XenoraAI**. **Nora** is the product: an agentic workflow engine for solo founders and small teams (content, lead workflows, and more) — visible steps, approve before publish or send.
 
 ## Tech stack
 - React + TypeScript (Vite)
@@ -10,7 +10,7 @@ This repo contains the XenoraAI marketing site for **Nora**, an agentic AI engin
 - Supabase (waitlist storage)
 
 ## Waitlist / Supabase
-- The waitlist form collects: `name`, `email`, `role`, and `company_size`.
+- The waitlist form collects: `name`, `email`, `role`, and optional `biggest_pain`.
 - Data is written to the Supabase table `public.waitlist` using the anon/public client.
 - Row Level Security is enabled; insert access is allowed while reads are intentionally restricted for security.
 

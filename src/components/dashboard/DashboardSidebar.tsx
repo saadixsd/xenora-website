@@ -12,8 +12,8 @@ const mainNav = [
 
 const agentNav = [
   { label: 'Content Agent', dot: 'bg-emerald-500', to: '/dashboard' },
-  { label: 'Lead Agent (soon)', dot: 'bg-amber-500', to: '/dashboard' },
-  { label: 'Research Agent (soon)', dot: 'bg-border', to: '/dashboard' },
+  { label: 'Lead Agent (beta)', dot: 'bg-amber-500', to: '/dashboard' },
+  { label: 'Research Agent (coming soon)', dot: 'bg-border', to: '/dashboard' },
 ];
 
 const accountNav = [
