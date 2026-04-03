@@ -1,6 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, History, Settings, LogOut, X, List, Clock, MessageCircle } from 'lucide-react';
-import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 
@@ -53,7 +52,7 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
       <div className="flex items-center justify-between border-b border-border px-5 py-4">
         <Link to="/dashboard" className="flex flex-col" onClick={onClose}>
           <span className="font-dm-serif text-lg tracking-tight text-foreground">
-            Xeno<span className="text-primary">ra</span>
+            No<span className="text-primary">ra</span>
           </span>
           <span className="text-[10px] uppercase tracking-[0.8px] text-muted-foreground">Workspace</span>
         </Link>
