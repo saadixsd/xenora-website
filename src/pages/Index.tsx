@@ -143,9 +143,16 @@ const Index = () => {
                   <button
                     type="button"
                     className="min-h-[44px] w-full rounded-lg border border-base-content/15 px-8 py-3 text-base text-base-content/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:text-primary sm:w-auto"
+                    onClick={() => scrollToSection('workflow-demo')}
+                  >
+                    Watch demo
+                  </button>
+                  <button
+                    type="button"
+                    className="min-h-[44px] w-full rounded-lg border border-base-content/10 px-8 py-3 text-base text-base-content/60 transition-all duration-300 hover:border-base-content/20 hover:text-base-content sm:w-auto"
                     onClick={() => scrollToSection('how-it-works')}
                   >
-                    See How It Works
+                    How it works
                   </button>
                 </div>
                 <p className="text-xs text-base-content/35">Free during beta — no card required.</p>
@@ -165,6 +172,45 @@ const Index = () => {
                   </Link>
                 </p>
               </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ── WORKFLOW EXECUTION VIDEO ── */}
+        <section id="workflow-demo" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-12 sm:px-8 sm:py-14">
+          <div className="mx-auto max-w-4xl">
+            <Reveal>
+              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">
+                Watch a workflow execute
+              </h2>
+            </Reveal>
+            <Reveal delay={0.05}>
+              <p className="mx-auto mt-3 max-w-xl text-center text-sm text-base-content/45">
+                Real run: input in, steps on the timeline, structured outputs — nothing ships until you approve.
+              </p>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <figure className="mt-10 overflow-hidden rounded-2xl border border-base-content/10 bg-base-300/40 shadow-[0_24px_60px_rgba(0,0,0,0.35)]">
+                <div className="aspect-video w-full bg-black/90">
+                  <video
+                    className="h-full w-full object-contain"
+                    controls
+                    playsInline
+                    preload="metadata"
+                    aria-label="Nora workflow execution demo video"
+                  >
+                    <source src="/videos/nora-workflow-execution.mp4" type="video/mp4" />
+                    Your browser does not support embedded video.{' '}
+                    <a className="text-primary underline" href="/videos/nora-workflow-execution.mp4">
+                      Download the demo
+                    </a>
+                    .
+                  </video>
+                </div>
+                <figcaption className="border-t border-base-content/10 px-4 py-3 text-center text-xs text-base-content/45">
+                  Execution demo — timeline progress and packaged outputs from a Content Agent run.
+                </figcaption>
+              </figure>
             </Reveal>
           </div>
         </section>
