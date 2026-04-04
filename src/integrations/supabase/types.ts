@@ -43,34 +43,25 @@ export type Database = {
       }
       waitlist: {
         Row: {
-          biggest_pain: string | null
-          company_size: string | null
           created_at: string
           email: string
           focus_killer: string | null
           id: string
           name: string
-          role: string | null
         }
         Insert: {
-          biggest_pain?: string | null
-          company_size?: string | null
           created_at?: string
           email: string
           focus_killer?: string | null
           id?: string
           name: string
-          role?: string | null
         }
         Update: {
-          biggest_pain?: string | null
-          company_size?: string | null
           created_at?: string
           email?: string
           focus_killer?: string | null
           id?: string
           name?: string
-          role?: string | null
         }
         Relationships: []
       }
@@ -186,41 +177,12 @@ export type Database = {
         }
         Relationships: []
       }
-      nora_query_logs: {
-        Row: {
-          agent_type: string
-          created_at: string
-          id: string
-          query_text: string | null
-          user_id: string
-        }
-        Insert: {
-          agent_type?: string
-          created_at?: string
-          id?: string
-          query_text?: string | null
-          user_id: string
-        }
-        Update: {
-          agent_type?: string
-          created_at?: string
-          id?: string
-          query_text?: string | null
-          user_id?: string
-        }
-        Relationships: []
-      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      get_daily_query_count: {
-        Args: {
-          p_user_id: string
-        }
-        Returns: number
-      }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never
