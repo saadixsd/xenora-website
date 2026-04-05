@@ -9,17 +9,19 @@ const chips = [
 ];
 
 interface QuickRunInputProps {
-  contentTemplateId?: string;
+  /** Workflow template UUID — defaults to Content Agent when omitted after load */
+  templateId?: string;
+  footerNote?: string;
 }
 
-export function QuickRunInput({ contentTemplateId }: QuickRunInputProps) {
+export function QuickRunInput({ templateId, footerNote }: QuickRunInputProps) {
   const [input, setInput] = useState('');
   const navigate = useNavigate();
 
   const handleRun = () => {
-    if (!input.trim()) return;
+    if (!input.trim() || !templateId) return;
     const params = new URLSearchParams();
-    if (contentTemplateId) params.set('template', contentTemplateId);
+    params.set('template', templateId);
     params.set('input', input.trim());
     navigate(`/dashboard/run/new?${params.toString()}`);
   };
@@ -49,13 +51,13 @@ export function QuickRunInput({ contentTemplateId }: QuickRunInputProps) {
       <button
         type="button"
         onClick={handleRun}
-        disabled={!input.trim()}
+        disabled={!input.trim() || !templateId}
         className="mt-3 w-full rounded-lg bg-primary py-2.5 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
       >
         Run workflow →
       </button>
       <p className="mt-2 text-center text-[11px] text-muted-foreground">
-        Runs the Content Agent workflow — steps are visible on the run page.
+        {footerNote ?? 'Uses the selected agent template — full steps on the run page.'}
       </p>
     </div>
   );

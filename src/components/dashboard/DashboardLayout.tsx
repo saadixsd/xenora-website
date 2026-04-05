@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { DashboardSidebar } from './DashboardSidebar';
-import { Menu } from 'lucide-react';
+import { Menu, MessageCircle } from 'lucide-react';
+import { NoraChatPanel } from './NoraChatPanel';
 
 export function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [noraOpen, setNoraOpen] = useState(false);
 
   return (
     <div className="flex h-screen w-full bg-background">
-      {/* Mobile overlay */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/50 lg:hidden"
@@ -16,7 +17,6 @@ export function DashboardLayout() {
         />
       )}
 
-      {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-50 w-64 transform border-r border-border bg-card/60 backdrop-blur-xl transition-transform duration-200 lg:relative lg:z-auto lg:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
@@ -25,9 +25,7 @@ export function DashboardLayout() {
         <DashboardSidebar onClose={() => setSidebarOpen(false)} />
       </aside>
 
-      {/* Main content */}
       <div className="flex flex-1 flex-col overflow-hidden">
-        {/* Mobile header */}
         <header className="flex min-h-14 shrink-0 items-center border-b border-border px-4 py-2 lg:hidden">
           <button
             type="button"
@@ -42,11 +40,32 @@ export function DashboardLayout() {
           </span>
         </header>
 
-        {/* Page content */}
-        <main className="flex-1 overflow-y-auto">
+        <main className="relative flex-1 overflow-y-auto">
           <Outlet />
         </main>
       </div>
+
+      <button
+        type="button"
+        onClick={() => setNoraOpen(true)}
+        className="fixed bottom-5 right-5 z-[85] flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:bottom-8 lg:right-8"
+        aria-label="Ask Nora"
+      >
+        <MessageCircle className="h-6 w-6" />
+      </button>
+
+      {noraOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-[90] bg-black/50"
+            aria-hidden
+            onClick={() => setNoraOpen(false)}
+          />
+          <div className="fixed inset-y-0 right-0 z-[95] flex w-full max-w-md flex-col border-l border-border bg-background shadow-2xl">
+            <NoraChatPanel variant="sheet" onClose={() => setNoraOpen(false)} />
+          </div>
+        </>
+      )}
     </div>
   );
 }

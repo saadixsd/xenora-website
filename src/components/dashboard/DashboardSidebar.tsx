@@ -11,9 +11,9 @@ const mainNav = [
 ];
 
 const agentNav = [
-  { label: 'Content Agent', dot: 'bg-emerald-500', to: '/dashboard' },
-  { label: 'Lead Agent (beta)', dot: 'bg-amber-500', to: '/dashboard' },
-  { label: 'Research Agent (coming soon)', dot: 'bg-border', to: '/dashboard' },
+  { label: 'Content Agent', dot: 'bg-emerald-500', to: '/dashboard/agents/content' },
+  { label: 'Lead Agent (beta)', dot: 'bg-amber-500', to: '/dashboard/agents/lead' },
+  { label: 'Research Agent', dot: 'bg-teal-500', to: '/dashboard/agents/research' },
 ];
 
 const accountNav = [
@@ -90,14 +90,19 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
         <ul className="space-y-0.5">
           {agentNav.map((a) => (
             <li key={a.label}>
-              <button
-                type="button"
-                onClick={() => { navigate(a.to); onClose?.(); }}
-                className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-[13.5px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              <Link
+                to={a.to}
+                onClick={onClose}
+                className={cn(
+                  'flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-[13.5px] transition-colors',
+                  isActive(a.to)
+                    ? 'bg-primary/10 text-primary font-medium'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground',
+                )}
               >
-                <span className={cn('h-[7px] w-[7px] rounded-full', a.dot)} />
+                <span className={cn('h-[7px] w-[7px] rounded-full shrink-0', a.dot)} />
                 {a.label}
-              </button>
+              </Link>
             </li>
           ))}
         </ul>

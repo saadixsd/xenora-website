@@ -102,9 +102,11 @@ export type Database = {
       }
       workflow_runs: {
         Row: {
+          archived_at: string | null
           completed_at: string | null
           created_at: string
           current_step: string | null
+          estimated_minutes_saved: number
           goal: string | null
           id: string
           input_text: string
@@ -114,9 +116,11 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          archived_at?: string | null
           completed_at?: string | null
           created_at?: string
           current_step?: string | null
+          estimated_minutes_saved?: number
           goal?: string | null
           id?: string
           input_text: string
@@ -126,9 +130,11 @@ export type Database = {
           user_id: string
         }
         Update: {
+          archived_at?: string | null
           completed_at?: string | null
           created_at?: string
           current_step?: string | null
+          estimated_minutes_saved?: number
           goal?: string | null
           id?: string
           input_text?: string

@@ -5,16 +5,24 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 
+function csvEscape(s: string): string {
+  const t = s.replace(/"/g, '""');
+  return `"${t}"`;
+}
+
 const Settings = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [displayName, setDisplayName] = useState('');
+  const [email, setEmail] = useState('');
   const [preferredTone, setPreferredTone] = useState('professional');
   const [defaultAudience, setDefaultAudience] = useState('founders');
   const [saving, setSaving] = useState(false);
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     if (!user) return;
+    setEmail(user.email ?? '');
     supabase
       .from('profiles')
       .select('*')
@@ -32,7 +40,8 @@ const Settings = () => {
   const handleSave = async () => {
     if (!user) return;
     setSaving(true);
-    const { error } = await supabase
+
+    const { error: profileErr } = await supabase
       .from('profiles')
       .update({
         display_name: displayName,
@@ -41,21 +50,50 @@ const Settings = () => {
       })
       .eq('user_id', user.id);
 
-    if (error) {
-      toast({ title: 'Error', description: error.message, variant: 'destructive' });
+    if (profileErr) {
+      toast({ title: 'Error', description: profileErr.message, variant: 'destructive' });
+      setSaving(false);
+      return;
+    }
+
+    const trimmedEmail = email.trim();
+    const emailChanged = trimmedEmail && trimmedEmail !== user.email;
+
+    const { error: metaErr } = await supabase.auth.updateUser({
+      data: { display_name: displayName.trim() || undefined },
+      ...(emailChanged ? { email: trimmedEmail } : {}),
+    });
+
+    if (metaErr) {
+      toast({ title: 'Profile saved', description: 'Email update failed: ' + metaErr.message, variant: 'destructive' });
+      setSaving(false);
+      return;
+    }
+
+    if (emailChanged) {
+      toast({
+        title: 'Settings saved',
+        description: 'If you changed email, check your inbox to confirm the new address (Supabase may require verification).',
+      });
     } else {
       toast({ title: 'Settings saved' });
     }
     setSaving(false);
   };
 
-  const handleExport = async () => {
-    if (!user) return;
+  const fetchRunsExport = async () => {
+    if (!user) return [];
     const { data: runs } = await supabase
       .from('workflow_runs')
       .select('*, workflow_outputs(*)')
       .eq('user_id', user.id);
+    return runs ?? [];
+  };
 
+  const handleExportJson = async () => {
+    if (!user) return;
+    setExporting(true);
+    const runs = await fetchRunsExport();
     const blob = new Blob([JSON.stringify(runs, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -63,6 +101,98 @@ const Settings = () => {
     a.download = 'nora-export.json';
     a.click();
     URL.revokeObjectURL(url);
+    setExporting(false);
+  };
+
+  const handleExportCsv = async () => {
+    if (!user) return;
+    setExporting(true);
+    const runs = await fetchRunsExport();
+    const lines: string[] = [
+      ['run_id', 'created_at', 'status', 'template_id', 'input_snippet', 'output_type', 'output_content'].join(','),
+    ];
+    for (const row of runs as Record<string, unknown>[]) {
+      const rid = String(row.id);
+      const created = String(row.created_at ?? '');
+      const status = String(row.status ?? '');
+      const tid = String(row.template_id ?? '');
+      const inputSnippet = String(row.input_text ?? '').slice(0, 200);
+      const outputs = (row.workflow_outputs as Record<string, unknown>[] | undefined) ?? [];
+      if (outputs.length === 0) {
+        lines.push(
+          [rid, created, status, tid, csvEscape(inputSnippet), '', ''].join(','),
+        );
+      } else {
+        for (const o of outputs) {
+          lines.push(
+            [
+              rid,
+              created,
+              status,
+              tid,
+              csvEscape(inputSnippet),
+              csvEscape(String(o.output_type ?? '')),
+              csvEscape(String(o.content ?? '').slice(0, 5000)),
+            ].join(','),
+          );
+        }
+      }
+    }
+    const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'nora-export.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+    setExporting(false);
+    toast({ title: 'CSV downloaded' });
+  };
+
+  const handlePrintSummary = async () => {
+    if (!user) return;
+    setExporting(true);
+    const runs = await fetchRunsExport();
+    const list = runs as Record<string, unknown>[];
+    const completed = list.filter((r) => r.status === 'completed');
+    const minutes = completed.reduce((s, r) => s + Number(r.estimated_minutes_saved ?? 0), 0);
+    const lines: string[] = [
+      'Nora — data summary',
+      `Generated: ${new Date().toISOString()}`,
+      `Total runs: ${list.length}`,
+      `Completed: ${completed.length}`,
+      `Est. minutes saved (sum): ${minutes}`,
+      '',
+      '— Runs —',
+    ];
+    for (const r of list.slice(0, 80)) {
+      lines.push('');
+      lines.push(`Run ${r.id} | ${r.status} | ${r.created_at}`);
+      lines.push(String(r.input_text ?? '').slice(0, 400));
+      const outs = (r.workflow_outputs as { output_type?: string; content?: string }[] | undefined) ?? [];
+      for (const o of outs.slice(0, 12)) {
+        lines.push(`  [${o.output_type}] ${String(o.content ?? '').slice(0, 300)}`);
+      }
+    }
+    const text = lines.join('\n');
+    const w = window.open('', '_blank');
+    if (!w) {
+      toast({ title: 'Pop-up blocked', description: 'Allow pop-ups to print the summary.', variant: 'destructive' });
+      setExporting(false);
+      return;
+    }
+    w.document.write(
+      `<!DOCTYPE html><html><head><title>Nora summary</title></head><body><pre style="white-space:pre-wrap;font-family:system-ui,sans-serif;padding:1rem;">${text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')}</pre></body></html>`,
+    );
+    w.document.close();
+    w.focus();
+    w.print();
+    w.close();
+    setExporting(false);
+    toast({ title: 'Print dialog opened', description: 'Choose “Save as PDF” in the print dialog if you prefer a PDF file.' });
   };
 
   return (
@@ -84,7 +214,16 @@ const Settings = () => {
             </div>
             <div>
               <label className="mb-1.5 block text-sm text-muted-foreground">Email</label>
-              <Input value={user?.email || ''} disabled className="bg-card/50 border-border opacity-60" />
+              <Input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                autoComplete="email"
+                className="bg-card/50 border-border"
+              />
+              <p className="mt-1 text-xs text-muted-foreground">
+                Changing email may trigger a confirmation message from your auth provider.
+              </p>
             </div>
           </div>
         </div>
@@ -118,12 +257,27 @@ const Settings = () => {
           </div>
         </div>
 
+        <div className="surface-panel p-5">
+          <h2 className="text-sm font-medium text-foreground">Export</h2>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Download your workflow runs and outputs. Print summary opens a dialog where you can save as PDF.
+          </p>
+          <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+            <Button variant="outline" onClick={() => void handleExportJson()} disabled={exporting}>
+              Raw JSON
+            </Button>
+            <Button variant="outline" onClick={() => void handleExportCsv()} disabled={exporting}>
+              Download CSV
+            </Button>
+            <Button variant="outline" onClick={() => void handlePrintSummary()} disabled={exporting}>
+              Print / PDF summary
+            </Button>
+          </div>
+        </div>
+
         <div className="flex flex-col gap-3 sm:flex-row">
-          <Button onClick={handleSave} disabled={saving}>
+          <Button onClick={() => void handleSave()} disabled={saving}>
             {saving ? 'Saving...' : 'Save Settings'}
-          </Button>
-          <Button variant="outline" onClick={handleExport}>
-            Export Data
           </Button>
         </div>
       </div>

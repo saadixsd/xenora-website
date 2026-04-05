@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -7,7 +7,7 @@ import { OutputCard } from '@/components/dashboard/OutputCard';
 import { TemplateCard } from '@/components/dashboard/TemplateCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, Play } from 'lucide-react';
+import { ArrowLeft, Play, Archive, Trash2, ArchiveRestore } from 'lucide-react';
 
 interface Template {
   id: string;
@@ -19,13 +19,21 @@ interface Template {
 }
 
 interface Output {
-  id: string;
+  id?: string;
   output_type: string;
   content: string;
   position: number;
 }
 
 const WORKFLOW_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/nora-workflow`;
+
+function parseSourceUrls(raw: string): string[] {
+  return raw
+    .split(/[\n,]+/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .slice(0, 5);
+}
 
 const WorkflowRun = () => {
   const { id } = useParams();
@@ -37,15 +45,14 @@ const WorkflowRun = () => {
   const preselectedTemplate = searchParams.get('template');
   const prefilledInput = searchParams.get('input') || '';
 
-  // Wizard state
   const [wizardStep, setWizardStep] = useState(preselectedTemplate ? 1 : 0);
   const [templates, setTemplates] = useState<Template[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<string>(preselectedTemplate || '');
   const [inputText, setInputText] = useState(prefilledInput);
   const [goal, setGoal] = useState('');
   const [tone, setTone] = useState('professional');
+  const [researchUrlsRaw, setResearchUrlsRaw] = useState('');
 
-  // Run state
   const [runId, setRunId] = useState<string | null>(isNew ? null : id || null);
   const [currentStep, setCurrentStep] = useState('input_received');
   const [steps, setSteps] = useState<string[]>([]);
@@ -53,15 +60,15 @@ const WorkflowRun = () => {
   const [outputs, setOutputs] = useState<Output[]>([]);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState('');
+  const [archivedAt, setArchivedAt] = useState<string | null>(null);
+  const [lifecycleBusy, setLifecycleBusy] = useState(false);
 
-  // Load templates for wizard
   useEffect(() => {
     supabase.from('workflow_templates').select('*').order('created_at').then(({ data }) => {
       if (data) setTemplates(data as Template[]);
     });
   }, []);
 
-  // Load existing run
   const loadRun = useCallback(async (rid: string) => {
     const { data: run } = await supabase
       .from('workflow_runs')
@@ -75,18 +82,21 @@ const WorkflowRun = () => {
       setInputText(run.input_text);
       setGoal(run.goal || '');
       setTone(run.tone || 'professional');
+      setArchivedAt(run.archived_at ?? null);
       {
         const wt = run.workflow_templates as { steps?: string[] } | null;
         setSteps(Array.isArray(wt?.steps) ? wt.steps : []);
       }
 
-      if (run.status === 'completed') {
+      if (run.status === 'completed' || run.status === 'failed') {
         const { data: outs } = await supabase
           .from('workflow_outputs')
           .select('*')
           .eq('run_id', rid)
           .order('position');
-        if (outs) setOutputs(outs);
+        if (outs) setOutputs(outs as Output[]);
+      } else {
+        setOutputs([]);
       }
     }
   }, []);
@@ -95,34 +105,48 @@ const WorkflowRun = () => {
     if (runId && !isNew) loadRun(runId);
   }, [runId, isNew, loadRun]);
 
-  // Subscribe to realtime updates for the run
   useEffect(() => {
     if (!runId || isNew) return;
 
     const channel = supabase
       .channel(`run-${runId}`)
-      .on('postgres_changes', {
-        event: 'UPDATE',
-        schema: 'public',
-        table: 'workflow_runs',
-        filter: `id=eq.${runId}`,
-      }, (payload) => {
-        const updated = payload.new as { current_step?: string; status?: string };
-        setCurrentStep(updated.current_step || 'done');
-        if (typeof updated.status === 'string') setStatus(updated.status);
-        if (updated.status === 'completed') {
-          supabase
-            .from('workflow_outputs')
-            .select('*')
-            .eq('run_id', runId)
-            .order('position')
-            .then(({ data }) => { if (data) setOutputs(data); });
-        }
-      })
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'workflow_runs',
+          filter: `id=eq.${runId}`,
+        },
+        (payload) => {
+          const updated = payload.new as { current_step?: string; status?: string; archived_at?: string | null };
+          setCurrentStep(updated.current_step || 'done');
+          if (typeof updated.status === 'string') setStatus(updated.status);
+          if ('archived_at' in updated) setArchivedAt(updated.archived_at ?? null);
+          if (updated.status === 'completed') {
+            supabase
+              .from('workflow_outputs')
+              .select('*')
+              .eq('run_id', runId)
+              .order('position')
+              .then(({ data }) => {
+                if (data) setOutputs(data as Output[]);
+              });
+          }
+        },
+      )
       .subscribe();
 
-    return () => { supabase.removeChannel(channel); };
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [runId, isNew]);
+
+  const selectedTemplateName = useMemo(
+    () => templates.find((t) => t.id === selectedTemplate)?.name ?? '',
+    [templates, selectedTemplate],
+  );
+  const isResearchTemplate = selectedTemplateName.toLowerCase().includes('research');
 
   const handleSelectTemplate = (tid: string) => {
     setSelectedTemplate(tid);
@@ -138,7 +162,6 @@ const WorkflowRun = () => {
     if (template) setSteps(template.steps as string[]);
 
     try {
-      // Create the run record
       const { data: run, error: runErr } = await supabase
         .from('workflow_runs')
         .insert({
@@ -165,7 +188,8 @@ const WorkflowRun = () => {
         throw new Error('Your session expired. Sign in again.');
       }
 
-      // Edge function uses verify_jwt: user access token (not the anon key).
+      const source_urls = isResearchTemplate ? parseSourceUrls(researchUrlsRaw) : [];
+
       const resp = await fetch(WORKFLOW_URL, {
         method: 'POST',
         headers: {
@@ -178,6 +202,7 @@ const WorkflowRun = () => {
           input_text: inputText.trim(),
           goal: goal.trim() || undefined,
           tone,
+          ...(source_urls.length ? { source_urls } : {}),
         }),
       });
 
@@ -186,7 +211,6 @@ const WorkflowRun = () => {
         throw new Error(errText || `Error ${resp.status}`);
       }
 
-      // Parse SSE stream
       const reader = resp.body?.getReader();
       const decoder = new TextDecoder();
       let buffer = '';
@@ -207,16 +231,23 @@ const WorkflowRun = () => {
             if (jsonStr === '[DONE]') break;
 
             try {
-              const evt = JSON.parse(jsonStr);
+              const evt = JSON.parse(jsonStr) as {
+                step?: string;
+                status?: string;
+                outputs?: Output[];
+                error?: string;
+              };
               if (evt.step) setCurrentStep(evt.step);
               if (evt.status) setStatus(evt.status);
               if (evt.outputs) setOutputs(evt.outputs);
-            } catch { /* ignore partial */ }
+              if (evt.error) setError(evt.error);
+            } catch {
+              /* ignore partial */
+            }
           }
         }
       }
 
-      // Navigate to the run detail
       navigate(`/dashboard/run/${run.id}`, { replace: true });
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Something went wrong');
@@ -226,7 +257,32 @@ const WorkflowRun = () => {
     }
   };
 
-  // Wizard view for new runs
+  const handleArchive = async () => {
+    if (!runId || isNew) return;
+    setLifecycleBusy(true);
+    await supabase.from('workflow_runs').update({ archived_at: new Date().toISOString() }).eq('id', runId);
+    setArchivedAt(new Date().toISOString());
+    setLifecycleBusy(false);
+    navigate('/dashboard/history');
+  };
+
+  const handleUnarchive = async () => {
+    if (!runId || isNew) return;
+    setLifecycleBusy(true);
+    await supabase.from('workflow_runs').update({ archived_at: null }).eq('id', runId);
+    setArchivedAt(null);
+    setLifecycleBusy(false);
+  };
+
+  const handleDelete = async () => {
+    if (!runId || isNew) return;
+    if (!window.confirm('Delete this workflow run permanently? This cannot be undone.')) return;
+    setLifecycleBusy(true);
+    await supabase.from('workflow_runs').delete().eq('id', runId);
+    setLifecycleBusy(false);
+    navigate('/dashboard/history');
+  };
+
   if (isNew && status === 'pending') {
     return (
       <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
@@ -241,7 +297,6 @@ const WorkflowRun = () => {
 
         <h1 className="text-xl font-semibold text-foreground">New Workflow Run</h1>
 
-        {/* Step 0: Choose template */}
         {wizardStep === 0 && (
           <div className="mt-6">
             <p className="text-sm text-muted-foreground">Choose a workflow</p>
@@ -260,19 +315,40 @@ const WorkflowRun = () => {
           </div>
         )}
 
-        {/* Step 1: Input */}
         {wizardStep >= 1 && (
           <div className="mt-6 space-y-5">
             <div className="surface-panel p-5">
-              <label className="mb-2 block text-sm font-medium text-foreground">Your raw idea or thought</label>
+              <label className="mb-2 block text-sm font-medium text-foreground">
+                {isResearchTemplate ? 'Research focus & notes' : 'Your raw idea or thought'}
+              </label>
               <textarea
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                placeholder="e.g. building XenoraAI taught me most founders don't need more ideas, they need better execution loops"
+                placeholder={
+                  isResearchTemplate
+                    ? 'What you want to learn, your niche, and context (required).'
+                    : 'e.g. building XenoraAI taught me most founders don’t need more ideas, they need better execution loops'
+                }
                 rows={4}
                 className="w-full resize-none rounded-lg border border-border bg-card/50 p-3 text-sm text-foreground outline-none placeholder:text-muted-foreground/50 focus:border-primary/30"
               />
             </div>
+
+            {isResearchTemplate && (
+              <div className="surface-panel p-5">
+                <label className="mb-2 block text-sm font-medium text-foreground">Source URLs (optional, max 5)</label>
+                <p className="mb-2 text-xs text-muted-foreground">
+                  One per line. Reddit thread links are fetched server-side when possible; failures still run on your notes.
+                </p>
+                <textarea
+                  value={researchUrlsRaw}
+                  onChange={(e) => setResearchUrlsRaw(e.target.value)}
+                  placeholder="https://www.reddit.com/r/SomeSub/comments/..."
+                  rows={3}
+                  className="w-full resize-none rounded-lg border border-border bg-card/50 p-3 text-sm text-foreground outline-none placeholder:text-muted-foreground/50 focus:border-primary/30"
+                />
+              </div>
+            )}
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="surface-panel p-5">
@@ -300,9 +376,7 @@ const WorkflowRun = () => {
               </div>
             </div>
 
-            {error && (
-              <p className="text-sm text-destructive">{error}</p>
-            )}
+            {error && <p className="text-sm text-destructive">{error}</p>}
 
             <div className="flex gap-3">
               {!preselectedTemplate && (
@@ -310,11 +384,7 @@ const WorkflowRun = () => {
                   Back
                 </Button>
               )}
-              <Button
-                onClick={executeRun}
-                disabled={running || !inputText.trim()}
-                className="gap-2"
-              >
+              <Button onClick={() => void executeRun()} disabled={running || !inputText.trim()} className="gap-2">
                 <Play className="h-4 w-4" />
                 {running ? 'Running...' : 'Run workflow'}
               </Button>
@@ -325,7 +395,6 @@ const WorkflowRun = () => {
     );
   }
 
-  // Running / completed view
   return (
     <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
       <button
@@ -337,15 +406,40 @@ const WorkflowRun = () => {
         Back to Dashboard
       </button>
 
-      <h1 className="text-xl font-semibold text-foreground">Workflow Run</h1>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <h1 className="text-xl font-semibold text-foreground">Workflow Run</h1>
+        {!isNew && runId && (
+          <div className="flex flex-wrap gap-2">
+            {archivedAt ? (
+              <Button variant="outline" size="sm" disabled={lifecycleBusy} onClick={() => void handleUnarchive()} className="gap-1.5">
+                <ArchiveRestore className="h-3.5 w-3.5" />
+                Unarchive
+              </Button>
+            ) : (
+              <Button variant="outline" size="sm" disabled={lifecycleBusy} onClick={() => void handleArchive()} className="gap-1.5">
+                <Archive className="h-3.5 w-3.5" />
+                Archive
+              </Button>
+            )}
+            <Button variant="outline" size="sm" disabled={lifecycleBusy} onClick={() => void handleDelete()} className="gap-1.5 text-destructive hover:text-destructive">
+              <Trash2 className="h-3.5 w-3.5" />
+              Delete
+            </Button>
+          </div>
+        )}
+      </div>
 
-      {/* Input preview */}
+      {archivedAt && (
+        <p className="mt-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-800 dark:text-amber-200">
+          This run is archived. It is hidden from the main dashboard and history lists.
+        </p>
+      )}
+
       <div className="surface-panel mt-4 p-4">
         <p className="text-xs text-muted-foreground">Input</p>
         <p className="mt-1 text-sm text-foreground">{inputText}</p>
       </div>
 
-      {/* Timeline */}
       {steps.length > 0 && (
         <div className="mt-6">
           <h2 className="mb-3 text-sm font-medium text-foreground">Progress</h2>
@@ -355,20 +449,24 @@ const WorkflowRun = () => {
         </div>
       )}
 
-      {/* Error */}
       {error && (
         <div className="mt-4 rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-sm text-destructive">
           {error}
         </div>
       )}
 
-      {/* Outputs */}
       {outputs.length > 0 && (
         <div className="mt-6">
-          <h2 className="mb-3 text-sm font-medium text-foreground">Generated Content</h2>
+          <h2 className="mb-3 text-sm font-medium text-foreground">Outputs</h2>
           <div className="space-y-3">
-            {outputs.map((o) => (
-              <OutputCard key={o.id} type={o.output_type} content={o.content} position={o.position} />
+            {outputs.map((o, idx) => (
+              <OutputCard
+                key={o.id ?? `out-${o.position}-${idx}`}
+                id={o.id}
+                type={o.output_type}
+                content={o.content}
+                position={o.position}
+              />
             ))}
           </div>
         </div>

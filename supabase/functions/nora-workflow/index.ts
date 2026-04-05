@@ -1,7 +1,6 @@
 /**
  * Nora workflow runner (SSE). Requires verify_jwt = true in config.
- * Client must send Authorization: Bearer <user access_token> (session JWT).
- * Verifies workflow_runs row belongs to the caller before calling AI.
+ * Template-aware: Content, Lead Follow-up, Research (optional URL fetch).
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 
@@ -19,6 +18,13 @@ const RATE_WINDOW_MS = 60_000;
 const RATE_MAX = 8;
 const DAILY_MAX = 80;
 const DAY_MS = 86_400_000;
+
+const MAX_SOURCE_URLS = 5;
+const FETCH_TIMEOUT_MS = 8_000;
+const MAX_FETCH_BYTES = 120_000;
+const MAX_CONTEXT_CHARS = 24_000;
+
+const MINUTES_BY_AGENT = { content: 15, lead: 10, research: 25 } as const;
 
 function isRateLimited(userId: string): boolean {
   const now = Date.now();
@@ -47,6 +53,159 @@ function jsonRes(body: unknown, status: number): Response {
     status,
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
+}
+
+type AgentKind = "content" | "lead" | "research";
+
+function classifyTemplate(name: string): AgentKind {
+  const n = name.toLowerCase();
+  if (n.includes("lead")) return "lead";
+  if (n.includes("research")) return "research";
+  return "content";
+}
+
+function normalizeRedditJsonUrl(raw: string): string {
+  try {
+    const u = new URL(raw);
+    const host = u.hostname.replace(/^old\./, "www.");
+    if (!host.endsWith("reddit.com")) return raw;
+    let path = u.pathname.replace(/\/$/, "");
+    if (!path.endsWith(".json")) path = `${path}.json`;
+    return `https://www.reddit.com${path}`;
+  } catch {
+    return raw;
+  }
+}
+
+async function fetchUrlText(url: string): Promise<{ ok: boolean; summary: string; error?: string }> {
+  const controller = new AbortController();
+  const t = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  try {
+    const target = url.includes("reddit.com") ? normalizeRedditJsonUrl(url) : url;
+    const res = await fetch(target, {
+      signal: controller.signal,
+      headers: {
+        "User-Agent": "NoraResearchBot/1.0 (founder research; contact: support@xenora.ai)",
+        Accept: url.includes("reddit.com") ? "application/json" : "text/html, text/plain, */*",
+      },
+    });
+    clearTimeout(t);
+    if (!res.ok) {
+      return { ok: false, summary: "", error: `${target} → HTTP ${res.status}` };
+    }
+    const buf = new Uint8Array(await res.arrayBuffer());
+    const slice = buf.length > MAX_FETCH_BYTES ? buf.slice(0, MAX_FETCH_BYTES) : buf;
+    const text = new TextDecoder("utf-8", { fatal: false }).decode(slice);
+
+    if (target.endsWith(".json") || text.trimStart().startsWith("{") || text.trimStart().startsWith("[")) {
+      try {
+        const data = JSON.parse(text) as unknown;
+        const excerpt = summarizeRedditJson(data);
+        return { ok: true, summary: excerpt || text.slice(0, MAX_CONTEXT_CHARS) };
+      } catch {
+        return { ok: true, summary: text.slice(0, MAX_CONTEXT_CHARS) };
+      }
+    }
+
+    const stripped = text
+      .replace(/<script[\s\S]*?<\/script>/gi, " ")
+      .replace(/<style[\s\S]*?<\/style>/gi, " ")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    return { ok: true, summary: stripped.slice(0, MAX_CONTEXT_CHARS) };
+  } catch (e) {
+    clearTimeout(t);
+    const msg = e instanceof Error ? e.message : "fetch failed";
+    return { ok: false, summary: "", error: msg };
+  }
+}
+
+function summarizeRedditJson(data: unknown): string {
+  const lines: string[] = [];
+  const walk = (node: unknown, depth: number) => {
+    if (depth > 14 || lines.join("\n").length > MAX_CONTEXT_CHARS) return;
+    if (!node || typeof node !== "object") return;
+    const o = node as Record<string, unknown>;
+    if (typeof o.title === "string") lines.push(`Title: ${o.title}`);
+    if (typeof o.selftext === "string" && o.selftext.trim()) {
+      lines.push(`Post: ${o.selftext.slice(0, 4_000)}`);
+    }
+    if (typeof o.body === "string" && o.body.trim()) {
+      lines.push(`Comment: ${o.body.slice(0, 1_500)}`);
+    }
+    const children = (o.data as Record<string, unknown> | undefined)?.children;
+    if (Array.isArray(children)) {
+      for (const c of children.slice(0, 30)) {
+        const d = c && typeof c === "object" ? (c as Record<string, unknown>).data : null;
+        walk(d, depth + 1);
+      }
+    }
+    if (Array.isArray(node)) {
+      for (const item of node.slice(0, 5)) walk(item, depth + 1);
+    }
+  };
+  walk(data, 0);
+  return lines.join("\n").slice(0, MAX_CONTEXT_CHARS);
+}
+
+async function gatherResearchContext(
+  inputText: string,
+  urls: string[],
+): Promise<string> {
+  const notes: string[] = [`User notes:\n${inputText}`];
+  const fetchNotes: string[] = [];
+  const limited = urls.slice(0, MAX_SOURCE_URLS);
+  for (const u of limited) {
+    const trimmed = u.trim();
+    if (!trimmed) continue;
+    const r = await fetchUrlText(trimmed);
+    if (r.ok && r.summary) {
+      notes.push(`\n--- Source (${trimmed}) ---\n${r.summary}`);
+      fetchNotes.push(`OK: ${trimmed}`);
+    } else {
+      fetchNotes.push(`Failed (${trimmed}): ${r.error || "empty"}`);
+    }
+  }
+  if (fetchNotes.length) {
+    notes.push(`\n--- Fetch log ---\n${fetchNotes.join("\n")}`);
+  }
+  let combined = notes.join("\n");
+  if (combined.length > MAX_CONTEXT_CHARS) {
+    combined = combined.slice(0, MAX_CONTEXT_CHARS) + "\n[…truncated…]";
+  }
+  return combined;
+}
+
+async function callLovable(
+  apiKey: string,
+  systemPrompt: string,
+  userContent: string,
+): Promise<string> {
+  const aiResp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: "google/gemini-3-flash-preview",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userContent },
+      ],
+    }),
+  });
+  if (!aiResp.ok) {
+    const errText = await aiResp.text();
+    console.error("AI error:", aiResp.status, errText);
+    const err = new Error(`AI gateway error: ${aiResp.status}`) as Error & { httpStatus?: number };
+    err.httpStatus = aiResp.status;
+    throw err;
+  }
+  const aiData = await aiResp.json();
+  let rawContent = aiData.choices?.[0]?.message?.content || "";
+  return rawContent.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
 }
 
 Deno.serve(async (req) => {
@@ -94,7 +253,13 @@ Deno.serve(async (req) => {
     );
   }
 
-  let body: { run_id?: string; input_text?: string; goal?: string; tone?: string };
+  let body: {
+    run_id?: string;
+    input_text?: string;
+    goal?: string;
+    tone?: string;
+    source_urls?: string[];
+  };
   try {
     body = await req.json();
   } catch {
@@ -107,9 +272,13 @@ Deno.serve(async (req) => {
     return jsonRes({ error: "run_id and input_text required" }, 400);
   }
 
+  const sourceUrls = Array.isArray(body.source_urls)
+    ? body.source_urls.filter((u): u is string => typeof u === "string")
+    : [];
+
   const { data: run, error: runErr } = await supabaseUser
     .from("workflow_runs")
-    .select("id, user_id, status")
+    .select("id, user_id, status, template_id")
     .eq("id", runId)
     .single();
 
@@ -120,6 +289,15 @@ Deno.serve(async (req) => {
   if (run.status !== "running") {
     return jsonRes({ error: "Run is not in a runnable state" }, 400);
   }
+
+  const { data: templateRow } = await supabaseUser
+    .from("workflow_templates")
+    .select("name")
+    .eq("id", run.template_id)
+    .single();
+
+  const templateName = templateRow?.name || "Content Agent";
+  const agentKind = classifyTemplate(templateName);
 
   const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
   const goal = typeof body.goal === "string" ? body.goal.trim() : "";
@@ -140,16 +318,32 @@ Deno.serve(async (req) => {
           .eq("id", runId);
       };
 
+      const minutesSaved = MINUTES_BY_AGENT[agentKind];
+
       try {
         await updateStep("input_received");
-        await new Promise((r) => setTimeout(r, 600));
+        await new Promise((r) => setTimeout(r, 400));
 
-        await updateStep("classifying");
-        await new Promise((r) => setTimeout(r, 800));
+        let userContent = inputText;
+
+        if (agentKind === "research") {
+          await updateStep("researching");
+          await new Promise((r) => setTimeout(r, 500));
+          userContent = await gatherResearchContext(inputText, sourceUrls);
+          await updateStep("analyzing");
+          await new Promise((r) => setTimeout(r, 400));
+        } else {
+          await updateStep("classifying");
+          await new Promise((r) => setTimeout(r, 500));
+        }
 
         await updateStep("generating");
 
-        const systemPrompt = `You are Nora, XenoraAI's content agent for founders. Generate content from the user's raw thought.
+        let systemPrompt: string;
+        let outputRows: Array<{ run_id: string; output_type: string; content: string; position: number }>;
+
+        if (agentKind === "content") {
+          systemPrompt = `You are Nora, XenoraAI's content agent for founders. Generate content from the user's raw thought.
 
 Output EXACTLY this JSON structure (no markdown, no code fences):
 {
@@ -164,64 +358,101 @@ ${goal ? `Goal: ${goal}` : ""}
 Target audience: solo founders, indie hackers, creators building in public.
 Be direct, sharp, no fluff, no emojis.`;
 
-        const aiResp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${LOVABLE_API_KEY}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            model: "google/gemini-3-flash-preview",
-            messages: [
-              { role: "system", content: systemPrompt },
-              { role: "user", content: inputText },
-            ],
-          }),
-        });
-
-        if (!aiResp.ok) {
-          const errText = await aiResp.text();
-          console.error("AI error:", aiResp.status, errText);
-          if (aiResp.status === 429) {
-            emit({ error: "Rate limited. Please try again later.", status: "failed" });
-            await supabaseAdmin.from("workflow_runs").update({ status: "failed" }).eq("id", runId);
-            controller.close();
-            return;
+          const rawContent = await callLovable(LOVABLE_API_KEY, systemPrompt, userContent);
+          let parsed: { x_post: string; hooks: string[]; linkedin_post: string; cta: string };
+          try {
+            parsed = JSON.parse(rawContent);
+          } catch {
+            throw new Error("Failed to parse AI response as JSON");
           }
-          if (aiResp.status === 402) {
-            emit({ error: "AI credits exhausted. Please try again later.", status: "failed" });
-            await supabaseAdmin.from("workflow_runs").update({ status: "failed" }).eq("id", runId);
-            controller.close();
-            return;
+          outputRows = [
+            { run_id: runId, output_type: "x_post", content: parsed.x_post, position: 0 },
+            ...parsed.hooks.map((h: string, i: number) => ({
+              run_id: runId,
+              output_type: "hook",
+              content: h,
+              position: i + 1,
+            })),
+            { run_id: runId, output_type: "linkedin_post", content: parsed.linkedin_post, position: 4 },
+            { run_id: runId, output_type: "cta", content: parsed.cta, position: 5 },
+          ];
+        } else if (agentKind === "lead") {
+          systemPrompt = `You are Nora's Lead Follow-up agent. From meeting notes, inbound message, or lead context, produce actionable sales follow-up. The user approves before anything is sent.
+
+Output EXACTLY this JSON (no markdown, no code fences):
+{
+  "lead_summary": "2-4 sentences: who they are, intent, stage",
+  "score_rationale": "Why this lead is warm/cold and what signals matter",
+  "reply_draft": "A concise first reply email or DM (professional, ${tone})",
+  "follow_up_48h": "What to send ~48h later if they go quiet",
+  "objections_to_watch": "Bullet-style string: likely objections and how to handle"
+}
+${goal ? `Goal: ${goal}` : ""}
+Be specific to the user's input. No placeholders like [Name] unless truly unknown — use "there" or omit.`;
+
+          const rawContent = await callLovable(LOVABLE_API_KEY, systemPrompt, userContent);
+          let parsed: {
+            lead_summary: string;
+            score_rationale: string;
+            reply_draft: string;
+            follow_up_48h: string;
+            objections_to_watch: string;
+          };
+          try {
+            parsed = JSON.parse(rawContent);
+          } catch {
+            throw new Error("Failed to parse AI response as JSON");
           }
-          throw new Error(`AI gateway error: ${aiResp.status}`);
-        }
+          outputRows = [
+            { run_id: runId, output_type: "lead_summary", content: parsed.lead_summary, position: 0 },
+            { run_id: runId, output_type: "score_rationale", content: parsed.score_rationale, position: 1 },
+            { run_id: runId, output_type: "lead_reply_draft", content: parsed.reply_draft, position: 2 },
+            { run_id: runId, output_type: "follow_up_48h", content: parsed.follow_up_48h, position: 3 },
+            { run_id: runId, output_type: "objections_to_watch", content: parsed.objections_to_watch, position: 4 },
+          ];
+        } else {
+          systemPrompt = `You are Nora's Research agent. You receive user notes and optional fetched thread/page text (may be partial). Extract pain signals, content angles, and relevance for a founder building in public.
 
-        const aiData = await aiResp.json();
-        let rawContent = aiData.choices?.[0]?.message?.content || "";
-        rawContent = rawContent.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+Output EXACTLY this JSON (no markdown, no code fences):
+{
+  "pain_signals": "Markdown bullet list of distinct pain signals",
+  "content_angles": "Markdown bullet list of hooks or post angles",
+  "quotes_evidence": "Short quotes or paraphrases tied to evidence (or say what was missing)",
+  "relevance_score_rationale": "2-4 sentences: how relevant this is to the user's stated goal and why",
+  "caveats": "Gaps, bias, or fetch failures the user should know"
+}
+${goal ? `User goal: ${goal}` : ""}
+If sources failed or are thin, say so in caveats and still infer carefully from user notes.`;
 
-        let parsed: { x_post: string; hooks: string[]; linkedin_post: string; cta: string };
-        try {
-          parsed = JSON.parse(rawContent);
-        } catch {
-          throw new Error("Failed to parse AI response as JSON");
+          const rawContent = await callLovable(LOVABLE_API_KEY, systemPrompt, userContent);
+          let parsed: {
+            pain_signals: string;
+            content_angles: string;
+            quotes_evidence: string;
+            relevance_score_rationale: string;
+            caveats: string;
+          };
+          try {
+            parsed = JSON.parse(rawContent);
+          } catch {
+            throw new Error("Failed to parse AI response as JSON");
+          }
+          outputRows = [
+            { run_id: runId, output_type: "pain_signals", content: parsed.pain_signals, position: 0 },
+            { run_id: runId, output_type: "content_angles", content: parsed.content_angles, position: 1 },
+            { run_id: runId, output_type: "quotes_evidence", content: parsed.quotes_evidence, position: 2 },
+            {
+              run_id: runId,
+              output_type: "relevance_rationale",
+              content: parsed.relevance_score_rationale,
+              position: 3,
+            },
+            { run_id: runId, output_type: "research_caveats", content: parsed.caveats, position: 4 },
+          ];
         }
 
         await updateStep("formatting");
-        await new Promise((r) => setTimeout(r, 500));
-
-        const outputRows = [
-          { run_id: runId, output_type: "x_post", content: parsed.x_post, position: 0 },
-          ...parsed.hooks.map((h: string, i: number) => ({
-            run_id: runId,
-            output_type: "hook",
-            content: h,
-            position: i + 1,
-          })),
-          { run_id: runId, output_type: "linkedin_post", content: parsed.linkedin_post, position: 4 },
-          { run_id: runId, output_type: "cta", content: parsed.cta, position: 5 },
-        ];
+        await new Promise((r) => setTimeout(r, 400));
 
         await supabaseAdmin.from("workflow_outputs").insert(outputRows);
 
@@ -231,6 +462,7 @@ Be direct, sharp, no fluff, no emojis.`;
             current_step: "done",
             status: "completed",
             completed_at: new Date().toISOString(),
+            estimated_minutes_saved: minutesSaved,
           })
           .eq("id", runId);
 
@@ -238,8 +470,15 @@ Be direct, sharp, no fluff, no emojis.`;
         emit({ done: true });
       } catch (e) {
         console.error("Workflow error:", e);
+        const httpStatus = (e as { httpStatus?: number }).httpStatus;
+        let message = e instanceof Error ? e.message : "Unknown error";
+        if (httpStatus === 429) {
+          message = "Rate limited. Please try again later.";
+        } else if (httpStatus === 402) {
+          message = "AI credits exhausted. Please try again later.";
+        }
         await supabaseAdmin.from("workflow_runs").update({ status: "failed" }).eq("id", runId);
-        emit({ error: e instanceof Error ? e.message : "Unknown error", status: "failed" });
+        emit({ error: message, status: "failed" });
       }
 
       controller.close();

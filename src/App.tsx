@@ -19,6 +19,8 @@ import Dashboard from "./pages/Dashboard.tsx";
 import WorkflowRun from "./pages/WorkflowRun.tsx";
 import History from "./pages/History.tsx";
 import Settings from "./pages/Settings.tsx";
+import AgentWorkspacePage from "./pages/AgentWorkspacePage.tsx";
+import AgentsManagePage from "./pages/AgentsManagePage.tsx";
 const App = () => (
   <ThemeProvider>
     <TooltipProvider>
@@ -57,6 +59,8 @@ const App = () => (
             <Route path="run/:id" element={<WorkflowRun />} />
             <Route path="history" element={<History />} />
             <Route path="settings" element={<Settings />} />
+            <Route path="agents/manage" element={<AgentsManagePage />} />
+            <Route path="agents/:slug" element={<AgentWorkspacePage />} />
           </Route>
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
