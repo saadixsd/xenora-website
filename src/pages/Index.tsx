@@ -123,7 +123,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-4 max-w-2xl text-sm text-base-content/65 leading-relaxed sm:mt-6 sm:text-base lg:text-lg">
-                Nora is XenoraAI&apos;s workflow engine — not a chatbot, not Zapier. Drop a rough idea and get back posts ready to publish, with every step visible. You approve before anything goes out.
+                Nora is XenoraAI&apos;s workflow engine — not a chatbot, not a generic tool. Drop a rough idea and get back posts ready to publish, with every step visible. You approve before anything goes out.
               </p>
             </Reveal>
 

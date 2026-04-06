@@ -524,6 +524,16 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
 
       {chatActive && (
         <div className="flex min-h-0 flex-1 flex-col">
+          <div className="flex shrink-0 items-center justify-between border-b border-border px-4 py-1.5 sm:px-6">
+            <span className="text-[10px] text-muted-foreground">
+              {remaining !== null && remaining > 0
+                ? `${remaining} ${remaining === 1 ? 'query' : 'queries'} left`
+                : remaining === 0
+                  ? 'No queries left today'
+                  : ''}
+            </span>
+            {kindToggle}
+          </div>
           {lastError && (
             <div className="shrink-0 border-b border-destructive/20 bg-destructive/5 px-4 py-2 text-center text-xs text-destructive">
               {lastError}
