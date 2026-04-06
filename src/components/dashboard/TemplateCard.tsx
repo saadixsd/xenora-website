@@ -7,6 +7,17 @@ const iconMap: Record<string, LucideIcon> = {
   Mail,
 };
 
+/** Built-in agents stay runnable even if the remote DB still has status coming_soon (migration not applied). */
+export function isWorkflowTemplateSelectable(name: string, status: string): boolean {
+  if (status === 'active') return true;
+  const n = name.trim().toLowerCase();
+  return (
+    n === 'content agent' ||
+    n === 'research agent' ||
+    n === 'lead follow-up agent'
+  );
+}
+
 interface TemplateCardProps {
   name: string;
   description: string;
@@ -17,7 +28,7 @@ interface TemplateCardProps {
 
 export function TemplateCard({ name, description, icon, status, onSelect }: TemplateCardProps) {
   const Icon = iconMap[icon] || PenLine;
-  const isActive = status === 'active';
+  const isActive = isWorkflowTemplateSelectable(name, status);
 
   return (
     <button
@@ -34,6 +45,11 @@ export function TemplateCard({ name, description, icon, status, onSelect }: Temp
       {!isActive && (
         <span className="absolute right-3 top-3 rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
           Coming soon
+        </span>
+      )}
+      {isActive && status !== 'active' && (
+        <span className="absolute right-3 top-3 rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
+          Live
         </span>
       )}
       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">

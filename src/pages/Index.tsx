@@ -30,9 +30,9 @@ const agents = [
   },
   {
     icon: Search, name: 'Research Agent',
-    body: 'Point Nora at Reddit, comments, or a niche. Pain signals, content angles, and offer ideas from real conversations.',
-    outputs: ['Pain signals', 'Content ideas', 'Offer angles'],
-    tag: 'Coming soon', active: false,
+    body: 'Your notes plus optional public URLs (e.g. Reddit). Nora fetches when it can and returns pain signals, angles, and relevance — with caveats when sources fail.',
+    outputs: ['Pain signals', 'Content angles', 'Relevance notes'],
+    tag: 'Live', active: true,
   },
 ];
 
@@ -251,7 +251,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.03}>
               <h2 className="premium-heading mt-3 text-center text-2xl font-medium sm:text-3xl">
-                Content live. Lead in beta. Research next.
+                Content, Lead, and Research — live in the dashboard.
               </h2>
             </Reveal>
 
@@ -286,7 +286,7 @@ const Index = () => {
                   onClick={() => scrollToSection('waitlist')}
                   className="inline-flex items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-primary/80"
                 >
-                  Try the Content Agent free
+                  Try Nora free — all three agents
                   <ArrowRight className="h-3.5 w-3.5" />
                 </button>
               </div>

@@ -44,12 +44,13 @@ const WorkflowRun = () => {
   const isNew = id === 'new';
   const preselectedTemplate = searchParams.get('template');
   const prefilledInput = searchParams.get('input') || '';
+  const prefilledGoal = searchParams.get('goal') || '';
 
   const [wizardStep, setWizardStep] = useState(preselectedTemplate ? 1 : 0);
   const [templates, setTemplates] = useState<Template[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<string>(preselectedTemplate || '');
   const [inputText, setInputText] = useState(prefilledInput);
-  const [goal, setGoal] = useState('');
+  const [goal, setGoal] = useState(prefilledGoal);
   const [tone, setTone] = useState('professional');
   const [researchUrlsRaw, setResearchUrlsRaw] = useState('');
 

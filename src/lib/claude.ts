@@ -46,11 +46,17 @@ export async function checkClaudeBackend(accessToken: string | undefined): Promi
   }
 }
 
+export type NoraChatKind = 'general' | 'agent_builder';
+
 export async function sendClaudeChat(params: {
   messages: ChatMessage[];
   accessToken: string;
+  /** When agent_builder, Nora runs the structured interview and can emit a deployable agent spec. */
+  mode?: NoraChatKind;
 }): Promise<ClaudeChatSuccess> {
-  const msgs = params.messages.filter((m) => m.role === 'user' || m.role === 'assistant');
+  const msgs = params.messages
+    .filter((m) => m.role === 'user' || m.role === 'assistant')
+    .map((m) => ({ role: m.role, content: m.content }));
 
   const res = await fetch(`${EDGE_FN_BASE}/claude`, {
     method: 'POST',
@@ -59,7 +65,8 @@ export async function sendClaudeChat(params: {
       Authorization: `Bearer ${params.accessToken}`,
     },
     body: JSON.stringify({
-      messages: msgs.map((m) => ({ role: m.role, content: m.content })),
+      messages: msgs,
+      ...(params.mode === 'agent_builder' ? { mode: 'agent_builder' } : {}),
     }),
   });
 

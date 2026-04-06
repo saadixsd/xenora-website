@@ -1,21 +1,32 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { Send, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { checkClaudeBackend, sendClaudeChat, DailyQueryLimitError, type ChatMessage } from '@/lib/claude';
+import { useToast } from '@/hooks/use-toast';
+import {
+  checkClaudeBackend,
+  sendClaudeChat,
+  DailyQueryLimitError,
+  type ChatMessage,
+  type NoraChatKind,
+} from '@/lib/claude';
+import { extractNoraAgentSpec, type NoraAgentSpec } from '@/lib/noraAgentSpec';
 import { cn } from '@/lib/utils';
 
 const DAILY_LIMIT = 3;
+const MAX_STORE_CHARS = 30_000;
 
-const SUGGESTIONS = [
+const SUGGESTIONS_GENERAL = [
   { label: 'Content Agent', text: 'How does the Content Agent work?' },
   { label: 'Lead handling', text: 'What does Nora do with my leads?' },
+  { label: 'Research', text: 'How does the Research Agent use URLs and Reddit?' },
   { label: 'vs Zapier', text: 'How is this different from Zapier?' },
-  { label: 'Research Agent', text: "What's the Research Agent?" },
-  { label: 'Getting started', text: 'How do I get started?' },
 ];
+
+const AGENT_BUILDER_START =
+  "I want to design a custom agent for my workflow. Start the interview — ask your first specific question about my product and audience.";
 
 export type NoraChatPanelVariant = 'page' | 'sheet';
 
@@ -27,6 +38,13 @@ interface NoraChatPanelProps {
 export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps) {
   const { user, session } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { toast } = useToast();
+
+  const [chatKind, setChatKind] = useState<NoraChatKind>(() =>
+    searchParams.get('mode') === 'builder' ? 'agent_builder' : 'general',
+  );
+  const [sessionId, setSessionId] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
@@ -36,6 +54,9 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   const [queriesUsedToday, setQueriesUsedToday] = useState<number | null>(null);
   const [dailyLimitReached, setDailyLimitReached] = useState(false);
   const [sessionExpired, setSessionExpired] = useState(false);
+  const [deployedKeys, setDeployedKeys] = useState<Record<string, true>>({});
+  const [deployingKey, setDeployingKey] = useState<string | null>(null);
+
   const transcriptRef = useRef<HTMLDivElement>(null);
   const typingTimerRef = useRef<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -57,9 +78,55 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
     }
   }, [user?.id]);
 
+  const loadThreadForKind = useCallback(
+    async (kind: NoraChatKind) => {
+      if (!user?.id) {
+        setSessionId(null);
+        setMessages([]);
+        return;
+      }
+      const { data: sess } = await supabase
+        .from('nora_chat_sessions')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('chat_kind', kind)
+        .order('updated_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (!sess?.id) {
+        setSessionId(null);
+        setMessages([]);
+        return;
+      }
+
+      setSessionId(sess.id);
+      const { data: rows } = await supabase
+        .from('nora_chat_messages')
+        .select('role, content')
+        .eq('session_id', sess.id)
+        .order('created_at', { ascending: true })
+        .limit(120);
+
+      const loaded: ChatMessage[] = (rows ?? [])
+        .filter((r) => r.role === 'user' || r.role === 'assistant')
+        .map((r) => ({ role: r.role as 'user' | 'assistant', content: r.content }));
+      setMessages(loaded);
+    },
+    [user?.id],
+  );
+
+  useEffect(() => {
+    if (searchParams.get('mode') === 'builder') setChatKind('agent_builder');
+  }, [searchParams]);
+
   useEffect(() => {
     void loadQueryCount();
   }, [loadQueryCount]);
+
+  useEffect(() => {
+    void loadThreadForKind(chatKind);
+  }, [chatKind, loadThreadForKind]);
 
   const refreshConnection = useCallback(async () => {
     setBackendOk(null);
@@ -85,6 +152,27 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       }
     };
   }, []);
+
+  const touchSession = async (sid: string) => {
+    await supabase.from('nora_chat_sessions').update({ updated_at: new Date().toISOString() }).eq('id', sid);
+  };
+
+  const ensureSession = async (kind: NoraChatKind): Promise<string> => {
+    if (!user?.id) throw new Error('Not signed in');
+    if (sessionId) return sessionId;
+    const { data, error } = await supabase
+      .from('nora_chat_sessions')
+      .insert({
+        user_id: user.id,
+        chat_kind: kind,
+        title: kind === 'agent_builder' ? 'Agent builder' : 'Chat',
+      })
+      .select('id')
+      .single();
+    if (error || !data?.id) throw new Error(error?.message || 'Could not start chat session');
+    setSessionId(data.id);
+    return data.id;
+  };
 
   const animateAssistantReply = (reply: string) =>
     new Promise<void>((resolve) => {
@@ -136,13 +224,45 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
     setInput('');
     setSending(true);
 
+    let sid: string | null = null;
+    let insertedUserRowId: string | null = null;
+
     try {
-      const result = await sendClaudeChat({ messages: nextHistory, accessToken: t });
+      sid = await ensureSession(chatKind);
+
+      const ins = await supabase
+        .from('nora_chat_messages')
+        .insert({
+          session_id: sid,
+          role: 'user',
+          content: trimmed.slice(0, MAX_STORE_CHARS),
+        })
+        .select('id')
+        .single();
+      if (ins.data?.id) insertedUserRowId = ins.data.id;
+      await touchSession(sid);
+
+      const apiSlice = nextHistory.slice(-28);
+      const result = await sendClaudeChat({
+        messages: apiSlice,
+        accessToken: t,
+        mode: chatKind === 'agent_builder' ? 'agent_builder' : undefined,
+      });
       setQueriesUsedToday(result.queries_used);
       if (result.queries_remaining <= 0) setDailyLimitReached(true);
       await animateAssistantReply(result.content);
+
+      await supabase.from('nora_chat_messages').insert({
+        session_id: sid,
+        role: 'assistant',
+        content: result.content.slice(0, MAX_STORE_CHARS),
+      });
+      await touchSession(sid);
       setBackendOk(true);
     } catch (e) {
+      if (insertedUserRowId) {
+        await supabase.from('nora_chat_messages').delete().eq('id', insertedUserRowId);
+      }
       if (e instanceof DailyQueryLimitError) {
         setDailyLimitReached(true);
         setQueriesUsedToday(e.queries_used);
@@ -175,6 +295,56 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
     }
   };
 
+  const startNewThread = async () => {
+    if (!user?.id) return;
+    if (messages.length > 0) {
+      if (!window.confirm('Start a new conversation? Your previous thread stays saved.')) return;
+    }
+    const { data, error } = await supabase
+      .from('nora_chat_sessions')
+      .insert({
+        user_id: user.id,
+        chat_kind: chatKind,
+        title: chatKind === 'agent_builder' ? 'Agent builder' : 'Chat',
+      })
+      .select('id')
+      .single();
+    if (error || !data?.id) {
+      toast({ title: 'Could not start chat', description: error?.message, variant: 'destructive' });
+      return;
+    }
+    setSessionId(data.id);
+    setMessages([]);
+    setDeployedKeys({});
+    toast({ title: 'New conversation started' });
+  };
+
+  const deployAgent = async (spec: NoraAgentSpec, key: string) => {
+    if (!user?.id) return;
+    setDeployingKey(key);
+    const { error } = await supabase.from('user_custom_agents').insert({
+      user_id: user.id,
+      name: spec.name.slice(0, 120),
+      mission: spec.mission.slice(0, 4000),
+      target_user: spec.target_user.slice(0, 2000) || null,
+      raw_inputs: spec.raw_inputs.slice(0, 4000) || null,
+      output_deliverables: spec.output_deliverables.slice(0, 4000) || null,
+      guardrails: spec.guardrails.slice(0, 4000) || null,
+      interview_summary: spec.interview_summary.slice(0, 8000) || null,
+      starter_prompt: spec.starter_prompt.slice(0, 4000) || null,
+    });
+    setDeployingKey(null);
+    if (error) {
+      toast({ title: 'Deploy failed', description: error.message, variant: 'destructive' });
+      return;
+    }
+    setDeployedKeys((p) => ({ ...p, [key]: true }));
+    toast({
+      title: 'Agent deployed',
+      description: `${spec.name} is saved. Open Manage agents to run it with the Content workflow.`,
+    });
+  };
+
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     void send(input);
@@ -201,6 +371,36 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
     variant === 'page'
       ? { touchAction: 'manipulation' as const, maxHeight: 'calc(100dvh - 3.5rem)' }
       : { touchAction: 'manipulation' as const };
+
+  const kindToggle = (
+    <div className="flex flex-wrap items-center justify-center gap-2 px-4 pb-2 sm:px-6">
+      <span className="text-[10px] uppercase tracking-wide text-muted-foreground">Mode</span>
+      <div className="flex rounded-lg border border-border bg-muted/40 p-0.5">
+        {(['general', 'agent_builder'] as const).map((k) => (
+          <button
+            key={k}
+            type="button"
+            onClick={() => setChatKind(k)}
+            className={cn(
+              'rounded-md px-3 py-1.5 text-[11px] font-medium transition-colors',
+              chatKind === k ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground',
+            )}
+          >
+            {k === 'general' ? 'General' : 'Build agent'}
+          </button>
+        ))}
+      </div>
+      {chatActive && (
+        <button
+          type="button"
+          onClick={() => void startNewThread()}
+          className="text-[11px] font-medium text-primary hover:underline"
+        >
+          New chat
+        </button>
+      )}
+    </div>
+  );
 
   return (
     <div className={outerClass} style={maxHeightStyle}>
@@ -248,19 +448,25 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
         )}
       </div>
 
+      {kindToggle}
+
       {!chatActive && (
         <div className="flex flex-1 flex-col items-center justify-center overflow-y-auto px-4 pb-8 pt-4">
           {variant === 'page' && (
             <>
               <h1 className="text-center font-dm-serif text-xl text-foreground sm:text-2xl">Ask Nora</h1>
               <p className="mt-2 max-w-md text-center text-sm text-muted-foreground">
-                Founder workflows, agents, and how Nora fits your stack.
+                {chatKind === 'agent_builder'
+                  ? 'Nora will interview you with sharp, specific questions, then you can deploy a saved agent to your workspace.'
+                  : 'Founder workflows, agents, and how Nora fits your stack. Your conversations are saved per mode.'}
               </p>
             </>
           )}
           {variant === 'sheet' && (
             <p className="mb-4 max-w-md text-center text-sm text-muted-foreground">
-              Ask about workflows, agents, or your runs — same limits as the full page.
+              {chatKind === 'agent_builder'
+                ? 'Agent builder mode — saved threads resume when you return.'
+                : 'Signed-in chat with history. Same daily limits as the full page.'}
             </p>
           )}
 
@@ -274,7 +480,11 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
                 ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about workflows, agents, or getting started..."
+                placeholder={
+                  chatKind === 'agent_builder'
+                    ? 'Or tap “Start agent interview” below…'
+                    : 'Ask about workflows, agents, or getting started...'
+                }
                 autoComplete="off"
                 autoCorrect="off"
                 className="min-h-[44px] flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground"
@@ -295,17 +505,28 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
           </form>
 
           <div className="mt-4 flex flex-wrap justify-center gap-2">
-            {SUGGESTIONS.map((s) => (
+            {chatKind === 'general' &&
+              SUGGESTIONS_GENERAL.map((s) => (
+                <button
+                  key={s.label}
+                  type="button"
+                  onClick={() => void send(s.text)}
+                  disabled={inputDisabled}
+                  className="min-h-[44px] rounded-full border border-border bg-muted/40 px-3.5 py-2 text-sm text-muted-foreground transition-colors hover:border-primary/25 hover:text-foreground disabled:opacity-40"
+                >
+                  {s.label}
+                </button>
+              ))}
+            {chatKind === 'agent_builder' && (
               <button
-                key={s.label}
                 type="button"
-                onClick={() => void send(s.text)}
+                onClick={() => void send(AGENT_BUILDER_START)}
                 disabled={inputDisabled}
-                className="min-h-[44px] rounded-full border border-border bg-muted/40 px-3.5 py-2 text-sm text-muted-foreground transition-colors hover:border-primary/25 hover:text-foreground disabled:opacity-40"
+                className="min-h-[44px] rounded-full border border-primary/40 bg-primary/10 px-3.5 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/15 disabled:opacity-40"
               >
-                {s.label}
+                Start agent interview
               </button>
-            ))}
+            )}
           </div>
         </div>
       )}
@@ -323,27 +544,47 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
             className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain px-4 py-4 sm:px-6"
           >
             <div className="mx-auto max-w-2xl space-y-5">
-              {messages.map((m, i) => (
-                <div key={`${i}-${m.role}`} className={cn('flex flex-col gap-1', m.role === 'user' ? 'items-end' : 'items-start')}>
-                  <span className="px-1 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
-                    {m.role === 'user' ? 'You' : 'Nora'}
-                  </span>
-                  <div
-                    className={cn(
-                      'max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[80%]',
-                      m.role === 'user' ? 'bg-primary/15 text-foreground' : 'bg-muted/80 text-foreground',
-                    )}
-                  >
-                    {m.role === 'assistant' ? (
-                      <div className="prose prose-sm dark:prose-invert max-w-none prose-p:my-1.5 prose-ul:my-1.5 prose-li:my-0.5 prose-strong:text-foreground prose-a:text-primary prose-headings:text-foreground">
-                        <ReactMarkdown>{m.content}</ReactMarkdown>
+              {messages.map((m, i) => {
+                const spec = m.role === 'assistant' ? extractNoraAgentSpec(m.content) : null;
+                const deployKey = `${i}-${spec?.name ?? ''}`;
+                return (
+                  <div key={`${i}-${m.role}`} className={cn('flex flex-col gap-1', m.role === 'user' ? 'items-end' : 'items-start')}>
+                    <span className="px-1 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+                      {m.role === 'user' ? 'You' : 'Nora'}
+                    </span>
+                    <div
+                      className={cn(
+                        'max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[80%]',
+                        m.role === 'user' ? 'bg-primary/15 text-foreground' : 'bg-muted/80 text-foreground',
+                      )}
+                    >
+                      {m.role === 'assistant' ? (
+                        <div className="prose prose-sm dark:prose-invert max-w-none prose-p:my-1.5 prose-ul:my-1.5 prose-li:my-0.5 prose-strong:text-foreground prose-a:text-primary prose-headings:text-foreground">
+                          <ReactMarkdown>{m.content}</ReactMarkdown>
+                        </div>
+                      ) : (
+                        m.content
+                      )}
+                    </div>
+                    {spec && chatKind === 'agent_builder' && (
+                      <div className="max-w-[88%] pl-1 sm:max-w-[80%]">
+                        {!deployedKeys[deployKey] ? (
+                          <button
+                            type="button"
+                            disabled={deployingKey === deployKey}
+                            onClick={() => void deployAgent(spec, deployKey)}
+                            className="mt-1 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:opacity-90 disabled:opacity-50"
+                          >
+                            {deployingKey === deployKey ? 'Deploying…' : `Deploy “${spec.name}”`}
+                          </button>
+                        ) : (
+                          <p className="mt-1 text-[11px] text-primary">Deployed — see Manage agents</p>
+                        )}
                       </div>
-                    ) : (
-                      m.content
                     )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
 
               {sending && !typingReply && (
                 <div className="flex flex-col gap-1 items-start" aria-live="polite" aria-label="Nora is typing">
