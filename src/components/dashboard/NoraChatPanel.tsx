@@ -365,7 +365,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
 
   const outerClass =
     variant === 'page'
-      ? 'flex min-h-0 flex-1 flex-col bg-background'
+      ? 'flex h-full min-h-0 flex-1 flex-col bg-background'
       : 'flex h-full min-h-0 flex-1 flex-col bg-background';
 
   const maxHeightStyle =
