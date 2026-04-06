@@ -65,7 +65,7 @@ export default function AgentWorkspacePage() {
       .select('id, input_text, status, created_at')
       .eq('user_id', user.id)
       .eq('template_id', templateId)
-      .is('archived_at', null)
+      .is('archived_at' as any, null)
       .order('created_at', { ascending: false })
       .limit(8)
       .then(({ data }) => {
