@@ -67,7 +67,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
 
   const loadQueryCount = useCallback(async () => {
     if (!user?.id) return;
-    const { data, error } = await supabase.rpc('get_daily_query_count', { p_user_id: user.id });
+    const { data, error } = await supabase.rpc('get_daily_query_count' as any, { p_user_id: user.id });
     if (error) {
       console.error(error);
       return;
