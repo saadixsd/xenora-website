@@ -82,7 +82,7 @@ const Dashboard = () => {
         .from('workflow_runs')
         .select('id, input_text, status, created_at, estimated_minutes_saved, workflow_templates(name)')
         .eq('user_id', user.id)
-        .is('archived_at', null)
+        .is('archived_at' as any, null)
         .order('created_at', { ascending: false })
         .limit(10),
       supabase
