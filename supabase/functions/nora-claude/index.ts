@@ -211,10 +211,12 @@ Deno.serve(async (req) => {
   const userClient = createClient(supabaseUrl, anonKey, {
     global: { headers: { Authorization: authHeader } },
   });
-  const { data: { user }, error: userErr } = await userClient.auth.getUser();
-  if (userErr || !user) {
+  const token = authHeader.replace("Bearer ", "");
+  const { data: claimsData, error: claimsErr } = await userClient.auth.getClaims(token);
+  if (claimsErr || !claimsData?.claims?.sub) {
     return json({ error: "Unauthorized" }, 401, origin);
   }
+  const user = { id: claimsData.claims.sub as string };
 
   if (!apiKey) {
     return json({ error: "AI backend is not configured." }, 503, origin);
