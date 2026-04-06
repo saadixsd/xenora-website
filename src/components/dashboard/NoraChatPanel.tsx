@@ -432,30 +432,18 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
         </div>
       )}
 
-      <div className={cn('shrink-0 border-b border-border px-4 py-2.5 text-center text-xs sm:px-6', bannerClass)}>
-        {remaining === null ? (
-          <span>Loading your quota…</span>
-        ) : remaining === 0 ? (
-          <span>
-            No queries remaining today. Your limit resets at midnight UTC.{' '}
-            <Link to="/dashboard" className="font-medium underline-offset-2 hover:underline">
-              Back to dashboard
-            </Link>
-          </span>
-        ) : (
-          <span>
-            {remaining} {remaining === 1 ? 'query' : 'queries'} remaining today
-          </span>
-        )}
-      </div>
-
-      {kindToggle}
-
       {!chatActive && (
         <div className="flex flex-1 flex-col items-center justify-center overflow-y-auto px-4 pb-8 pt-4">
           {variant === 'page' && (
             <>
               <h1 className="text-center font-dm-serif text-xl text-foreground sm:text-2xl">Ask Nora</h1>
+              {remaining !== null && (
+                <p className="mt-1 text-center text-[11px] text-muted-foreground">
+                  {remaining === 0
+                    ? 'No queries remaining today — resets at midnight UTC'
+                    : `${remaining} ${remaining === 1 ? 'query' : 'queries'} remaining today`}
+                </p>
+              )}
               <p className="mt-2 max-w-md text-center text-sm text-muted-foreground">
                 {chatKind === 'agent_builder'
                   ? 'Nora will interview you with sharp, specific questions, then you can deploy a saved agent to your workspace.'
