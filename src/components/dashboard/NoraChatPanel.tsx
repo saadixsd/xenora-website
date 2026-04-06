@@ -517,6 +517,8 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
               </button>
             )}
           </div>
+
+          {kindToggle}
         </div>
       )}
 
