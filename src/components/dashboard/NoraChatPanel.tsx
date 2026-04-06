@@ -86,7 +86,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
         return;
       }
       const { data: sess } = await supabase
-        .from('nora_chat_sessions')
+        .from('nora_chat_sessions' as any)
         .select('id')
         .eq('user_id', user.id)
         .eq('chat_kind', kind)
@@ -102,7 +102,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
 
       setSessionId(sess.id);
       const { data: rows } = await supabase
-        .from('nora_chat_messages')
+        .from('nora_chat_messages' as any)
         .select('role, content')
         .eq('session_id', sess.id)
         .order('created_at', { ascending: true })
@@ -154,14 +154,14 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   }, []);
 
   const touchSession = async (sid: string) => {
-    await supabase.from('nora_chat_sessions').update({ updated_at: new Date().toISOString() }).eq('id', sid);
+    await supabase.from('nora_chat_sessions' as any).update({ updated_at: new Date().toISOString() }).eq('id', sid);
   };
 
   const ensureSession = async (kind: NoraChatKind): Promise<string> => {
     if (!user?.id) throw new Error('Not signed in');
     if (sessionId) return sessionId;
     const { data, error } = await supabase
-      .from('nora_chat_sessions')
+      .from('nora_chat_sessions' as any)
       .insert({
         user_id: user.id,
         chat_kind: kind,
@@ -231,7 +231,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       sid = await ensureSession(chatKind);
 
       const ins = await supabase
-        .from('nora_chat_messages')
+        .from('nora_chat_messages' as any)
         .insert({
           session_id: sid,
           role: 'user',
@@ -252,7 +252,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       if (result.queries_remaining <= 0) setDailyLimitReached(true);
       await animateAssistantReply(result.content);
 
-      await supabase.from('nora_chat_messages').insert({
+      await supabase.from('nora_chat_messages' as any).insert({
         session_id: sid,
         role: 'assistant',
         content: result.content.slice(0, MAX_STORE_CHARS),
@@ -261,7 +261,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       setBackendOk(true);
     } catch (e) {
       if (insertedUserRowId) {
-        await supabase.from('nora_chat_messages').delete().eq('id', insertedUserRowId);
+        await supabase.from('nora_chat_messages' as any).delete().eq('id', insertedUserRowId);
       }
       if (e instanceof DailyQueryLimitError) {
         setDailyLimitReached(true);
@@ -301,7 +301,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       if (!window.confirm('Start a new conversation? Your previous thread stays saved.')) return;
     }
     const { data, error } = await supabase
-      .from('nora_chat_sessions')
+      .from('nora_chat_sessions' as any)
       .insert({
         user_id: user.id,
         chat_kind: chatKind,
@@ -322,7 +322,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   const deployAgent = async (spec: NoraAgentSpec, key: string) => {
     if (!user?.id) return;
     setDeployingKey(key);
-    const { error } = await supabase.from('user_custom_agents').insert({
+    const { error } = await supabase.from('user_custom_agents' as any).insert({
       user_id: user.id,
       name: spec.name.slice(0, 120),
       mission: spec.mission.slice(0, 4000),
