@@ -48,7 +48,7 @@ const comparisonRows = [
   ['Generic AI chat with no audit trail', 'Every stage visible — you trust what ships'],
   ['Reinventing the prompt every time', 'Same structured workflow every run'],
   ['Blank page every time you need content', 'Rough note in, publish-ready bundle out'],
-  ['Zapier-style DIY wiring', 'Nora: observe → adapt → execute — built for founder workflows'],
+  ['DIY automation wiring', 'Nora: observe → adapt → execute — built for founder workflows'],
 ];
 
 const starterFeatures = ['Content Agent access', 'Up to 100 workflow runs/month', 'Visible step-by-step execution', 'Dashboard + history'];
