@@ -23,7 +23,7 @@ const SUGGESTIONS_GENERAL = [
   { label: 'Content Agent', text: 'How does the Content Agent work?' },
   { label: 'Lead handling', text: 'What does Nora do with my leads?' },
   { label: 'Research', text: 'How does the Research Agent use URLs and Reddit?' },
-  { label: 'vs Zapier', text: 'How is this different from Zapier?' },
+  { label: 'Workflows', text: 'How do I get the most out of Nora workflows?' },
 ];
 
 const AGENT_BUILDER_START =
