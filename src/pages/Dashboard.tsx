@@ -89,7 +89,7 @@ const Dashboard = () => {
         .from('workflow_runs')
         .select('id, created_at, estimated_minutes_saved, status, completed_at, input_text, workflow_templates(name)')
         .eq('user_id', user.id)
-        .is('archived_at', null),
+        .is('archived_at' as any, null),
     ]);
 
     if (tRes.data) setTemplates(tRes.data);
