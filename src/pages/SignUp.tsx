@@ -7,8 +7,9 @@ import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackgr
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
+import { ROUTES } from '@/config/routes';
 
-const authCallbackUrl = () => `${window.location.origin}/auth/callback`;
+const authCallbackUrl = () => `${window.location.origin}${ROUTES.authCallback}`;
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -22,7 +23,7 @@ const SignUp = () => {
 
   useEffect(() => {
     if (!authLoading && user) {
-      navigate('/dashboard/nora', { replace: true });
+      navigate(ROUTES.dashboard.nora, { replace: true });
     }
   }, [authLoading, user, navigate]);
 
@@ -52,7 +53,7 @@ const SignUp = () => {
           title: 'Welcome to XenoraAI',
           description: "You're signed in.",
         });
-        navigate('/dashboard/nora', { replace: true });
+        navigate(ROUTES.dashboard.nora, { replace: true });
       } else {
         setAwaitingEmailConfirmation(true);
       }
@@ -100,7 +101,7 @@ const SignUp = () => {
                 </a>
               </p>
               <p className="pt-2 text-sm text-muted-foreground">
-                <Link to="/login" className="text-primary underline-offset-4 hover:underline">
+                <Link to={ROUTES.login} className="text-primary underline-offset-4 hover:underline">
                   Back to sign in
                 </Link>
               </p>
@@ -153,7 +154,7 @@ const SignUp = () => {
               </form>
 
               <p className="mt-4 text-center text-sm text-muted-foreground">
-                <Link to="/login" className="text-primary underline-offset-4 hover:underline">
+                <Link to={ROUTES.login} className="text-primary underline-offset-4 hover:underline">
                   Already have an account? Sign in
                 </Link>
               </p>

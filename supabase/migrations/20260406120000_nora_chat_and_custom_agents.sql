@@ -1,50 +1,74 @@
--- Nora chat persistence (per user, multiple sessions)
-CREATE TABLE public.nora_chat_sessions (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  title TEXT,
-  chat_kind TEXT NOT NULL DEFAULT 'general' CHECK (chat_kind IN ('general', 'agent_builder')),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
+-- Tighten Nora chat + custom agents schema after 20260406000655 (Lovable baseline).
+-- Idempotent: safe if tables were created by 06000655 or by an older run of this file.
 
-CREATE INDEX nora_chat_sessions_user_updated ON public.nora_chat_sessions (user_id, updated_at DESC);
+-- ── nora_chat_sessions ─────────────────────────────────────────────────────
+ALTER TABLE public.nora_chat_sessions
+  DROP CONSTRAINT IF EXISTS nora_chat_sessions_chat_kind_check;
 
-CREATE TABLE public.nora_chat_messages (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  session_id UUID NOT NULL REFERENCES public.nora_chat_sessions(id) ON DELETE CASCADE,
-  role TEXT NOT NULL CHECK (role IN ('user', 'assistant', 'system')),
-  content TEXT NOT NULL,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
+ALTER TABLE public.nora_chat_sessions
+  ADD CONSTRAINT nora_chat_sessions_chat_kind_check
+  CHECK (chat_kind IN ('general', 'agent_builder'));
 
-CREATE INDEX nora_chat_messages_session_created ON public.nora_chat_messages (session_id, created_at);
+DO $$
+BEGIN
+  ALTER TABLE public.nora_chat_sessions
+    ADD CONSTRAINT nora_chat_sessions_user_id_fkey
+    FOREIGN KEY (user_id) REFERENCES auth.users (id) ON DELETE CASCADE;
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
 
--- User-defined agents created via Nora interview ("deploy")
-CREATE TABLE public.user_custom_agents (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  name TEXT NOT NULL,
-  mission TEXT NOT NULL,
-  target_user TEXT,
-  raw_inputs TEXT,
-  output_deliverables TEXT,
-  guardrails TEXT,
-  interview_summary TEXT,
-  starter_prompt TEXT,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  deployed_at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
+CREATE INDEX IF NOT EXISTS nora_chat_sessions_user_updated
+  ON public.nora_chat_sessions (user_id, updated_at DESC);
 
-CREATE INDEX user_custom_agents_user_created ON public.user_custom_agents (user_id, created_at DESC);
+-- ── nora_chat_messages ───────────────────────────────────────────────────────
+ALTER TABLE public.nora_chat_messages
+  DROP CONSTRAINT IF EXISTS nora_chat_messages_role_check;
 
-ALTER TABLE public.nora_chat_sessions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.nora_chat_messages ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.user_custom_agents ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.nora_chat_messages
+  ADD CONSTRAINT nora_chat_messages_role_check
+  CHECK (role IN ('user', 'assistant', 'system'));
+
+CREATE INDEX IF NOT EXISTS nora_chat_messages_session_created
+  ON public.nora_chat_messages (session_id, created_at);
+
+-- ── user_custom_agents ───────────────────────────────────────────────────────
+DO $$
+BEGIN
+  ALTER TABLE public.user_custom_agents
+    ADD CONSTRAINT user_custom_agents_user_id_fkey
+    FOREIGN KEY (user_id) REFERENCES auth.users (id) ON DELETE CASCADE;
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
+
+ALTER TABLE public.user_custom_agents
+  ADD COLUMN IF NOT EXISTS deployed_at TIMESTAMPTZ NOT NULL DEFAULT now();
+
+UPDATE public.user_custom_agents SET mission = '' WHERE mission IS NULL;
+
+ALTER TABLE public.user_custom_agents
+  ALTER COLUMN mission SET NOT NULL;
+
+CREATE INDEX IF NOT EXISTS user_custom_agents_user_created
+  ON public.user_custom_agents (user_id, created_at DESC);
+
+-- Prefer consolidated policies (drop Lovable granular names if present)
+DROP POLICY IF EXISTS "Users can read own sessions" ON public.nora_chat_sessions;
+DROP POLICY IF EXISTS "Users can insert own sessions" ON public.nora_chat_sessions;
+DROP POLICY IF EXISTS "Users can update own sessions" ON public.nora_chat_sessions;
+DROP POLICY IF EXISTS "Users manage own chat sessions" ON public.nora_chat_sessions;
 
 CREATE POLICY "Users manage own chat sessions"
   ON public.nora_chat_sessions FOR ALL TO authenticated
   USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can read own messages" ON public.nora_chat_messages;
+DROP POLICY IF EXISTS "Users can insert own messages" ON public.nora_chat_messages;
+DROP POLICY IF EXISTS "Users can delete own messages" ON public.nora_chat_messages;
+DROP POLICY IF EXISTS "Users read own chat messages" ON public.nora_chat_messages;
+DROP POLICY IF EXISTS "Users insert own chat messages" ON public.nora_chat_messages;
+DROP POLICY IF EXISTS "Users delete own chat messages" ON public.nora_chat_messages;
 
 CREATE POLICY "Users read own chat messages"
   ON public.nora_chat_messages FOR SELECT TO authenticated
@@ -63,6 +87,12 @@ CREATE POLICY "Users delete own chat messages"
   USING (
     EXISTS (SELECT 1 FROM public.nora_chat_sessions s WHERE s.id = session_id AND s.user_id = auth.uid())
   );
+
+DROP POLICY IF EXISTS "Users can read own agents" ON public.user_custom_agents;
+DROP POLICY IF EXISTS "Users can insert own agents" ON public.user_custom_agents;
+DROP POLICY IF EXISTS "Users can update own agents" ON public.user_custom_agents;
+DROP POLICY IF EXISTS "Users can delete own agents" ON public.user_custom_agents;
+DROP POLICY IF EXISTS "Users manage own custom agents" ON public.user_custom_agents;
 
 CREATE POLICY "Users manage own custom agents"
   ON public.user_custom_agents FOR ALL TO authenticated

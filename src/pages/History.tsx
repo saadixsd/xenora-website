@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { Archive, ArchiveRestore, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ROUTES, dashboardRunPath } from '@/config/routes';
 
 interface Run {
   id: string;
@@ -98,7 +99,7 @@ const History = () => {
           {tab === 'active' && (
             <button
               type="button"
-              onClick={() => navigate('/dashboard/run/new')}
+              onClick={() => navigate(ROUTES.dashboard.runNew)}
               className="mt-3 text-sm text-primary hover:underline"
             >
               Start your first run
@@ -114,7 +115,7 @@ const History = () => {
             >
               <button
                 type="button"
-                onClick={() => navigate(`/dashboard/run/${run.id}`)}
+                onClick={() => navigate(dashboardRunPath(run.id))}
                 className="min-w-0 flex-1 text-left transition-colors hover:opacity-90"
               >
                 <p className="truncate text-sm text-foreground">{run.input_text}</p>

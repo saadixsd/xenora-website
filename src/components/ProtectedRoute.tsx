@@ -1,5 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { ROUTES } from '@/config/routes';
 
 type ProtectedRouteProps = {
   children: React.ReactNode;
@@ -21,7 +22,7 @@ export function ProtectedRoute({ children, loginMessage = 'Sign in to access Nor
   }
 
   if (!user) {
-    return <Navigate to="/login" replace state={{ message: loginMessage, from: location.pathname }} />;
+    return <Navigate to={ROUTES.login} replace state={{ message: loginMessage, from: location.pathname }} />;
   }
 
   return <>{children}</>;

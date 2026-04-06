@@ -12,6 +12,7 @@ import {
   type WeekRunRow,
   type DraftRow,
 } from '@/components/dashboard/StatsDetailModal';
+import { ROUTES } from '@/config/routes';
 
 interface Template {
   id: string;
@@ -226,14 +227,14 @@ const Dashboard = () => {
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
-            onClick={() => navigate('/dashboard/settings')}
+            onClick={() => navigate(ROUTES.dashboard.settings)}
             className="min-h-[44px] rounded-lg border border-border bg-card px-3.5 py-2 text-[13px] text-foreground transition-colors hover:bg-muted"
           >
             Settings
           </button>
           <button
             type="button"
-            onClick={() => navigate('/dashboard/run/new')}
+            onClick={() => navigate(ROUTES.dashboard.runNew)}
             className="min-h-[44px] rounded-lg bg-primary px-3.5 py-2 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90"
           >
             + New workflow
@@ -259,7 +260,7 @@ const Dashboard = () => {
           <p className="text-[13px] font-medium text-foreground">Your agents</p>
           <button
             type="button"
-            onClick={() => navigate('/dashboard/agents/manage')}
+            onClick={() => navigate(ROUTES.dashboard.agents.manage)}
             className="text-[12px] text-primary hover:underline"
           >
             Manage →

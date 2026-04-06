@@ -1,35 +1,58 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, History, Settings, LogOut, X, List, Clock, MessageCircle } from 'lucide-react';
+import {
+  LayoutDashboard,
+  History,
+  Settings,
+  LogOut,
+  X,
+  List,
+  Clock,
+  MessageCircle,
+  Users,
+} from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { ROUTES } from '@/config/routes';
 import { cn } from '@/lib/utils';
 
 const mainNav = [
-  { label: 'Dashboard', to: '/dashboard', icon: LayoutDashboard },
-  { label: 'Ask Nora', to: '/dashboard/nora', icon: MessageCircle },
-  { label: 'Workflow Runs', to: '/dashboard/run/new', icon: List },
-  { label: 'History', to: '/dashboard/history', icon: Clock },
+  { label: 'Dashboard', to: ROUTES.dashboard.root, icon: LayoutDashboard },
+  { label: 'Ask Nora', to: ROUTES.dashboard.nora, icon: MessageCircle },
+  {
+    label: 'Workflow runs',
+    to: ROUTES.dashboard.runNew,
+    icon: List,
+    matchPrefix: `${ROUTES.dashboard.root}/run`,
+  },
+  { label: 'History', to: ROUTES.dashboard.history, icon: Clock },
 ];
 
 const agentNav = [
-  { label: 'Content Agent', dot: 'bg-emerald-500', to: '/dashboard/agents/content' },
-  { label: 'Lead Agent (beta)', dot: 'bg-amber-500', to: '/dashboard/agents/lead' },
-  { label: 'Research Agent', dot: 'bg-teal-500', to: '/dashboard/agents/research' },
+  { label: 'Content Agent', dot: 'bg-emerald-500', to: ROUTES.dashboard.agents.content },
+  { label: 'Lead Agent (beta)', dot: 'bg-amber-500', to: ROUTES.dashboard.agents.lead },
+  { label: 'Research Agent', dot: 'bg-teal-500', to: ROUTES.dashboard.agents.research },
 ];
 
 const accountNav = [
-  { label: 'Settings', to: '/dashboard/settings', icon: Settings },
+  { label: 'Manage agents', to: ROUTES.dashboard.agents.manage, icon: Users },
+  { label: 'Settings', to: ROUTES.dashboard.settings, icon: Settings },
 ];
 
 export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+  const pathname = location.pathname;
 
-  const isActive = (path: string) => {
-    if (path === '/dashboard') return location.pathname === '/dashboard';
-    if (path === '/dashboard/nora') return location.pathname === '/dashboard/nora';
-    return location.pathname.startsWith(path);
+  const isMainActive = (to: string, matchPrefix?: string) => {
+    if (matchPrefix) {
+      return pathname === ROUTES.dashboard.runNew || pathname.startsWith(`${matchPrefix}/`);
+    }
+    if (to === ROUTES.dashboard.root) return pathname === ROUTES.dashboard.root;
+    if (to === ROUTES.dashboard.nora) return pathname === ROUTES.dashboard.nora;
+    return pathname === to || pathname.startsWith(`${to}/`);
   };
+
+  const isAgentActive = (to: string) => pathname === to || pathname.startsWith(`${to}/`);
 
   const initials = (user?.user_metadata?.display_name || user?.email || 'U')
     .split(' ')
@@ -43,28 +66,31 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
   const handleSignOut = async () => {
     await signOut();
     onClose?.();
-    navigate('/login', { replace: true });
+    navigate(ROUTES.login, { replace: true });
   };
 
   return (
     <div className="flex h-full flex-col font-dm-sans">
-      {/* Logo */}
       <div className="flex items-center justify-between border-b border-border px-5 py-4">
-        <Link to="/dashboard" className="flex flex-col" onClick={onClose}>
+        <Link to={ROUTES.dashboard.root} className="flex flex-col" onClick={onClose}>
           <span className="font-dm-serif text-lg tracking-tight text-foreground">
             No<span className="text-primary">ra</span>
           </span>
           <span className="text-[10px] uppercase tracking-[0.8px] text-muted-foreground">Workspace</span>
         </Link>
         {onClose && (
-          <button type="button" onClick={onClose} className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground lg:hidden">
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground lg:hidden"
+            aria-label="Close menu"
+          >
             <X className="h-4 w-4" />
           </button>
         )}
       </div>
 
-      {/* Nav */}
-      <nav className="flex-1 overflow-y-auto px-2 py-3">
+      <nav className="flex-1 overflow-y-auto px-2 py-3" aria-label="Workspace">
         <p className="px-3 pb-1 text-[10px] font-medium uppercase tracking-[0.8px] text-muted-foreground">Main</p>
         <ul className="space-y-0.5">
           {mainNav.map((item) => (
@@ -74,12 +100,12 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
                 onClick={onClose}
                 className={cn(
                   'flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13.5px] transition-colors',
-                  isActive(item.to)
-                    ? 'bg-primary/10 text-primary font-medium'
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                  isMainActive(item.to, item.matchPrefix)
+                    ? 'bg-primary/10 font-medium text-primary'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground',
                 )}
               >
-                <item.icon className="h-4 w-4" />
+                <item.icon className="h-4 w-4 shrink-0" aria-hidden />
                 {item.label}
               </Link>
             </li>
@@ -95,12 +121,10 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
                 onClick={onClose}
                 className={cn(
                   'flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-[13.5px] transition-colors',
-                  isActive(a.to)
-                    ? 'bg-primary/10 text-primary font-medium'
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground',
+                  isAgentActive(a.to) ? 'bg-primary/10 font-medium text-primary' : 'text-muted-foreground hover:bg-muted hover:text-foreground',
                 )}
               >
-                <span className={cn('h-[7px] w-[7px] rounded-full shrink-0', a.dot)} />
+                <span className={cn('h-[7px] w-[7px] shrink-0 rounded-full', a.dot)} aria-hidden />
                 {a.label}
               </Link>
             </li>
@@ -116,12 +140,12 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
                 onClick={onClose}
                 className={cn(
                   'flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13.5px] transition-colors',
-                  isActive(item.to)
-                    ? 'bg-primary/10 text-primary font-medium'
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                  pathname === item.to || pathname.startsWith(`${item.to}/`)
+                    ? 'bg-primary/10 font-medium text-primary'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground',
                 )}
               >
-                <item.icon className="h-4 w-4" />
+                <item.icon className="h-4 w-4 shrink-0" aria-hidden />
                 {item.label}
               </Link>
             </li>
@@ -129,7 +153,6 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
         </ul>
       </nav>
 
-      {/* User */}
       <div className="border-t border-border p-2">
         <div className="flex items-center gap-2.5 rounded-lg px-3 py-2">
           <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-[12px] font-medium text-primary-foreground">
@@ -145,7 +168,7 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
           onClick={() => void handleSignOut()}
           className="mt-0.5 flex min-h-[44px] w-full items-center gap-2.5 rounded-lg px-3 py-2 text-[13.5px] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         >
-          <LogOut className="h-4 w-4" />
+          <LogOut className="h-4 w-4" aria-hidden />
           Sign out
         </button>
       </div>

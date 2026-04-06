@@ -1,10 +1,6 @@
 export type ChatRole = 'user' | 'assistant' | 'system';
 export type ChatMessage = { role: ChatRole; content: string };
 
-export function buildNoraSystemPrompt(): string {
-  return '';
-}
-
 const EDGE_FN_BASE = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/nora-claude`;
 
 const DAILY_LIMIT = 3;

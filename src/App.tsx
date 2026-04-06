@@ -21,6 +21,8 @@ import History from "./pages/History.tsx";
 import Settings from "./pages/Settings.tsx";
 import AgentWorkspacePage from "./pages/AgentWorkspacePage.tsx";
 import AgentsManagePage from "./pages/AgentsManagePage.tsx";
+import { ROUTES } from "@/config/routes";
+
 const App = () => (
   <ThemeProvider>
     <TooltipProvider>
@@ -29,25 +31,24 @@ const App = () => (
       <BrowserRouter>
         <ScrollManager />
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/privacy" element={<Privacy />} />
+          <Route path={ROUTES.home} element={<Index />} />
+          <Route path={ROUTES.faq} element={<FAQ />} />
+          <Route path={ROUTES.about} element={<About />} />
+          <Route path={ROUTES.privacy} element={<Privacy />} />
           <Route
-            path="/try-nora"
+            path={ROUTES.tryNora}
             element={
               <ProtectedRoute loginMessage="Sign in to access Nora.">
-                <Navigate to="/dashboard/nora" replace />
+                <Navigate to={ROUTES.dashboard.nora} replace />
               </ProtectedRoute>
             }
           />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route path={ROUTES.login} element={<Login />} />
+          <Route path={ROUTES.signup} element={<SignUp />} />
+          <Route path={ROUTES.authCallback} element={<AuthCallback />} />
 
-          {/* Protected dashboard routes */}
           <Route
-            path="/dashboard"
+            path={ROUTES.dashboard.root}
             element={
               <ProtectedRoute loginMessage="Sign in to access the dashboard.">
                 <DashboardLayout />
@@ -63,7 +64,6 @@ const App = () => (
             <Route path="agents/:slug" element={<AgentWorkspacePage />} />
           </Route>
 
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

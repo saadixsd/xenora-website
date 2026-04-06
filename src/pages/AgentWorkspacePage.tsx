@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { QuickRunInput } from '@/components/dashboard/QuickRunInput';
 import { Button } from '@/components/ui/button';
+import { ROUTES, dashboardRunPath } from '@/config/routes';
 
 const SLUG_COPY: Record<string, { title: string; blurb: string; footer: string }> = {
   content: {
@@ -77,7 +78,7 @@ export default function AgentWorkspacePage() {
     return (
       <div className="mx-auto max-w-2xl px-4 py-10">
         <p className="text-sm text-muted-foreground">Unknown agent.</p>
-        <Link to="/dashboard" className="mt-2 inline-block text-sm text-primary hover:underline">
+        <Link to={ROUTES.dashboard.root} className="mt-2 inline-block text-sm text-primary hover:underline">
           Back to dashboard
         </Link>
       </div>
@@ -88,7 +89,7 @@ export default function AgentWorkspacePage() {
     <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6 lg:px-8">
       <button
         type="button"
-        onClick={() => navigate('/dashboard')}
+        onClick={() => navigate(ROUTES.dashboard.root)}
         className="mb-4 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4" />
@@ -99,11 +100,11 @@ export default function AgentWorkspacePage() {
       <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{copy.blurb}</p>
 
       <div className="mt-6 flex flex-wrap gap-2">
-        <Button variant="outline" size="sm" onClick={() => navigate('/dashboard/agents/manage')}>
+        <Button variant="outline" size="sm" onClick={() => navigate(ROUTES.dashboard.agents.manage)}>
           Manage agents
         </Button>
         {templateId && (
-          <Button size="sm" onClick={() => navigate(`/dashboard/run/new?template=${templateId}`)}>
+          <Button size="sm" onClick={() => navigate(`${ROUTES.dashboard.runNew}?template=${templateId}`)}>
             New run
           </Button>
         )}
@@ -123,7 +124,7 @@ export default function AgentWorkspacePage() {
               <li key={r.id}>
                 <button
                   type="button"
-                  onClick={() => navigate(`/dashboard/run/${r.id}`)}
+                  onClick={() => navigate(dashboardRunPath(r.id))}
                   className="w-full rounded-lg border border-border bg-card px-3 py-2 text-left text-sm transition-colors hover:border-primary/30"
                 >
                   <span className="line-clamp-1 text-foreground">{r.input_text}</span>
@@ -135,7 +136,7 @@ export default function AgentWorkspacePage() {
             ))}
           </ul>
         )}
-        <Link to="/dashboard/history" className="mt-3 inline-block text-xs text-primary hover:underline">
+        <Link to={ROUTES.dashboard.history} className="mt-3 inline-block text-xs text-primary hover:underline">
           Full history →
         </Link>
       </div>

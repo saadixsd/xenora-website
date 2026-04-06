@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/config/routes';
 
 const chips = [
   { label: 'X post', prompt: 'Turn this into a punchy X post under 280 characters' },
@@ -23,7 +24,7 @@ export function QuickRunInput({ templateId, footerNote }: QuickRunInputProps) {
     const params = new URLSearchParams();
     params.set('template', templateId);
     params.set('input', input.trim());
-    navigate(`/dashboard/run/new?${params.toString()}`);
+    navigate(`${ROUTES.dashboard.runNew}?${params.toString()}`);
   };
 
   return (

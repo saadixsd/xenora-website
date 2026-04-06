@@ -6,6 +6,7 @@ import { SiteNav } from '@/components/nora-landing/SiteNav';
 import { NoraWaitlistForm } from '@/components/nora-landing/NoraWaitlistForm';
 import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackground';
 import { Reveal } from '@/components/motion/Reveal';
+import { ROUTES } from '@/config/routes';
 
 const flowSteps = [
   { step: '01', title: 'Input received', body: 'Nora confirms she got your rough idea, transcript, thread, or lead signal.' },
@@ -158,7 +159,7 @@ const Index = () => {
                 <p className="text-xs text-base-content/35">Free during beta — no card required.</p>
                 <p className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-base-content/45">
                   <Link
-                    to="/login"
+                    to={ROUTES.login}
                     state={{ message: 'Sign in to chat with Nora.' }}
                     className="text-primary transition-colors hover:underline"
                   >
@@ -167,7 +168,7 @@ const Index = () => {
                   <span className="text-base-content/25" aria-hidden>
                     ·
                   </span>
-                  <Link to="/dashboard" className="text-primary transition-colors hover:underline">
+                  <Link to={ROUTES.dashboard.root} className="text-primary transition-colors hover:underline">
                     Dashboard
                   </Link>
                 </p>

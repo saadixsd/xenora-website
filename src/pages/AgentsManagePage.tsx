@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/config/routes';
 import { ArrowLeft, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
@@ -9,17 +10,17 @@ import { useToast } from '@/hooks/use-toast';
 const AGENTS = [
   {
     name: 'Content Agent',
-    path: '/dashboard/agents/content',
+    path: ROUTES.dashboard.agents.content,
     description: 'Social and long-form drafts from a single input.',
   },
   {
     name: 'Lead Agent',
-    path: '/dashboard/agents/lead',
+    path: ROUTES.dashboard.agents.lead,
     description: 'Replies and follow-up planning from lead context.',
   },
   {
     name: 'Research Agent',
-    path: '/dashboard/agents/research',
+    path: ROUTES.dashboard.agents.research,
     description: 'Signals and angles from notes plus optional URLs.',
   },
 ];
@@ -79,7 +80,7 @@ export default function AgentsManagePage() {
     p.set('goal', a.mission);
     const input = (a.starter_prompt || `Run my “${a.name}” agent: ${a.mission}`).slice(0, 8000);
     p.set('input', input);
-    navigate(`/dashboard/run/new?${p.toString()}`);
+    navigate(`${ROUTES.dashboard.runNew}?${p.toString()}`);
   };
 
   const deleteCustom = async (id: string) => {
@@ -97,7 +98,7 @@ export default function AgentsManagePage() {
     <div className="mx-auto max-w-2xl px-4 py-6 sm:px-6 lg:px-8">
       <button
         type="button"
-        onClick={() => navigate('/dashboard')}
+        onClick={() => navigate(ROUTES.dashboard.root)}
         className="mb-4 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4" />
@@ -107,7 +108,7 @@ export default function AgentsManagePage() {
       <h1 className="text-xl font-semibold text-foreground sm:text-2xl">Manage agents</h1>
       <p className="mt-1 text-sm text-muted-foreground">
         Built-in workflows below. Custom agents are created with Nora in{' '}
-        <Link to="/dashboard/nora?mode=builder" className="text-primary hover:underline">
+        <Link to={ROUTES.dashboard.noraAgentBuilder} className="text-primary hover:underline">
           Build agent
         </Link>{' '}
         mode, then deployed here.
@@ -161,13 +162,13 @@ export default function AgentsManagePage() {
 
       <div className="mt-8 flex flex-wrap gap-3">
         <Button variant="outline" asChild>
-          <Link to="/dashboard/settings">Open Settings</Link>
+          <Link to={ROUTES.dashboard.settings}>Open Settings</Link>
         </Button>
         <Button variant="outline" asChild>
-          <Link to="/dashboard/run/new">New workflow</Link>
+          <Link to={ROUTES.dashboard.runNew}>New workflow</Link>
         </Button>
         <Button variant="outline" asChild>
-          <Link to="/dashboard/nora?mode=builder">Create agent with Nora</Link>
+          <Link to={ROUTES.dashboard.noraAgentBuilder}>Create agent with Nora</Link>
         </Button>
       </div>
     </div>

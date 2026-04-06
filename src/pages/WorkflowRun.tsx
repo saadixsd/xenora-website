@@ -8,6 +8,7 @@ import { TemplateCard } from '@/components/dashboard/TemplateCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ArrowLeft, Play, Archive, Trash2, ArchiveRestore } from 'lucide-react';
+import { ROUTES, dashboardRunPath } from '@/config/routes';
 
 interface Template {
   id: string;
@@ -249,7 +250,7 @@ const WorkflowRun = () => {
         }
       }
 
-      navigate(`/dashboard/run/${run.id}`, { replace: true });
+      navigate(dashboardRunPath(run.id), { replace: true });
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Something went wrong');
       setStatus('failed');
@@ -264,7 +265,7 @@ const WorkflowRun = () => {
     await supabase.from('workflow_runs').update({ archived_at: new Date().toISOString() }).eq('id', runId);
     setArchivedAt(new Date().toISOString());
     setLifecycleBusy(false);
-    navigate('/dashboard/history');
+    navigate(ROUTES.dashboard.history);
   };
 
   const handleUnarchive = async () => {
@@ -281,7 +282,7 @@ const WorkflowRun = () => {
     setLifecycleBusy(true);
     await supabase.from('workflow_runs').delete().eq('id', runId);
     setLifecycleBusy(false);
-    navigate('/dashboard/history');
+    navigate(ROUTES.dashboard.history);
   };
 
   if (isNew && status === 'pending') {
@@ -289,7 +290,7 @@ const WorkflowRun = () => {
       <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
         <button
           type="button"
-          onClick={() => navigate('/dashboard')}
+          onClick={() => navigate(ROUTES.dashboard.root)}
           className="mb-6 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -400,7 +401,7 @@ const WorkflowRun = () => {
     <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
       <button
         type="button"
-        onClick={() => navigate('/dashboard')}
+        onClick={() => navigate(ROUTES.dashboard.root)}
         className="mb-6 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4" />

@@ -2,14 +2,10 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useId, useState } from 'react';
 import { ThemeToggle } from '@/components/app/ThemeToggle';
 import { useAuth } from '@/hooks/useAuth';
+import { MARKETING_NAV, ROUTES } from '@/config/routes';
 import { X, Menu } from 'lucide-react';
 
-const links = [
-  { label: 'Home', to: '/' },
-  { label: 'How it Works', to: '/#how-it-works' },
-  { label: 'About', to: '/about' },
-  { label: 'FAQ', to: '/faq' },
-];
+type NavItem = (typeof MARKETING_NAV)[number];
 
 export const SiteNav = ({ className = '' }: { className?: string }) => {
   const menuId = useId();
@@ -31,12 +27,19 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
 
   const renderAskNora = (extraClass: string, onClick?: () => void) =>
     user ? (
-      <Link to="/dashboard/nora" className={extraClass} onClick={() => { onClick?.(); smoothTop(); }}>
+      <Link
+        to={ROUTES.dashboard.nora}
+        className={extraClass}
+        onClick={() => {
+          onClick?.();
+          smoothTop();
+        }}
+      >
         Ask Nora
       </Link>
     ) : (
       <Link
-        to="/login"
+        to={ROUTES.login}
         state={askNoraLoginState}
         className={extraClass}
         onClick={() => {
@@ -48,7 +51,7 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
       </Link>
     );
 
-  const renderLink = (link: (typeof links)[0], extraClass = '', onClick?: () => void) => {
+  const renderLink = (link: NavItem, extraClass = '', onClick?: () => void) => {
     if (link.to.startsWith('/#')) {
       const hash = link.to.slice(1);
       const id = hash.replace('#', '');
@@ -79,7 +82,7 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
           onClick={() => {
             onClick?.();
             smoothTop();
-            window.setTimeout(() => navigate(link.to), 220);
+            window.setTimeout(() => navigate(`${ROUTES.home}${hash}`), 220);
           }}
         >
           {link.label}
@@ -93,33 +96,32 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
     );
   };
 
+  const linkClassDesktop =
+    'inline-flex min-h-[44px] items-center rounded-md px-3 py-3 text-sm font-normal text-base-content/65 transition-all duration-300 hover:bg-base-200/60 hover:text-base-content';
+  const linkClassMobile =
+    'block rounded-lg px-3 py-2.5 text-sm text-base-content/70 hover:bg-base-200/60 hover:text-base-content';
+
+  const [first, second, ...rest] = MARKETING_NAV;
+
   return (
     <nav className={`relative flex items-center gap-1 sm:gap-2 ${className}`} aria-label="Main navigation">
       <ul className="hidden flex-nowrap px-0 md:flex md:items-center md:gap-0.5">
-        {links.slice(0, 2).map((link) => (
-          <li key={link.to}>
-            {renderLink(
-              link,
-              'inline-flex min-h-[44px] items-center rounded-md px-3 py-3 text-sm font-normal text-base-content/65 transition-all duration-300 hover:bg-base-200/60 hover:text-base-content',
-            )}
-          </li>
-        ))}
-        <li key="ask-nora">
-          {renderAskNora(
-            'inline-flex min-h-[44px] items-center rounded-md px-3 py-3 text-sm font-normal text-base-content/65 transition-all duration-300 hover:bg-base-200/60 hover:text-base-content',
-          )}
+        <li key={first.to}>
+          {renderLink(first, linkClassDesktop)}
         </li>
-        {links.slice(2).map((link) => (
+        <li key={second.to}>
+          {renderLink(second, linkClassDesktop)}
+        </li>
+        <li key="ask-nora">
+          {renderAskNora(linkClassDesktop)}
+        </li>
+        {rest.map((link) => (
           <li key={link.to}>
-            {renderLink(
-              link,
-              'inline-flex min-h-[44px] items-center rounded-md px-3 py-3 text-sm font-normal text-base-content/65 transition-all duration-300 hover:bg-base-200/60 hover:text-base-content',
-            )}
+            {renderLink(link, linkClassDesktop)}
           </li>
         ))}
       </ul>
 
-      {/* Mobile menu button */}
       <button
         type="button"
         onClick={() => setMobileOpen(!mobileOpen)}
@@ -132,28 +134,18 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
         {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
       </button>
 
-      {/* Mobile dropdown */}
       {mobileOpen && (
         <div
           id={menuId}
           className="absolute left-0 right-0 top-full z-[100] border-b border-base-content/10 bg-base-100/95 backdrop-blur-xl p-4 md:hidden"
+          role="menu"
         >
           <ul className="space-y-1">
-            {links.slice(0, 2).map((link) => (
-              <li key={link.to}>
-                {renderLink(link, 'block rounded-lg px-3 py-2.5 text-sm text-base-content/70 hover:bg-base-200/60 hover:text-base-content', handleNavClick)}
-              </li>
-            ))}
-            <li key="ask-nora-mobile">
-              {renderAskNora(
-                'block rounded-lg px-3 py-2.5 text-sm text-base-content/70 hover:bg-base-200/60 hover:text-base-content',
-                handleNavClick,
-              )}
-            </li>
-            {links.slice(2).map((link) => (
-              <li key={link.to}>
-                {renderLink(link, 'block rounded-lg px-3 py-2.5 text-sm text-base-content/70 hover:bg-base-200/60 hover:text-base-content', handleNavClick)}
-              </li>
+            <li key={first.to}>{renderLink(first, linkClassMobile, handleNavClick)}</li>
+            <li key={second.to}>{renderLink(second, linkClassMobile, handleNavClick)}</li>
+            <li key="ask-nora-mobile">{renderAskNora(linkClassMobile, handleNavClick)}</li>
+            {rest.map((link) => (
+              <li key={link.to}>{renderLink(link, linkClassMobile, handleNavClick)}</li>
             ))}
           </ul>
         </div>
@@ -161,17 +153,17 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
 
       {user ? (
         <Link
-          to="/dashboard"
+          to={ROUTES.dashboard.root}
           className="rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90 sm:text-sm"
         >
           Dashboard
         </Link>
       ) : (
         <Link
-          to="/login"
-          className="rounded-md border border-border px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground sm:text-sm"
+          to={ROUTES.login}
+          className="rounded-md border border-base-content/15 bg-base-100/80 px-3 py-1.5 text-xs text-base-content/70 transition-colors hover:border-primary/30 hover:text-base-content sm:text-sm"
         >
-          Sign In
+          Sign in
         </Link>
       )}
       <ThemeToggle />

@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Archive, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ROUTES, dashboardRunPath } from '@/config/routes';
 
 interface FeedItem {
   id: string;
@@ -48,7 +49,7 @@ export function ActivityFeed({
     <div className="rounded-xl border border-border bg-card p-4">
       <div className="flex items-baseline justify-between mb-2">
         <p className="text-[13px] font-medium text-foreground">Recent activity</p>
-        <button type="button" onClick={() => navigate('/dashboard/history')} className="text-[12px] text-primary hover:underline">
+        <button type="button" onClick={() => navigate(ROUTES.dashboard.history)} className="text-[12px] text-primary hover:underline">
           View all →
         </button>
       </div>
@@ -96,7 +97,7 @@ export function ActivityFeed({
                 )}
                 <button
                   type="button"
-                  onClick={() => item.runId && navigate(`/dashboard/run/${item.runId}`)}
+                  onClick={() => item.runId && navigate(dashboardRunPath(item.runId))}
                   disabled={!item.runId}
                   className={cn(
                     'rounded-md px-2.5 py-1 text-[11.5px] border transition-colors',

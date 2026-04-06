@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { Send, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -15,6 +15,7 @@ import {
 } from '@/lib/claude';
 import { extractNoraAgentSpec, type NoraAgentSpec } from '@/lib/noraAgentSpec';
 import { cn } from '@/lib/utils';
+import { ROUTES } from '@/config/routes';
 
 const DAILY_LIMIT = 3;
 const MAX_STORE_CHARS = 30_000;
@@ -354,15 +355,6 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   const chatActive = messages.length > 0;
   const inputDisabled = sending || typingReply || dailyLimitReached || sessionExpired;
 
-  const bannerClass =
-    remaining === null
-      ? 'border-border/50 bg-muted/40 text-muted-foreground'
-      : remaining === 0
-        ? 'border-destructive/30 bg-destructive/5 text-destructive'
-        : remaining === 1
-          ? 'border-amber-500/35 bg-amber-500/10 text-amber-900 dark:text-amber-200'
-          : 'border-border/50 bg-muted/30 text-muted-foreground';
-
   const outerClass =
     variant === 'page'
       ? 'flex h-full min-h-0 flex-1 flex-col bg-background'
@@ -424,7 +416,9 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
           <p className="text-sm text-foreground">Your session expired. Sign in again to continue.</p>
           <button
             type="button"
-            onClick={() => navigate('/login', { state: { message: 'Sign in to continue chatting with Nora.' } })}
+            onClick={() =>
+              navigate(ROUTES.login, { state: { message: 'Sign in to continue chatting with Nora.' } })
+            }
             className="mt-2 text-sm font-medium text-primary underline-offset-4 hover:underline"
           >
             Sign in

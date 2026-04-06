@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
+import { ROUTES } from '@/config/routes';
 
 interface DbTemplate {
   id: string;
@@ -77,13 +78,13 @@ export function AgentCards({ draftsCount = 0 }: AgentCardsProps) {
   const handleRun = (agent: Agent) => {
     const tid = resolveTemplateId(agent);
     if (!tid) return;
-    navigate(`/dashboard/run/new?template=${tid}`);
+    navigate(`${ROUTES.dashboard.runNew}?template=${tid}`);
   };
 
   const pathForAgent = (agent: Agent): string => {
-    if (agent.name.startsWith('Content')) return '/dashboard/agents/content';
-    if (agent.name.startsWith('Lead')) return '/dashboard/agents/lead';
-    return '/dashboard/agents/research';
+    if (agent.name.startsWith('Content')) return ROUTES.dashboard.agents.content;
+    if (agent.name.startsWith('Lead')) return ROUTES.dashboard.agents.lead;
+    return ROUTES.dashboard.agents.research;
   };
 
   return (

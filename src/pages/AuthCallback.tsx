@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackground';
+import { ROUTES } from '@/config/routes';
 
 /**
  * Handles Supabase email confirmation / magic-link redirects.
@@ -21,18 +22,18 @@ export default function AuthCallback() {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session?.user && (event === 'SIGNED_IN' || event === 'USER_UPDATED')) {
-        go('/dashboard/nora');
+        go(ROUTES.dashboard.nora);
       }
     });
 
     void supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) go('/dashboard/nora');
+      if (session?.user) go(ROUTES.dashboard.nora);
     });
 
     const timeout = window.setTimeout(() => {
       void supabase.auth.getSession().then(({ data: { session } }) => {
         if (redirected.current) return;
-        if (!session?.user) go('/login');
+        if (!session?.user) go(ROUTES.login);
       });
     }, 5000);
 

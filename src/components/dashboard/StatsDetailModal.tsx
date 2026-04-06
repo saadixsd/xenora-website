@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { dashboardRunPath } from '@/config/routes';
 
 export interface MinutesRunRow {
   id: string;
@@ -109,7 +110,7 @@ export function StatsDetailModal({ kind, onClose, minutesRuns, weekRuns, drafts 
                         type="button"
                         onClick={() => {
                           onClose();
-                          navigate(`/dashboard/run/${r.id}`);
+                          navigate(dashboardRunPath(r.id));
                         }}
                         className="w-full rounded-lg border border-border bg-muted/30 px-3 py-2 text-left text-sm transition-colors hover:border-primary/30"
                       >
@@ -135,7 +136,7 @@ export function StatsDetailModal({ kind, onClose, minutesRuns, weekRuns, drafts 
                         type="button"
                         onClick={() => {
                           onClose();
-                          navigate(`/dashboard/run/${r.id}`);
+                          navigate(dashboardRunPath(r.id));
                         }}
                         className="w-full rounded-lg border border-border bg-muted/30 px-3 py-2 text-left text-sm transition-colors hover:border-primary/30"
                       >
@@ -163,7 +164,7 @@ export function StatsDetailModal({ kind, onClose, minutesRuns, weekRuns, drafts 
                         type="button"
                         onClick={() => {
                           onClose();
-                          navigate(`/dashboard/run/${d.run_id}`);
+                          navigate(dashboardRunPath(d.run_id));
                         }}
                         className="w-full rounded-lg border border-border bg-muted/30 px-3 py-2 text-left text-sm transition-colors hover:border-primary/30"
                       >

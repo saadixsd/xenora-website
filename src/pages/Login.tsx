@@ -7,6 +7,7 @@ import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackgr
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
+import { ROUTES } from '@/config/routes';
 
 type LoginLocationState = { message?: string };
 
@@ -23,7 +24,7 @@ const Login = () => {
 
   useEffect(() => {
     if (!authLoading && user) {
-      navigate('/dashboard/nora', { replace: true });
+      navigate(ROUTES.dashboard.nora, { replace: true });
     }
   }, [authLoading, user, navigate]);
 
@@ -34,7 +35,7 @@ const Login = () => {
     try {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
-      navigate('/dashboard/nora');
+      navigate(ROUTES.dashboard.nora);
     } catch (err: unknown) {
       toast({
         title: 'Error',
@@ -106,7 +107,7 @@ const Login = () => {
 
           <p className="mt-4 text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{' '}
-            <Link to="/signup" className="font-medium text-primary underline-offset-4 hover:underline">
+            <Link to={ROUTES.signup} className="font-medium text-primary underline-offset-4 hover:underline">
               Get early access →
             </Link>
           </p>
