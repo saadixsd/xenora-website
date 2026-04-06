@@ -14,57 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      profiles: {
-        Row: {
-          created_at: string
-          default_audience: string | null
-          display_name: string | null
-          id: string
-          preferred_tone: string | null
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          default_audience?: string | null
-          display_name?: string | null
-          id?: string
-          preferred_tone?: string | null
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          default_audience?: string | null
-          display_name?: string | null
-          id?: string
-          preferred_tone?: string | null
-          user_id?: string
-        }
-        Relationships: []
-      }
-      waitlist: {
-        Row: {
-          created_at: string
-          email: string
-          focus_killer: string | null
-          id: string
-          name: string
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          focus_killer?: string | null
-          id?: string
-          name: string
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          focus_killer?: string | null
-          id?: string
-          name?: string
-        }
-        Relationships: []
-      }
       nora_chat_messages: {
         Row: {
           content: string
@@ -124,14 +73,64 @@ export type Database = {
         }
         Relationships: []
       }
+      nora_query_logs: {
+        Row: {
+          agent_type: string | null
+          created_at: string
+          id: string
+          query_text: string | null
+          user_id: string
+        }
+        Insert: {
+          agent_type?: string | null
+          created_at?: string
+          id?: string
+          query_text?: string | null
+          user_id: string
+        }
+        Update: {
+          agent_type?: string | null
+          created_at?: string
+          id?: string
+          query_text?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          default_audience: string | null
+          display_name: string | null
+          id: string
+          preferred_tone: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          default_audience?: string | null
+          display_name?: string | null
+          id?: string
+          preferred_tone?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          default_audience?: string | null
+          display_name?: string | null
+          id?: string
+          preferred_tone?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_custom_agents: {
         Row: {
           created_at: string
-          deployed_at: string
           guardrails: string | null
           id: string
           interview_summary: string | null
-          mission: string
+          mission: string | null
           name: string
           output_deliverables: string | null
           raw_inputs: string | null
@@ -141,11 +140,10 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          deployed_at?: string
           guardrails?: string | null
           id?: string
           interview_summary?: string | null
-          mission: string
+          mission?: string | null
           name: string
           output_deliverables?: string | null
           raw_inputs?: string | null
@@ -155,17 +153,40 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          deployed_at?: string
           guardrails?: string | null
           id?: string
           interview_summary?: string | null
-          mission?: string
+          mission?: string | null
           name?: string
           output_deliverables?: string | null
           raw_inputs?: string | null
           starter_prompt?: string | null
           target_user?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      waitlist: {
+        Row: {
+          created_at: string
+          email: string
+          focus_killer: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          focus_killer?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          focus_killer?: string | null
+          id?: string
+          name?: string
         }
         Relationships: []
       }
@@ -210,7 +231,7 @@ export type Database = {
           completed_at: string | null
           created_at: string
           current_step: string | null
-          estimated_minutes_saved: number
+          estimated_minutes_saved: number | null
           goal: string | null
           id: string
           input_text: string
@@ -224,7 +245,7 @@ export type Database = {
           completed_at?: string | null
           created_at?: string
           current_step?: string | null
-          estimated_minutes_saved?: number
+          estimated_minutes_saved?: number | null
           goal?: string | null
           id?: string
           input_text: string
@@ -238,7 +259,7 @@ export type Database = {
           completed_at?: string | null
           created_at?: string
           current_step?: string | null
-          estimated_minutes_saved?: number
+          estimated_minutes_saved?: number | null
           goal?: string | null
           id?: string
           input_text?: string
@@ -292,7 +313,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_daily_query_count: { Args: { p_user_id: string }; Returns: number }
     }
     Enums: {
       [_ in never]: never

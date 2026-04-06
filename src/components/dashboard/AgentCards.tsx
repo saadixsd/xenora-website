@@ -91,7 +91,7 @@ export function AgentCards({ draftsCount = 0 }: AgentCardsProps) {
       {agents.map((a) => {
         const tid = resolveTemplateId(a);
         const canRun = Boolean(tid);
-        const interactive = canRun || a.footer !== 'soon';
+        const interactive = canRun || a.status !== 'soon';
         return (
           <div
             key={a.name}
