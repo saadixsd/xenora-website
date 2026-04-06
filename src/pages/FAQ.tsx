@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 const faqs = [
   {
     q: 'What is Nora?',
-    a: 'Nora is XenoraAI’s workflow engine for solo founders and small teams — not a chatbot and not Zapier. The Content Agent is live: raw input in, X post, 3 hooks, LinkedIn post, and CTA out, with every step visible and nothing published until you approve. The Lead Agent is in beta (reply drafts and follow-ups; you approve before send). Research Agent is coming soon.',
+    a: 'Nora is XenoraAI’s workflow engine for solo founders and small teams — not a chatbot and not a generic automation tool. The Content Agent is live: raw input in, X post, 3 hooks, LinkedIn post, and CTA out, with every step visible and nothing published until you approve. The Lead Agent is in beta (reply drafts and follow-ups; you approve before send). Research Agent is coming soon.',
   },
   {
     q: 'How is this different from ChatGPT or other AI tools?',
