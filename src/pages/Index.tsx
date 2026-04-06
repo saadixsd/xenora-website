@@ -48,11 +48,11 @@ const comparisonRows = [
   ['Generic AI chat with no audit trail', 'Every stage visible — you trust what ships'],
   ['Reinventing the prompt every time', 'Same structured workflow every run'],
   ['Blank page every time you need content', 'Rough note in, publish-ready bundle out'],
-  ['Zapier-style DIY wiring', 'Nora: observe → adapt → execute — built for founder workflows'],
+  ['DIY automation wiring', 'Nora: observe → adapt → execute — built for founder workflows'],
 ];
 
 const starterFeatures = ['Content Agent access', 'Up to 100 workflow runs/month', 'Visible step-by-step execution', 'Dashboard + history'];
-const proFeatures = ['All agents (incl. beta Lead Agent)', 'Unlimited runs', 'Integrations: Notion, Slack, Gmail (when available)', 'Priority support'];
+const proFeatures = ['All agents (incl. beta Lead Agent)', 'Unlimited runs', 'Integrations coming soon', 'Priority support'];
 
 const Index = () => {
   const { scrollYProgress } = useScroll();
@@ -123,7 +123,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-4 max-w-2xl text-sm text-base-content/65 leading-relaxed sm:mt-6 sm:text-base lg:text-lg">
-                Nora is XenoraAI&apos;s workflow engine — not a chatbot, not Zapier. Drop a rough idea and get back posts ready to publish, with every step visible. You approve before anything goes out.
+                Nora is XenoraAI&apos;s workflow engine — not a chatbot, not a generic tool. Drop a rough idea and get back posts ready to publish, with every step visible. You approve before anything goes out.
               </p>
             </Reveal>
 
