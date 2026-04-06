@@ -52,7 +52,7 @@ const comparisonRows = [
 ];
 
 const starterFeatures = ['Content Agent access', 'Up to 100 workflow runs/month', 'Visible step-by-step execution', 'Dashboard + history'];
-const proFeatures = ['All agents (incl. beta Lead Agent)', 'Unlimited runs', 'Integrations: Notion, Slack, Gmail (when available)', 'Priority support'];
+const proFeatures = ['All agents (incl. beta Lead Agent)', 'Unlimited runs', 'Integrations coming soon', 'Priority support'];
 
 const Index = () => {
   const { scrollYProgress } = useScroll();
