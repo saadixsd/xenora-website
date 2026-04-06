@@ -49,11 +49,11 @@ export function StatsCards({
   ];
 
   return (
-    <div className="grid gap-3 grid-cols-1 sm:grid-cols-3">
+    <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-3">
       {cards.map((c) => {
         const interactive = Boolean(c.onClick);
         const className = cn(
-          'rounded-xl border border-border bg-card p-4 text-left',
+          'min-w-0 rounded-xl border border-border bg-card p-4 text-left',
           interactive &&
             'cursor-pointer transition-colors hover:border-primary/35 hover:bg-muted/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40',
         );
@@ -61,7 +61,7 @@ export function StatsCards({
           <>
             <p className="text-[11.5px] uppercase tracking-[0.5px] text-muted-foreground">{c.label}</p>
             <p className="mt-1 font-dm-serif text-[26px] tracking-tight text-foreground">{c.value}</p>
-            <p className="mt-0.5 text-[11.5px] text-muted-foreground">{c.hint}</p>
+            <p className="mt-0.5 break-words text-[11.5px] text-muted-foreground">{c.hint}</p>
             {!emptyOverall && interactive && (
               <p className="mt-1.5 text-[10px] font-medium text-primary/90">Tap for details →</p>
             )}

@@ -88,7 +88,7 @@ export function AgentCards({ draftsCount = 0 }: AgentCardsProps) {
   };
 
   return (
-    <div className="grid gap-3 sm:grid-cols-3">
+    <div className="grid min-w-0 gap-3 sm:grid-cols-3">
       {agents.map((a) => {
         const tid = resolveTemplateId(a);
         const canRun = Boolean(tid);
@@ -97,7 +97,7 @@ export function AgentCards({ draftsCount = 0 }: AgentCardsProps) {
           <div
             key={a.name}
             className={cn(
-              'rounded-xl border border-border bg-card p-4 transition-all duration-200',
+              'min-w-0 rounded-xl border border-border bg-card p-4 transition-all duration-200',
               interactive && 'cursor-pointer hover:border-primary/40 hover:shadow-[0_2px_12px_rgba(45,90,61,0.08)]',
               a.status === 'soon' && 'opacity-70',
             )}

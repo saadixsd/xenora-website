@@ -214,9 +214,9 @@ const Dashboard = () => {
       : 'Outputs from your latest runs';
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-5 sm:px-6 lg:px-8 font-dm-sans">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-border bg-card px-5 py-4 mb-4">
-        <div>
+    <div className="mx-auto min-h-0 min-w-0 max-w-5xl px-4 py-5 sm:px-6 lg:px-8 font-dm-sans">
+      <div className="mb-4 flex min-w-0 flex-col gap-4 rounded-xl border border-border bg-card px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+        <div className="min-w-0">
           <h1 className="font-dm-serif text-xl tracking-tight text-foreground">
             {getGreeting()}, {displayName}.
           </h1>
@@ -269,7 +269,7 @@ const Dashboard = () => {
         <AgentCards draftsCount={outputCount} />
       </div>
 
-      <div className="mt-4 grid gap-3 lg:grid-cols-[1fr_340px]">
+      <div className="mt-4 grid min-w-0 gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,320px)]">
         <ActivityFeed
           items={feedItems}
           showLifecycleActions

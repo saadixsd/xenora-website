@@ -95,7 +95,7 @@ export default function AgentsManagePage() {
   };
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-6 sm:px-6 lg:px-8">
+    <div className="mx-auto min-h-0 min-w-0 max-w-2xl px-4 py-6 sm:px-6 lg:px-8">
       <button
         type="button"
         onClick={() => navigate(ROUTES.dashboard.root)}

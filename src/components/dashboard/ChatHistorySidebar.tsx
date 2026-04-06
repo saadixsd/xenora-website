@@ -20,6 +20,11 @@ interface ChatHistorySidebarProps {
   onNewChat: () => void;
   open: boolean;
   onClose: () => void;
+  /**
+   * When true, overlay + panel are `absolute` inside the Ask Nora sheet (relative parent).
+   * When false, use full-viewport `fixed` positioning and offset past the dashboard sidebar on lg.
+   */
+  embedded?: boolean;
 }
 
 export function ChatHistorySidebar({
@@ -30,6 +35,7 @@ export function ChatHistorySidebar({
   onNewChat,
   open,
   onClose,
+  embedded = false,
 }: ChatHistorySidebarProps) {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [loading, setLoading] = useState(false);
@@ -82,29 +88,33 @@ export function ChatHistorySidebar({
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
+  const backdropClass = embedded
+    ? 'absolute inset-0 z-[5] bg-black/40 backdrop-blur-[2px]'
+    : 'fixed inset-0 z-[60] bg-black/40 backdrop-blur-[2px]';
+
+  const panelClass = cn(
+    'flex flex-col border-r border-border bg-card/95 backdrop-blur-xl shadow-2xl transition-transform duration-300 ease-in-out',
+    embedded
+      ? 'absolute inset-y-0 left-0 z-[10] h-full w-[min(280px,calc(100%-1.5rem))] max-w-[min(320px,88%)]'
+      : 'fixed inset-y-0 left-0 z-[65] w-[min(320px,85vw)] lg:left-64',
+    open ? 'translate-x-0' : '-translate-x-full pointer-events-none',
+  );
+
   return (
     <>
-      {/* Backdrop */}
       {open && (
         <div
-          className="fixed inset-0 z-[60] bg-black/40 backdrop-blur-[2px]"
+          className={backdropClass}
           onClick={onClose}
+          aria-hidden
         />
       )}
 
-      {/* Sidebar panel */}
-      <div
-        className={cn(
-          'fixed inset-y-0 left-0 z-[65] flex w-[min(320px,85vw)] flex-col border-r border-border bg-card/95 backdrop-blur-xl shadow-2xl transition-transform duration-300 ease-in-out',
-          'lg:left-64',
-          open ? 'translate-x-0' : '-translate-x-full',
-        )}
-      >
-        {/* Header */}
-        <div className="flex shrink-0 items-center justify-between border-b border-border px-4 py-3">
-          <div className="flex items-center gap-2">
-            <History className="h-4 w-4 text-muted-foreground" />
-            <h3 className="text-sm font-medium text-foreground">Chat History</h3>
+      <div className={panelClass} role="dialog" aria-modal={open} aria-label="Chat history">
+        <div className="flex min-w-0 shrink-0 items-center justify-between gap-2 border-b border-border px-3 py-3 sm:px-4">
+          <div className="flex min-w-0 items-center gap-2">
+            <History className="h-4 w-4 shrink-0 text-muted-foreground" />
+            <h3 className="truncate text-sm font-medium text-foreground">Chat History</h3>
           </div>
           <div className="flex items-center gap-1">
             <button
@@ -126,8 +136,7 @@ export function ChatHistorySidebar({
           </div>
         </div>
 
-        {/* Session list */}
-        <div className="flex-1 overflow-y-auto overscroll-y-contain p-2">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain p-2">
           {loading && sessions.length === 0 && (
             <div className="flex items-center justify-center py-12">
               <div className="h-5 w-5 animate-spin rounded-full border-2 border-muted-foreground/30 border-t-primary" />

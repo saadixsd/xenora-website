@@ -289,13 +289,16 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   const chatActive = messages.length > 0;
   const inputDisabled = sending || typingReply || dailyLimitReached || sessionExpired;
 
-  const outerClass = 'flex h-full min-h-0 flex-1 flex-col bg-background';
+  const outerClass = cn(
+    'flex h-full min-h-0 min-w-0 flex-1 flex-col bg-background',
+    variant === 'sheet' && 'relative overflow-hidden',
+  );
   const maxHeightStyle = variant === 'page'
     ? { touchAction: 'manipulation' as const, maxHeight: 'calc(100dvh - 3.5rem)' }
-    : { touchAction: 'manipulation' as const };
+    : { touchAction: 'manipulation' as const, maxHeight: '100%' };
 
   const kindToggle = (
-    <div className="flex items-center gap-3">
+    <div className="flex shrink-0 flex-wrap items-center gap-2">
       <div className="flex rounded-lg border border-border bg-muted/40 p-0.5">
         {(['general', 'agent_builder'] as const).map((k) => (
           <button
@@ -303,7 +306,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
             type="button"
             onClick={() => setChatKind(k)}
             className={cn(
-              'rounded-md px-4 py-1.5 text-xs font-medium transition-colors',
+              'rounded-md px-2.5 py-1.5 text-[11px] font-medium transition-colors sm:px-4 sm:text-xs',
               chatKind === k ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground',
             )}
           >
@@ -325,11 +328,12 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
         onNewChat={() => void startNewThread()}
         open={historyOpen}
         onClose={() => setHistoryOpen(false)}
+        embedded={variant === 'sheet'}
       />
 
       {variant === 'sheet' && (
-        <div className="flex shrink-0 items-center justify-between border-b border-border px-4 py-3">
-          <div className="flex items-center gap-2">
+        <div className="flex min-w-0 shrink-0 items-center justify-between gap-2 border-b border-border px-3 py-3 sm:px-4">
+          <div className="flex min-w-0 items-center gap-2">
             <button
               type="button"
               onClick={() => setHistoryOpen(true)}
@@ -338,12 +342,12 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
             >
               <History className="h-4 w-4" />
             </button>
-            <h2 className="font-dm-serif text-lg text-foreground">Ask Nora</h2>
+            <h2 className="truncate font-dm-serif text-base text-foreground sm:text-lg">Ask Nora</h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground"
             aria-label="Close"
           >
             <X className="h-5 w-5" />
@@ -365,7 +369,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       )}
 
       {!chatActive && (
-        <div className="flex flex-1 flex-col items-center justify-center overflow-y-auto px-4 pb-8 pt-4">
+        <div className="flex min-h-0 w-full min-w-0 flex-1 flex-col items-center justify-center overflow-y-auto overflow-x-hidden px-3 pb-8 pt-4 sm:px-4">
           {variant === 'page' && (
             <>
               <div className="flex items-center gap-3">
@@ -405,8 +409,8 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
             <p className="mt-3 max-w-xl text-center text-xs text-amber-600 dark:text-amber-500">{lastError}</p>
           )}
 
-          <form onSubmit={onSubmit} className="mt-8 w-full max-w-xl">
-            <div className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 focus-within:border-primary/30">
+          <form onSubmit={onSubmit} className="mt-8 w-full min-w-0 max-w-xl">
+            <div className="flex min-w-0 items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 focus-within:border-primary/30 sm:px-4">
               <input
                 ref={inputRef}
                 value={input}
@@ -418,7 +422,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
                 }
                 autoComplete="off"
                 autoCorrect="off"
-                className="min-h-[44px] flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground"
+                className="min-h-[44px] min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground"
                 disabled={inputDisabled}
               />
               <button
@@ -465,29 +469,29 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       )}
 
       {chatActive && (
-        <div className="flex min-h-0 flex-1 flex-col">
-          <div className="flex shrink-0 items-center justify-between border-b border-border px-4 py-2 sm:px-6">
-            <div className="flex items-center gap-2">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+          <div className="flex min-w-0 shrink-0 flex-col gap-2 border-b border-border px-3 py-2 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+            <div className="flex min-w-0 items-center gap-2">
               <button
                 type="button"
                 onClick={() => setHistoryOpen(true)}
-                className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                 aria-label="Chat history"
               >
                 <History className="h-4 w-4" />
               </button>
-              <span className="text-[10px] text-muted-foreground">
+              <span className="min-w-0 truncate text-[10px] text-muted-foreground">
                 {remaining !== null && remaining > 0
                   ? `${remaining} ${remaining === 1 ? 'query' : 'queries'} left`
                   : remaining === 0 ? 'No queries left today' : ''}
               </span>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex min-w-0 flex-wrap items-center justify-end gap-2 sm:gap-3">
               {kindToggle}
               <button
                 type="button"
                 onClick={() => void startNewThread()}
-                className="text-[11px] font-medium text-primary hover:underline"
+                className="shrink-0 text-[11px] font-medium text-primary hover:underline"
               >
                 New chat
               </button>
@@ -499,8 +503,11 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
             </div>
           )}
 
-          <div ref={transcriptRef} className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain px-4 py-4 sm:px-6">
-            <div className="mx-auto max-w-2xl space-y-5">
+          <div
+            ref={transcriptRef}
+            className="min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-y-contain px-3 py-4 sm:px-6"
+          >
+            <div className="mx-auto min-w-0 max-w-2xl space-y-5">
               {messages.map((m, i) => {
                 const spec = m.role === 'assistant' ? extractNoraAgentSpec(m.content) : null;
                 const deployKey = `${i}-${spec?.name ?? ''}`;
@@ -511,16 +518,16 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
                     </span>
                     <div
                       className={cn(
-                        'max-w-[88%] rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[80%]',
+                        'max-w-[min(88%,100%)] break-words rounded-2xl px-3 py-3 text-sm leading-relaxed sm:max-w-[80%] sm:px-4',
                         m.role === 'user' ? 'bg-primary/15 text-foreground' : 'bg-muted/80 text-foreground',
                       )}
                     >
                       {m.role === 'assistant' ? (
-                        <div className="prose prose-sm dark:prose-invert max-w-none prose-p:my-1.5 prose-ul:my-1.5 prose-li:my-0.5 prose-strong:text-foreground prose-a:text-primary prose-headings:text-foreground">
+                        <div className="prose prose-sm dark:prose-invert max-w-none break-words prose-p:my-1.5 prose-ul:my-1.5 prose-li:my-0.5 prose-strong:text-foreground prose-a:break-all prose-a:text-primary prose-headings:text-foreground">
                           <ReactMarkdown>{m.content}</ReactMarkdown>
                         </div>
                       ) : (
-                        m.content
+                        <span className="break-words">{m.content}</span>
                       )}
                     </div>
                     {spec && chatKind === 'agent_builder' && (
@@ -556,16 +563,16 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
             </div>
           </div>
 
-          <div className="shrink-0 border-t border-border bg-background/95 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] backdrop-blur-sm sm:px-6">
-            <form onSubmit={onSubmit} className="mx-auto max-w-2xl">
-              <div className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 focus-within:border-primary/30">
+          <div className="shrink-0 border-t border-border bg-background/95 px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] backdrop-blur-sm sm:px-6">
+            <form onSubmit={onSubmit} className="mx-auto min-w-0 max-w-2xl">
+              <div className="flex min-w-0 items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 focus-within:border-primary/30 sm:px-4">
                 <input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Follow up..."
                   autoComplete="off"
                   autoCorrect="off"
-                  className="min-h-[44px] flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground"
+                  className="min-h-[44px] min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground"
                   disabled={inputDisabled}
                   aria-label="Message to Nora"
                 />

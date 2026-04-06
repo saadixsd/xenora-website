@@ -28,7 +28,7 @@ export function QuickRunInput({ templateId, footerNote }: QuickRunInputProps) {
   };
 
   return (
-    <div className="rounded-xl border border-border bg-card p-4">
+    <div className="min-w-0 rounded-xl border border-border bg-card p-4">
       <p className="text-[13px] font-medium text-foreground mb-2.5">Quick run</p>
       <textarea
         value={input}

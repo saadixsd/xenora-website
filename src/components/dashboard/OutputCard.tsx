@@ -78,7 +78,7 @@ export function OutputCard({ id, type, content }: OutputCardProps) {
   const useMarkdown = MARKDOWN_TYPES.has(type);
 
   return (
-    <div className="surface-panel p-4">
+    <div className="surface-panel min-w-0 overflow-x-auto p-4">
       <div className="mb-2 flex items-center justify-between">
         <span className="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
           {formatTypeLabel(type)}
@@ -116,11 +116,11 @@ export function OutputCard({ id, type, content }: OutputCardProps) {
           rows={6}
         />
       ) : useMarkdown ? (
-        <div className="prose prose-sm dark:prose-invert max-w-none prose-p:my-1.5 prose-ul:my-1.5 prose-li:my-0.5">
+        <div className="prose prose-sm dark:prose-invert max-w-none break-words prose-p:my-1.5 prose-ul:my-1.5 prose-li:my-0.5 prose-a:break-all">
           <ReactMarkdown>{content}</ReactMarkdown>
         </div>
       ) : (
-        <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground/90">{content}</p>
+        <p className="whitespace-pre-wrap break-words text-sm leading-relaxed text-foreground/90">{content}</p>
       )}
     </div>
   );

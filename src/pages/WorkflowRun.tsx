@@ -287,7 +287,7 @@ const WorkflowRun = () => {
 
   if (isNew && status === 'pending') {
     return (
-      <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
+      <div className="mx-auto min-h-0 min-w-0 max-w-3xl px-4 py-6 sm:px-6">
         <button
           type="button"
           onClick={() => navigate(ROUTES.dashboard.root)}
@@ -398,7 +398,7 @@ const WorkflowRun = () => {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
+    <div className="mx-auto min-h-0 min-w-0 max-w-3xl px-4 py-6 sm:px-6">
       <button
         type="button"
         onClick={() => navigate(ROUTES.dashboard.root)}

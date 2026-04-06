@@ -76,7 +76,7 @@ export default function AgentWorkspacePage() {
 
   if (!slug || !copy) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-10">
+      <div className="mx-auto min-h-0 min-w-0 max-w-2xl px-4 py-10">
         <p className="text-sm text-muted-foreground">Unknown agent.</p>
         <Link to={ROUTES.dashboard.root} className="mt-2 inline-block text-sm text-primary hover:underline">
           Back to dashboard
@@ -86,7 +86,7 @@ export default function AgentWorkspacePage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6 lg:px-8">
+    <div className="mx-auto min-h-0 min-w-0 max-w-3xl px-4 py-6 sm:px-6 lg:px-8">
       <button
         type="button"
         onClick={() => navigate(ROUTES.dashboard.root)}

@@ -36,7 +36,7 @@ export function ActivityFeed({
 
   if (items.length === 0) {
     return (
-      <div className="rounded-xl border border-border bg-card p-4">
+      <div className="min-w-0 rounded-xl border border-border bg-card p-4">
         <p className="text-[13px] font-medium text-foreground mb-3">Recent activity</p>
         <p className="text-[12.5px] text-muted-foreground py-6 text-center">
           Nothing here yet. Run your first workflow above.
@@ -46,8 +46,8 @@ export function ActivityFeed({
   }
 
   return (
-    <div className="rounded-xl border border-border bg-card p-4">
-      <div className="flex items-baseline justify-between mb-2">
+    <div className="min-w-0 rounded-xl border border-border bg-card p-4">
+      <div className="mb-2 flex min-w-0 items-baseline justify-between gap-2">
         <p className="text-[13px] font-medium text-foreground">Recent activity</p>
         <button type="button" onClick={() => navigate(ROUTES.dashboard.history)} className="text-[12px] text-primary hover:underline">
           View all →
@@ -63,7 +63,9 @@ export function ActivityFeed({
               {iconChar[item.type]}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-[13px] font-medium leading-snug text-foreground">{item.title}</p>
+              <p className="line-clamp-2 break-words text-[13px] font-medium leading-snug text-foreground">
+                {item.title}
+              </p>
               <p className="mt-0.5 text-[11.5px] text-muted-foreground">{item.meta}</p>
             </div>
             <div className="flex flex-col items-end gap-1 shrink-0">
