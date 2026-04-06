@@ -56,9 +56,10 @@ export function ChatHistorySidebar({
           .eq('role', 'user')
           .order('created_at', { ascending: true })
           .limit(1);
+        const firstMsg = (msgs as any)?.[0]?.content?.slice(0, 80) || null;
         sessionsWithPreviews.push({
           ...s,
-          preview: msgs?.[0]?.content?.slice(0, 80) || null,
+          preview: firstMsg,
         });
       }
       setSessions(sessionsWithPreviews);
