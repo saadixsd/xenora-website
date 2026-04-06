@@ -1,7 +1,8 @@
 /**
- * Claude proxy for Nora chat — JWT required; 3 queries/user/day (UTC).
+ * Claude proxy for Nora chat — JWT required; 3 queries/user/day (UTC), except exempt founder emails.
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+import { isNoraQuotaExemptEmail } from "../_shared/noraQuota.ts";
 
 const ALLOWED_MODEL = "claude-sonnet-4-20250514";
 const MAX_BODY_BYTES = 64_000;
@@ -225,27 +226,32 @@ Deno.serve(async (req) => {
 
   const admin = createClient(supabaseUrl, serviceKey);
 
-  const { data: countBefore, error: countErr } = await admin.rpc("get_daily_query_count", {
-    p_user_id: user.id,
-  });
-  if (countErr) {
-    console.error("get_daily_query_count", countErr);
-    return json({ error: "Could not verify quota." }, 500, origin);
-  }
+  const quotaExempt = isNoraQuotaExemptEmail(user.email);
 
-  const used = typeof countBefore === "number" ? countBefore : 0;
-  if (used >= DAILY_QUERY_LIMIT) {
-    return json(
-      {
-        error: "daily_limit_reached",
-        message:
-          "You have used all 3 of your daily Nora queries. Your limit resets at midnight UTC.",
-        queries_used: DAILY_QUERY_LIMIT,
-        limit: DAILY_QUERY_LIMIT,
-      },
-      429,
-      origin,
-    );
+  let used = 0;
+  if (!quotaExempt) {
+    const { data: countBefore, error: countErr } = await admin.rpc("get_daily_query_count", {
+      p_user_id: user.id,
+    });
+    if (countErr) {
+      console.error("get_daily_query_count", countErr);
+      return json({ error: "Could not verify quota." }, 500, origin);
+    }
+
+    used = typeof countBefore === "number" ? countBefore : 0;
+    if (used >= DAILY_QUERY_LIMIT) {
+      return json(
+        {
+          error: "daily_limit_reached",
+          message:
+            "You have used all 3 of your daily Nora queries. Your limit resets at midnight UTC.",
+          queries_used: DAILY_QUERY_LIMIT,
+          limit: DAILY_QUERY_LIMIT,
+        },
+        429,
+        origin,
+      );
+    }
   }
 
   let raw: string;
@@ -332,6 +338,20 @@ Deno.serve(async (req) => {
   if (insErr) {
     console.error("nora_query_logs insert", insErr);
     return json({ error: "Could not record query." }, 500, origin);
+  }
+
+  if (quotaExempt) {
+    return json(
+      {
+        content: text,
+        quota_exempt: true,
+        queries_used: 0,
+        limit: 0,
+        queries_remaining: 9999,
+      },
+      200,
+      origin,
+    );
   }
 
   const { data: countAfter } = await admin.rpc("get_daily_query_count", {

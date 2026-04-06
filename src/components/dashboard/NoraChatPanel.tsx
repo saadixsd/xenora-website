@@ -16,6 +16,7 @@ import {
 import { extractNoraAgentSpec, type NoraAgentSpec } from '@/lib/noraAgentSpec';
 import { cn } from '@/lib/utils';
 import { ROUTES } from '@/config/routes';
+import { isNoraQuotaExemptEmail } from '@/config/noraQuota';
 import { ChatHistorySidebar } from './ChatHistorySidebar';
 
 const DAILY_LIMIT = 3;
@@ -66,18 +67,28 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   const inputRef = useRef<HTMLInputElement>(null);
 
   const token = session?.access_token;
+  const quotaExempt = isNoraQuotaExemptEmail(user?.email);
   const remaining =
-    queriesUsedToday === null ? null : Math.max(0, DAILY_LIMIT - queriesUsedToday);
+    quotaExempt
+      ? null
+      : queriesUsedToday === null
+        ? null
+        : Math.max(0, DAILY_LIMIT - queriesUsedToday);
 
   const loadQueryCount = useCallback(async () => {
     if (!user?.id) return;
+    if (isNoraQuotaExemptEmail(user.email)) {
+      setQueriesUsedToday(0);
+      setDailyLimitReached(false);
+      return;
+    }
     const { data, error } = await supabase.rpc('get_daily_query_count' as any, { p_user_id: user.id });
     if (error) { console.error(error); return; }
     if (typeof data === 'number') {
       setQueriesUsedToday(data);
       if (data >= DAILY_LIMIT) setDailyLimitReached(true);
     }
-  }, [user?.id]);
+  }, [user?.id, user?.email]);
 
   const loadSessionMessages = useCallback(async (sid: string) => {
     const { data: rows } = await supabase
@@ -210,8 +221,10 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
 
       const apiSlice = nextHistory.slice(-28);
       const result = await sendClaudeChat({ messages: apiSlice, accessToken: t, mode: chatKind === 'agent_builder' ? 'agent_builder' : undefined });
-      setQueriesUsedToday(result.queries_used);
-      if (result.queries_remaining <= 0) setDailyLimitReached(true);
+      if (!isNoraQuotaExemptEmail(user?.email)) {
+        setQueriesUsedToday(result.queries_used);
+        if (result.queries_remaining <= 0) setDailyLimitReached(true);
+      }
       await animateAssistantReply(result.content);
 
       await supabase.from('nora_chat_messages' as any).insert({ session_id: sid, role: 'assistant', content: result.content.slice(0, MAX_STORE_CHARS) });

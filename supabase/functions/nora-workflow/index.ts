@@ -3,6 +3,7 @@
  * Template-aware: Content, Lead Follow-up, Research (optional URL fetch).
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+import { isNoraQuotaExemptEmail } from "../_shared/noraQuota.ts";
 
 const corsHeaders: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
@@ -241,7 +242,7 @@ Deno.serve(async (req) => {
     return jsonRes({ error: "Unauthorized" }, 401);
   }
 
-  if (isRateLimited(user.id)) {
+  if (!isNoraQuotaExemptEmail(user.email) && isRateLimited(user.id)) {
     return jsonRes({ error: "Too many requests. Please wait a moment." }, 429);
   }
 
