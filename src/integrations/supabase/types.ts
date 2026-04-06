@@ -65,110 +65,6 @@ export type Database = {
         }
         Relationships: []
       }
-      nora_chat_messages: {
-        Row: {
-          content: string
-          created_at: string
-          id: string
-          role: string
-          session_id: string
-        }
-        Insert: {
-          content: string
-          created_at?: string
-          id?: string
-          role: string
-          session_id: string
-        }
-        Update: {
-          content?: string
-          created_at?: string
-          id?: string
-          role?: string
-          session_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "nora_chat_messages_session_id_fkey"
-            columns: ["session_id"]
-            isOneToOne: false
-            referencedRelation: "nora_chat_sessions"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      nora_chat_sessions: {
-        Row: {
-          chat_kind: string
-          created_at: string
-          id: string
-          title: string | null
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          chat_kind?: string
-          created_at?: string
-          id?: string
-          title?: string | null
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          chat_kind?: string
-          created_at?: string
-          id?: string
-          title?: string | null
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
-      user_custom_agents: {
-        Row: {
-          created_at: string
-          deployed_at: string
-          guardrails: string | null
-          id: string
-          interview_summary: string | null
-          mission: string
-          name: string
-          output_deliverables: string | null
-          raw_inputs: string | null
-          starter_prompt: string | null
-          target_user: string | null
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          deployed_at?: string
-          guardrails?: string | null
-          id?: string
-          interview_summary?: string | null
-          mission: string
-          name: string
-          output_deliverables?: string | null
-          raw_inputs?: string | null
-          starter_prompt?: string | null
-          target_user?: string | null
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          deployed_at?: string
-          guardrails?: string | null
-          id?: string
-          interview_summary?: string | null
-          mission?: string
-          name?: string
-          output_deliverables?: string | null
-          raw_inputs?: string | null
-          starter_prompt?: string | null
-          target_user?: string | null
-          user_id?: string
-        }
-        Relationships: []
-      }
       workflow_outputs: {
         Row: {
           content: string
@@ -206,11 +102,9 @@ export type Database = {
       }
       workflow_runs: {
         Row: {
-          archived_at: string | null
           completed_at: string | null
           created_at: string
           current_step: string | null
-          estimated_minutes_saved: number
           goal: string | null
           id: string
           input_text: string
@@ -220,11 +114,9 @@ export type Database = {
           user_id: string
         }
         Insert: {
-          archived_at?: string | null
           completed_at?: string | null
           created_at?: string
           current_step?: string | null
-          estimated_minutes_saved?: number
           goal?: string | null
           id?: string
           input_text: string
@@ -234,11 +126,9 @@ export type Database = {
           user_id: string
         }
         Update: {
-          archived_at?: string | null
           completed_at?: string | null
           created_at?: string
           current_step?: string | null
-          estimated_minutes_saved?: number
           goal?: string | null
           id?: string
           input_text?: string
