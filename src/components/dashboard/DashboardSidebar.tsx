@@ -69,10 +69,10 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
           <button
             type="button"
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground lg:hidden"
+            className="flex h-10 w-10 min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-muted-foreground hover:text-foreground lg:hidden"
             aria-label="Close menu"
           >
-            <X className="h-4 w-4" />
+            <X className="h-5 w-5" />
           </button>
         )}
       </div>
@@ -85,7 +85,7 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
                 to={item.to}
                 onClick={onClose}
                 className={cn(
-                  'flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13.5px] transition-colors',
+                  'flex items-center gap-2.5 rounded-lg px-3 py-2.5 sm:py-2 text-[13.5px] transition-colors min-h-[44px] sm:min-h-0',
                   isActive(item.to, (item as { matchPrefix?: string }).matchPrefix)
                     ? 'bg-primary/10 font-medium text-primary'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground',

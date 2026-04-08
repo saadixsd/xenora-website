@@ -209,7 +209,7 @@ export default function AgentEditPage() {
 
   if (!agent) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-10">
+      <div className="mx-auto max-w-2xl px-3 sm:px-4 py-10">
         <p className="text-sm text-muted-foreground">Loading agent...</p>
       </div>
     );
@@ -218,50 +218,48 @@ export default function AgentEditPage() {
   const availableTools = TOOLS_BY_TYPE[agent.type] || [];
 
   return (
-    <div className="mx-auto min-h-0 min-w-0 max-w-2xl px-4 py-6 sm:px-6 lg:px-8 font-dm-sans">
+    <div className="mx-auto min-h-0 min-w-0 max-w-2xl px-3 py-4 sm:px-6 sm:py-6 lg:px-8 font-dm-sans">
       <button
         type="button"
         onClick={() => navigate(ROUTES.dashboard.agents.manage)}
-        className="mb-4 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+        className="mb-3 sm:mb-4 flex items-center gap-2 text-[13px] sm:text-sm text-muted-foreground hover:text-foreground min-h-[44px]"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to agents
       </button>
 
-      <h1 className="font-dm-serif text-2xl tracking-tight text-foreground">
+      <h1 className="font-dm-serif text-xl sm:text-2xl tracking-tight text-foreground">
         Edit {TYPE_LABELS[agent.type] || 'Agent'}
       </h1>
-      <p className="mt-1 text-sm text-muted-foreground">
+      <p className="mt-1 text-[13px] sm:text-sm text-muted-foreground">
         Tune the system prompt, tone, response depth, and tools for this agent.
       </p>
 
-      <div className="mt-6 space-y-6">
-        {/* System Prompt */}
+      <div className="mt-4 sm:mt-6 space-y-5 sm:space-y-6">
         <div>
-          <label htmlFor="system-prompt" className="block text-sm font-medium text-foreground mb-1.5">
+          <label htmlFor="system-prompt" className="block text-[13px] sm:text-sm font-medium text-foreground mb-1.5">
             System Prompt
           </label>
           <textarea
             id="system-prompt"
             value={systemPrompt}
             onChange={(e) => setSystemPrompt(e.target.value)}
-            rows={12}
-            className="w-full rounded-lg border border-border bg-card px-3 py-2.5 font-mono text-[13px] text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            rows={8}
+            className="w-full rounded-lg border border-border bg-card px-3 py-2.5 font-mono text-[12px] sm:text-[13px] text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:rows-12 resize-y min-h-[160px] sm:min-h-[240px]"
             placeholder="Define how this agent behaves..."
           />
         </div>
 
-        {/* Tone Selector */}
         <div>
-          <p className="text-sm font-medium text-foreground mb-2">Tone</p>
-          <div className="flex flex-wrap gap-2">
+          <p className="text-[13px] sm:text-sm font-medium text-foreground mb-2">Tone</p>
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">
             {TONE_OPTIONS.map((t) => (
               <button
                 key={t}
                 type="button"
                 onClick={() => setTone(t)}
                 className={cn(
-                  'rounded-lg border px-3 py-1.5 text-[13px] capitalize transition-colors',
+                  'rounded-lg border px-2.5 sm:px-3 py-1.5 text-[12px] sm:text-[13px] capitalize transition-colors min-h-[36px] sm:min-h-0',
                   tone === t
                     ? 'border-primary bg-primary/10 font-medium text-primary'
                     : 'border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground',
@@ -273,11 +271,10 @@ export default function AgentEditPage() {
           </div>
         </div>
 
-        {/* Response Depth */}
         <div>
-          <p className="text-sm font-medium text-foreground mb-2">Response Depth</p>
-          <div className="flex items-center gap-3">
-            <span className="text-[12px] text-muted-foreground">Concise</span>
+          <p className="text-[13px] sm:text-sm font-medium text-foreground mb-2">Response Depth</p>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="text-[11px] sm:text-[12px] text-muted-foreground shrink-0">Concise</span>
             <input
               type="range"
               min={0}
@@ -285,43 +282,41 @@ export default function AgentEditPage() {
               step={0.1}
               value={depth}
               onChange={(e) => setDepth(parseFloat(e.target.value))}
-              className="flex-1 accent-primary"
+              className="flex-1 accent-primary h-2"
             />
-            <span className="text-[12px] text-muted-foreground">Thorough</span>
+            <span className="text-[11px] sm:text-[12px] text-muted-foreground shrink-0">Thorough</span>
           </div>
-          <p className="mt-1 text-[11px] text-muted-foreground text-center">
+          <p className="mt-1 text-[10px] sm:text-[11px] text-muted-foreground text-center">
             {depth <= 0.3 ? 'Quick, concise outputs' : depth <= 0.7 ? 'Balanced depth' : 'Deep, thorough analysis'}
           </p>
         </div>
 
-        {/* Tool Toggles */}
         <div>
-          <p className="text-sm font-medium text-foreground mb-2">Tools</p>
-          <div className="space-y-2">
+          <p className="text-[13px] sm:text-sm font-medium text-foreground mb-2">Tools</p>
+          <div className="space-y-1.5 sm:space-y-2">
             {availableTools.map((tool) => (
               <label
                 key={tool.id}
-                className="flex items-center gap-3 rounded-lg border border-border px-3 py-2.5 cursor-pointer transition-colors hover:bg-muted/30"
+                className="flex items-center gap-3 rounded-lg border border-border px-3 py-2.5 cursor-pointer transition-colors hover:bg-muted/30 min-h-[44px]"
               >
                 <input
                   type="checkbox"
                   checked={enabledTools.includes(tool.id)}
                   onChange={() => toggleTool(tool.id)}
-                  className="h-4 w-4 rounded border-border accent-primary"
+                  className="h-4 w-4 rounded border-border accent-primary shrink-0"
                 />
-                <span className="text-[13px] text-foreground">{tool.label}</span>
+                <span className="text-[12px] sm:text-[13px] text-foreground">{tool.label}</span>
               </label>
             ))}
           </div>
         </div>
 
-        {/* Actions */}
-        <div className="flex flex-wrap gap-3 border-t border-border pt-4">
+        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-3 border-t border-border pt-4">
           <button
             type="button"
             onClick={() => void handleSave()}
             disabled={saving}
-            className="rounded-lg bg-primary px-4 py-2 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="rounded-lg bg-primary px-4 py-2.5 sm:py-2 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50 min-h-[44px] sm:min-h-0"
           >
             {saving ? 'Saving...' : 'Save changes'}
           </button>
@@ -329,17 +324,16 @@ export default function AgentEditPage() {
             type="button"
             onClick={() => void handleTestRun()}
             disabled={testing}
-            className="rounded-lg border border-border bg-card px-4 py-2 text-[13px] text-foreground transition-colors hover:bg-muted disabled:opacity-50"
+            className="rounded-lg border border-border bg-card px-4 py-2.5 sm:py-2 text-[13px] text-foreground transition-colors hover:bg-muted disabled:opacity-50 min-h-[44px] sm:min-h-0"
           >
             {testing ? 'Running test...' : 'Test run'}
           </button>
         </div>
 
-        {/* Test Output */}
         {testOutput && (
-          <div className="rounded-lg border border-border bg-muted/30 p-4">
-            <p className="text-[12px] font-medium text-foreground mb-2">Test Output</p>
-            <pre className="whitespace-pre-wrap text-[12px] text-muted-foreground font-mono leading-relaxed">
+          <div className="rounded-lg border border-border bg-muted/30 p-3 sm:p-4">
+            <p className="text-[11px] sm:text-[12px] font-medium text-foreground mb-2">Test Output</p>
+            <pre className="whitespace-pre-wrap text-[11px] sm:text-[12px] text-muted-foreground font-mono leading-relaxed overflow-x-auto">
               {testOutput}
             </pre>
           </div>

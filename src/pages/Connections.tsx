@@ -82,23 +82,23 @@ export default function Connections() {
     connections.find((c) => c.platform === platformId);
 
   return (
-    <div className="mx-auto min-h-0 min-w-0 max-w-2xl px-4 py-6 sm:px-6 lg:px-8 font-dm-sans">
+    <div className="mx-auto min-h-0 min-w-0 max-w-2xl px-3 py-4 sm:px-6 sm:py-6 lg:px-8 font-dm-sans">
       <button
         type="button"
         onClick={() => navigate(ROUTES.dashboard.root)}
-        className="mb-4 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+        className="mb-3 sm:mb-4 flex items-center gap-2 text-[13px] sm:text-sm text-muted-foreground hover:text-foreground min-h-[44px]"
       >
         <ArrowLeft className="h-4 w-4" />
         Dashboard
       </button>
 
-      <h1 className="text-xl font-semibold text-foreground sm:text-2xl">Connections</h1>
-      <p className="mt-1 text-sm text-muted-foreground">
+      <h1 className="text-lg font-semibold text-foreground sm:text-2xl">Connections</h1>
+      <p className="mt-1 text-[13px] sm:text-sm text-muted-foreground">
         Connect your platforms so agents can read data and take actions on your behalf.
         You always approve before anything sends.
       </p>
 
-      <div className="mt-6 space-y-4">
+      <div className="mt-4 sm:mt-6 space-y-3 sm:space-y-4">
         {PLATFORMS.map((platform) => {
           const conn = getConnection(platform.id);
           const status = conn?.status || 'disconnected';
@@ -107,28 +107,28 @@ export default function Connections() {
           return (
             <div
               key={platform.id}
-              className="rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/20"
+              className="rounded-xl border border-border bg-card p-3.5 sm:p-5 transition-colors hover:border-primary/20"
             >
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                 <div className="flex items-start gap-3 min-w-0">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
-                    <platform.icon className="h-5 w-5 text-foreground" />
+                  <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                    <platform.icon className="h-4 w-4 sm:h-5 sm:w-5 text-foreground" />
                   </div>
                   <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-sm font-medium text-foreground">{platform.label}</h3>
-                      <span className={cn('rounded-md px-2 py-0.5 text-[10px] font-medium', styles.bg)}>
+                    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                      <h3 className="text-[13px] sm:text-sm font-medium text-foreground">{platform.label}</h3>
+                      <span className={cn('rounded-md px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-medium', styles.bg)}>
                         {styles.label}
                       </span>
                     </div>
-                    <p className="mt-1 text-[12px] text-muted-foreground leading-relaxed">
+                    <p className="mt-1 text-[11px] sm:text-[12px] text-muted-foreground leading-relaxed">
                       {platform.description}
                     </p>
-                    <div className="mt-2 flex flex-wrap gap-1">
+                    <div className="mt-1.5 sm:mt-2 flex flex-wrap gap-1">
                       {platform.scopes.map((scope) => (
                         <span
                           key={scope}
-                          className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground"
+                          className="rounded bg-muted px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono text-muted-foreground"
                         >
                           {scope}
                         </span>
@@ -137,12 +137,12 @@ export default function Connections() {
                   </div>
                 </div>
 
-                <div className="shrink-0">
+                <div className="shrink-0 self-end sm:self-start">
                   {status === 'connected' ? (
                     <button
                       type="button"
                       disabled
-                      className="rounded-lg border border-border px-3 py-1.5 text-[12px] text-muted-foreground opacity-60"
+                      className="rounded-lg border border-border px-3 py-1.5 text-[11px] sm:text-[12px] text-muted-foreground opacity-60 min-h-[36px] sm:min-h-0"
                       title="Disconnect is coming soon"
                     >
                       Disconnect
@@ -151,7 +151,7 @@ export default function Connections() {
                     <button
                       type="button"
                       disabled
-                      className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 text-[12px] text-amber-700 opacity-60 dark:text-amber-400"
+                      className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 text-[11px] sm:text-[12px] text-amber-700 opacity-60 dark:text-amber-400 min-h-[36px] sm:min-h-0"
                       title="Reconnect is coming soon"
                     >
                       Reconnect
@@ -160,7 +160,7 @@ export default function Connections() {
                     <button
                       type="button"
                       disabled
-                      className="rounded-lg bg-primary px-3 py-1.5 text-[12px] font-medium text-primary-foreground opacity-60"
+                      className="rounded-lg bg-primary px-3 py-1.5 text-[11px] sm:text-[12px] font-medium text-primary-foreground opacity-60 min-h-[36px] sm:min-h-0"
                       title="OAuth integration is coming soon"
                     >
                       Connect
@@ -170,7 +170,7 @@ export default function Connections() {
               </div>
 
               {conn?.connected_at && (
-                <p className="mt-3 border-t border-border pt-2 text-[11px] text-muted-foreground">
+                <p className="mt-3 border-t border-border pt-2 text-[10px] sm:text-[11px] text-muted-foreground">
                   Connected {new Date(conn.connected_at).toLocaleDateString()}
                 </p>
               )}
@@ -179,7 +179,7 @@ export default function Connections() {
         })}
       </div>
 
-      <p className="mt-6 rounded-lg border border-border bg-muted/30 p-3 text-center text-[12px] text-muted-foreground">
+      <p className="mt-4 sm:mt-6 rounded-lg border border-border bg-muted/30 p-3 text-center text-[11px] sm:text-[12px] text-muted-foreground">
         OAuth integration is coming soon. Tokens will be encrypted and stored securely -- never in the browser.
       </p>
     </div>

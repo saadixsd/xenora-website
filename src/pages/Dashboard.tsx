@@ -216,13 +216,13 @@ const Dashboard = () => {
   const isEmpty = runs.length === 0;
 
   return (
-    <div className="mx-auto min-h-0 min-w-0 max-w-5xl px-4 py-5 sm:px-6 lg:px-8 font-dm-sans">
-      <div className="mb-4 flex min-w-0 flex-col gap-4 rounded-xl border border-border bg-card px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+    <div className="mx-auto min-h-0 min-w-0 max-w-5xl px-3 py-4 sm:px-6 sm:py-5 lg:px-8 font-dm-sans">
+      <div className="mb-3 sm:mb-4 flex min-w-0 flex-col gap-3 sm:gap-4 rounded-xl border border-border bg-card px-3 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
         <div className="min-w-0">
-          <h1 className="font-dm-serif text-xl tracking-tight text-foreground">
+          <h1 className="font-dm-serif text-lg sm:text-xl tracking-tight text-foreground">
             Command Center
           </h1>
-          <p className="text-[12.5px] text-muted-foreground mt-0.5">
+          <p className="text-[11.5px] sm:text-[12.5px] text-muted-foreground mt-0.5">
             {activeCount} agent{activeCount !== 1 ? 's' : ''} active
             {lastRunAt ? ` -- last run ${timeAgo(lastRunAt)}` : ''}
           </p>
@@ -232,21 +232,21 @@ const Dashboard = () => {
             type="button"
             onClick={() => void handleRunAll()}
             disabled={runningAll}
-            className="min-h-[44px] rounded-lg bg-primary px-3.5 py-2 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="min-h-[44px] flex-1 sm:flex-none rounded-lg bg-primary px-3 sm:px-3.5 py-2 text-[12px] sm:text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
           >
             {runningAll ? 'Running...' : 'Run all agents'}
           </button>
           <button
             type="button"
             onClick={() => navigate(ROUTES.dashboard.settings)}
-            className="min-h-[44px] rounded-lg border border-border bg-card px-3.5 py-2 text-[13px] text-foreground transition-colors hover:bg-muted"
+            className="min-h-[44px] rounded-lg border border-border bg-card px-3 sm:px-3.5 py-2 text-[12px] sm:text-[13px] text-foreground transition-colors hover:bg-muted"
           >
             Settings
           </button>
           <button
             type="button"
             onClick={() => navigate(ROUTES.dashboard.runNew)}
-            className="min-h-[44px] rounded-lg border border-border bg-card px-3.5 py-2 text-[13px] text-foreground transition-colors hover:bg-muted"
+            className="min-h-[44px] rounded-lg border border-border bg-card px-3 sm:px-3.5 py-2 text-[12px] sm:text-[13px] text-foreground transition-colors hover:bg-muted"
           >
             + New workflow
           </button>
@@ -261,13 +261,13 @@ const Dashboard = () => {
         isEmpty={isEmpty}
       />
 
-      <div className="mt-4">
-        <div className="flex items-baseline justify-between mb-2.5">
-          <p className="text-[13px] font-medium text-foreground">Your agents</p>
+      <div className="mt-3 sm:mt-4">
+        <div className="flex items-baseline justify-between mb-2 sm:mb-2.5">
+          <p className="text-[12px] sm:text-[13px] font-medium text-foreground">Your agents</p>
           <button
             type="button"
             onClick={() => navigate(ROUTES.dashboard.agents.manage)}
-            className="text-[12px] text-primary hover:underline"
+            className="text-[11px] sm:text-[12px] text-primary hover:underline"
           >
             Manage
           </button>
@@ -275,7 +275,7 @@ const Dashboard = () => {
         <AgentCards />
       </div>
 
-      <div className="mt-4 grid min-w-0 gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,320px)]">
+      <div className="mt-3 sm:mt-4 grid min-w-0 gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,320px)]">
         <ActivityFeed />
         <HoursSavedBreakdown breakdown={breakdownData} totalMinutes={totalMinutesSaved} />
       </div>

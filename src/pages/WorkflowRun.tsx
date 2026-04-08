@@ -285,22 +285,22 @@ const WorkflowRun = () => {
 
   if (isNew && status === 'pending') {
     return (
-      <div className="mx-auto min-h-0 min-w-0 max-w-3xl px-4 py-6 sm:px-6">
+      <div className="mx-auto min-h-0 min-w-0 max-w-3xl px-3 py-4 sm:px-6 sm:py-6">
         <button
           type="button"
           onClick={() => navigate(ROUTES.dashboard.root)}
-          className="mb-6 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+          className="mb-4 sm:mb-6 flex items-center gap-2 text-[13px] sm:text-sm text-muted-foreground hover:text-foreground min-h-[44px]"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Dashboard
         </button>
 
-        <h1 className="text-xl font-semibold text-foreground">New Workflow Run</h1>
+        <h1 className="text-lg font-semibold text-foreground sm:text-xl">New Workflow Run</h1>
 
         {wizardStep === 0 && (
-          <div className="mt-6">
-            <p className="text-sm text-muted-foreground">Choose a workflow</p>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-4 sm:mt-6">
+            <p className="text-[13px] sm:text-sm text-muted-foreground">Choose a workflow</p>
+            <div className="mt-3 sm:mt-4 grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {templates.map((t) => (
                 <TemplateCard
                   key={t.id}
@@ -316,8 +316,8 @@ const WorkflowRun = () => {
         )}
 
         {wizardStep >= 1 && (
-          <div className="mt-6 space-y-5">
-            <div className="surface-panel p-5">
+          <div className="mt-4 sm:mt-6 space-y-4 sm:space-y-5">
+            <div className="surface-panel p-3.5 sm:p-5">
               <label className="mb-2 block text-sm font-medium text-foreground">
                 {isResearchTemplate ? 'Research focus & notes' : 'Your raw idea or thought'}
               </label>
@@ -376,15 +376,15 @@ const WorkflowRun = () => {
               </div>
             </div>
 
-            {error && <p className="text-sm text-destructive">{error}</p>}
+            {error && <p className="text-[13px] sm:text-sm text-destructive">{error}</p>}
 
-            <div className="flex gap-3">
+            <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
               {!preselectedTemplate && (
-                <Button variant="outline" onClick={() => setWizardStep(0)}>
+                <Button variant="outline" onClick={() => setWizardStep(0)} className="min-h-[44px] sm:min-h-0">
                   Back
                 </Button>
               )}
-              <Button onClick={() => void executeRun()} disabled={running || !inputText.trim()} className="gap-2">
+              <Button onClick={() => void executeRun()} disabled={running || !inputText.trim()} className="gap-2 min-h-[44px] sm:min-h-0">
                 <Play className="h-4 w-4" />
                 {running ? 'Running...' : 'Run workflow'}
               </Button>
@@ -396,18 +396,18 @@ const WorkflowRun = () => {
   }
 
   return (
-    <div className="mx-auto min-h-0 min-w-0 max-w-3xl px-4 py-6 sm:px-6">
+    <div className="mx-auto min-h-0 min-w-0 max-w-3xl px-3 py-4 sm:px-6 sm:py-6">
       <button
         type="button"
         onClick={() => navigate(ROUTES.dashboard.root)}
-        className="mb-6 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+        className="mb-4 sm:mb-6 flex items-center gap-2 text-[13px] sm:text-sm text-muted-foreground hover:text-foreground min-h-[44px]"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to Dashboard
       </button>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <h1 className="text-xl font-semibold text-foreground">Workflow Run</h1>
+        <h1 className="text-lg font-semibold text-foreground sm:text-xl">Workflow Run</h1>
         {!isNew && runId && (
           <div className="flex flex-wrap gap-2">
             {archivedAt ? (

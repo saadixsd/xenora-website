@@ -30,23 +30,23 @@ export function HoursSavedBreakdown({ breakdown, totalMinutes }: HoursSavedBreak
   const max = Math.max(...breakdown.map((b) => b.minutes), 1);
 
   return (
-    <div className="min-w-0 rounded-xl border border-border bg-card p-4">
-      <div className="flex items-baseline justify-between mb-3">
-        <p className="text-[13px] font-medium text-foreground">Hours Saved This Month</p>
-        <p className="text-[12px] text-muted-foreground">{formatMinutes(totalMinutes)} total</p>
+    <div className="min-w-0 rounded-xl border border-border bg-card p-3 sm:p-4">
+      <div className="flex items-baseline justify-between mb-2.5 sm:mb-3 gap-2">
+        <p className="text-[12px] sm:text-[13px] font-medium text-foreground">Hours Saved This Month</p>
+        <p className="text-[11px] sm:text-[12px] text-muted-foreground shrink-0">{formatMinutes(totalMinutes)} total</p>
       </div>
-      <div className="space-y-3">
+      <div className="space-y-2.5 sm:space-y-3">
         {breakdown.map((item) => {
           const pct = totalMinutes > 0 ? Math.round((item.minutes / max) * 100) : 0;
           return (
             <div key={item.type}>
               <div className="flex items-center justify-between mb-1">
-                <span className="text-[12px] text-foreground">{item.label}</span>
-                <span className="text-[11px] text-muted-foreground">{formatMinutes(item.minutes)}</span>
+                <span className="text-[11px] sm:text-[12px] text-foreground truncate mr-2">{item.label}</span>
+                <span className="text-[10px] sm:text-[11px] text-muted-foreground shrink-0">{formatMinutes(item.minutes)}</span>
               </div>
-              <div className="h-2 w-full rounded-full bg-muted">
+              <div className="h-1.5 sm:h-2 w-full rounded-full bg-muted">
                 <div
-                  className={cn('h-2 rounded-full transition-all duration-500', BAR_COLORS[item.type] || 'bg-primary')}
+                  className={cn('h-1.5 sm:h-2 rounded-full transition-all duration-500', BAR_COLORS[item.type] || 'bg-primary')}
                   style={{ width: `${pct}%` }}
                 />
               </div>
@@ -55,7 +55,7 @@ export function HoursSavedBreakdown({ breakdown, totalMinutes }: HoursSavedBreak
         })}
       </div>
       {totalMinutes === 0 && (
-        <p className="mt-3 text-center text-[12px] text-muted-foreground">
+        <p className="mt-3 text-center text-[11px] sm:text-[12px] text-muted-foreground">
           Complete runs to see your time saved breakdown.
         </p>
       )}

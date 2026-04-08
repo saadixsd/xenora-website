@@ -60,16 +60,16 @@ const History = () => {
   };
 
   return (
-    <div className="mx-auto min-h-0 min-w-0 max-w-4xl px-4 py-6 sm:px-6 lg:px-8">
-      <h1 className="text-xl font-semibold text-foreground sm:text-2xl">History</h1>
-      <p className="mt-1 text-sm text-muted-foreground">All your workflow runs.</p>
+    <div className="mx-auto min-h-0 min-w-0 max-w-4xl px-3 py-4 sm:px-6 sm:py-6 lg:px-8">
+      <h1 className="text-lg font-semibold text-foreground sm:text-2xl">History</h1>
+      <p className="mt-1 text-[13px] sm:text-sm text-muted-foreground">All your workflow runs.</p>
 
-      <div className="mt-4 flex gap-2 border-b border-border">
+      <div className="mt-3 sm:mt-4 flex gap-1 sm:gap-2 border-b border-border">
         <button
           type="button"
           onClick={() => setTab('active')}
           className={cn(
-            'border-b-2 px-3 py-2 text-sm transition-colors',
+            'border-b-2 px-3 py-2 text-[13px] sm:text-sm transition-colors min-h-[44px]',
             tab === 'active' ? 'border-primary font-medium text-foreground' : 'border-transparent text-muted-foreground',
           )}
         >
@@ -79,7 +79,7 @@ const History = () => {
           type="button"
           onClick={() => setTab('archived')}
           className={cn(
-            'border-b-2 px-3 py-2 text-sm transition-colors',
+            'border-b-2 px-3 py-2 text-[13px] sm:text-sm transition-colors min-h-[44px]',
             tab === 'archived' ? 'border-primary font-medium text-foreground' : 'border-transparent text-muted-foreground',
           )}
         >
@@ -107,23 +107,23 @@ const History = () => {
           )}
         </div>
       ) : (
-        <div className="mt-6 space-y-2">
+        <div className="mt-4 sm:mt-6 space-y-2">
           {runs.map((run) => (
             <div
               key={run.id}
-              className="surface-panel flex w-full flex-col gap-3 p-4 sm:flex-row sm:items-center"
+              className="surface-panel flex w-full flex-col gap-2.5 p-3 sm:p-4 sm:flex-row sm:items-center sm:gap-3"
             >
               <button
                 type="button"
                 onClick={() => navigate(dashboardRunPath(run.id))}
-                className="min-w-0 flex-1 text-left transition-colors hover:opacity-90"
+                className="min-w-0 flex-1 text-left transition-colors hover:opacity-90 min-h-[44px] flex flex-col justify-center"
               >
-                <p className="truncate text-sm text-foreground">{run.input_text}</p>
-                <p className="mt-0.5 text-xs text-muted-foreground">
+                <p className="truncate text-[13px] sm:text-sm text-foreground">{run.input_text}</p>
+                <p className="mt-0.5 text-[11px] sm:text-xs text-muted-foreground">
                   {run.workflow_templates?.name ?? 'Workflow'} · {new Date(run.created_at).toLocaleDateString()}
                 </p>
               </button>
-              <div className="flex shrink-0 flex-wrap items-center gap-2">
+              <div className="flex shrink-0 flex-wrap items-center gap-1.5 sm:gap-2 self-end sm:self-center">
                 <span
                   className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
                     run.status === 'completed'
@@ -143,7 +143,7 @@ const History = () => {
                       type="button"
                       title="Archive"
                       onClick={() => void archive(run.id)}
-                      className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-muted"
+                      className="flex h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-muted"
                     >
                       <Archive className="h-4 w-4" />
                     </button>
@@ -151,7 +151,7 @@ const History = () => {
                       type="button"
                       title="Delete"
                       onClick={() => void remove(run.id)}
-                      className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                      className="flex h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -162,7 +162,7 @@ const History = () => {
                       type="button"
                       title="Unarchive"
                       onClick={() => void unarchive(run.id)}
-                      className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-muted"
+                      className="flex h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-muted"
                     >
                       <ArchiveRestore className="h-4 w-4" />
                     </button>
@@ -170,7 +170,7 @@ const History = () => {
                       type="button"
                       title="Delete"
                       onClick={() => void remove(run.id)}
-                      className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                      className="flex h-10 w-10 sm:h-9 sm:w-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>

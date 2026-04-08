@@ -194,7 +194,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
 
   const send = async (text: string) => {
     const trimmed = text.trim();
-    if (!trimmed || sending || typingReply || dailyLimitReached) return;
+    if (!trimmed || sending || typingReply || (dailyLimitReached && !quotaExempt)) return;
     setSessionExpired(false);
     setLastError('');
     const t = session?.access_token;
@@ -233,11 +233,18 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
     } catch (e) {
       if (insertedUserRowId) await supabase.from('nora_chat_messages' as any).delete().eq('id', insertedUserRowId);
       if (e instanceof DailyQueryLimitError) {
-        setDailyLimitReached(true);
-        setQueriesUsedToday(e.queries_used);
-        const limitMsg = "You've used all 3 of your queries for today. Come back tomorrow — your limit resets at midnight UTC. While you wait, browse what Nora can do on the dashboard.";
-        setMessages((prev) => [...prev, { role: 'assistant', content: limitMsg }]);
-        setBackendOk(true);
+        if (quotaExempt) {
+          setLastError('Server returned a limit error but you are exempt. Redeploy edge functions to fix.');
+          setBackendOk(false);
+          setMessages((prev) => prev.slice(0, -1));
+          setInput(trimmed);
+        } else {
+          setDailyLimitReached(true);
+          setQueriesUsedToday(e.queries_used);
+          const limitMsg = "You've used all 3 of your queries for today. Come back tomorrow — your limit resets at midnight UTC. While you wait, browse what Nora can do on the dashboard.";
+          setMessages((prev) => [...prev, { role: 'assistant', content: limitMsg }]);
+          setBackendOk(true);
+        }
       } else if (e instanceof Error && e.message === 'SESSION_EXPIRED') {
         setSessionExpired(true);
         setMessages((prev) => prev.slice(0, -1));
@@ -287,7 +294,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   const onSubmit = (e: React.FormEvent) => { e.preventDefault(); void send(input); };
 
   const chatActive = messages.length > 0;
-  const inputDisabled = sending || typingReply || dailyLimitReached || sessionExpired;
+  const inputDisabled = sending || typingReply || (dailyLimitReached && !quotaExempt) || sessionExpired;
 
   const outerClass = cn(
     'relative flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-background',

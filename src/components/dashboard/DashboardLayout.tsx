@@ -18,7 +18,7 @@ export function DashboardLayout() {
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 max-w-[85vw] shrink-0 transform border-r border-border bg-card/60 backdrop-blur-xl transition-transform duration-200 lg:relative lg:z-auto lg:max-w-none lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 max-w-[80vw] sm:max-w-[85vw] shrink-0 transform border-r border-border bg-card/60 backdrop-blur-xl transition-transform duration-200 lg:relative lg:z-auto lg:max-w-none lg:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -40,7 +40,7 @@ export function DashboardLayout() {
           </span>
         </header>
 
-        <main className="relative min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-y-contain">
+        <main className="relative min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-y-contain pb-[env(safe-area-inset-bottom,0px)]">
           <Outlet />
         </main>
       </div>

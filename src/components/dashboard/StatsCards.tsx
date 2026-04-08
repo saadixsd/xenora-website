@@ -53,19 +53,19 @@ export function StatsCards({
   ];
 
   return (
-    <div className="grid min-w-0 grid-cols-2 gap-3 sm:grid-cols-4">
+    <div className="grid min-w-0 grid-cols-2 gap-2 sm:gap-3 md:grid-cols-4">
       {cards.map((c) => {
         const interactive = Boolean(c.onClick);
         const className = cn(
-          'min-w-0 rounded-xl border border-border bg-card p-4 text-left',
+          'min-w-0 rounded-xl border border-border bg-card p-3 sm:p-4 text-left',
           interactive &&
             'cursor-pointer transition-colors hover:border-primary/35 hover:bg-muted/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40',
         );
         const inner = (
           <>
-            <p className="text-[11px] uppercase tracking-[0.5px] text-muted-foreground">{c.label}</p>
-            <p className="mt-1 font-dm-serif text-[26px] tracking-tight text-foreground">{c.value}</p>
-            <p className="mt-0.5 break-words text-[11px] text-muted-foreground">{c.hint}</p>
+            <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.5px] text-muted-foreground truncate">{c.label}</p>
+            <p className="mt-0.5 sm:mt-1 font-dm-serif text-[22px] sm:text-[26px] tracking-tight text-foreground">{c.value}</p>
+            <p className="mt-0.5 break-words text-[10px] sm:text-[11px] text-muted-foreground line-clamp-2">{c.hint}</p>
           </>
         );
         return interactive ? (

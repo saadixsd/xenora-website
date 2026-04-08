@@ -129,18 +129,18 @@ export default function AgentsManagePage() {
     .filter(Boolean) as AgentRow[];
 
   return (
-    <div className="mx-auto min-h-0 min-w-0 max-w-2xl px-4 py-6 sm:px-6 lg:px-8">
+    <div className="mx-auto min-h-0 min-w-0 max-w-2xl px-3 py-4 sm:px-6 sm:py-6 lg:px-8">
       <button
         type="button"
         onClick={() => navigate(ROUTES.dashboard.root)}
-        className="mb-4 flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+        className="mb-3 sm:mb-4 flex items-center gap-2 text-[13px] sm:text-sm text-muted-foreground hover:text-foreground min-h-[44px]"
       >
         <ArrowLeft className="h-4 w-4" />
         Dashboard
       </button>
 
-      <h1 className="text-xl font-semibold text-foreground sm:text-2xl">Agents</h1>
-      <p className="mt-1 text-sm text-muted-foreground">
+      <h1 className="text-lg font-semibold text-foreground sm:text-2xl">Agents</h1>
+      <p className="mt-1 text-[13px] sm:text-sm text-muted-foreground">
         Your built-in agents are below. Custom agents are created with Nora in{' '}
         <Link to={ROUTES.dashboard.noraAgentBuilder} className="text-primary hover:underline">
           Build agent
@@ -148,20 +148,20 @@ export default function AgentsManagePage() {
         mode, then deployed here.
       </p>
 
-      <h2 className="mt-6 text-sm font-medium text-foreground">Built-in agents</h2>
-      <ul className="mt-3 space-y-3">
+      <h2 className="mt-5 sm:mt-6 text-[13px] sm:text-sm font-medium text-foreground">Built-in agents</h2>
+      <ul className="mt-2.5 sm:mt-3 space-y-2.5 sm:space-y-3">
         {ordered.map((a) => (
           <li key={a.id}>
-            <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary/25">
-              <div className="flex items-start gap-3 min-w-0">
-                <span className={cn('mt-1 h-2.5 w-2.5 shrink-0 rounded-full', DOT_COLOR[a.status] || DOT_COLOR.paused)} />
+            <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-3 sm:p-4 transition-colors hover:border-primary/25 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-start gap-2.5 sm:gap-3 min-w-0">
+                <span className={cn('mt-1 h-2 w-2 sm:h-2.5 sm:w-2.5 shrink-0 rounded-full', DOT_COLOR[a.status] || DOT_COLOR.paused)} />
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-foreground">{TYPE_LABELS[a.type] || a.type}</p>
-                  <p className="mt-0.5 text-xs text-muted-foreground">{TYPE_DESCRIPTIONS[a.type]}</p>
-                  <p className="mt-0.5 text-[11px] text-muted-foreground">Last run: {timeAgo(a.last_run_at)}</p>
+                  <p className="text-[13px] sm:text-sm font-medium text-foreground">{TYPE_LABELS[a.type] || a.type}</p>
+                  <p className="mt-0.5 text-[11px] sm:text-xs text-muted-foreground">{TYPE_DESCRIPTIONS[a.type]}</p>
+                  <p className="mt-0.5 text-[10px] sm:text-[11px] text-muted-foreground">Last run: {timeAgo(a.last_run_at)}</p>
                 </div>
               </div>
-              <div className="flex shrink-0 gap-2">
+              <div className="flex shrink-0 gap-2 self-end sm:self-center">
                 <Button size="sm" variant="outline" onClick={() => navigate(agentEditPath(a.id))}>
                   Edit
                 </Button>
@@ -176,29 +176,29 @@ export default function AgentsManagePage() {
           </li>
         ))}
         {ordered.length === 0 && (
-          <li className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+          <li className="rounded-xl border border-border bg-card p-5 sm:p-6 text-center text-[13px] sm:text-sm text-muted-foreground">
             No agents found. They are created automatically when you sign up.
           </li>
         )}
       </ul>
 
       {customAgents.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-sm font-medium text-foreground">Your custom agents</h2>
-          <p className="mt-1 text-xs text-muted-foreground">
+        <div className="mt-6 sm:mt-8">
+          <h2 className="text-[13px] sm:text-sm font-medium text-foreground">Your custom agents</h2>
+          <p className="mt-1 text-[11px] sm:text-xs text-muted-foreground">
             Runs use the Content workflow with your mission as the goal and starter text prefilled.
           </p>
-          <ul className="mt-3 space-y-2">
+          <ul className="mt-2.5 sm:mt-3 space-y-2">
             {customAgents.map((a) => (
               <li
                 key={a.id}
-                className="flex flex-col gap-2 rounded-xl border border-border bg-card p-4 sm:flex-row sm:items-center sm:justify-between"
+                className="flex flex-col gap-2.5 rounded-xl border border-border bg-card p-3 sm:p-4 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-foreground">{a.name}</p>
-                  <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{a.mission}</p>
+                  <p className="text-[13px] sm:text-sm font-medium text-foreground">{a.name}</p>
+                  <p className="mt-0.5 line-clamp-2 text-[11px] sm:text-xs text-muted-foreground">{a.mission}</p>
                 </div>
-                <div className="flex shrink-0 gap-2">
+                <div className="flex shrink-0 gap-2 self-end sm:self-center">
                   <Button size="sm" onClick={() => runCustomAgent(a)}>
                     Run
                   </Button>
@@ -212,14 +212,14 @@ export default function AgentsManagePage() {
         </div>
       )}
 
-      <div className="mt-8 flex flex-wrap gap-3">
-        <Button variant="outline" asChild>
+      <div className="mt-6 sm:mt-8 flex flex-wrap gap-2 sm:gap-3">
+        <Button variant="outline" size="sm" className="text-[12px] sm:text-sm" asChild>
           <Link to={ROUTES.dashboard.connections}>Connections</Link>
         </Button>
-        <Button variant="outline" asChild>
+        <Button variant="outline" size="sm" className="text-[12px] sm:text-sm" asChild>
           <Link to={ROUTES.dashboard.runNew}>New workflow</Link>
         </Button>
-        <Button variant="outline" asChild>
+        <Button variant="outline" size="sm" className="text-[12px] sm:text-sm" asChild>
           <Link to={ROUTES.dashboard.noraAgentBuilder}>Create agent with Nora</Link>
         </Button>
       </div>
