@@ -290,8 +290,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   const inputDisabled = sending || typingReply || dailyLimitReached || sessionExpired;
 
   const outerClass = cn(
-    'flex h-full min-h-0 min-w-0 flex-1 flex-col bg-background',
-    variant === 'sheet' && 'relative overflow-hidden',
+    'relative flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-background',
   );
   const maxHeightStyle = variant === 'page'
     ? { touchAction: 'manipulation' as const, maxHeight: 'calc(100dvh - 3.5rem)' }

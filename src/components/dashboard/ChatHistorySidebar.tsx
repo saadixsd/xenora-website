@@ -88,15 +88,11 @@ export function ChatHistorySidebar({
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
-  const backdropClass = embedded
-    ? 'absolute inset-0 z-[5] bg-black/40 backdrop-blur-[2px]'
-    : 'fixed inset-0 z-[60] bg-black/40 backdrop-blur-[2px]';
+  const backdropClass = 'absolute inset-0 z-[5] bg-black/40 backdrop-blur-[2px]';
 
   const panelClass = cn(
     'flex flex-col border-r border-border bg-card/95 backdrop-blur-xl shadow-2xl transition-transform duration-300 ease-in-out',
-    embedded
-      ? 'absolute inset-y-0 left-0 z-[10] h-full w-[min(280px,calc(100%-1.5rem))] max-w-[min(320px,88%)]'
-      : 'fixed inset-y-0 left-0 z-[65] w-[min(320px,85vw)] lg:left-64',
+    'absolute inset-y-0 left-0 z-[10] h-full w-[min(280px,calc(100%-1.5rem))] max-w-[min(320px,88%)]',
     open ? 'translate-x-0' : '-translate-x-full pointer-events-none',
   );
 
