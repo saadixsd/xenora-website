@@ -1,188 +1,179 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
+import { agentEditPath } from '@/config/routes';
 import { ROUTES } from '@/config/routes';
 
-interface DbTemplate {
+interface AgentRow {
   id: string;
-  name: string;
+  type: string;
+  status: string;
+  last_run_at: string | null;
 }
 
-interface Agent {
-  name: string;
-  description: string;
-  status: 'live' | 'beta' | 'soon';
-  actionLabel: string;
-  match: (name: string) => boolean;
-  footer: 'drafts' | 'beta' | 'research';
+interface ConnectionRow {
+  platform: string;
+  status: string;
 }
 
-const agents: Agent[] = [
-  {
-    name: 'Content Agent',
-    description: 'Rough notes in. Posts, hooks, and captions out — ready to review.',
-    status: 'live',
-    actionLabel: 'Run →',
-    match: (n) => n.includes('content'),
-    footer: 'drafts',
+const AGENT_META: Record<string, { label: string; description: string; platforms: string[] }> = {
+  content: {
+    label: 'Content Agent',
+    description: 'Raw thoughts in. X posts, hooks, LinkedIn drafts, and CTAs out -- ready to review.',
+    platforms: ['x', 'instagram', 'linkedin'],
   },
-  {
-    name: 'Lead Agent',
-    description: 'Scores inbound, drafts a reply, queues follow-up after ~48h if needed. You approve before send.',
-    status: 'beta',
-    actionLabel: 'Run →',
-    match: (n) => n.includes('lead'),
-    footer: 'beta',
+  leads: {
+    label: 'Leads Agent',
+    description: 'Scores inbound, drafts a reply, queues follow-up after ~48h. You approve before send.',
+    platforms: ['gmail'],
   },
-  {
-    name: 'Research Agent',
-    description: 'Fetches public thread data when possible and returns pain signals and content angles.',
-    status: 'live',
-    actionLabel: 'Run →',
-    match: (n) => n.includes('research'),
-    footer: 'research',
+  research: {
+    label: 'Research Agent',
+    description: 'Fetches public signals from Reddit and X, returns pain themes and content angles.',
+    platforms: ['x'],
   },
-];
-
-const dotColor = { live: 'bg-emerald-500', beta: 'bg-amber-500', soon: 'bg-border' };
-const statusStyle = {
-  live: 'bg-primary/10 text-primary',
-  beta: 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400',
-  soon: 'bg-muted text-muted-foreground',
 };
-const statusLabel = { live: 'Live', beta: 'Beta', soon: 'Coming soon' };
 
-interface AgentCardsProps {
-  draftsCount?: number;
+const DOT_STYLE: Record<string, string> = {
+  active: 'bg-emerald-500',
+  running: 'bg-amber-500 animate-pulse',
+  paused: 'bg-zinc-400',
+};
+
+const STATUS_LABEL: Record<string, string> = {
+  active: 'Active',
+  running: 'Running',
+  paused: 'Paused',
+};
+
+function timeAgo(dateStr: string | null): string {
+  if (!dateStr) return 'Never';
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'Just now';
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  return `${days}d ago`;
 }
 
-export function AgentCards({ draftsCount = 0 }: AgentCardsProps) {
+export function AgentCards() {
   const navigate = useNavigate();
-  const [templates, setTemplates] = useState<DbTemplate[]>([]);
+  const { user } = useAuth();
+  const [agents, setAgents] = useState<AgentRow[]>([]);
+  const [connections, setConnections] = useState<ConnectionRow[]>([]);
 
   useEffect(() => {
-    supabase
-      .from('workflow_templates')
-      .select('id, name')
-      .then(({ data }) => {
-        if (data) setTemplates(data as DbTemplate[]);
+    if (!user) return;
+
+    (supabase.from('agents' as any) as any)
+      .select('id, type, status, last_run_at')
+      .eq('user_id', user.id)
+      .then(({ data }: { data: unknown }) => {
+        if (data) setAgents(data as AgentRow[]);
       });
-  }, []);
 
-  const resolveTemplateId = (a: Agent): string | undefined => {
-    const row = templates.find((t) => a.match(t.name.toLowerCase()));
-    return row?.id;
-  };
+    (supabase.from('connections' as any) as any)
+      .select('platform, status')
+      .eq('user_id', user.id)
+      .then(({ data }: { data: unknown }) => {
+        if (data) setConnections(data as ConnectionRow[]);
+      });
 
-  const handleRun = (agent: Agent) => {
-    const tid = resolveTemplateId(agent);
-    if (!tid) return;
-    navigate(`${ROUTES.dashboard.runNew}?template=${tid}`);
-  };
+    const channel = supabase
+      .channel('agent-status')
+      .on(
+        'postgres_changes' as any,
+        { event: 'UPDATE', schema: 'public', table: 'agents', filter: `user_id=eq.${user.id}` },
+        (payload: any) => {
+          const updated = payload.new as AgentRow;
+          setAgents((prev) =>
+            prev.map((a) => (a.id === updated.id ? { ...a, status: updated.status, last_run_at: updated.last_run_at } : a)),
+          );
+        },
+      )
+      .subscribe();
 
-  const pathForAgent = (agent: Agent): string => {
-    if (agent.name.startsWith('Content')) return ROUTES.dashboard.agents.content;
-    if (agent.name.startsWith('Lead')) return ROUTES.dashboard.agents.lead;
-    return ROUTES.dashboard.agents.research;
-  };
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user]);
+
+  const isConnected = (platform: string) =>
+    connections.some((c) => c.platform === platform && c.status === 'connected');
+
+  const ordered = ['content', 'leads', 'research']
+    .map((t) => agents.find((a) => a.type === t))
+    .filter(Boolean) as AgentRow[];
 
   return (
     <div className="grid min-w-0 gap-3 sm:grid-cols-3">
-      {agents.map((a) => {
-        const tid = resolveTemplateId(a);
-        const canRun = Boolean(tid);
-        const interactive = canRun || a.status !== 'soon';
+      {ordered.map((agent) => {
+        const meta = AGENT_META[agent.type];
+        if (!meta) return null;
+
         return (
           <div
-            key={a.name}
-            className={cn(
-              'min-w-0 rounded-xl border border-border bg-card p-4 transition-all duration-200',
-              interactive && 'cursor-pointer hover:border-primary/40 hover:shadow-[0_2px_12px_rgba(45,90,61,0.08)]',
-              a.status === 'soon' && 'opacity-70',
-            )}
-            onClick={interactive ? () => navigate(pathForAgent(a)) : undefined}
-            onKeyDown={
-              interactive
-                ? (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      navigate(pathForAgent(a));
-                    }
-                  }
-                : undefined
-            }
-            role={interactive ? 'button' : undefined}
-            tabIndex={interactive ? 0 : undefined}
+            key={agent.id}
+            className="min-w-0 rounded-xl border border-border bg-card p-4 transition-all duration-200 hover:border-primary/40 hover:shadow-[0_2px_12px_rgba(45,90,61,0.08)]"
           >
-            <div className="flex items-center justify-between mb-2.5">
-              <span className={cn('h-2 w-2 rounded-full', dotColor[a.status])} />
-              <span className={cn('rounded-md px-2 py-0.5 text-[10.5px] font-medium', statusStyle[a.status])}>
-                {statusLabel[a.status]}
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <span className={cn('h-2.5 w-2.5 rounded-full', DOT_STYLE[agent.status] || DOT_STYLE.paused)} />
+                <span className="text-[11px] font-medium text-muted-foreground">
+                  {STATUS_LABEL[agent.status] || 'Unknown'}
+                </span>
+              </div>
+              <span className="text-[11px] text-muted-foreground">
+                Last run: {timeAgo(agent.last_run_at)}
               </span>
             </div>
-            <h3 className="text-sm font-medium text-foreground">{a.name}</h3>
-            <p className="mt-1 text-[12px] leading-relaxed text-muted-foreground">{a.description}</p>
-            <div className="mt-3 border-t border-border pt-3">
-              {a.footer === 'drafts' && (
-                <div className="flex items-center justify-between gap-2">
-                  <div className="min-w-0">
-                    {draftsCount > 0 ? (
-                      <>
-                        <p className="font-dm-serif text-lg text-foreground">{draftsCount}</p>
-                        <p className="text-[11px] text-muted-foreground">outputs from your runs</p>
-                      </>
-                    ) : (
-                      <p className="text-[12px] text-muted-foreground leading-snug">
-                        No outputs yet — run the Content Agent to generate drafts.
-                      </p>
-                    )}
-                  </div>
-                  <button
-                    type="button"
-                    className="shrink-0 rounded-md border border-border bg-muted/50 px-2.5 py-1 text-[11.5px] text-muted-foreground transition-colors hover:border-primary hover:bg-primary/10 hover:text-primary disabled:opacity-40"
-                    disabled={!canRun}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleRun(a);
-                    }}
-                  >
-                    {a.actionLabel}
-                  </button>
-                </div>
-              )}
-              {a.footer === 'beta' && (
-                <div className="flex items-center justify-between gap-2">
-                  <p className="text-[12px] text-muted-foreground leading-snug">Beta — review drafts before sending.</p>
-                  <button
-                    type="button"
-                    className="shrink-0 rounded-md border border-border bg-muted/50 px-2.5 py-1 text-[11.5px] text-muted-foreground transition-colors hover:border-primary hover:bg-primary/10 hover:text-primary disabled:opacity-40"
-                    disabled={!canRun}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleRun(a);
-                    }}
-                  >
-                    {a.actionLabel}
-                  </button>
-                </div>
-              )}
-              {a.footer === 'research' && (
-                <div className="flex items-center justify-between gap-2">
-                  <p className="text-[12px] text-muted-foreground leading-snug">Add URLs on the run screen when useful.</p>
-                  <button
-                    type="button"
-                    className="shrink-0 rounded-md border border-border bg-muted/50 px-2.5 py-1 text-[11.5px] text-muted-foreground transition-colors hover:border-primary hover:bg-primary/10 hover:text-primary disabled:opacity-40"
-                    disabled={!canRun}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleRun(a);
-                    }}
-                  >
-                    {a.actionLabel}
-                  </button>
-                </div>
-              )}
+
+            <h3 className="text-sm font-medium text-foreground">{meta.label}</h3>
+            <p className="mt-1 text-[12px] leading-relaxed text-muted-foreground">{meta.description}</p>
+
+            <div className="mt-2.5 flex flex-wrap gap-1.5">
+              {meta.platforms.map((p) => (
+                <span
+                  key={p}
+                  className={cn(
+                    'rounded-md px-2 py-0.5 text-[10px] font-medium capitalize',
+                    isConnected(p)
+                      ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
+                      : 'bg-muted text-muted-foreground',
+                  )}
+                >
+                  {p === 'gmail' ? 'Gmail' : p === 'x' ? 'X' : p === 'instagram' ? 'Instagram' : 'LinkedIn'}
+                  {isConnected(p) ? '' : ' --'}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-3 flex gap-2 border-t border-border pt-3">
+              <button
+                type="button"
+                onClick={() => navigate(`${ROUTES.dashboard.runNew}?agent_type=${agent.type}`)}
+                className="rounded-md border border-border bg-primary px-2.5 py-1 text-[11px] font-medium text-primary-foreground transition-colors hover:opacity-90"
+              >
+                Run now
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate(agentEditPath(agent.id))}
+                className="rounded-md border border-border bg-muted/50 px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:border-primary hover:bg-primary/10 hover:text-primary"
+              >
+                Edit agent
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate(ROUTES.dashboard.history)}
+                className="rounded-md border border-border bg-muted/50 px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:border-primary hover:bg-primary/10 hover:text-primary"
+              >
+                Logs
+              </button>
             </div>
           </div>
         );

@@ -1,29 +1,19 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ROUTES } from '@/config/routes';
+import { ROUTES, agentEditPath } from '@/config/routes';
 import { ArrowLeft, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
-const AGENTS = [
-  {
-    name: 'Content Agent',
-    path: ROUTES.dashboard.agents.content,
-    description: 'Social and long-form drafts from a single input.',
-  },
-  {
-    name: 'Lead Agent',
-    path: ROUTES.dashboard.agents.lead,
-    description: 'Replies and follow-up planning from lead context.',
-  },
-  {
-    name: 'Research Agent',
-    path: ROUTES.dashboard.agents.research,
-    description: 'Signals and angles from notes plus optional URLs.',
-  },
-];
+interface AgentRow {
+  id: string;
+  type: string;
+  status: string;
+  last_run_at: string | null;
+}
 
 interface CustomAgentRow {
   id: string;
@@ -33,12 +23,52 @@ interface CustomAgentRow {
   created_at: string;
 }
 
+const TYPE_LABELS: Record<string, string> = {
+  content: 'Content Agent',
+  leads: 'Leads Agent',
+  research: 'Research Agent',
+};
+
+const TYPE_DESCRIPTIONS: Record<string, string> = {
+  content: 'Social and long-form drafts from a single input.',
+  leads: 'Replies and follow-up planning from lead context.',
+  research: 'Signals and angles from notes plus optional URLs.',
+};
+
+const DOT_COLOR: Record<string, string> = {
+  active: 'bg-emerald-500',
+  running: 'bg-amber-500 animate-pulse',
+  paused: 'bg-zinc-400',
+};
+
+function timeAgo(dateStr: string | null): string {
+  if (!dateStr) return 'Never run';
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'Just now';
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  return `${Math.floor(hrs / 24)}d ago`;
+}
+
 export default function AgentsManagePage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
+  const [agents, setAgents] = useState<AgentRow[]>([]);
   const [customAgents, setCustomAgents] = useState<CustomAgentRow[]>([]);
   const [contentTemplateId, setContentTemplateId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user) return;
+    (supabase.from('agents' as any) as any)
+      .select('id, type, status, last_run_at')
+      .eq('user_id', user.id)
+      .then(({ data }: { data: unknown }) => {
+        if (data) setAgents(data as AgentRow[]);
+      });
+  }, [user]);
 
   const loadCustom = useCallback(() => {
     if (!user?.id) return;
@@ -78,7 +108,7 @@ export default function AgentsManagePage() {
     const p = new URLSearchParams();
     p.set('template', contentTemplateId);
     p.set('goal', a.mission);
-    const input = (a.starter_prompt || `Run my “${a.name}” agent: ${a.mission}`).slice(0, 8000);
+    const input = (a.starter_prompt || `Run my "${a.name}" agent: ${a.mission}`).slice(0, 8000);
     p.set('input', input);
     navigate(`${ROUTES.dashboard.runNew}?${p.toString()}`);
   };
@@ -94,6 +124,10 @@ export default function AgentsManagePage() {
     loadCustom();
   };
 
+  const ordered = ['content', 'leads', 'research']
+    .map((t) => agents.find((a) => a.type === t))
+    .filter(Boolean) as AgentRow[];
+
   return (
     <div className="mx-auto min-h-0 min-w-0 max-w-2xl px-4 py-6 sm:px-6 lg:px-8">
       <button
@@ -105,14 +139,48 @@ export default function AgentsManagePage() {
         Dashboard
       </button>
 
-      <h1 className="text-xl font-semibold text-foreground sm:text-2xl">Manage agents</h1>
+      <h1 className="text-xl font-semibold text-foreground sm:text-2xl">Agents</h1>
       <p className="mt-1 text-sm text-muted-foreground">
-        Built-in workflows below. Custom agents are created with Nora in{' '}
+        Your built-in agents are below. Custom agents are created with Nora in{' '}
         <Link to={ROUTES.dashboard.noraAgentBuilder} className="text-primary hover:underline">
           Build agent
         </Link>{' '}
         mode, then deployed here.
       </p>
+
+      <h2 className="mt-6 text-sm font-medium text-foreground">Built-in agents</h2>
+      <ul className="mt-3 space-y-3">
+        {ordered.map((a) => (
+          <li key={a.id}>
+            <div className="flex items-center justify-between rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary/25">
+              <div className="flex items-start gap-3 min-w-0">
+                <span className={cn('mt-1 h-2.5 w-2.5 shrink-0 rounded-full', DOT_COLOR[a.status] || DOT_COLOR.paused)} />
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-foreground">{TYPE_LABELS[a.type] || a.type}</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">{TYPE_DESCRIPTIONS[a.type]}</p>
+                  <p className="mt-0.5 text-[11px] text-muted-foreground">Last run: {timeAgo(a.last_run_at)}</p>
+                </div>
+              </div>
+              <div className="flex shrink-0 gap-2">
+                <Button size="sm" variant="outline" onClick={() => navigate(agentEditPath(a.id))}>
+                  Edit
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => navigate(`${ROUTES.dashboard.runNew}?agent_type=${a.type}`)}
+                >
+                  Run
+                </Button>
+              </div>
+            </div>
+          </li>
+        ))}
+        {ordered.length === 0 && (
+          <li className="rounded-xl border border-border bg-card p-6 text-center text-sm text-muted-foreground">
+            No agents found. They are created automatically when you sign up.
+          </li>
+        )}
+      </ul>
 
       {customAgents.length > 0 && (
         <div className="mt-8">
@@ -124,7 +192,7 @@ export default function AgentsManagePage() {
             {customAgents.map((a) => (
               <li
                 key={a.id}
-                className="surface-panel flex flex-col gap-2 p-4 sm:flex-row sm:items-center sm:justify-between"
+                className="flex flex-col gap-2 rounded-xl border border-border bg-card p-4 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-foreground">{a.name}</p>
@@ -144,25 +212,9 @@ export default function AgentsManagePage() {
         </div>
       )}
 
-      <h2 className="mt-10 text-sm font-medium text-foreground">Built-in agents</h2>
-      <ul className="mt-3 space-y-3">
-        {AGENTS.map((a) => (
-          <li key={a.path}>
-            <button
-              type="button"
-              onClick={() => navigate(a.path)}
-              className="surface-panel w-full p-4 text-left transition-colors hover:border-primary/25"
-            >
-              <p className="text-sm font-medium text-foreground">{a.name}</p>
-              <p className="mt-1 text-xs text-muted-foreground">{a.description}</p>
-            </button>
-          </li>
-        ))}
-      </ul>
-
       <div className="mt-8 flex flex-wrap gap-3">
         <Button variant="outline" asChild>
-          <Link to={ROUTES.dashboard.settings}>Open Settings</Link>
+          <Link to={ROUTES.dashboard.connections}>Connections</Link>
         </Button>
         <Button variant="outline" asChild>
           <Link to={ROUTES.dashboard.runNew}>New workflow</Link>

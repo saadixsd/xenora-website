@@ -14,11 +14,11 @@ export const ROUTES = {
   dashboard: {
     root: '/dashboard',
     nora: '/dashboard/nora',
-    /** Ask Nora with agent-builder mode */
     noraAgentBuilder: '/dashboard/nora?mode=builder',
     runNew: '/dashboard/run/new',
     history: '/dashboard/history',
     settings: '/dashboard/settings',
+    connections: '/dashboard/connections',
     agents: {
       manage: '/dashboard/agents/manage',
       content: '/dashboard/agents/content',
@@ -27,6 +27,10 @@ export const ROUTES = {
     },
   },
 } as const;
+
+export function agentEditPath(agentId: string) {
+  return `/dashboard/agents/${agentId}/edit`;
+}
 
 /** Link to an existing workflow run detail page. */
 export function dashboardRunPath(runId: string) {

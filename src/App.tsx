@@ -21,6 +21,8 @@ import History from "./pages/History.tsx";
 import Settings from "./pages/Settings.tsx";
 import AgentWorkspacePage from "./pages/AgentWorkspacePage.tsx";
 import AgentsManagePage from "./pages/AgentsManagePage.tsx";
+import AgentEditPage from "./pages/AgentEditPage.tsx";
+import Connections from "./pages/Connections.tsx";
 import { ROUTES } from "@/config/routes";
 
 const App = () => (
@@ -61,7 +63,9 @@ const App = () => (
             <Route path="history" element={<History />} />
             <Route path="settings" element={<Settings />} />
             <Route path="agents/manage" element={<AgentsManagePage />} />
+            <Route path="agents/:id/edit" element={<AgentEditPage />} />
             <Route path="agents/:slug" element={<AgentWorkspacePage />} />
+            <Route path="connections" element={<Connections />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

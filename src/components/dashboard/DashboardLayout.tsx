@@ -36,7 +36,7 @@ export function DashboardLayout() {
             <Menu className="h-5 w-5" />
           </button>
           <span className="ml-3 font-dm-serif text-sm font-medium tracking-tight text-foreground">
-            No<span className="text-primary">ra</span>
+            Xen<span className="text-primary">ora</span>
           </span>
         </header>
 

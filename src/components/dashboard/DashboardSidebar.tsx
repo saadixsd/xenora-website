@@ -1,7 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
-  History,
   Settings,
   LogOut,
   X,
@@ -9,6 +8,7 @@ import {
   Clock,
   MessageCircle,
   Users,
+  Plug,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { ROUTES } from '@/config/routes';
@@ -16,24 +16,11 @@ import { cn } from '@/lib/utils';
 
 const mainNav = [
   { label: 'Dashboard', to: ROUTES.dashboard.root, icon: LayoutDashboard },
+  { label: 'Agents', to: ROUTES.dashboard.agents.manage, icon: Users },
+  { label: 'Workflow Runs', to: ROUTES.dashboard.runNew, icon: List, matchPrefix: `${ROUTES.dashboard.root}/run` },
   { label: 'Ask Nora', to: ROUTES.dashboard.nora, icon: MessageCircle },
-  {
-    label: 'Workflow runs',
-    to: ROUTES.dashboard.runNew,
-    icon: List,
-    matchPrefix: `${ROUTES.dashboard.root}/run`,
-  },
   { label: 'History', to: ROUTES.dashboard.history, icon: Clock },
-];
-
-const agentNav = [
-  { label: 'Content Agent', dot: 'bg-emerald-500', to: ROUTES.dashboard.agents.content },
-  { label: 'Lead Agent (beta)', dot: 'bg-amber-500', to: ROUTES.dashboard.agents.lead },
-  { label: 'Research Agent', dot: 'bg-teal-500', to: ROUTES.dashboard.agents.research },
-];
-
-const accountNav = [
-  { label: 'Manage agents', to: ROUTES.dashboard.agents.manage, icon: Users },
+  { label: 'Connections', to: ROUTES.dashboard.connections, icon: Plug },
   { label: 'Settings', to: ROUTES.dashboard.settings, icon: Settings },
 ];
 
@@ -43,16 +30,17 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
   const { user, signOut } = useAuth();
   const pathname = location.pathname;
 
-  const isMainActive = (to: string, matchPrefix?: string) => {
+  const isActive = (to: string, matchPrefix?: string) => {
     if (matchPrefix) {
       return pathname === ROUTES.dashboard.runNew || pathname.startsWith(`${matchPrefix}/`);
     }
     if (to === ROUTES.dashboard.root) return pathname === ROUTES.dashboard.root;
     if (to === ROUTES.dashboard.nora) return pathname === ROUTES.dashboard.nora;
+    if (to === ROUTES.dashboard.agents.manage) {
+      return pathname === to || pathname.startsWith(`${ROUTES.dashboard.root}/agents`);
+    }
     return pathname === to || pathname.startsWith(`${to}/`);
   };
-
-  const isAgentActive = (to: string) => pathname === to || pathname.startsWith(`${to}/`);
 
   const initials = (user?.user_metadata?.display_name || user?.email || 'U')
     .split(' ')
@@ -74,9 +62,8 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
       <div className="flex items-center justify-between border-b border-border px-5 py-4">
         <Link to={ROUTES.dashboard.root} className="flex flex-col" onClick={onClose}>
           <span className="font-dm-serif text-lg tracking-tight text-foreground">
-            No<span className="text-primary">ra</span>
+            Xen<span className="text-primary">ora</span>
           </span>
-          <span className="text-[10px] uppercase tracking-[0.8px] text-muted-foreground">Workspace</span>
         </Link>
         {onClose && (
           <button
@@ -91,7 +78,6 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
       </div>
 
       <nav className="flex-1 overflow-y-auto px-2 py-3" aria-label="Workspace">
-        <p className="px-3 pb-1 text-[10px] font-medium uppercase tracking-[0.8px] text-muted-foreground">Main</p>
         <ul className="space-y-0.5">
           {mainNav.map((item) => (
             <li key={item.to}>
@@ -100,47 +86,7 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
                 onClick={onClose}
                 className={cn(
                   'flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13.5px] transition-colors',
-                  isMainActive(item.to, item.matchPrefix)
-                    ? 'bg-primary/10 font-medium text-primary'
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground',
-                )}
-              >
-                <item.icon className="h-4 w-4 shrink-0" aria-hidden />
-                {item.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <p className="mt-4 px-3 pb-1 text-[10px] font-medium uppercase tracking-[0.8px] text-muted-foreground">Agents</p>
-        <ul className="space-y-0.5">
-          {agentNav.map((a) => (
-            <li key={a.label}>
-              <Link
-                to={a.to}
-                onClick={onClose}
-                className={cn(
-                  'flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-[13.5px] transition-colors',
-                  isAgentActive(a.to) ? 'bg-primary/10 font-medium text-primary' : 'text-muted-foreground hover:bg-muted hover:text-foreground',
-                )}
-              >
-                <span className={cn('h-[7px] w-[7px] shrink-0 rounded-full', a.dot)} aria-hidden />
-                {a.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <p className="mt-4 px-3 pb-1 text-[10px] font-medium uppercase tracking-[0.8px] text-muted-foreground">Account</p>
-        <ul className="space-y-0.5">
-          {accountNav.map((item) => (
-            <li key={item.to}>
-              <Link
-                to={item.to}
-                onClick={onClose}
-                className={cn(
-                  'flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13.5px] transition-colors',
-                  pathname === item.to || pathname.startsWith(`${item.to}/`)
+                  isActive(item.to, (item as { matchPrefix?: string }).matchPrefix)
                     ? 'bg-primary/10 font-medium text-primary'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground',
                 )}

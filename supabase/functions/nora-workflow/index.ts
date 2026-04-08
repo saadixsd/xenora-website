@@ -65,6 +65,17 @@ function classifyTemplate(name: string): AgentKind {
   return "content";
 }
 
+const STEPS_BY_AGENT: Record<AgentKind, readonly string[]> = {
+  content: ["input_received", "classifying", "generating", "formatting", "done"],
+  lead: ["input_received", "parsing", "drafting", "personalizing", "formatting", "done"],
+  research: ["input_received", "researching", "analyzing", "summarizing", "formatting", "done"],
+} as const;
+
+function safeStep(agentKind: AgentKind, step: string): string {
+  const allowed = STEPS_BY_AGENT[agentKind];
+  return allowed.includes(step) ? step : allowed[0];
+}
+
 function normalizeRedditJsonUrl(raw: string): string {
   try {
     const u = new URL(raw);
@@ -279,7 +290,7 @@ Deno.serve(async (req) => {
 
   const { data: run, error: runErr } = await supabaseUser
     .from("workflow_runs")
-    .select("id, user_id, status, template_id")
+    .select("id, user_id, status, template_id, agent_id")
     .eq("id", runId)
     .single();
 
@@ -301,6 +312,11 @@ Deno.serve(async (req) => {
   const agentKind = classifyTemplate(templateName);
 
   const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+
+  const agentId = (run as { agent_id?: string }).agent_id || null;
+  if (agentId) {
+    await supabaseAdmin.from("agents").update({ status: "running" }).eq("id", agentId);
+  }
   const goal = typeof body.goal === "string" ? body.goal.trim() : "";
   const tone = typeof body.tone === "string" && body.tone.trim() ? body.tone.trim() : "professional";
 
@@ -322,23 +338,34 @@ Deno.serve(async (req) => {
       const minutesSaved = MINUTES_BY_AGENT[agentKind];
 
       try {
-        await updateStep("input_received");
+        await updateStep(safeStep(agentKind, "input_received"));
         await new Promise((r) => setTimeout(r, 400));
 
         let userContent = inputText;
 
         if (agentKind === "research") {
-          await updateStep("researching");
+          await updateStep(safeStep(agentKind, "researching"));
           await new Promise((r) => setTimeout(r, 500));
           userContent = await gatherResearchContext(inputText, sourceUrls);
-          await updateStep("analyzing");
+          await updateStep(safeStep(agentKind, "analyzing"));
           await new Promise((r) => setTimeout(r, 400));
+          await updateStep(safeStep(agentKind, "summarizing"));
+          await new Promise((r) => setTimeout(r, 350));
+        } else if (agentKind === "lead") {
+          await updateStep(safeStep(agentKind, "parsing"));
+          await new Promise((r) => setTimeout(r, 450));
+          await updateStep(safeStep(agentKind, "drafting"));
+          await new Promise((r) => setTimeout(r, 450));
+          await updateStep(safeStep(agentKind, "personalizing"));
+          await new Promise((r) => setTimeout(r, 350));
         } else {
-          await updateStep("classifying");
+          await updateStep(safeStep(agentKind, "classifying"));
           await new Promise((r) => setTimeout(r, 500));
         }
 
-        await updateStep("generating");
+        if (agentKind === "content") {
+          await updateStep(safeStep(agentKind, "generating"));
+        }
 
         let systemPrompt: string;
         let outputRows: Array<{ run_id: string; output_type: string; content: string; position: number }>;
@@ -452,7 +479,7 @@ If sources failed or are thin, say so in caveats and still infer carefully from 
           ];
         }
 
-        await updateStep("formatting");
+        await updateStep(safeStep(agentKind, "formatting"));
         await new Promise((r) => setTimeout(r, 400));
 
         await supabaseAdmin.from("workflow_outputs").insert(outputRows);
@@ -460,12 +487,27 @@ If sources failed or are thin, say so in caveats and still infer carefully from 
         await supabaseAdmin
           .from("workflow_runs")
           .update({
-            current_step: "done",
+            current_step: safeStep(agentKind, "done"),
             status: "completed",
             completed_at: new Date().toISOString(),
             estimated_minutes_saved: minutesSaved,
           })
           .eq("id", runId);
+
+        if (agentId) {
+          await supabaseAdmin
+            .from("agents")
+            .update({ status: "active", last_run_at: new Date().toISOString() })
+            .eq("id", agentId);
+        }
+
+        await supabaseAdmin.from("feed_items").insert({
+          user_id: user.id,
+          agent_id: agentId,
+          message: `${templateName} completed -- ${outputRows.length} output${outputRows.length !== 1 ? "s" : ""} ready for review.`,
+          action_type: agentKind === "lead" ? "approve" : "done",
+          action_payload: { run_id: runId, output_count: outputRows.length },
+        });
 
         emit({ step: "done", status: "completed", outputs: outputRows });
         emit({ done: true });
@@ -479,6 +521,19 @@ If sources failed or are thin, say so in caveats and still infer carefully from 
           message = "AI credits exhausted. Please try again later.";
         }
         await supabaseAdmin.from("workflow_runs").update({ status: "failed" }).eq("id", runId);
+
+        if (agentId) {
+          await supabaseAdmin.from("agents").update({ status: "active" }).eq("id", agentId);
+        }
+
+        await supabaseAdmin.from("feed_items").insert({
+          user_id: user.id,
+          agent_id: agentId,
+          message: `${templateName} failed: ${message}`,
+          action_type: "info",
+          action_payload: { run_id: runId, error: message },
+        }).catch(() => {});
+
         emit({ error: message, status: "failed" });
       }
 

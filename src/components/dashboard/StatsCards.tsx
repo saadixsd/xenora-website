@@ -1,55 +1,59 @@
 import { cn } from '@/lib/utils';
 
 interface StatsCardsProps {
-  hoursSavedDisplay: string;
-  hoursHint: string;
-  runsThisWeek: number;
-  runsWeekHint: string;
-  draftsGenerated: number;
-  draftsHint: string;
-  emptyOverall: boolean;
+  hoursSaved: string;
+  leadsProcessed: number;
+  postsGenerated: number;
+  followupsQueued: number;
+  isEmpty: boolean;
   onHoursClick?: () => void;
-  onRunsClick?: () => void;
-  onDraftsClick?: () => void;
+  onLeadsClick?: () => void;
+  onPostsClick?: () => void;
+  onFollowupsClick?: () => void;
 }
 
 export function StatsCards({
-  hoursSavedDisplay,
-  hoursHint,
-  runsThisWeek,
-  runsWeekHint,
-  draftsGenerated,
-  draftsHint,
-  emptyOverall,
+  hoursSaved,
+  leadsProcessed,
+  postsGenerated,
+  followupsQueued,
+  isEmpty,
   onHoursClick,
-  onRunsClick,
-  onDraftsClick,
+  onLeadsClick,
+  onPostsClick,
+  onFollowupsClick,
 }: StatsCardsProps) {
   const emptyHint = 'Run your first workflow to start tracking';
 
   const cards = [
     {
-      label: 'Hours saved',
-      value: hoursSavedDisplay,
-      hint: emptyOverall ? emptyHint : hoursHint,
+      label: 'Hours Saved',
+      value: hoursSaved,
+      hint: isEmpty ? emptyHint : 'This month from completed runs',
       onClick: onHoursClick,
     },
     {
-      label: 'Runs this week',
-      value: String(runsThisWeek),
-      hint: emptyOverall ? emptyHint : runsWeekHint,
-      onClick: onRunsClick,
+      label: 'Leads Processed',
+      value: String(leadsProcessed),
+      hint: isEmpty ? emptyHint : 'Classified and scored by Leads Agent',
+      onClick: onLeadsClick,
     },
     {
-      label: 'Drafts ready',
-      value: String(draftsGenerated),
-      hint: emptyOverall ? emptyHint : draftsHint,
-      onClick: onDraftsClick,
+      label: 'Posts Generated',
+      value: String(postsGenerated),
+      hint: isEmpty ? emptyHint : 'X posts, hooks, and LinkedIn drafts',
+      onClick: onPostsClick,
+    },
+    {
+      label: 'Follow-ups Queued',
+      value: String(followupsQueued),
+      hint: isEmpty ? emptyHint : 'Awaiting your approval',
+      onClick: onFollowupsClick,
     },
   ];
 
   return (
-    <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-3">
+    <div className="grid min-w-0 grid-cols-2 gap-3 sm:grid-cols-4">
       {cards.map((c) => {
         const interactive = Boolean(c.onClick);
         const className = cn(
@@ -59,12 +63,9 @@ export function StatsCards({
         );
         const inner = (
           <>
-            <p className="text-[11.5px] uppercase tracking-[0.5px] text-muted-foreground">{c.label}</p>
+            <p className="text-[11px] uppercase tracking-[0.5px] text-muted-foreground">{c.label}</p>
             <p className="mt-1 font-dm-serif text-[26px] tracking-tight text-foreground">{c.value}</p>
-            <p className="mt-0.5 break-words text-[11.5px] text-muted-foreground">{c.hint}</p>
-            {!emptyOverall && interactive && (
-              <p className="mt-1.5 text-[10px] font-medium text-primary/90">Tap for details →</p>
-            )}
+            <p className="mt-0.5 break-words text-[11px] text-muted-foreground">{c.hint}</p>
           </>
         );
         return interactive ? (
