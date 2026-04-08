@@ -110,37 +110,35 @@ const WorkflowRun = () => {
   useEffect(() => {
     if (!runId || isNew) return;
 
-    const channel = supabase
-      .channel(`run-${runId}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'workflow_runs',
-          filter: `id=eq.${runId}`,
-        },
-        (payload) => {
-          const updated = payload.new as { current_step?: string; status?: string; archived_at?: string | null };
-          setCurrentStep(updated.current_step || 'done');
-          if (typeof updated.status === 'string') setStatus(updated.status);
-          if ('archived_at' in updated) setArchivedAt(updated.archived_at ?? null);
-          if (updated.status === 'completed') {
-            supabase
-              .from('workflow_outputs')
-              .select('*')
-              .eq('run_id', runId)
-              .order('position')
-              .then(({ data }) => {
-                if (data) setOutputs(data as Output[]);
-              });
-          }
-        },
-      )
-      .subscribe();
+    // Poll for workflow run updates every 3 seconds until completed/failed
+    const interval = window.setInterval(async () => {
+      const { data } = await supabase
+        .from('workflow_runs')
+        .select('current_step, status, archived_at')
+        .eq('id', runId)
+        .single();
+
+      if (!data) return;
+      const updated = data as { current_step?: string; status?: string; archived_at?: string | null };
+      setCurrentStep(updated.current_step || 'done');
+      if (typeof updated.status === 'string') setStatus(updated.status);
+      if ('archived_at' in updated) setArchivedAt(updated.archived_at ?? null);
+
+      if (updated.status === 'completed' || updated.status === 'failed') {
+        window.clearInterval(interval);
+        if (updated.status === 'completed') {
+          const { data: outData } = await supabase
+            .from('workflow_outputs')
+            .select('*')
+            .eq('run_id', runId)
+            .order('position');
+          if (outData) setOutputs(outData as Output[]);
+        }
+      }
+    }, 3000);
 
     return () => {
-      supabase.removeChannel(channel);
+      window.clearInterval(interval);
     };
   }, [runId, isNew]);
 
