@@ -94,9 +94,7 @@ export function ChatHistorySidebar({
 
   const panelClass = cn(
     'flex flex-col border-r border-border bg-card/95 backdrop-blur-xl shadow-2xl transition-transform duration-300 ease-in-out',
-    embedded
-      ? 'absolute inset-y-0 left-0 z-[10] h-full w-[min(280px,calc(100%-1.5rem))] max-w-[min(320px,88%)]'
-      : 'fixed inset-y-0 left-0 z-[65] w-[min(320px,85vw)] lg:left-64',
+    'absolute inset-y-0 left-0 z-[10] h-full w-[min(280px,calc(100%-1.5rem))] max-w-[min(320px,88%)]',
     open ? 'translate-x-0' : '-translate-x-full pointer-events-none',
   );
 
