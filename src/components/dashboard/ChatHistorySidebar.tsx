@@ -88,9 +88,7 @@ export function ChatHistorySidebar({
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
-  const backdropClass = embedded
-    ? 'absolute inset-0 z-[5] bg-black/40 backdrop-blur-[2px]'
-    : 'fixed inset-0 z-[60] bg-black/40 backdrop-blur-[2px]';
+  const backdropClass = 'absolute inset-0 z-[5] bg-black/40 backdrop-blur-[2px]';
 
   const panelClass = cn(
     'flex flex-col border-r border-border bg-card/95 backdrop-blur-xl shadow-2xl transition-transform duration-300 ease-in-out',
