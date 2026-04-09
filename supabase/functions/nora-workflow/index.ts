@@ -314,9 +314,6 @@ Deno.serve(async (req) => {
   const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
   const agentId = (run as { agent_id?: string }).agent_id || null;
-  if (agentId) {
-    await supabaseAdmin.from("agents").update({ status: "running" }).eq("id", agentId);
-  }
   const goal = typeof body.goal === "string" ? body.goal.trim() : "";
   const tone = typeof body.tone === "string" && body.tone.trim() ? body.tone.trim() : "professional";
 
@@ -494,21 +491,6 @@ If sources failed or are thin, say so in caveats and still infer carefully from 
           })
           .eq("id", runId);
 
-        if (agentId) {
-          await supabaseAdmin
-            .from("agents")
-            .update({ status: "active", last_run_at: new Date().toISOString() })
-            .eq("id", agentId);
-        }
-
-        await supabaseAdmin.from("feed_items").insert({
-          user_id: user.id,
-          agent_id: agentId,
-          message: `${templateName} completed -- ${outputRows.length} output${outputRows.length !== 1 ? "s" : ""} ready for review.`,
-          action_type: agentKind === "lead" ? "approve" : "done",
-          action_payload: { run_id: runId, output_count: outputRows.length },
-        });
-
         emit({ step: "done", status: "completed", outputs: outputRows });
         emit({ done: true });
       } catch (e) {
@@ -521,18 +503,6 @@ If sources failed or are thin, say so in caveats and still infer carefully from 
           message = "AI credits exhausted. Please try again later.";
         }
         await supabaseAdmin.from("workflow_runs").update({ status: "failed" }).eq("id", runId);
-
-        if (agentId) {
-          await supabaseAdmin.from("agents").update({ status: "active" }).eq("id", agentId);
-        }
-
-        await supabaseAdmin.from("feed_items").insert({
-          user_id: user.id,
-          agent_id: agentId,
-          message: `${templateName} failed: ${message}`,
-          action_type: "info",
-          action_payload: { run_id: runId, error: message },
-        }).catch(() => {});
 
         emit({ error: message, status: "failed" });
       }
