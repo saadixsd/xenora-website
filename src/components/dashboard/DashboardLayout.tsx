@@ -12,6 +12,7 @@ import {
   NORA_VOICE_AMBIENT_RESUME,
   dispatchNoraVoiceStartDictation,
 } from '@/lib/noraVoice';
+import { NoraListeningOrb } from './NoraListeningOrb';
 import { ROUTES } from '@/config/routes';
 
 export function DashboardLayout() {
@@ -38,8 +39,31 @@ export function DashboardLayout() {
   const openNoraAndDictate = useCallback(() => {
     window.dispatchEvent(new CustomEvent(NORA_VOICE_AMBIENT_PAUSE));
     if (!onDedicatedNoraPage) setNoraOpen(true);
-    window.setTimeout(() => dispatchNoraVoiceStartDictation(), onDedicatedNoraPage ? 120 : 420);
+    window.setTimeout(() => dispatchNoraVoiceStartDictation({}), onDedicatedNoraPage ? 120 : 420);
   }, [onDedicatedNoraPage]);
+
+  /** Full assistant: dictate, send via Claude proxy, read reply with device TTS (no auto-publish). */
+  const openNoraVoiceAssistant = useCallback(() => {
+    window.dispatchEvent(new CustomEvent(NORA_VOICE_AMBIENT_PAUSE));
+    if (!onDedicatedNoraPage) setNoraOpen(true);
+    window.setTimeout(
+      () => dispatchNoraVoiceStartDictation({ assistantMode: true }),
+      onDedicatedNoraPage ? 120 : 420,
+    );
+  }, [onDedicatedNoraPage]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (!(e.metaKey || e.ctrlKey) || !e.shiftKey) return;
+      if (e.key !== 'n' && e.key !== 'N') return;
+      const el = e.target as HTMLElement | null;
+      if (el?.closest('input, textarea, [contenteditable="true"]')) return;
+      e.preventDefault();
+      openNoraVoiceAssistant();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [openNoraVoiceAssistant]);
 
   const prevNoraOpen = useRef(noraOpen);
   useEffect(() => {
@@ -88,10 +112,15 @@ export function DashboardLayout() {
           <div aria-hidden className="h-11 w-11 shrink-0" />
         </header>
 
-        <main className="relative min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-y-contain pb-[env(safe-area-inset-bottom,0px)]">
+        <main
+          data-app-scroll-root
+          className="relative min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-y-contain pb-[env(safe-area-inset-bottom,0px)]"
+        >
           <Outlet />
         </main>
       </div>
+
+      <NoraListeningOrb />
 
       <NoraVoiceBar
         ambientListening={ambientListening}

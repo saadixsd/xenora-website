@@ -70,9 +70,9 @@ function getSystemPrompt(): string {
 - User **approves before send** — nothing auto-sends.
 - **In the dashboard:** choose **Lead Follow-up Agent** in Workflow Runs.
 
-### Research Agent — **LIVE in app**
-- User notes plus optional **public URLs** (e.g. Reddit threads); server fetches when possible → pain signals, content angles, relevance, caveats.
-- **In the dashboard:** choose **Research Agent** in Workflow Runs.
+### Research Agent — **coming soon**
+- Planned: notes plus optional public URLs → pain signals, angles, relevance. Not the primary focus of current beta messaging.
+- Until launch, do not imply the Research workflow is fully live; say it is on the roadmap and Content/Lead are the active agents.
 
 ### Founder OS & workflows
 - Help with **how** solo founders structure: content batching, inbox triage, weekly planning, repurposing one idea across channels, and when to use a workflow tool vs manual chat.
@@ -265,7 +265,7 @@ Deno.serve(async (req) => {
     return json({ error: "Request too large" }, 413, origin);
   }
 
-  let body: { messages?: { role: string; content: string }[]; mode?: string };
+  let body: { messages?: { role: string; content: string }[]; mode?: string; client_context?: string };
   try {
     body = JSON.parse(raw) as typeof body;
   } catch {
@@ -273,9 +273,15 @@ Deno.serve(async (req) => {
   }
 
   const isAgentBuilder = body.mode === "agent_builder";
-  const system = isAgentBuilder
+  let system = isAgentBuilder
     ? `${getAgentBuilderAugment()}\n\n---\n\n${getSystemPrompt()}`
     : getSystemPrompt();
+  const ctxRaw = typeof body.client_context === "string" ? body.client_context.trim() : "";
+  if (ctxRaw) {
+    const ctx = ctxRaw.slice(0, 2000);
+    system =
+      `${system}\n\n## Client context (where the user is in the app)\n${ctx}\nTailor examples to this screen. Do not invent data the user did not provide. Never imply publish/send without explicit user approval.`;
+  }
   const rawMsgs = Array.isArray(body.messages) ? body.messages.slice(0, MAX_MESSAGES) : [];
   const messages: AnthropicMessage[] = rawMsgs
     .filter((m) => m.role === "user" || m.role === "assistant")

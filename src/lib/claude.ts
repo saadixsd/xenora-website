@@ -56,6 +56,8 @@ export async function sendClaudeChat(params: {
   mode?: NoraChatKind;
   /** Signed-in email — exempt accounts must not be treated as daily_limit (client matches server allowlist). */
   userEmail?: string | null;
+  /** App route summary for context-aware replies (edge function appends to system prompt). */
+  clientContext?: string;
 }): Promise<ClaudeChatSuccess> {
   const msgs = params.messages
     .filter((m) => m.role === 'user' || m.role === 'assistant')
@@ -70,6 +72,7 @@ export async function sendClaudeChat(params: {
     body: JSON.stringify({
       messages: msgs,
       ...(params.mode === 'agent_builder' ? { mode: 'agent_builder' } : {}),
+      ...(params.clientContext?.trim() ? { client_context: params.clientContext.trim().slice(0, 2000) } : {}),
     }),
   });
 

@@ -34,7 +34,11 @@ export function NoraVoiceBar({
           onClick={onVoiceButtonClick}
           className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl bg-primary text-primary-foreground transition-transform hover:scale-[1.02] active:scale-[0.98]"
           aria-label="Open Nora and dictate"
-          title={sttSupported ? 'Speak your question to Nora' : 'Voice needs a supported browser (Chrome, Edge, Safari)'}
+          title={
+            sttSupported
+              ? 'Dictate into Nora. Full assistant (dictate, send, read reply): Cmd+Shift+N'
+              : 'Voice needs a supported browser (Chrome, Edge, Safari)'
+          }
           disabled={!sttSupported}
         >
           <Mic className="h-5 w-5" aria-hidden />

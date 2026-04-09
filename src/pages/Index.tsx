@@ -31,9 +31,9 @@ const agents = [
   },
   {
     icon: Search, name: 'Research Agent',
-    body: 'Your notes plus optional public URLs (e.g. Reddit). Nora fetches when it can and returns pain signals, angles, and relevance — with caveats when sources fail.',
+    body: 'Planned: notes plus optional public URLs for pain signals, angles, and relevance. On the roadmap after Content and Lead mature.',
     outputs: ['Pain signals', 'Content angles', 'Relevance notes'],
-    tag: 'Live', active: true,
+    tag: 'Soon', active: false,
   },
 ];
 
@@ -99,9 +99,9 @@ const Index = () => {
         <button
           type="button"
           onClick={() => scrollToSection('waitlist')}
-          className="flex min-h-[44px] items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-[0_8px_30px_rgba(14,165,164,0.35)] transition-all duration-300 hover:scale-105 hover:shadow-[0_12px_40px_rgba(14,165,164,0.45)] sm:px-6 sm:py-3"
+          className="flex min-h-[44px] items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-[0_8px_30px_rgba(0,212,255,0.2)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_12px_40px_rgba(0,212,255,0.28)] sm:px-6 sm:py-3"
         >
-          Join the Waitlist — It's Free
+          Join the waitlist
           <ArrowRight className="h-4 w-4" />
         </button>
       </motion.div>
@@ -133,7 +133,7 @@ const Index = () => {
                 <div className="flex flex-col items-center gap-3 sm:flex-row">
                   <button
                     type="button"
-                    className="group relative min-h-[44px] w-full overflow-hidden rounded-lg bg-primary px-10 py-3.5 text-base font-medium text-primary-foreground shadow-[0_10px_30px_rgba(14,165,164,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,165,164,0.28)] sm:w-auto"
+                    className="group relative min-h-[44px] w-full overflow-hidden rounded-lg bg-primary px-10 py-3.5 text-base font-medium text-primary-foreground shadow-[0_10px_30px_rgba(0,212,255,0.12)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(0,212,255,0.2)] sm:w-auto"
                     onClick={() => scrollToSection('waitlist')}
                   >
                     <span className="relative z-10 flex items-center justify-center gap-2">
@@ -252,7 +252,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.03}>
               <h2 className="premium-heading mt-3 text-center text-2xl font-medium sm:text-3xl">
-                Content, Lead, and Research — live in the dashboard.
+                Content live, Lead in beta, Research on the roadmap.
               </h2>
             </Reveal>
 
@@ -287,7 +287,7 @@ const Index = () => {
                   onClick={() => scrollToSection('waitlist')}
                   className="inline-flex items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-primary/80"
                 >
-                  Try Nora free — all three agents
+                  Join the waitlist
                   <ArrowRight className="h-3.5 w-3.5" />
                 </button>
               </div>

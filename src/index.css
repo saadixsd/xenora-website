@@ -23,7 +23,7 @@
     --popover: 240 20% 7%;
     --popover-foreground: 0 0% 96%;
 
-    --primary: 174 75% 40%;
+    --primary: 192 100% 50%;
     --primary-foreground: 240 30% 4%;
 
     --secondary: 240 12% 12%;
@@ -40,24 +40,24 @@
 
     --border: 240 12% 14%;
     --input: 240 12% 14%;
-    --ring: 174 75% 40%;
+    --ring: 192 100% 50%;
 
     --radius: 0.5rem;
 
     --sidebar-background: 240 30% 4%;
     --sidebar-foreground: 0 0% 96%;
-    --sidebar-primary: 174 75% 40%;
+    --sidebar-primary: 192 100% 50%;
     --sidebar-primary-foreground: 240 30% 4%;
     --sidebar-accent: 240 12% 10%;
     --sidebar-accent-foreground: 0 0% 96%;
     --sidebar-border: 240 12% 14%;
-    --sidebar-ring: 174 75% 40%;
+    --sidebar-ring: 192 100% 50%;
 
     /* Theme-aware mesh background */
     --mesh-grid: rgba(255, 255, 255, 0.045);
     --mesh-diag: rgba(255, 255, 255, 0.03);
     --mesh-vignette: rgba(10, 10, 15, 0.72);
-    --mesh-glow: rgba(124, 58, 237, 0.08);
+    --mesh-glow: rgba(0, 212, 255, 0.06);
   }
 
   .light {

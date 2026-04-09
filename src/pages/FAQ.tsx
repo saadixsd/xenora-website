@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { Instagram, Linkedin, ChevronDown } from 'lucide-react';
+import { Instagram, Linkedin } from 'lucide-react';
 import { Reveal } from '@/components/motion/Reveal';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
@@ -42,21 +42,24 @@ function FaqItem({ q, a, delay }: { q: string; a: string; delay: number }) {
   const [open, setOpen] = useState(false);
   return (
     <Reveal delay={delay}>
-      <button
-        type="button"
-        onClick={() => setOpen(!open)}
-        className="surface-panel w-full text-left p-0 overflow-hidden"
-      >
-        <div className="flex items-center justify-between px-5 py-4">
-          <span className="text-sm font-medium text-base-content/85 pr-4">{q}</span>
-          <ChevronDown className={cn('h-4 w-4 shrink-0 text-base-content/40 transition-transform duration-200', open && 'rotate-180')} />
-        </div>
-        {open && (
-          <div className="border-t border-border/50 px-5 py-4">
-            <p className="text-sm leading-relaxed text-base-content/60">{a}</p>
-          </div>
+      <div
+        className={cn(
+          'collapse collapse-arrow rounded-xl border border-base-content/10 bg-base-200/20 backdrop-blur-sm transition-colors duration-300 hover:border-primary/20',
+          open && 'collapse-open',
         )}
-      </button>
+      >
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          aria-expanded={open}
+          className="collapse-title min-h-0 w-full py-0 text-left !text-sm font-medium text-base-content/90 after:!top-1/2 after:!-translate-y-1/2"
+        >
+          <span className="block py-4 pl-1 pr-2">{q}</span>
+        </button>
+        <div className="collapse-content bg-transparent text-base-content/60">
+          <p className="pb-4 pl-1 pr-2 text-sm leading-relaxed">{a}</p>
+        </div>
+      </div>
     </Reveal>
   );
 }

@@ -97,7 +97,7 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
   };
 
   const linkClassDesktop =
-    'inline-flex min-h-[44px] items-center rounded-md px-3 py-3 text-sm font-normal text-base-content/65 transition-all duration-300 hover:bg-base-200/60 hover:text-base-content';
+    'inline-flex min-h-[44px] items-center rounded-md px-3 py-3 text-sm font-normal text-base-content/65 transition-all duration-500 hover:bg-base-200/50 hover:text-base-content';
   const linkClassMobile =
     'block rounded-lg px-3 py-2.5 text-sm text-base-content/70 hover:bg-base-200/60 hover:text-base-content';
 

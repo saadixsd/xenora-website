@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { Send, X, History } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -19,10 +19,14 @@ import { cn } from '@/lib/utils';
 import { ROUTES } from '@/config/routes';
 import { isNoraQuotaExemptEmail } from '@/config/noraQuota';
 import { NORA_CHAT_SESSIONS_CHANGED, type NoraChatSessionsChangedDetail } from '@/lib/noraChatSession';
+import { describeNoraAppRoute } from '@/lib/noraRouteContext';
+import { isNoraVoiceTtsEnabled, speakNoraReply } from '@/lib/noraTts';
 import {
   getSpeechRecognitionCtor,
   NORA_VOICE_AMBIENT_RESUME,
   NORA_VOICE_START_DICTATION,
+  setNoraVoiceUiPhase,
+  type NoraVoiceDictationDetail,
 } from '@/lib/noraVoice';
 import { ChatHistorySidebar } from './ChatHistorySidebar';
 
@@ -49,6 +53,7 @@ interface NoraChatPanelProps {
 export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps) {
   const { user, session } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   /** Primitives only — `searchParams` object identity can change every render and blow up effects. */
   const modeQuery = searchParams.get('mode');
@@ -270,13 +275,20 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       }, 14);
     });
 
-  const send = async (text: string) => {
+  const send = async (text: string, opts?: { speakAfter?: boolean }) => {
     const trimmed = text.trim();
-    if (!trimmed || sending || typingReply || (dailyLimitReached && !quotaExempt)) return;
+    if (!trimmed || sending || typingReply || (dailyLimitReached && !quotaExempt)) {
+      if (opts?.speakAfter) setNoraVoiceUiPhase('idle');
+      return;
+    }
     setSessionExpired(false);
     setLastError('');
     const t = session?.access_token;
-    if (!t) { setSessionExpired(true); return; }
+    if (!t) {
+      setSessionExpired(true);
+      if (opts?.speakAfter) setNoraVoiceUiPhase('idle');
+      return;
+    }
 
     const userMsg: ChatMessage = { role: 'user', content: trimmed };
     const nextHistory = [...messages, userMsg];
@@ -303,6 +315,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
         accessToken: t,
         mode: chatKind === 'agent_builder' ? 'agent_builder' : undefined,
         userEmail: user?.email ?? null,
+        clientContext: describeNoraAppRoute(location.pathname),
       });
       if (!isNoraQuotaExemptEmail(user?.email)) {
         setQueriesUsedToday(result.queries_used);
@@ -313,7 +326,18 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       await supabase.from('nora_chat_messages' as any).insert({ session_id: sid, role: 'assistant', content: result.content.slice(0, MAX_STORE_CHARS) });
       await touchSession(sid);
       setBackendOk(true);
+
+      if (opts?.speakAfter) {
+        const reduceMotion =
+          typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!reduceMotion && isNoraVoiceTtsEnabled()) {
+          setNoraVoiceUiPhase('speaking');
+          await speakNoraReply(result.content);
+        }
+        setNoraVoiceUiPhase('idle');
+      }
     } catch (e) {
+      if (opts?.speakAfter) setNoraVoiceUiPhase('idle');
       if (insertedUserRowId) await supabase.from('nora_chat_messages' as any).delete().eq('id', insertedUserRowId);
       if (e instanceof DailyQueryLimitError) {
         setDailyLimitReached(true);
@@ -347,6 +371,9 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       }
     } finally { setSending(false); }
   };
+
+  const sendRef = useRef(send);
+  sendRef.current = send;
 
   const startNewThread = async () => {
     if (!user?.id) return;
@@ -388,13 +415,16 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       window.dispatchEvent(new CustomEvent(NORA_VOICE_AMBIENT_RESUME));
     };
 
-    const onDictate = () => {
+    const onDictate = (ev: Event) => {
+      const assistantMode = Boolean((ev as CustomEvent<NoraVoiceDictationDetail>).detail?.assistantMode);
       if (!user?.id) {
         resumeAmbient();
+        setNoraVoiceUiPhase('idle');
         return;
       }
       if (inputDisabledRef.current) {
         resumeAmbient();
+        setNoraVoiceUiPhase('idle');
         return;
       }
       const Ctor = getSpeechRecognitionCtor();
@@ -405,6 +435,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
           variant: 'destructive',
         });
         resumeAmbient();
+        setNoraVoiceUiPhase('idle');
         return;
       }
       try {
@@ -414,6 +445,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       }
       dictationRef.current = null;
 
+      let latest = '';
       const r = new Ctor();
       r.lang = 'en-US';
       r.interimResults = true;
@@ -423,24 +455,40 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
         for (let i = 0; i < e.results.length; i++) {
           line += e.results[i]![0]!.transcript;
         }
-        const t = line.trim();
-        if (t) setInput(t);
+        latest = line.trim();
+        if (latest) setInput(latest);
       };
       r.onerror = () => {
         dictationRef.current = null;
         resumeAmbient();
+        setNoraVoiceUiPhase('idle');
       };
       r.onend = () => {
         dictationRef.current = null;
+        const run = latest.trim();
+        if (assistantMode && run) {
+          setNoraVoiceUiPhase('thinking');
+          void (async () => {
+            try {
+              await sendRef.current(run, { speakAfter: true });
+            } finally {
+              resumeAmbient();
+            }
+          })();
+          return;
+        }
         resumeAmbient();
+        setNoraVoiceUiPhase('idle');
       };
       try {
+        setNoraVoiceUiPhase('listening');
         r.start();
         dictationRef.current = r;
         requestAnimationFrame(() => inputRef.current?.focus());
       } catch {
         toast({ title: 'Could not start microphone', variant: 'destructive' });
         resumeAmbient();
+        setNoraVoiceUiPhase('idle');
       }
     };
     window.addEventListener(NORA_VOICE_START_DICTATION, onDictate);
@@ -453,6 +501,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       }
       dictationRef.current = null;
       resumeAmbient();
+      setNoraVoiceUiPhase('idle');
     };
   }, [user?.id, toast]);
 
