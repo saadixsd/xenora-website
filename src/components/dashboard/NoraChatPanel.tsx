@@ -19,6 +19,11 @@ import { cn } from '@/lib/utils';
 import { ROUTES } from '@/config/routes';
 import { isNoraQuotaExemptEmail } from '@/config/noraQuota';
 import { NORA_CHAT_SESSIONS_CHANGED, type NoraChatSessionsChangedDetail } from '@/lib/noraChatSession';
+import {
+  getSpeechRecognitionCtor,
+  NORA_VOICE_AMBIENT_RESUME,
+  NORA_VOICE_START_DICTATION,
+} from '@/lib/noraVoice';
 import { ChatHistorySidebar } from './ChatHistorySidebar';
 
 const DAILY_LIMIT = 3;
@@ -45,6 +50,9 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   const { user, session } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  /** Primitives only — `searchParams` object identity can change every render and blow up effects. */
+  const modeQuery = searchParams.get('mode');
+  const sessionQuery = searchParams.get('session');
   const { toast } = useToast();
 
   const [chatKind, setChatKind] = useState<NoraChatKind>(() =>
@@ -67,8 +75,16 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   const transcriptRef = useRef<HTMLDivElement>(null);
   const typingTimerRef = useRef<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const dictationRef = useRef<SpeechRecognition | null>(null);
+  const inputDisabledRef = useRef(false);
   /** Avoid double-loading when `?session=` updates `chatKind` and re-triggers the effect. */
   const loadedSessionFromUrlRef = useRef<string | null>(null);
+  const sessionIdRef = useRef<string | null>(null);
+  sessionIdRef.current = sessionId;
+  const navigateRef = useRef(navigate);
+  navigateRef.current = navigate;
+  const sessionQueryRef = useRef<string | null>(null);
+  sessionQueryRef.current = sessionQuery;
 
   const token = session?.access_token;
   const quotaExempt = isNoraQuotaExemptEmail(user?.email);
@@ -128,52 +144,69 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   );
 
   useEffect(() => {
-    if (searchParams.get('mode') === 'builder') setChatKind('agent_builder');
-  }, [searchParams]);
+    if (modeQuery === 'builder') setChatKind('agent_builder');
+  }, [modeQuery]);
 
   useEffect(() => { void loadQueryCount(); }, [loadQueryCount]);
 
   useEffect(() => {
     const onSessionsChanged = (e: Event) => {
       const d = (e as CustomEvent<NoraChatSessionsChangedDetail>).detail;
-      if (!d?.sessionId || d.sessionId !== sessionId) return;
+      if (!d?.sessionId || d.sessionId !== sessionIdRef.current) return;
       setSessionId(null);
       setMessages([]);
       setDeployedKeys({});
       loadedSessionFromUrlRef.current = null;
-      if (searchParams.get('session') === d.sessionId) {
-        const mode = searchParams.get('mode');
+      if (sessionQueryRef.current === d.sessionId) {
+        const mode = new URLSearchParams(window.location.search).get('mode');
         const next = mode === 'builder' ? '?mode=builder' : '';
-        navigate(`${ROUTES.dashboard.nora}${next}`, { replace: true });
+        navigateRef.current(`${ROUTES.dashboard.nora}${next}`, { replace: true });
       }
     };
     window.addEventListener(NORA_CHAT_SESSIONS_CHANGED, onSessionsChanged);
     return () => window.removeEventListener(NORA_CHAT_SESSIONS_CHANGED, onSessionsChanged);
-  }, [sessionId, searchParams, navigate]);
+  }, []);
 
-  const sessionFromUrl = searchParams.get('session');
   useEffect(() => {
-    if (!user?.id) return;
-    if (sessionFromUrl) {
-      if (loadedSessionFromUrlRef.current === sessionFromUrl) return;
-      loadedSessionFromUrlRef.current = sessionFromUrl;
-      void (async () => {
-        const { data } = await supabase
+    if (!user?.id || !sessionQuery) return;
+    if (loadedSessionFromUrlRef.current === sessionQuery) return;
+    loadedSessionFromUrlRef.current = sessionQuery;
+    let cancelled = false;
+    void (async () => {
+      try {
+        const { data, error } = await supabase
           .from('nora_chat_sessions' as any)
           .select('chat_kind')
-          .eq('id', sessionFromUrl)
+          .eq('id', sessionQuery)
           .eq('user_id', user.id)
           .maybeSingle();
+        if (cancelled) return;
+        if (error) {
+          console.error(error);
+          loadedSessionFromUrlRef.current = null;
+          return;
+        }
         if (data?.chat_kind === 'general' || data?.chat_kind === 'agent_builder') {
           setChatKind(data.chat_kind);
-          await loadSessionMessages(sessionFromUrl);
+          await loadSessionMessages(sessionQuery);
+        } else {
+          loadedSessionFromUrlRef.current = null;
         }
-      })();
-      return;
-    }
+      } catch (err) {
+        console.error(err);
+        loadedSessionFromUrlRef.current = null;
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id, sessionQuery, loadSessionMessages]);
+
+  useEffect(() => {
+    if (!user?.id || sessionQuery) return;
     loadedSessionFromUrlRef.current = null;
     void loadThreadForKind(chatKind);
-  }, [user?.id, sessionFromUrl, chatKind, loadThreadForKind, loadSessionMessages]);
+  }, [user?.id, sessionQuery, chatKind, loadThreadForKind]);
 
   const refreshConnection = useCallback(async () => {
     setBackendOk(null);
@@ -348,6 +381,80 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
 
   const chatActive = messages.length > 0;
   const inputDisabled = sending || typingReply || (dailyLimitReached && !quotaExempt) || sessionExpired;
+  inputDisabledRef.current = inputDisabled;
+
+  useEffect(() => {
+    const resumeAmbient = () => {
+      window.dispatchEvent(new CustomEvent(NORA_VOICE_AMBIENT_RESUME));
+    };
+
+    const onDictate = () => {
+      if (!user?.id) {
+        resumeAmbient();
+        return;
+      }
+      if (inputDisabledRef.current) {
+        resumeAmbient();
+        return;
+      }
+      const Ctor = getSpeechRecognitionCtor();
+      if (!Ctor) {
+        toast({
+          title: 'Voice not available',
+          description: 'Use Chrome, Edge, or Safari with microphone access.',
+          variant: 'destructive',
+        });
+        resumeAmbient();
+        return;
+      }
+      try {
+        dictationRef.current?.stop();
+      } catch {
+        /* */
+      }
+      dictationRef.current = null;
+
+      const r = new Ctor();
+      r.lang = 'en-US';
+      r.interimResults = true;
+      r.continuous = false;
+      r.onresult = (e: SpeechRecognitionEvent) => {
+        let line = '';
+        for (let i = 0; i < e.results.length; i++) {
+          line += e.results[i]![0]!.transcript;
+        }
+        const t = line.trim();
+        if (t) setInput(t);
+      };
+      r.onerror = () => {
+        dictationRef.current = null;
+        resumeAmbient();
+      };
+      r.onend = () => {
+        dictationRef.current = null;
+        resumeAmbient();
+      };
+      try {
+        r.start();
+        dictationRef.current = r;
+        requestAnimationFrame(() => inputRef.current?.focus());
+      } catch {
+        toast({ title: 'Could not start microphone', variant: 'destructive' });
+        resumeAmbient();
+      }
+    };
+    window.addEventListener(NORA_VOICE_START_DICTATION, onDictate);
+    return () => {
+      window.removeEventListener(NORA_VOICE_START_DICTATION, onDictate);
+      try {
+        dictationRef.current?.stop();
+      } catch {
+        /* */
+      }
+      dictationRef.current = null;
+      resumeAmbient();
+    };
+  }, [user?.id, toast]);
 
   const outerClass = cn(
     'relative flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-background',
@@ -626,6 +733,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
             <form onSubmit={onSubmit} className="mx-auto min-w-0 max-w-2xl">
               <div className="flex min-w-0 items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 focus-within:border-primary/30 sm:px-4">
                 <input
+                  ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Follow up..."

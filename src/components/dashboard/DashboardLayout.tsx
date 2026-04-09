@@ -1,13 +1,59 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 import { DashboardSidebar } from './DashboardSidebar';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { Menu, MessageCircle } from 'lucide-react';
 import { NoraChatPanel } from './NoraChatPanel';
+import { NoraVoiceBar } from './NoraVoiceBar';
+import { useNoraVoiceWake } from '@/hooks/useNoraVoiceWake';
+import {
+  NORA_VOICE_AMBIENT_KEY,
+  NORA_VOICE_AMBIENT_PAUSE,
+  NORA_VOICE_AMBIENT_RESUME,
+  dispatchNoraVoiceStartDictation,
+} from '@/lib/noraVoice';
+import { ROUTES } from '@/config/routes';
 
 export function DashboardLayout() {
+  const location = useLocation();
+  const onDedicatedNoraPage = location.pathname === ROUTES.dashboard.nora;
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [noraOpen, setNoraOpen] = useState(false);
+  const [ambientListening, setAmbientListening] = useState(() => {
+    try {
+      return localStorage.getItem(NORA_VOICE_AMBIENT_KEY) === '1';
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(NORA_VOICE_AMBIENT_KEY, ambientListening ? '1' : '0');
+    } catch {
+      /* private mode */
+    }
+  }, [ambientListening]);
+
+  const openNoraAndDictate = useCallback(() => {
+    window.dispatchEvent(new CustomEvent(NORA_VOICE_AMBIENT_PAUSE));
+    if (!onDedicatedNoraPage) setNoraOpen(true);
+    window.setTimeout(() => dispatchNoraVoiceStartDictation(), onDedicatedNoraPage ? 120 : 420);
+  }, [onDedicatedNoraPage]);
+
+  const prevNoraOpen = useRef(noraOpen);
+  useEffect(() => {
+    if (prevNoraOpen.current && !noraOpen) {
+      window.dispatchEvent(new CustomEvent(NORA_VOICE_AMBIENT_RESUME));
+    }
+    prevNoraOpen.current = noraOpen;
+  }, [noraOpen]);
+
+  useNoraVoiceWake({
+    enabled: ambientListening,
+    suspend: noraOpen,
+    onActivated: openNoraAndDictate,
+  });
 
   return (
     <div className="flex h-[100dvh] min-h-0 w-full max-w-[100vw] overflow-hidden bg-background">
@@ -46,6 +92,13 @@ export function DashboardLayout() {
           <Outlet />
         </main>
       </div>
+
+      <NoraVoiceBar
+        ambientListening={ambientListening}
+        onToggleAmbient={() => setAmbientListening((v) => !v)}
+        onVoiceButtonClick={openNoraAndDictate}
+        ambientActive={ambientListening && !noraOpen}
+      />
 
       <button
         type="button"

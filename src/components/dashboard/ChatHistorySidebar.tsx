@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { History, X, Plus, MessageSquare, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
@@ -81,30 +81,45 @@ export function ChatHistorySidebar({
     setLoading(false);
   }, [userId, chatKind]);
 
+  const openRef = useRef(open);
+  openRef.current = open;
+  const loadSessionsRef = useRef(loadSessions);
+  loadSessionsRef.current = loadSessions;
+
   useEffect(() => {
     if (open) void loadSessions();
   }, [open, loadSessions]);
 
   useEffect(() => {
     const onChanged = () => {
-      if (open) void loadSessions();
+      if (openRef.current) void loadSessionsRef.current();
     };
     window.addEventListener(NORA_CHAT_SESSIONS_CHANGED, onChanged);
     return () => window.removeEventListener(NORA_CHAT_SESSIONS_CHANGED, onChanged);
-  }, [open, loadSessions]);
+  }, []);
 
   const handleDeleteSession = async (e: React.MouseEvent, sessionId: string) => {
     e.stopPropagation();
     if (!window.confirm('Delete this conversation permanently? This cannot be undone.')) return;
     setDeletingId(sessionId);
-    const { error } = await deleteNoraChatSession(sessionId);
-    setDeletingId(null);
-    if (error) {
-      toast({ title: 'Could not delete', description: error.message, variant: 'destructive' });
-      return;
+    try {
+      const { error } = await deleteNoraChatSession(sessionId);
+      if (error) {
+        toast({ title: 'Could not delete', description: error.message, variant: 'destructive' });
+        return;
+      }
+      dispatchNoraChatSessionsChanged(sessionId);
+      setSessions((prev) => prev.filter((s) => s.id !== sessionId));
+    } catch (err) {
+      console.error(err);
+      toast({
+        title: 'Could not delete',
+        description: err instanceof Error ? err.message : 'Something went wrong',
+        variant: 'destructive',
+      });
+    } finally {
+      setDeletingId(null);
     }
-    dispatchNoraChatSessionsChanged(sessionId);
-    setSessions((prev) => prev.filter((s) => s.id !== sessionId));
   };
 
   const formatDate = (dateStr: string) => {

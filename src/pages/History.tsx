@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -39,6 +39,8 @@ const History = () => {
   const [noraSessions, setNoraSessions] = useState<NoraSessionRow[]>([]);
   const [noraLoading, setNoraLoading] = useState(false);
   const [noraDeleting, setNoraDeleting] = useState<string | null>(null);
+  const sectionRef = useRef(section);
+  sectionRef.current = section;
 
   const load = useCallback(async () => {
     if (!user) return;
@@ -73,30 +75,43 @@ const History = () => {
     setNoraLoading(false);
   }, [user]);
 
+  const loadNoraSessionsRef = useRef(loadNoraSessions);
+  loadNoraSessionsRef.current = loadNoraSessions;
+
   useEffect(() => {
     if (section === 'nora') void loadNoraSessions();
   }, [section, loadNoraSessions]);
 
   useEffect(() => {
     const onChanged = () => {
-      if (section === 'nora') void loadNoraSessions();
+      if (sectionRef.current === 'nora') void loadNoraSessionsRef.current();
     };
     window.addEventListener(NORA_CHAT_SESSIONS_CHANGED, onChanged);
     return () => window.removeEventListener(NORA_CHAT_SESSIONS_CHANGED, onChanged);
-  }, [section, loadNoraSessions]);
+  }, []);
 
   const removeNoraSession = async (id: string) => {
     if (!window.confirm('Delete this Ask Nora conversation permanently? This cannot be undone.')) return;
     setNoraDeleting(id);
-    const { error } = await deleteNoraChatSession(id);
-    setNoraDeleting(null);
-    if (error) {
-      toast({ title: 'Could not delete', description: error.message, variant: 'destructive' });
-      return;
+    try {
+      const { error } = await deleteNoraChatSession(id);
+      if (error) {
+        toast({ title: 'Could not delete', description: error.message, variant: 'destructive' });
+        return;
+      }
+      dispatchNoraChatSessionsChanged(id);
+      setNoraSessions((prev) => prev.filter((s) => s.id !== id));
+      toast({ title: 'Conversation deleted' });
+    } catch (err) {
+      console.error(err);
+      toast({
+        title: 'Could not delete',
+        description: err instanceof Error ? err.message : 'Something went wrong',
+        variant: 'destructive',
+      });
+    } finally {
+      setNoraDeleting(null);
     }
-    dispatchNoraChatSessionsChanged(id);
-    setNoraSessions((prev) => prev.filter((s) => s.id !== id));
-    toast({ title: 'Conversation deleted' });
   };
 
   const archive = async (id: string) => {
