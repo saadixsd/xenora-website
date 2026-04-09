@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
+import { useParams, useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { WorkflowTimeline } from '@/components/dashboard/WorkflowTimeline';
@@ -7,8 +7,9 @@ import { OutputCard } from '@/components/dashboard/OutputCard';
 import { TemplateCard } from '@/components/dashboard/TemplateCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, Play, Archive, Trash2, ArchiveRestore } from 'lucide-react';
+import { ArrowLeft, Play, Archive, Trash2, ArchiveRestore, Plus, Bot } from 'lucide-react';
 import { ROUTES, dashboardRunPath } from '@/config/routes';
+import { cn } from '@/lib/utils';
 
 interface Template {
   id: string;
