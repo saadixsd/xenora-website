@@ -121,6 +121,7 @@ export function useNoraVoiceWake({ enabled, suspend, onActivated }: Options) {
         let lastEdgeAt = 0;
         let lastClapAt = 0;
 
+        let logThrottle = 0;
         const tick = () => {
           if (cancelled) return;
           analyser.getByteTimeDomainData(buf);
@@ -132,11 +133,19 @@ export function useNoraVoiceWake({ enabled, suspend, onActivated }: Options) {
           const rms = Math.sqrt(sum / buf.length);
           const loud = rms > CLAP_RMS;
           const now = performance.now();
+
+          // Periodic RMS log so we can verify mic is working
+          if (++logThrottle % 120 === 0 && rms > 0.02) {
+            console.debug('[NoraClapDetect] rms=', rms.toFixed(3), 'threshold=', CLAP_RMS);
+          }
+
           if (loud && !wasLoud) {
             if (now - lastEdgeAt >= EDGE_DEBOUNCE_MS) {
               lastEdgeAt = now;
               const delta = now - lastClapAt;
+              console.debug('[NoraClapDetect] clap edge detected, delta=', delta.toFixed(0), 'ms');
               if (lastClapAt > 0 && delta > DOUBLE_MIN_MS && delta < DOUBLE_MAX_MS) {
+                console.info('[NoraClapDetect] ✅ Double clap! Activating Nora.');
                 fire();
                 lastClapAt = 0;
               } else {
