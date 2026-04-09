@@ -20,7 +20,7 @@ export function NoraVoiceBar({
 
   return (
     <div
-      className="pointer-events-none fixed inset-x-0 bottom-0 z-[81] flex justify-start px-3 pb-[max(10px,env(safe-area-inset-bottom,0px))] pt-2 max-lg:pr-[4.5rem]"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-[81] flex justify-center px-3 pb-[max(10px,env(safe-area-inset-bottom,0px))] pt-2"
       aria-label="Nora voice controls"
     >
       <div

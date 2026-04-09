@@ -280,7 +280,7 @@ Deno.serve(async (req) => {
   if (ctxRaw) {
     const ctx = ctxRaw.slice(0, 2000);
     system =
-      `${system}\n\n## Client context (where the user is in the app)\n${ctx}\nTailor examples to this screen. Do not invent data the user did not provide. Never imply publish/send without explicit user approval.`;
+      `${system}\n\n## Client context (where the user is in the app)\n${ctx}\nTailor examples to this screen. Do not invent data the user did not provide. Never imply publish/send without explicit user approval.\n\n## Pointer context\nWhen a user message starts with [Context: ...], it describes the UI element they are pointing at with their mouse while using voice. Use this to explain what that element does, help them navigate, or answer questions about the specific feature they are looking at. Be specific and helpful about the exact element described.`;
   }
   const rawMsgs = Array.isArray(body.messages) ? body.messages.slice(0, MAX_MESSAGES) : [];
   const messages: AnthropicMessage[] = rawMsgs

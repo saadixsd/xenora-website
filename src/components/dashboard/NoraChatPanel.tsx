@@ -28,6 +28,7 @@ import {
   setNoraVoiceUiPhase,
   type NoraVoiceDictationDetail,
 } from '@/lib/noraVoice';
+import { describeElementUnderCursor } from '@/lib/noraPointerContext';
 import { ChatHistorySidebar } from './ChatHistorySidebar';
 
 const DAILY_LIMIT = 3;
@@ -466,16 +467,26 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       r.onend = () => {
         dictationRef.current = null;
         const run = latest.trim();
-        if (assistantMode && run) {
-          setNoraVoiceUiPhase('thinking');
-          void (async () => {
-            try {
-              await sendRef.current(run, { speakAfter: true });
-            } finally {
-              resumeAmbient();
-            }
-          })();
-          return;
+        if (run) {
+          // Capture what the user was pointing at during voice
+          const pointerCtx = describeElementUnderCursor();
+          const enrichedRun = pointerCtx
+            ? `[Context: ${pointerCtx}]\n\n${run}`
+            : run;
+
+          if (assistantMode) {
+            setNoraVoiceUiPhase('thinking');
+            void (async () => {
+              try {
+                await sendRef.current(enrichedRun, { speakAfter: true });
+              } finally {
+                resumeAmbient();
+              }
+            })();
+            return;
+          }
+          // Non-assistant: just fill the input with enriched context
+          setInput(enrichedRun);
         }
         resumeAmbient();
         setNoraVoiceUiPhase('idle');
