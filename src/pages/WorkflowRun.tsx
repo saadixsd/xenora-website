@@ -45,6 +45,21 @@ function classifyTemplateKind(name: string): 'content' | 'leads' | 'research' {
   return 'content';
 }
 
+interface CustomAgent {
+  id: string;
+  name: string;
+  mission: string | null;
+  starter_prompt: string | null;
+}
+
+const MAX_CUSTOM_AGENTS = 5;
+
+const BUILTIN_AGENT_INFO: Record<string, { label: string; description: string; status: string }> = {
+  content: { label: 'Content Agent', description: 'X posts, hooks, LinkedIn drafts, and CTAs.', status: 'Live' },
+  leads: { label: 'Lead Agent', description: 'Score leads, draft replies, queue follow-ups.', status: 'Beta' },
+  research: { label: 'Research Agent', description: 'Pain signals and angles from notes + URLs.', status: 'Coming soon' },
+};
+
 const AGENT_TYPE_QUERY_VALUES = new Set(['content', 'leads', 'research']);
 
 const WorkflowRun = () => {
