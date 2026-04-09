@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
+import { useParams, useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { WorkflowTimeline } from '@/components/dashboard/WorkflowTimeline';
@@ -7,8 +7,9 @@ import { OutputCard } from '@/components/dashboard/OutputCard';
 import { TemplateCard } from '@/components/dashboard/TemplateCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, Play, Archive, Trash2, ArchiveRestore } from 'lucide-react';
+import { ArrowLeft, Play, Archive, Trash2, ArchiveRestore, Plus, Bot } from 'lucide-react';
 import { ROUTES, dashboardRunPath } from '@/config/routes';
+import { cn } from '@/lib/utils';
 
 interface Template {
   id: string;
@@ -43,6 +44,21 @@ function classifyTemplateKind(name: string): 'content' | 'leads' | 'research' {
   if (n.includes('research')) return 'research';
   return 'content';
 }
+
+interface CustomAgent {
+  id: string;
+  name: string;
+  mission: string | null;
+  starter_prompt: string | null;
+}
+
+const MAX_CUSTOM_AGENTS = 5;
+
+const BUILTIN_AGENT_INFO: Record<string, { label: string; description: string; status: string }> = {
+  content: { label: 'Content Agent', description: 'X posts, hooks, LinkedIn drafts, and CTAs.', status: 'Live' },
+  leads: { label: 'Lead Agent', description: 'Score leads, draft replies, queue follow-ups.', status: 'Beta' },
+  research: { label: 'Research Agent', description: 'Pain signals and angles from notes + URLs.', status: 'Coming soon' },
+};
 
 const AGENT_TYPE_QUERY_VALUES = new Set(['content', 'leads', 'research']);
 
@@ -79,6 +95,20 @@ const WorkflowRun = () => {
   const [lifecycleBusy, setLifecycleBusy] = useState(false);
   /** Set when `agent_type` query matches a row in `agents` (Command Center agents). */
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
+  const [customAgents, setCustomAgents] = useState<CustomAgent[]>([]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    supabase
+      .from('user_custom_agents')
+      .select('id, name, mission, starter_prompt')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(MAX_CUSTOM_AGENTS)
+      .then(({ data }) => {
+        if (data) setCustomAgents(data as CustomAgent[]);
+      });
+  }, [user?.id]);
 
   useEffect(() => {
     supabase.from('workflow_templates').select('*').order('created_at').then(({ data }) => {
@@ -352,19 +382,117 @@ const WorkflowRun = () => {
         )}
 
         {wizardStep === 0 && (
-          <div className="mt-4 sm:mt-6">
-            <p className="text-[13px] sm:text-sm text-muted-foreground">Choose a workflow</p>
-            <div className="mt-3 sm:mt-4 grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {templates.map((t) => (
-                <TemplateCard
-                  key={t.id}
-                  name={t.name}
-                  description={t.description}
-                  icon={t.icon}
-                  status={t.status}
-                  onSelect={() => handleSelectTemplate(t.id)}
-                />
-              ))}
+          <div className="mt-4 sm:mt-6 space-y-6">
+            {/* Built-in agents */}
+            <div>
+              <p className="text-[13px] sm:text-sm font-medium text-foreground mb-3">Built-in Agents</p>
+              <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {['content', 'leads', 'research'].map((agentType) => {
+                  const info = BUILTIN_AGENT_INFO[agentType];
+                  const matchingTemplate = templates.find((t) => classifyTemplateKind(t.name) === agentType);
+                  const isDisabled = info.status === 'Coming soon';
+                  return (
+                    <button
+                      key={agentType}
+                      type="button"
+                      disabled={isDisabled}
+                      onClick={() => {
+                        if (matchingTemplate) handleSelectTemplate(matchingTemplate.id);
+                      }}
+                      className={cn(
+                        'flex flex-col items-start gap-1.5 rounded-xl border border-border bg-card p-4 text-left transition-all',
+                        isDisabled
+                          ? 'cursor-not-allowed opacity-50'
+                          : 'hover:border-primary/40 hover:shadow-sm',
+                      )}
+                    >
+                      <div className="flex w-full items-center justify-between">
+                        <Bot className="h-5 w-5 text-primary" />
+                        <span className={cn(
+                          'rounded-full px-2 py-0.5 text-[10px] font-medium',
+                          info.status === 'Live' ? 'bg-emerald-500/15 text-emerald-600' :
+                          info.status === 'Beta' ? 'bg-amber-500/15 text-amber-600' :
+                          'bg-muted text-muted-foreground',
+                        )}>
+                          {info.status}
+                        </span>
+                      </div>
+                      <p className="text-sm font-medium text-foreground">{info.label}</p>
+                      <p className="text-[11px] text-muted-foreground">{info.description}</p>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Custom agents */}
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-[13px] sm:text-sm font-medium text-foreground">
+                  Your Custom Agents ({customAgents.length}/{MAX_CUSTOM_AGENTS})
+                </p>
+                {customAgents.length < MAX_CUSTOM_AGENTS && (
+                  <Link
+                    to={ROUTES.dashboard.noraAgentBuilder}
+                    className="flex items-center gap-1 text-[11px] text-primary hover:underline"
+                  >
+                    <Plus className="h-3.5 w-3.5" />
+                    Create agent
+                  </Link>
+                )}
+              </div>
+              {customAgents.length === 0 ? (
+                <div className="rounded-xl border border-dashed border-border bg-card/50 p-5 text-center">
+                  <p className="text-[12px] text-muted-foreground">No custom agents yet</p>
+                  <Link
+                    to={ROUTES.dashboard.noraAgentBuilder}
+                    className="mt-1 inline-block text-[12px] text-primary hover:underline"
+                  >
+                    Build one with Nora →
+                  </Link>
+                </div>
+              ) : (
+                <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {customAgents.map((a) => {
+                    const contentTemplate = templates.find((t) => classifyTemplateKind(t.name) === 'content');
+                    return (
+                      <button
+                        key={a.id}
+                        type="button"
+                        onClick={() => {
+                          if (contentTemplate) {
+                            handleSelectTemplate(contentTemplate.id);
+                            if (a.mission) setGoal(a.mission);
+                            if (a.starter_prompt) setInputText(a.starter_prompt);
+                          }
+                        }}
+                        className="flex flex-col items-start gap-1.5 rounded-xl border border-border bg-card p-4 text-left transition-all hover:border-primary/40 hover:shadow-sm"
+                      >
+                        <Bot className="h-5 w-5 text-muted-foreground" />
+                        <p className="text-sm font-medium text-foreground">{a.name}</p>
+                        <p className="line-clamp-2 text-[11px] text-muted-foreground">{a.mission}</p>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Workflow templates */}
+            <div>
+              <p className="text-[13px] sm:text-sm font-medium text-foreground mb-3">Or choose a workflow template</p>
+              <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {templates.map((t) => (
+                  <TemplateCard
+                    key={t.id}
+                    name={t.name}
+                    description={t.description}
+                    icon={t.icon}
+                    status={t.status}
+                    onSelect={() => handleSelectTemplate(t.id)}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         )}
