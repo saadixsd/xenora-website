@@ -13,6 +13,7 @@ import {
   dispatchNoraVoiceStartDictation,
 } from '@/lib/noraVoice';
 import { NoraListeningOrb } from './NoraListeningOrb';
+import { NoraCursorOrb } from './NoraCursorOrb';
 import { ROUTES } from '@/config/routes';
 
 export function DashboardLayout() {
@@ -121,6 +122,7 @@ export function DashboardLayout() {
       </div>
 
       <NoraListeningOrb />
+      <NoraCursorOrb />
 
       <NoraVoiceBar
         ambientListening={ambientListening}
