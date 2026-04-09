@@ -28,6 +28,7 @@ import {
   setNoraVoiceUiPhase,
   type NoraVoiceDictationDetail,
 } from '@/lib/noraVoice';
+import { describeElementUnderCursor } from '@/lib/noraPointerContext';
 import { ChatHistorySidebar } from './ChatHistorySidebar';
 
 const DAILY_LIMIT = 3;
