@@ -1,7 +1,12 @@
+import { isNoraQuotaExemptEmail } from '@/config/noraQuota';
+
 export type ChatRole = 'user' | 'assistant' | 'system';
 export type ChatMessage = { role: ChatRole; content: string };
 
 const EDGE_FN_BASE = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/nora-claude`;
+
+/** Thrown when server returns daily_limit but user is exempt (stale edge deploy). User should retry; redeploy nora-claude for a permanent fix. */
+export const CHAT_LIMIT_RESPONSE_UNEXPECTED = 'CHAT_LIMIT_RESPONSE_UNEXPECTED';
 
 const DAILY_LIMIT = 3;
 
@@ -49,6 +54,8 @@ export async function sendClaudeChat(params: {
   accessToken: string;
   /** When agent_builder, Nora runs the structured interview and can emit a deployable agent spec. */
   mode?: NoraChatKind;
+  /** Signed-in email — exempt accounts must not be treated as daily_limit (client matches server allowlist). */
+  userEmail?: string | null;
 }): Promise<ClaudeChatSuccess> {
   const msgs = params.messages
     .filter((m) => m.role === 'user' || m.role === 'assistant')
@@ -81,6 +88,9 @@ export async function sendClaudeChat(params: {
 
   if (res.status === 429) {
     if (data.error === 'daily_limit_reached') {
+      if (isNoraQuotaExemptEmail(params.userEmail)) {
+        throw new Error(CHAT_LIMIT_RESPONSE_UNEXPECTED);
+      }
       throw new DailyQueryLimitError(
         data.message ??
           "You've used all 3 of your daily Nora queries. Your limit resets at midnight UTC.",

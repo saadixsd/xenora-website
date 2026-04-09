@@ -5,6 +5,12 @@ import { useAuth } from '@/hooks/useAuth';
 import { Archive, ArchiveRestore, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ROUTES, dashboardRunPath } from '@/config/routes';
+import { useToast } from '@/hooks/use-toast';
+import {
+  deleteNoraChatSession,
+  dispatchNoraChatSessionsChanged,
+  NORA_CHAT_SESSIONS_CHANGED,
+} from '@/lib/noraChatSession';
 
 interface Run {
   id: string;
@@ -15,12 +21,24 @@ interface Run {
   workflow_templates: { name: string } | null;
 }
 
+interface NoraSessionRow {
+  id: string;
+  title: string | null;
+  chat_kind: string;
+  updated_at: string;
+}
+
 const History = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [runs, setRuns] = useState<Run[]>([]);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<'active' | 'archived'>('active');
+  const [section, setSection] = useState<'workflows' | 'nora'>('workflows');
+  const [noraSessions, setNoraSessions] = useState<NoraSessionRow[]>([]);
+  const [noraLoading, setNoraLoading] = useState(false);
+  const [noraDeleting, setNoraDeleting] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     if (!user) return;
@@ -43,6 +61,44 @@ const History = () => {
     void load();
   }, [load]);
 
+  const loadNoraSessions = useCallback(async () => {
+    if (!user) return;
+    setNoraLoading(true);
+    const { data, error } = await (supabase.from('nora_chat_sessions' as any) as any)
+      .select('id, title, chat_kind, updated_at')
+      .eq('user_id', user.id)
+      .order('updated_at', { ascending: false })
+      .limit(100);
+    if (!error && data) setNoraSessions(data as NoraSessionRow[]);
+    setNoraLoading(false);
+  }, [user]);
+
+  useEffect(() => {
+    if (section === 'nora') void loadNoraSessions();
+  }, [section, loadNoraSessions]);
+
+  useEffect(() => {
+    const onChanged = () => {
+      if (section === 'nora') void loadNoraSessions();
+    };
+    window.addEventListener(NORA_CHAT_SESSIONS_CHANGED, onChanged);
+    return () => window.removeEventListener(NORA_CHAT_SESSIONS_CHANGED, onChanged);
+  }, [section, loadNoraSessions]);
+
+  const removeNoraSession = async (id: string) => {
+    if (!window.confirm('Delete this Ask Nora conversation permanently? This cannot be undone.')) return;
+    setNoraDeleting(id);
+    const { error } = await deleteNoraChatSession(id);
+    setNoraDeleting(null);
+    if (error) {
+      toast({ title: 'Could not delete', description: error.message, variant: 'destructive' });
+      return;
+    }
+    dispatchNoraChatSessionsChanged(id);
+    setNoraSessions((prev) => prev.filter((s) => s.id !== id));
+    toast({ title: 'Conversation deleted' });
+  };
+
   const archive = async (id: string) => {
     await supabase.from('workflow_runs').update({ archived_at: new Date().toISOString() }).eq('id', id);
     void load();
@@ -62,8 +118,99 @@ const History = () => {
   return (
     <div className="mx-auto min-h-0 min-w-0 max-w-4xl px-3 py-4 sm:px-6 sm:py-6 lg:px-8">
       <h1 className="text-lg font-semibold text-foreground sm:text-2xl">History</h1>
-      <p className="mt-1 text-[13px] sm:text-sm text-muted-foreground">All your workflow runs.</p>
+      <p className="mt-1 text-[13px] sm:text-sm text-muted-foreground">
+        Workflow runs and Ask Nora conversations. Deleting in either place removes it for good.
+      </p>
 
+      <div className="mt-4 flex gap-1 sm:gap-2 border-b border-border">
+        <button
+          type="button"
+          onClick={() => setSection('workflows')}
+          className={cn(
+            'border-b-2 px-3 py-2 text-[13px] sm:text-sm transition-colors min-h-[44px]',
+            section === 'workflows'
+              ? 'border-primary font-medium text-foreground'
+              : 'border-transparent text-muted-foreground',
+          )}
+        >
+          Workflow runs
+        </button>
+        <button
+          type="button"
+          onClick={() => setSection('nora')}
+          className={cn(
+            'border-b-2 px-3 py-2 text-[13px] sm:text-sm transition-colors min-h-[44px]',
+            section === 'nora' ? 'border-primary font-medium text-foreground' : 'border-transparent text-muted-foreground',
+          )}
+        >
+          Ask Nora chats
+        </button>
+      </div>
+
+      {section === 'nora' && (
+        <>
+          {noraLoading ? (
+            <div className="mt-10 flex justify-center">
+              <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+            </div>
+          ) : noraSessions.length === 0 ? (
+            <div className="surface-panel mt-8 flex flex-col items-center py-12 text-center">
+              <p className="text-sm text-muted-foreground">No Ask Nora conversations yet.</p>
+              <button
+                type="button"
+                onClick={() => navigate(ROUTES.dashboard.nora)}
+                className="mt-3 text-sm text-primary hover:underline"
+              >
+                Open Ask Nora
+              </button>
+            </div>
+          ) : (
+            <ul className="mt-4 sm:mt-6 space-y-2">
+              {noraSessions.map((s) => (
+                <li
+                  key={s.id}
+                  className="surface-panel flex w-full flex-col gap-2 p-3 sm:flex-row sm:items-center sm:justify-between sm:p-4"
+                >
+                  <div className="min-w-0">
+                    <p className="text-[13px] sm:text-sm font-medium text-foreground">
+                      {s.title || (s.chat_kind === 'agent_builder' ? 'Agent builder' : 'Chat')}
+                    </p>
+                    <p className="mt-0.5 text-[11px] sm:text-xs text-muted-foreground">
+                      {s.chat_kind === 'agent_builder' ? 'Agent mode' : 'Chat mode'} ·{' '}
+                      {new Date(s.updated_at).toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-2 self-end sm:self-center">
+                    <button
+                      type="button"
+                      onClick={() => navigate(`${ROUTES.dashboard.nora}?session=${encodeURIComponent(s.id)}`)}
+                      className="rounded-lg border border-border px-3 py-1.5 text-[12px] text-foreground hover:bg-muted"
+                    >
+                      Open
+                    </button>
+                    <button
+                      type="button"
+                      title="Delete conversation"
+                      disabled={noraDeleting === s.id}
+                      onClick={() => void removeNoraSession(s.id)}
+                      className="flex h-10 w-10 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-destructive/10 hover:text-destructive disabled:opacity-50"
+                    >
+                      {noraDeleting === s.id ? (
+                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-muted-foreground/30 border-t-primary" />
+                      ) : (
+                        <Trash2 className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      )}
+
+      {section === 'workflows' && (
+        <>
       <div className="mt-3 sm:mt-4 flex gap-1 sm:gap-2 border-b border-border">
         <button
           type="button"
@@ -180,6 +327,8 @@ const History = () => {
             </div>
           ))}
         </div>
+      )}
+        </>
       )}
     </div>
   );

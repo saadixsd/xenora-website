@@ -1,7 +1,13 @@
 import { useEffect, useState, useCallback } from 'react';
-import { History, X, Plus, MessageSquare } from 'lucide-react';
+import { History, X, Plus, MessageSquare, Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
+import {
+  NORA_CHAT_SESSIONS_CHANGED,
+  deleteNoraChatSession,
+  dispatchNoraChatSessionsChanged,
+} from '@/lib/noraChatSession';
 
 interface ChatSession {
   id: string;
@@ -37,8 +43,10 @@ export function ChatHistorySidebar({
   onClose,
   embedded = false,
 }: ChatHistorySidebarProps) {
+  const { toast } = useToast();
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [loading, setLoading] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const loadSessions = useCallback(async () => {
     if (!userId) return;
@@ -76,6 +84,28 @@ export function ChatHistorySidebar({
   useEffect(() => {
     if (open) void loadSessions();
   }, [open, loadSessions]);
+
+  useEffect(() => {
+    const onChanged = () => {
+      if (open) void loadSessions();
+    };
+    window.addEventListener(NORA_CHAT_SESSIONS_CHANGED, onChanged);
+    return () => window.removeEventListener(NORA_CHAT_SESSIONS_CHANGED, onChanged);
+  }, [open, loadSessions]);
+
+  const handleDeleteSession = async (e: React.MouseEvent, sessionId: string) => {
+    e.stopPropagation();
+    if (!window.confirm('Delete this conversation permanently? This cannot be undone.')) return;
+    setDeletingId(sessionId);
+    const { error } = await deleteNoraChatSession(sessionId);
+    setDeletingId(null);
+    if (error) {
+      toast({ title: 'Could not delete', description: error.message, variant: 'destructive' });
+      return;
+    }
+    dispatchNoraChatSessionsChanged(sessionId);
+    setSessions((prev) => prev.filter((s) => s.id !== sessionId));
+  };
 
   const formatDate = (dateStr: string) => {
     const d = new Date(dateStr);
@@ -149,27 +179,48 @@ export function ChatHistorySidebar({
 
           <div className="space-y-1">
             {sessions.map((s) => (
-              <button
+              <div
                 key={s.id}
-                type="button"
-                onClick={() => {
-                  onSelectSession(s.id);
-                  onClose();
-                }}
                 className={cn(
-                  'flex w-full flex-col gap-0.5 rounded-lg px-3 py-2.5 text-left transition-colors',
-                  s.id === currentSessionId
-                    ? 'bg-primary/10 text-foreground'
-                    : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground',
+                  'group flex w-full items-stretch gap-0.5 rounded-lg transition-colors',
+                  s.id === currentSessionId ? 'bg-primary/10' : 'hover:bg-muted/60',
                 )}
               >
-                <span className="truncate text-sm font-medium">
-                  {s.preview || s.title || 'New chat'}
-                </span>
-                <span className="text-[10px] text-muted-foreground/70">
-                  {formatDate(s.updated_at)}
-                </span>
-              </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onSelectSession(s.id);
+                    onClose();
+                  }}
+                  className={cn(
+                    'flex min-w-0 flex-1 flex-col gap-0.5 rounded-lg px-3 py-2.5 text-left transition-colors',
+                    s.id === currentSessionId
+                      ? 'text-foreground'
+                      : 'text-muted-foreground hover:text-foreground',
+                  )}
+                >
+                  <span className="truncate text-sm font-medium">
+                    {s.preview || s.title || 'New chat'}
+                  </span>
+                  <span className="text-[10px] text-muted-foreground/70">
+                    {formatDate(s.updated_at)}
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  title="Delete conversation"
+                  disabled={deletingId === s.id}
+                  onClick={(e) => void handleDeleteSession(e, s.id)}
+                  className="flex shrink-0 items-center justify-center rounded-lg px-2 text-muted-foreground opacity-70 transition-colors hover:bg-destructive/15 hover:text-destructive group-hover:opacity-100 disabled:opacity-40"
+                  aria-label="Delete conversation"
+                >
+                  {deletingId === s.id ? (
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-muted-foreground/30 border-t-primary" />
+                  ) : (
+                    <Trash2 className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
             ))}
           </div>
         </div>

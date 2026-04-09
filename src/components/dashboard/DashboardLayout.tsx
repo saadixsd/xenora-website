@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { DashboardSidebar } from './DashboardSidebar';
+import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { Menu, MessageCircle } from 'lucide-react';
 import { NoraChatPanel } from './NoraChatPanel';
 
@@ -26,7 +27,7 @@ export function DashboardLayout() {
       </aside>
 
       <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-        <header className="flex min-h-14 shrink-0 items-center border-b border-border px-4 py-2 lg:hidden">
+        <header className="grid min-h-14 shrink-0 grid-cols-[44px_1fr_44px] items-center border-b border-border px-2 py-2 lg:hidden" aria-label="Dashboard">
           <button
             type="button"
             onClick={() => setSidebarOpen(true)}
@@ -35,9 +36,10 @@ export function DashboardLayout() {
           >
             <Menu className="h-5 w-5" />
           </button>
-          <span className="ml-3 font-dm-serif text-sm font-medium tracking-tight text-foreground">
-            Xen<span className="text-primary">ora</span>
-          </span>
+          <div className="flex min-w-0 justify-center px-1" aria-hidden>
+            <XenoraLogo decorative className="h-7 w-auto max-h-8 max-w-[min(140px,calc(100vw-7rem))]" />
+          </div>
+          <div aria-hidden className="h-11 w-11 shrink-0" />
         </header>
 
         <main className="relative min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-y-contain pb-[env(safe-area-inset-bottom,0px)]">

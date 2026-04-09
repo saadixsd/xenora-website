@@ -10,6 +10,7 @@ import {
   checkClaudeBackend,
   sendClaudeChat,
   DailyQueryLimitError,
+  CHAT_LIMIT_RESPONSE_UNEXPECTED,
   type ChatMessage,
   type NoraChatKind,
 } from '@/lib/claude';
@@ -17,6 +18,7 @@ import { extractNoraAgentSpec, type NoraAgentSpec } from '@/lib/noraAgentSpec';
 import { cn } from '@/lib/utils';
 import { ROUTES } from '@/config/routes';
 import { isNoraQuotaExemptEmail } from '@/config/noraQuota';
+import { NORA_CHAT_SESSIONS_CHANGED, type NoraChatSessionsChangedDetail } from '@/lib/noraChatSession';
 import { ChatHistorySidebar } from './ChatHistorySidebar';
 
 const DAILY_LIMIT = 3;
@@ -65,6 +67,8 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   const transcriptRef = useRef<HTMLDivElement>(null);
   const typingTimerRef = useRef<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  /** Avoid double-loading when `?session=` updates `chatKind` and re-triggers the effect. */
+  const loadedSessionFromUrlRef = useRef<string | null>(null);
 
   const token = session?.access_token;
   const quotaExempt = isNoraQuotaExemptEmail(user?.email);
@@ -128,7 +132,48 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   }, [searchParams]);
 
   useEffect(() => { void loadQueryCount(); }, [loadQueryCount]);
-  useEffect(() => { void loadThreadForKind(chatKind); }, [chatKind, loadThreadForKind]);
+
+  useEffect(() => {
+    const onSessionsChanged = (e: Event) => {
+      const d = (e as CustomEvent<NoraChatSessionsChangedDetail>).detail;
+      if (!d?.sessionId || d.sessionId !== sessionId) return;
+      setSessionId(null);
+      setMessages([]);
+      setDeployedKeys({});
+      loadedSessionFromUrlRef.current = null;
+      if (searchParams.get('session') === d.sessionId) {
+        const mode = searchParams.get('mode');
+        const next = mode === 'builder' ? '?mode=builder' : '';
+        navigate(`${ROUTES.dashboard.nora}${next}`, { replace: true });
+      }
+    };
+    window.addEventListener(NORA_CHAT_SESSIONS_CHANGED, onSessionsChanged);
+    return () => window.removeEventListener(NORA_CHAT_SESSIONS_CHANGED, onSessionsChanged);
+  }, [sessionId, searchParams, navigate]);
+
+  const sessionFromUrl = searchParams.get('session');
+  useEffect(() => {
+    if (!user?.id) return;
+    if (sessionFromUrl) {
+      if (loadedSessionFromUrlRef.current === sessionFromUrl) return;
+      loadedSessionFromUrlRef.current = sessionFromUrl;
+      void (async () => {
+        const { data } = await supabase
+          .from('nora_chat_sessions' as any)
+          .select('chat_kind')
+          .eq('id', sessionFromUrl)
+          .eq('user_id', user.id)
+          .maybeSingle();
+        if (data?.chat_kind === 'general' || data?.chat_kind === 'agent_builder') {
+          setChatKind(data.chat_kind);
+          await loadSessionMessages(sessionFromUrl);
+        }
+      })();
+      return;
+    }
+    loadedSessionFromUrlRef.current = null;
+    void loadThreadForKind(chatKind);
+  }, [user?.id, sessionFromUrl, chatKind, loadThreadForKind, loadSessionMessages]);
 
   const refreshConnection = useCallback(async () => {
     setBackendOk(null);
@@ -220,7 +265,12 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       await touchSession(sid);
 
       const apiSlice = nextHistory.slice(-28);
-      const result = await sendClaudeChat({ messages: apiSlice, accessToken: t, mode: chatKind === 'agent_builder' ? 'agent_builder' : undefined });
+      const result = await sendClaudeChat({
+        messages: apiSlice,
+        accessToken: t,
+        mode: chatKind === 'agent_builder' ? 'agent_builder' : undefined,
+        userEmail: user?.email ?? null,
+      });
       if (!isNoraQuotaExemptEmail(user?.email)) {
         setQueriesUsedToday(result.queries_used);
         if (result.queries_remaining <= 0) setDailyLimitReached(true);
@@ -233,18 +283,21 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
     } catch (e) {
       if (insertedUserRowId) await supabase.from('nora_chat_messages' as any).delete().eq('id', insertedUserRowId);
       if (e instanceof DailyQueryLimitError) {
-        if (quotaExempt) {
-          setLastError('Server returned a limit error but you are exempt. Redeploy edge functions to fix.');
-          setBackendOk(false);
-          setMessages((prev) => prev.slice(0, -1));
-          setInput(trimmed);
-        } else {
-          setDailyLimitReached(true);
-          setQueriesUsedToday(e.queries_used);
-          const limitMsg = "You've used all 3 of your queries for today. Come back tomorrow — your limit resets at midnight UTC. While you wait, browse what Nora can do on the dashboard.";
-          setMessages((prev) => [...prev, { role: 'assistant', content: limitMsg }]);
-          setBackendOk(true);
+        setDailyLimitReached(true);
+        setQueriesUsedToday(e.queries_used);
+        const limitMsg = "You've used all 3 of your queries for today. Come back tomorrow — your limit resets at midnight UTC. While you wait, browse what Nora can do on the dashboard.";
+        setMessages((prev) => [...prev, { role: 'assistant', content: limitMsg }]);
+        setBackendOk(true);
+      } else if (e instanceof Error && e.message === CHAT_LIMIT_RESPONSE_UNEXPECTED) {
+        setLastError('Nora could not complete that message. Please try again in a moment.');
+        setBackendOk(false);
+        if (typingTimerRef.current !== null) {
+          window.clearInterval(typingTimerRef.current);
+          typingTimerRef.current = null;
         }
+        setTypingReply(false);
+        setMessages((prev) => prev.slice(0, -1));
+        setInput(trimmed);
       } else if (e instanceof Error && e.message === 'SESSION_EXPIRED') {
         setSessionExpired(true);
         setMessages((prev) => prev.slice(0, -1));

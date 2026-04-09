@@ -13,11 +13,12 @@ import {
 import { useAuth } from '@/hooks/useAuth';
 import { ROUTES } from '@/config/routes';
 import { cn } from '@/lib/utils';
+import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 
 const mainNav = [
   { label: 'Dashboard', to: ROUTES.dashboard.root, icon: LayoutDashboard },
   { label: 'Agents', to: ROUTES.dashboard.agents.manage, icon: Users },
-  { label: 'Workflow Runs', to: ROUTES.dashboard.runNew, icon: List, matchPrefix: `${ROUTES.dashboard.root}/run` },
+  { label: 'New run', to: ROUTES.dashboard.runNew, icon: List, matchPrefix: `${ROUTES.dashboard.root}/run` },
   { label: 'Ask Nora', to: ROUTES.dashboard.nora, icon: MessageCircle },
   { label: 'History', to: ROUTES.dashboard.history, icon: Clock },
   { label: 'Connections', to: ROUTES.dashboard.connections, icon: Plug },
@@ -59,11 +60,14 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
 
   return (
     <div className="flex h-full flex-col font-dm-sans">
-      <div className="flex items-center justify-between border-b border-border px-5 py-4">
-        <Link to={ROUTES.dashboard.root} className="flex flex-col" onClick={onClose}>
-          <span className="font-dm-serif text-lg tracking-tight text-foreground">
-            Xen<span className="text-primary">ora</span>
-          </span>
+      <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3.5 sm:px-5 sm:py-4">
+        <Link
+          to={ROUTES.dashboard.root}
+          className="flex min-w-0 shrink items-center"
+          onClick={onClose}
+          aria-label="Dashboard home"
+        >
+          <XenoraLogo decorative className="h-8 w-auto max-h-9 max-w-[min(148px,100%)] sm:h-9" />
         </Link>
         {onClose && (
           <button

@@ -36,6 +36,16 @@ function parseSourceUrls(raw: string): string[] {
     .slice(0, 5);
 }
 
+/** Aligns with Dashboard / nora-workflow template classification. */
+function classifyTemplateKind(name: string): 'content' | 'leads' | 'research' {
+  const n = name.toLowerCase();
+  if (n.includes('lead')) return 'leads';
+  if (n.includes('research')) return 'research';
+  return 'content';
+}
+
+const AGENT_TYPE_QUERY_VALUES = new Set(['content', 'leads', 'research']);
+
 const WorkflowRun = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
@@ -46,6 +56,9 @@ const WorkflowRun = () => {
   const preselectedTemplate = searchParams.get('template');
   const prefilledInput = searchParams.get('input') || '';
   const prefilledGoal = searchParams.get('goal') || '';
+  const rawAgentType = searchParams.get('agent_type')?.trim().toLowerCase() ?? '';
+  const agentTypeFromQuery =
+    rawAgentType && AGENT_TYPE_QUERY_VALUES.has(rawAgentType) ? (rawAgentType as 'content' | 'leads' | 'research') : null;
 
   const [wizardStep, setWizardStep] = useState(preselectedTemplate ? 1 : 0);
   const [templates, setTemplates] = useState<Template[]>([]);
@@ -64,12 +77,39 @@ const WorkflowRun = () => {
   const [error, setError] = useState('');
   const [archivedAt, setArchivedAt] = useState<string | null>(null);
   const [lifecycleBusy, setLifecycleBusy] = useState(false);
+  /** Set when `agent_type` query matches a row in `agents` (Command Center agents). */
+  const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
 
   useEffect(() => {
     supabase.from('workflow_templates').select('*').order('created_at').then(({ data }) => {
       if (data) setTemplates(data as Template[]);
     });
   }, []);
+
+  // Deep-link from agent cards / Manage agents: ?agent_type=content|leads|research
+  useEffect(() => {
+    if (preselectedTemplate || !agentTypeFromQuery || templates.length === 0) return;
+    const match = templates.find((t) => classifyTemplateKind(t.name) === agentTypeFromQuery);
+    if (match) {
+      setSelectedTemplate(match.id);
+      setWizardStep(1);
+    }
+  }, [preselectedTemplate, agentTypeFromQuery, templates]);
+
+  useEffect(() => {
+    if (!agentTypeFromQuery || !user?.id) {
+      setSelectedAgentId(null);
+      return;
+    }
+    void (async () => {
+      const { data } = await (supabase.from('agents' as any) as any)
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('type', agentTypeFromQuery)
+        .maybeSingle();
+      setSelectedAgentId(data?.id ?? null);
+    })();
+  }, [agentTypeFromQuery, user?.id]);
 
   const loadRun = useCallback(async (rid: string) => {
     const { data: run } = await supabase
@@ -167,6 +207,7 @@ const WorkflowRun = () => {
         .insert({
           user_id: user.id,
           template_id: selectedTemplate,
+          ...(selectedAgentId ? { agent_id: selectedAgentId } : {}),
           input_text: inputText.trim(),
           goal: goal.trim() || null,
           tone,
@@ -296,6 +337,19 @@ const WorkflowRun = () => {
         </button>
 
         <h1 className="text-lg font-semibold text-foreground sm:text-xl">New Workflow Run</h1>
+        {agentTypeFromQuery && (
+          <p className="mt-1 text-[12px] text-muted-foreground">
+            Template:{' '}
+            <span className="font-medium text-foreground">
+              {agentTypeFromQuery === 'leads'
+                ? 'Leads Agent'
+                : agentTypeFromQuery === 'research'
+                  ? 'Research Agent'
+                  : 'Content Agent'}
+            </span>
+            {selectedAgentId ? ' — run is tied to your agent in Command Center.' : ''}
+          </p>
+        )}
 
         {wizardStep === 0 && (
           <div className="mt-4 sm:mt-6">
