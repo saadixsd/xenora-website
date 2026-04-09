@@ -95,6 +95,20 @@ const WorkflowRun = () => {
   const [lifecycleBusy, setLifecycleBusy] = useState(false);
   /** Set when `agent_type` query matches a row in `agents` (Command Center agents). */
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
+  const [customAgents, setCustomAgents] = useState<CustomAgent[]>([]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    supabase
+      .from('user_custom_agents')
+      .select('id, name, mission, starter_prompt')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(MAX_CUSTOM_AGENTS)
+      .then(({ data }) => {
+        if (data) setCustomAgents(data as CustomAgent[]);
+      });
+  }, [user?.id]);
 
   useEffect(() => {
     supabase.from('workflow_templates').select('*').order('created_at').then(({ data }) => {
