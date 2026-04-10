@@ -118,7 +118,7 @@ const Index = () => {
       >
         <Link
           to={ROUTES.tryNora}
-          className="flex min-h-[48px] max-w-[calc(100vw-2rem)] items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-[0_8px_30px_rgba(0,212,255,0.2)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_12px_40px_rgba(0,212,255,0.28)] sm:max-w-none sm:px-6 sm:py-3"
+          className="flex min-h-[48px] max-w-[calc(100vw-2rem)] items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-[0_8px_30px_rgba(0,200,150,0.22)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_12px_40px_rgba(0,200,150,0.3)] sm:max-w-none sm:px-6 sm:py-3"
         >
           Try Nora
           <ArrowRight className="h-4 w-4" />
@@ -152,7 +152,7 @@ const Index = () => {
                 <div className="flex flex-col items-center gap-3 sm:flex-row">
                   <Link
                     to={ROUTES.tryNora}
-                    className="group relative min-h-[44px] w-full overflow-hidden rounded-lg bg-primary px-10 py-3.5 text-center text-base font-medium text-primary-foreground shadow-[0_10px_30px_rgba(0,212,255,0.12)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(0,212,255,0.2)] sm:w-auto"
+                    className="group relative min-h-[44px] w-full overflow-hidden rounded-lg bg-primary px-10 py-3.5 text-center text-base font-medium text-primary-foreground shadow-[0_10px_30px_rgba(0,200,150,0.14)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(0,200,150,0.22)] sm:w-auto"
                   >
                     <span className="relative z-10 flex items-center justify-center gap-2">
                       Try Nora
@@ -415,7 +415,7 @@ const Index = () => {
               </p>
             </Reveal>
             <Reveal delay={0.1}>
-              <div className="surface-panel mt-6 border-primary/20 p-6 shadow-[0_0_40px_rgba(14,165,164,0.08)]">
+              <div className="surface-panel mt-6 border-primary/20 p-6 shadow-[0_0_40px_rgba(0,200,150,0.1)]">
                 <ProductEmailUpdatesForm />
               </div>
             </Reveal>

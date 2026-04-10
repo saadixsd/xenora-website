@@ -13,7 +13,11 @@
     min-width: 0;
   }
 
+  /* Dark default: emerald accent (aligned with dashboard command center) */
   :root {
+    --xenora-accent: #00c896;
+    --xenora-accent-foreground: #0a0a0a;
+
     --bg-base: #0A0A0F;
     --background: 240 30% 4%;
     --foreground: 0 0% 96%;
@@ -24,8 +28,9 @@
     --popover: 240 20% 7%;
     --popover-foreground: 0 0% 96%;
 
-    --primary: 192 100% 50%;
-    --primary-foreground: 240 30% 4%;
+    /* #00c896 — same green as dashboard + marketing dark theme */
+    --primary: 168 100% 39%;
+    --primary-foreground: 168 100% 5%;
 
     --secondary: 240 12% 12%;
     --secondary-foreground: 0 0% 96%;
@@ -41,24 +46,24 @@
 
     --border: 240 12% 14%;
     --input: 240 12% 14%;
-    --ring: 192 100% 50%;
+    --ring: 168 100% 39%;
 
     --radius: 0.5rem;
 
     --sidebar-background: 240 30% 4%;
     --sidebar-foreground: 0 0% 96%;
-    --sidebar-primary: 192 100% 50%;
-    --sidebar-primary-foreground: 240 30% 4%;
+    --sidebar-primary: 168 100% 39%;
+    --sidebar-primary-foreground: 168 100% 5%;
     --sidebar-accent: 240 12% 10%;
     --sidebar-accent-foreground: 0 0% 96%;
     --sidebar-border: 240 12% 14%;
-    --sidebar-ring: 192 100% 50%;
+    --sidebar-ring: 168 100% 39%;
 
     /* Theme-aware mesh background */
     --mesh-grid: rgba(255, 255, 255, 0.045);
     --mesh-diag: rgba(255, 255, 255, 0.03);
     --mesh-vignette: rgba(10, 10, 15, 0.72);
-    --mesh-glow: rgba(0, 212, 255, 0.06);
+    --mesh-glow: rgba(0, 200, 150, 0.09);
   }
 
   .light {
@@ -181,7 +186,7 @@
 
   /* App shell: command center (dark + emerald accent) */
   .dashboard-app {
-    --dash-accent: #00c896;
+    --dash-accent: var(--xenora-accent, #00c896);
     --dash-accent-dim: rgba(0, 200, 150, 0.12);
     --dash-bg: #07090b;
     --dash-surface: #0c0f12;

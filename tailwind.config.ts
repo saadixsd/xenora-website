@@ -95,8 +95,8 @@ export default {
     themes: [
       {
         xenora: {
-          primary: "#00D4FF",
-          "primary-content": "#0A0A0F",
+          primary: "#00c896",
+          "primary-content": "#0a0a0a",
           secondary: "#1a1a2e",
           "secondary-content": "#f5f5f5",
           accent: "#7c3aed",
@@ -107,7 +107,7 @@ export default {
           "base-200": "#0e0e16",
           "base-300": "#16161f",
           "base-content": "#f5f5f5",
-          info: "#00D4FF",
+          info: "#00c896",
           success: "#22c55e",
           warning: "#eab308",
           error: "#ef4444",
