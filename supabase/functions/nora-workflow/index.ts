@@ -289,21 +289,24 @@ Deno.serve(async (req) => {
     ? body.source_urls.filter((u): u is string => typeof u === "string")
     : [];
 
-  const { data: run, error: runErr } = await supabaseUser
-    .from("workflow_runs")
-    .select("id, user_id, status, template_id")
-    .eq("id", runId)
-    .single();
+  const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-  if (runErr || !run || run.user_id !== user.id) {
+  // Load run with service role + explicit user_id match. RLS-only reads from the Edge
+  // function can spuriously return 0 rows (JWT/RLS context), which surfaced as 403 Forbidden.
+  const { data: run, error: runErr } = await supabaseAdmin
+    .from("workflow_runs")
+    .select("id, user_id, status, template_id, agent_id")
+    .eq("id", runId)
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (runErr || !run) {
     return jsonRes({ error: "Forbidden" }, 403);
   }
 
   if (run.status !== "running") {
     return jsonRes({ error: "Run is not in a runnable state" }, 400);
   }
-
-  const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
   if (!isNoraQuotaExemptEmail(user.email)) {
     const billingRow = await fetchBillingRow(supabaseAdmin, user.id);
@@ -343,7 +346,7 @@ Deno.serve(async (req) => {
   const templateName = templateRow?.name || "Content Agent";
   const agentKind = classifyTemplate(templateName);
 
-  const agentId = null;
+  const agentId = (run as { agent_id?: string | null }).agent_id ?? null;
   const goal = typeof body.goal === "string" ? body.goal.trim() : "";
   const tone = typeof body.tone === "string" && body.tone.trim() ? body.tone.trim() : "professional";
 
