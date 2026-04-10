@@ -1,10 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
+import { getMousePosition } from '@/lib/noraPointerContext';
 import { NORA_VOICE_UI_PHASE, type NoraVoiceUiPhase } from '@/lib/noraVoice';
 import { cn } from '@/lib/utils';
 
 /**
- * A glowing orb that follows the mouse cursor when voice listening is active.
- * Gives the user a visual cue that Nora is "looking" at what they're pointing at.
+ * A glowing orb that follows the pointer (mouse or finger) when voice is active.
+ * Gives a visual cue that Nora is "looking" at what the user is pointing at — including on phones.
  */
 export function NoraCursorOrb() {
   const [phase, setPhase] = useState<NoraVoiceUiPhase>('idle');
@@ -22,14 +23,39 @@ export function NoraCursorOrb() {
     return () => window.removeEventListener(NORA_VOICE_UI_PHASE, onPhase);
   }, []);
 
-  // Track mouse
+  // Seed position when voice UI becomes active (e.g. finger just tapped the mic)
+  useEffect(() => {
+    if (phase === 'idle') return;
+    const { x, y } = getMousePosition();
+    targetRef.current = { x, y };
+    currentRef.current = { x, y };
+    setPos({ x, y });
+  }, [phase]);
+
+  // Track pointer (mouse + touch + pen)
   useEffect(() => {
     if (phase === 'idle') return;
 
-    const onMove = (e: MouseEvent) => {
-      targetRef.current = { x: e.clientX, y: e.clientY };
+    const onPointer = (e: MouseEvent | PointerEvent | TouchEvent) => {
+      let cx: number;
+      let cy: number;
+      if ('touches' in e && e.touches[0]) {
+        cx = e.touches[0].clientX;
+        cy = e.touches[0].clientY;
+      } else if ('clientX' in e) {
+        cx = e.clientX;
+        cy = e.clientY;
+      } else {
+        return;
+      }
+      targetRef.current = { x: cx, y: cy };
     };
-    window.addEventListener('mousemove', onMove, { passive: true });
+
+    window.addEventListener('mousemove', onPointer, { passive: true });
+    window.addEventListener('pointermove', onPointer, { passive: true });
+    window.addEventListener('pointerdown', onPointer, { passive: true });
+    window.addEventListener('touchstart', onPointer, { passive: true });
+    window.addEventListener('touchmove', onPointer, { passive: true });
 
     // Smooth follow with lerp
     const animate = () => {
@@ -40,12 +66,14 @@ export function NoraCursorOrb() {
       rafRef.current = requestAnimationFrame(animate);
     };
 
-    // Initialize to current mouse pos
-    currentRef.current = { ...targetRef.current };
     rafRef.current = requestAnimationFrame(animate);
 
     return () => {
-      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mousemove', onPointer);
+      window.removeEventListener('pointermove', onPointer);
+      window.removeEventListener('pointerdown', onPointer);
+      window.removeEventListener('touchstart', onPointer);
+      window.removeEventListener('touchmove', onPointer);
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
     };
   }, [phase]);

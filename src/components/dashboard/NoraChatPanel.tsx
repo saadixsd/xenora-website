@@ -336,7 +336,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
 
       if (opts?.speakAfter && isNoraVoiceTtsEnabled()) {
         setNoraVoiceUiPhase('thinking');
-        await speakNoraStatus('One moment.');
+        await speakNoraStatus('Got it.');
       }
 
       const apiSlice = nextHistory.slice(-28);

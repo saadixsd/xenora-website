@@ -334,7 +334,7 @@ Deno.serve(async (req) => {
     }
   }
 
-  const { data: templateRow } = await supabaseUser
+  const { data: templateRow } = await supabaseAdmin
     .from("workflow_templates")
     .select("name")
     .eq("id", run.template_id)

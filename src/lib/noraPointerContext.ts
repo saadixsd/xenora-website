@@ -1,29 +1,71 @@
 /**
  * Captures contextual information about what the user is pointing at.
- * Used by voice assistant to describe UI elements under the cursor.
+ * Used by voice assistant to describe UI elements under the pointer (mouse, finger, pen).
  */
 
 let lastMouseX = 0;
 let lastMouseY = 0;
 
+function setPointerPosition(clientX: number, clientY: number) {
+  lastMouseX = clientX;
+  lastMouseY = clientY;
+}
+
 if (typeof window !== 'undefined') {
-  window.addEventListener('mousemove', (e) => {
-    lastMouseX = e.clientX;
-    lastMouseY = e.clientY;
-  }, { passive: true });
+  window.addEventListener(
+    'mousemove',
+    (e) => {
+      setPointerPosition(e.clientX, e.clientY);
+    },
+    { passive: true },
+  );
+
+  // Pointer events: mouse + touch + pen (primary path for phones)
+  window.addEventListener(
+    'pointermove',
+    (e) => {
+      setPointerPosition(e.clientX, e.clientY);
+    },
+    { passive: true },
+  );
+  window.addEventListener(
+    'pointerdown',
+    (e) => {
+      setPointerPosition(e.clientX, e.clientY);
+    },
+    { passive: true },
+  );
+
+  // Touch fallback (older mobile Safari / edge cases)
+  window.addEventListener(
+    'touchstart',
+    (e) => {
+      const t = e.touches[0];
+      if (t) setPointerPosition(t.clientX, t.clientY);
+    },
+    { passive: true },
+  );
+  window.addEventListener(
+    'touchmove',
+    (e) => {
+      const t = e.touches[0];
+      if (t) setPointerPosition(t.clientX, t.clientY);
+    },
+    { passive: true },
+  );
 }
 
 export function getMousePosition() {
   return { x: lastMouseX, y: lastMouseY };
 }
 
-/** Build a short text description of the element under the cursor for AI context. */
+/** Build a short text description of the element under the pointer for AI context. */
 export function describeElementUnderCursor(): string {
   if (typeof document === 'undefined') return '';
 
   const el = document.elementFromPoint(lastMouseX, lastMouseY);
   if (!el || el === document.body || el === document.documentElement) {
-    return 'The user is pointing at an empty area of the dashboard.';
+    return 'The user is pointing at an empty area of the screen.';
   }
 
   const parts: string[] = [];
