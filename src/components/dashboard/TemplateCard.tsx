@@ -1,8 +1,9 @@
-import { PenLine, Search, Mail, type LucideIcon } from 'lucide-react';
+import { FileText, Search, Mail, type LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const iconMap: Record<string, LucideIcon> = {
-  PenLine,
+  PenLine: FileText,
+  FileText,
   Search,
   Mail,
 };
@@ -26,7 +27,7 @@ interface TemplateCardProps {
 }
 
 export function TemplateCard({ name, description, icon, status, onSelect }: TemplateCardProps) {
-  const Icon = iconMap[icon] || PenLine;
+  const Icon = iconMap[icon] || FileText;
   const isActive = isWorkflowTemplateSelectable(name, status);
 
   return (

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import { Instagram, Linkedin, PenLine, Search, Zap, ArrowRight, Check, X as XIcon, Users, Rocket, Mic, Target } from 'lucide-react';
+import { Instagram, Linkedin, FileText, Search, Zap, ArrowRight, Check, X as XIcon, Users, Rocket, Mic, Target } from 'lucide-react';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
 import { ProductEmailUpdatesForm } from '@/components/nora-landing/ProductEmailUpdatesForm';
@@ -18,7 +18,7 @@ const flowSteps = [
 
 const agents = [
   {
-    icon: PenLine, name: 'Content Agent',
+    icon: FileText, name: 'Content Agent',
     body: 'Drop a rough thought. Get back an X post, 3 hooks, a LinkedIn post, and a CTA — then approve before publish.',
     outputs: ['1 X post', '3 hooks', '1 LinkedIn post', '1 CTA'],
     tag: 'Live', active: true,

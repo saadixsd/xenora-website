@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Copy, Check, Pencil } from 'lucide-react';
+import { Copy, Check, TextCursorInput } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
@@ -95,7 +95,7 @@ export function OutputCard({ id, type, content }: OutputCardProps) {
               )}
               aria-label={editing ? 'Save' : 'Edit'}
             >
-              <Pencil className="h-3.5 w-3.5" />
+              <TextCursorInput className="h-3.5 w-3.5" />
             </button>
           )}
           <button

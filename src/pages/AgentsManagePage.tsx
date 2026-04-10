@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/config/routes';
-import { ArrowLeft, Trash2, Pencil, Save, X } from 'lucide-react';
+import { ArrowLeft, Trash2, TextCursorInput, Save, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -280,7 +280,7 @@ export default function AgentsManagePage() {
                   <div className="flex shrink-0 gap-2 self-end sm:self-center">
                     <Button size="sm" onClick={() => runCustomAgent(a)}>Run</Button>
                     <Button size="sm" variant="outline" onClick={() => startEdit(a)} aria-label="Edit agent">
-                      <Pencil className="h-4 w-4" />
+                      <TextCursorInput className="h-4 w-4" />
                     </Button>
                     <Button size="sm" variant="outline" onClick={() => void deleteCustom(a.id)} aria-label="Delete agent">
                       <Trash2 className="h-4 w-4" />

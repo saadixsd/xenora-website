@@ -145,7 +145,7 @@ export function useNoraVoiceWake({ enabled, suspend, onActivated }: Options) {
               const delta = now - lastClapAt;
               console.debug('[NoraClapDetect] clap edge detected, delta=', delta.toFixed(0), 'ms');
               if (lastClapAt > 0 && delta > DOUBLE_MIN_MS && delta < DOUBLE_MAX_MS) {
-                console.info('[NoraClapDetect] ✅ Double clap! Activating Nora.');
+                console.info('[NoraClapDetect] Double clap — activating Nora.');
                 fire();
                 lastClapAt = 0;
               } else {

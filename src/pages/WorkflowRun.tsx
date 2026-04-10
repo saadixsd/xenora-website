@@ -7,7 +7,7 @@ import { OutputCard } from '@/components/dashboard/OutputCard';
 import { TemplateCard } from '@/components/dashboard/TemplateCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ArrowLeft, Play, Archive, Trash2, ArchiveRestore, Plus, Bot } from 'lucide-react';
+import { ArrowLeft, Play, Archive, Trash2, ArchiveRestore, Plus, LayoutTemplate } from 'lucide-react';
 import { ROUTES, dashboardRunPath } from '@/config/routes';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
@@ -46,6 +46,19 @@ function classifyTemplateKind(name: string): 'content' | 'leads' | 'research' {
   return 'content';
 }
 
+/** Resolves DB row for built-in agents even if naming varies slightly. */
+function resolveBuiltinTemplate(
+  list: Template[],
+  agentType: 'content' | 'leads' | 'research',
+): Template | undefined {
+  const byKind = list.find((t) => classifyTemplateKind(t.name) === agentType);
+  if (byKind) return byKind;
+  const n = (s: string) => s.toLowerCase();
+  if (agentType === 'leads') return list.find((t) => n(t.name).includes('lead'));
+  if (agentType === 'research') return list.find((t) => n(t.name).includes('research'));
+  return list.find((t) => n(t.name).includes('content'));
+}
+
 interface CustomAgent {
   id: string;
   name: string;
@@ -55,10 +68,10 @@ interface CustomAgent {
 
 const MAX_CUSTOM_AGENTS = 5;
 
-const BUILTIN_AGENT_INFO: Record<string, { label: string; description: string; status: string }> = {
-  content: { label: 'Content Agent', description: 'X posts, hooks, LinkedIn drafts, and CTAs.', status: 'Live' },
-  leads: { label: 'Lead Agent', description: 'Score leads, draft replies, queue follow-ups.', status: 'Live' },
-  research: { label: 'Research Agent', description: 'Pain signals and angles from notes + URLs.', status: 'Live' },
+const BUILTIN_AGENT_INFO: Record<string, { label: string; description: string }> = {
+  content: { label: 'Content Agent', description: 'X posts, hooks, LinkedIn drafts, and CTAs.' },
+  leads: { label: 'Lead Agent', description: 'Score leads, draft replies, queue follow-ups.' },
+  research: { label: 'Research Agent', description: 'Pain signals and angles from notes + URLs.' },
 };
 
 const AGENT_TYPE_QUERY_VALUES = new Set(['content', 'leads', 'research']);
@@ -98,6 +111,7 @@ const WorkflowRun = () => {
   /** Set when `agent_type` query matches a row in `agents` (Command Center agents). */
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [customAgents, setCustomAgents] = useState<CustomAgent[]>([]);
+  const [templatesReady, setTemplatesReady] = useState(false);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -113,15 +127,20 @@ const WorkflowRun = () => {
   }, [user?.id]);
 
   useEffect(() => {
-    supabase.from('workflow_templates').select('*').order('created_at').then(({ data }) => {
-      if (data) setTemplates(data as Template[]);
-    });
+    supabase
+      .from('workflow_templates')
+      .select('*')
+      .order('created_at')
+      .then(({ data }) => {
+        if (data) setTemplates(data as Template[]);
+        setTemplatesReady(true);
+      });
   }, []);
 
   // Deep-link from agent cards / Manage agents: ?agent_type=content|leads|research
   useEffect(() => {
     if (preselectedTemplate || !agentTypeFromQuery || templates.length === 0) return;
-    const match = templates.find((t) => classifyTemplateKind(t.name) === agentTypeFromQuery);
+    const match = resolveBuiltinTemplate(templates, agentTypeFromQuery);
     if (match) {
       setSelectedTemplate(match.id);
       setWizardStep(1);
@@ -407,17 +426,28 @@ const WorkflowRun = () => {
             <div>
               <p className="text-[13px] sm:text-sm font-medium text-foreground mb-3">Built-in Agents</p>
               <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {['content', 'leads', 'research'].map((agentType) => {
+                {(['content', 'leads', 'research'] as const).map((agentType) => {
                   const info = BUILTIN_AGENT_INFO[agentType];
-                  const matchingTemplate = templates.find((t) => classifyTemplateKind(t.name) === agentType);
-                  const isDisabled = !matchingTemplate;
+                  const matchingTemplate = resolveBuiltinTemplate(templates, agentType);
+                  const isDisabled = templatesReady && !matchingTemplate;
                   return (
                     <button
                       key={agentType}
                       type="button"
                       disabled={isDisabled}
                       onClick={() => {
-                        if (matchingTemplate) handleSelectTemplate(matchingTemplate.id);
+                        if (matchingTemplate) {
+                          handleSelectTemplate(matchingTemplate.id);
+                          return;
+                        }
+                        if (templatesReady) {
+                          toast({
+                            title: 'Template not available',
+                            description:
+                              'Could not load this workflow template. Refresh the page or ensure your project database includes active Lead and Research templates.',
+                            variant: 'destructive',
+                          });
+                        }
                       }}
                       className={cn(
                         'flex flex-col items-start gap-1.5 rounded-xl border border-border bg-card p-4 text-left transition-all',
@@ -427,9 +457,9 @@ const WorkflowRun = () => {
                       )}
                     >
                       <div className="flex w-full items-center justify-between">
-                        <Bot className="h-5 w-5 text-primary" />
+                        <LayoutTemplate className="h-5 w-5 text-primary" />
                         <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-medium text-emerald-600">
-                          {info.status}
+                          Live
                         </span>
                       </div>
                       <p className="text-sm font-medium text-foreground">{info.label}</p>
@@ -469,7 +499,7 @@ const WorkflowRun = () => {
               ) : (
                 <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {customAgents.map((a) => {
-                    const contentTemplate = templates.find((t) => classifyTemplateKind(t.name) === 'content');
+                    const contentTemplate = resolveBuiltinTemplate(templates, 'content');
                     return (
                       <button
                         key={a.id}
@@ -483,7 +513,7 @@ const WorkflowRun = () => {
                         }}
                         className="flex flex-col items-start gap-1.5 rounded-xl border border-border bg-card p-4 text-left transition-all hover:border-primary/40 hover:shadow-sm"
                       >
-                        <Bot className="h-5 w-5 text-muted-foreground" />
+                        <LayoutTemplate className="h-5 w-5 text-muted-foreground" />
                         <p className="text-sm font-medium text-foreground">{a.name}</p>
                         <p className="line-clamp-2 text-[11px] text-muted-foreground">{a.mission}</p>
                       </button>
