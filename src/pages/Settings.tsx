@@ -72,7 +72,7 @@ const Settings = () => {
         supabase.rpc('get_nora_chat_usage_this_month' as any, { p_user_id: user.id }),
         supabase.rpc('get_workflow_run_count_this_month' as any, { p_user_id: user.id }),
       ]);
-      setBillingRow((billRes.data as BillingSubscriptionRow | null) ?? null);
+      setBillingRow((billRes.data as unknown as BillingSubscriptionRow | null) ?? null);
       setChatsUsedMonth(typeof chatsRes.data === 'number' ? chatsRes.data : null);
       setRunsUsedMonth(typeof runsRes.data === 'number' ? runsRes.data : null);
     } finally {
