@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      billing_subscriptions: {
+        Row: {
+          created_at: string
+          current_period_end: string | null
+          id: string
+          plan: string
+          status: string
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          plan?: string
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          plan?: string
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       nora_chat_messages: {
         Row: {
           content: string
@@ -314,6 +350,14 @@ export type Database = {
     }
     Functions: {
       get_daily_query_count: { Args: { p_user_id: string }; Returns: number }
+      get_nora_chat_usage_this_month: {
+        Args: { p_user_id: string }
+        Returns: number
+      }
+      get_workflow_run_count_this_month: {
+        Args: { p_user_id: string }
+        Returns: number
+      }
     }
     Enums: {
       [_ in never]: never
