@@ -1,14 +1,20 @@
 /**
- * Claude proxy for Nora chat — JWT required; 3 queries/user/day (UTC), except exempt founder emails.
+ * Claude proxy for Nora chat — JWT required; free tier 3 Ask Nora messages per UTC calendar month unless paid (Plus/Pro) or exempt emails.
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { isNoraQuotaExemptEmail } from "../_shared/noraQuota.ts";
+import {
+  fetchBillingRow,
+  FREE_MONTHLY_CHATS,
+  isPaidNoraAccess,
+  tierFromBilling,
+  type NoraTier,
+} from "../_shared/billing.ts";
 
-const ALLOWED_MODEL = "claude-sonnet-4-20250514";
+const DEFAULT_MODEL = "claude-sonnet-4-20250514";
 const MAX_BODY_BYTES = 64_000;
 const MAX_MESSAGES = 30;
 const MAX_MESSAGE_LENGTH = 4_000;
-const DAILY_QUERY_LIMIT = 3;
 const QUERY_TEXT_MAX = 200;
 
 const ALLOWED_ORIGINS = [
@@ -50,6 +56,11 @@ function isRateLimited(ip: string): boolean {
   return false;
 }
 
+function getProTierAugment(): string {
+  return `## Nora Pro tier
+You are answering for a **Nora Pro** subscriber. Go deeper: systems thinking, tradeoffs, implementation-aware guidance, and crisp prioritization. Prefer specific, actionable recommendations over generic lists. Same product facts and boundaries as below — do not invent features.`;
+}
+
 function getSystemPrompt(): string {
   return `You are **Nora**, the core product of **XenoraAI** (the company). Speak as Nora (first person: "I"). **Nora is a workflow engine**, not a generic chatbot — a purpose-built workflow engine.
 
@@ -86,12 +97,13 @@ function getSystemPrompt(): string {
 - Tagline: **Know Beyond**. Loop: **Observe → Adapt → Execute**. Visible stages; user reviews before publish/send.
 
 ## Pricing (official)
-- Starter **$29/mo:** Content Agent, up to **100 runs/mo**, dashboard + history, visible steps.
-- Pro **$79/mo:** all agents (incl. beta Lead), **unlimited** runs, Integrations coming soon, priority support.
-- First **50** waitlist: founding pricing. **Now:** free beta, no card.
+- **Free:** up to **5 workflow runs** and **3 Ask Nora chats** per calendar month (UTC), then upgrade.
+- **Nora Plus** **$13.99/mo:** paid via Stripe — full workflow access and Ask Nora without the free-tier caps (fair use and provider limits still apply).
+- **Nora Pro** **$19.99/mo:** everything in Plus with **deeper, senior-engineer style** answers and higher output limits on this endpoint.
+- Manage plans and invoices in **Settings → Billing** (Stripe Customer Portal).
 
 ## Links
-- Site & waitlist: [xenoraai.com](https://xenoraai.com)
+- Site & Try Nora: [xenoraai.com](https://xenoraai.com)
 - Ask Nora (signed in): [xenoraai.com/dashboard/nora](https://xenoraai.com/dashboard/nora)
 - FAQ: [xenoraai.com/faq](https://xenoraai.com/faq)
 - Privacy: [xenoraai.com/privacy](https://xenoraai.com/privacy)
@@ -232,26 +244,29 @@ Deno.serve(async (req) => {
   const admin = createClient(supabaseUrl, serviceKey);
 
   const quotaExempt = isNoraQuotaExemptEmail(user.email);
+  const billingRow = await fetchBillingRow(admin, user.id);
+  const paidActive = isPaidNoraAccess(billingRow);
+  const tier: NoraTier = tierFromBilling(billingRow);
 
   let used = 0;
-  if (!quotaExempt) {
-    const { data: countBefore, error: countErr } = await admin.rpc("get_daily_query_count", {
+  if (!quotaExempt && !paidActive) {
+    const { data: countBefore, error: countErr } = await admin.rpc("get_nora_chat_usage_this_month", {
       p_user_id: user.id,
     });
     if (countErr) {
-      console.error("get_daily_query_count", countErr);
+      console.error("get_nora_chat_usage_this_month", countErr);
       return json({ error: "Could not verify quota." }, 500, origin);
     }
 
     used = typeof countBefore === "number" ? countBefore : 0;
-    if (used >= DAILY_QUERY_LIMIT) {
+    if (used >= FREE_MONTHLY_CHATS) {
       return json(
         {
-          error: "daily_limit_reached",
+          error: "free_tier_exhausted",
           message:
-            "You have used all 3 of your daily Nora queries. Your limit resets at midnight UTC.",
-          queries_used: DAILY_QUERY_LIMIT,
-          limit: DAILY_QUERY_LIMIT,
+            "You've used all 3 free Ask Nora messages for this calendar month (UTC). Upgrade to Nora Plus or Nora Pro in Settings → Billing to continue.",
+          queries_used: FREE_MONTHLY_CHATS,
+          limit: FREE_MONTHLY_CHATS,
         },
         429,
         origin,
@@ -281,6 +296,9 @@ Deno.serve(async (req) => {
   let system = isAgentBuilder
     ? `${getAgentBuilderAugment()}\n\n---\n\n${getSystemPrompt()}`
     : getSystemPrompt();
+  if (tier === "pro" && paidActive) {
+    system = `${getProTierAugment()}\n\n---\n\n${system}`;
+  }
   const ctxRaw = typeof body.client_context === "string" ? body.client_context.trim() : "";
   if (ctxRaw) {
     const ctx = ctxRaw.slice(0, 2000);
@@ -307,6 +325,11 @@ Deno.serve(async (req) => {
     }
   }
 
+  const modelPlus = Deno.env.get("CLAUDE_MODEL_PLUS")?.trim() || DEFAULT_MODEL;
+  const modelPro = Deno.env.get("CLAUDE_MODEL_PRO")?.trim() || modelPlus;
+  const model = tier === "pro" && paidActive ? modelPro : modelPlus;
+  const maxTokens = tier === "pro" && paidActive ? 8192 : tier === "plus" && paidActive ? 4096 : 3072;
+
   const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -315,8 +338,8 @@ Deno.serve(async (req) => {
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
-      model: ALLOWED_MODEL,
-      max_tokens: 4096,
+      model,
+      max_tokens: maxTokens,
       system,
       messages,
       temperature: 0.35,
@@ -351,11 +374,13 @@ Deno.serve(async (req) => {
     return json({ error: "Could not record query." }, 500, origin);
   }
 
-  if (quotaExempt) {
+  if (quotaExempt || paidActive) {
     return json(
       {
         content: text,
-        quota_exempt: true,
+        quota_exempt: quotaExempt,
+        paid: paidActive,
+        tier: paidActive ? tier : "free",
         queries_used: 0,
         limit: 0,
         queries_remaining: 9999,
@@ -365,7 +390,7 @@ Deno.serve(async (req) => {
     );
   }
 
-  const { data: countAfter } = await admin.rpc("get_daily_query_count", {
+  const { data: countAfter } = await admin.rpc("get_nora_chat_usage_this_month", {
     p_user_id: user.id,
   });
   const queriesUsed = typeof countAfter === "number" ? countAfter : used + 1;
@@ -374,8 +399,8 @@ Deno.serve(async (req) => {
     {
       content: text,
       queries_used: queriesUsed,
-      limit: DAILY_QUERY_LIMIT,
-      queries_remaining: Math.max(0, DAILY_QUERY_LIMIT - queriesUsed),
+      limit: FREE_MONTHLY_CHATS,
+      queries_remaining: Math.max(0, FREE_MONTHLY_CHATS - queriesUsed),
     },
     200,
     origin,

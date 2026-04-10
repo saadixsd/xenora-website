@@ -29,8 +29,8 @@ const faqs = [
     a: "Your workflow inputs and outputs are tied to your account and protected by row-level security. We don't train on your data or share it with anyone.",
   },
   {
-    q: 'Is the beta free? What will pricing be?',
-    a: 'Yes — free during beta, no card required. When paid plans ship: Starter is $29/mo (Content Agent, up to 100 runs/mo, dashboard + history) and Pro is $79/mo (all agents including beta Lead, unlimited runs, integrations when available, priority support). The first 50 waitlist signups lock founding-member pricing.',
+    q: 'How much does Nora cost?',
+    a: 'Free tier: 5 workflow runs and 3 Ask Nora messages per calendar month (UTC), no card required. Paid plans: Nora Plus at $13.99/mo and Nora Pro at $19.99/mo (unlimited runs and Ask Nora within fair use; Pro adds deeper answers and higher limits). Subscribe and manage billing in the app via Stripe (Settings → Billing).',
   },
   {
     q: 'Who is Nora built for?',
@@ -68,18 +68,23 @@ const FAQ = () => {
   const smoothTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 
   return (
-    <div className="min-h-screen bg-base-100 text-base-content">
+    <div className="min-h-svh bg-base-100 text-base-content">
       <NeuralMeshBackground />
 
       <div className="pointer-events-none fixed inset-0 z-[1] flex items-center justify-center" aria-hidden>
         <XenoraLogo decorative className="h-[min(44vh,320px)] w-auto max-w-[82vw] opacity-[0.14] sm:h-[min(50vh,400px)]" />
       </div>
 
-      <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 backdrop-blur-xl">
-        <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between gap-2 px-3 py-2 sm:px-6">
-          <Link to="/" onClick={smoothTop} className="flex items-center gap-2 sm:gap-2.5 cursor-pointer" aria-label="XenoraAI home">
-            <XenoraLogo decorative className="h-10 w-10 sm:h-14 sm:w-14" />
-            <span className="text-base font-semibold text-base-content sm:text-xl">XenoraAI</span>
+      <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">
+        <div className="mx-auto flex min-h-14 max-w-5xl flex-wrap items-center justify-between gap-x-2 gap-y-2 px-3 py-2 sm:min-h-16 sm:flex-nowrap sm:px-6">
+          <Link
+            to="/"
+            onClick={smoothTop}
+            className="flex min-w-0 shrink-0 cursor-pointer items-center gap-2 sm:gap-2.5"
+            aria-label="XenoraAI home"
+          >
+            <XenoraLogo decorative className="h-9 w-9 shrink-0 sm:h-14 sm:w-14" />
+            <span className="truncate text-base font-semibold text-base-content sm:max-w-none sm:text-xl">XenoraAI</span>
           </Link>
           <SiteNav />
         </div>

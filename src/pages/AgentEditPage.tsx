@@ -153,6 +153,7 @@ export default function AgentEditPage() {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
+          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
         },
         body: JSON.stringify({
           run_id: run.id,
@@ -160,6 +161,24 @@ export default function AgentEditPage() {
           tone,
         }),
       });
+
+      if (!resp.ok) {
+        const text = await resp.text();
+        let j: { error?: string; message?: string } = {};
+        try {
+          j = JSON.parse(text) as { error?: string; message?: string };
+        } catch {
+          /* */
+        }
+        if (resp.status === 429 && j.error === 'free_tier_exhausted') {
+          setTestOutput(j.message || 'Free tier workflow limit reached — upgrade in Settings → Billing.');
+          setTesting(false);
+          return;
+        }
+        setTestOutput(`Error: ${text || resp.status}`);
+        setTesting(false);
+        return;
+      }
 
       const reader = resp.body?.getReader();
       const decoder = new TextDecoder();

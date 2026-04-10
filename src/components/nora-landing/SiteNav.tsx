@@ -104,7 +104,10 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
   const [first, second, ...rest] = MARKETING_NAV;
 
   return (
-    <nav className={`relative flex items-center gap-1 sm:gap-2 ${className}`} aria-label="Main navigation">
+    <nav
+      className={`relative flex min-w-0 flex-1 flex-wrap items-center justify-end gap-x-1 gap-y-2 sm:flex-nowrap sm:gap-2 ${className}`}
+      aria-label="Main navigation"
+    >
       <ul className="hidden flex-nowrap px-0 md:flex md:items-center md:gap-0.5">
         <li key={first.to}>
           {renderLink(first, linkClassDesktop)}
@@ -154,14 +157,14 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
       {user ? (
         <Link
           to={ROUTES.dashboard.root}
-          className="rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90 sm:text-sm"
+          className="inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-md bg-primary px-3 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90 sm:min-h-0 sm:min-w-0 sm:py-1.5 sm:text-sm"
         >
           Dashboard
         </Link>
       ) : (
         <Link
           to={ROUTES.login}
-          className="rounded-md border border-base-content/15 bg-base-100/80 px-3 py-1.5 text-xs text-base-content/70 transition-colors hover:border-primary/30 hover:text-base-content sm:text-sm"
+          className="inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-md border border-base-content/15 bg-base-100/80 px-3 text-xs text-base-content/70 transition-colors hover:border-primary/30 hover:text-base-content sm:min-h-0 sm:min-w-0 sm:py-1.5 sm:text-sm"
         >
           Sign in
         </Link>

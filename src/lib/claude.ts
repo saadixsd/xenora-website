@@ -5,29 +5,34 @@ export type ChatMessage = { role: ChatRole; content: string };
 
 const EDGE_FN_BASE = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/nora-claude`;
 
-/** Thrown when server returns daily_limit but user is exempt (stale edge deploy). User should retry; redeploy nora-claude for a permanent fix. */
+/** Thrown when server returns free_tier_exhausted but user is exempt (stale edge deploy). User should retry. */
 export const CHAT_LIMIT_RESPONSE_UNEXPECTED = 'CHAT_LIMIT_RESPONSE_UNEXPECTED';
 
-const DAILY_LIMIT = 3;
+const FREE_MONTHLY_LIMIT = 3;
 
-export class DailyQueryLimitError extends Error {
-  readonly code = 'daily_limit_reached' as const;
+export class FreeTierExhaustedError extends Error {
+  readonly code = 'free_tier_exhausted' as const;
   readonly queries_used: number;
   readonly limit: number;
 
   constructor(message: string, queries_used: number, limit: number) {
     super(message);
-    this.name = 'DailyQueryLimitError';
+    this.name = 'FreeTierExhaustedError';
     this.queries_used = queries_used;
     this.limit = limit;
   }
 }
+
+/** @deprecated Use FreeTierExhaustedError */
+export const DailyQueryLimitError = FreeTierExhaustedError;
 
 export type ClaudeChatSuccess = {
   content: string;
   queries_used: number;
   limit: number;
   queries_remaining: number;
+  paid?: boolean;
+  tier?: string;
 };
 
 /** Health check requires a valid user JWT when the edge function has verify_jwt enabled. */
@@ -54,7 +59,7 @@ export async function sendClaudeChat(params: {
   accessToken: string;
   /** When agent_builder, Nora runs the structured interview and can emit a deployable agent spec. */
   mode?: NoraChatKind;
-  /** Signed-in email — exempt accounts must not be treated as daily_limit (client matches server allowlist). */
+  /** Signed-in email — exempt accounts must not be treated as free_tier_exhausted (client matches server allowlist). */
   userEmail?: string | null;
   /** App route summary for context-aware replies (edge function appends to system prompt). */
   clientContext?: string;
@@ -83,6 +88,8 @@ export async function sendClaudeChat(params: {
     queries_used?: number;
     limit?: number;
     queries_remaining?: number;
+    paid?: boolean;
+    tier?: string;
   };
 
   if (res.status === 401) {
@@ -90,15 +97,15 @@ export async function sendClaudeChat(params: {
   }
 
   if (res.status === 429) {
-    if (data.error === 'daily_limit_reached') {
+    if (data.error === 'free_tier_exhausted') {
       if (isNoraQuotaExemptEmail(params.userEmail)) {
         throw new Error(CHAT_LIMIT_RESPONSE_UNEXPECTED);
       }
-      throw new DailyQueryLimitError(
+      throw new FreeTierExhaustedError(
         data.message ??
-          "You've used all 3 of your daily Nora queries. Your limit resets at midnight UTC.",
-        data.queries_used ?? DAILY_LIMIT,
-        data.limit ?? DAILY_LIMIT,
+          "You've used all free Ask Nora messages for this calendar month (UTC). Upgrade in Settings → Billing.",
+        data.queries_used ?? FREE_MONTHLY_LIMIT,
+        data.limit ?? FREE_MONTHLY_LIMIT,
       );
     }
     throw new Error('RATE_LIMIT');
@@ -113,10 +120,15 @@ export async function sendClaudeChat(params: {
     throw new Error('Empty response from Claude');
   }
 
+  const limit = data.limit ?? FREE_MONTHLY_LIMIT;
+  const used = data.queries_used ?? 0;
+
   return {
     content: String(content),
-    queries_used: data.queries_used ?? 0,
-    limit: data.limit ?? DAILY_LIMIT,
-    queries_remaining: data.queries_remaining ?? Math.max(0, DAILY_LIMIT - (data.queries_used ?? 0)),
+    queries_used: used,
+    limit,
+    queries_remaining: data.queries_remaining ?? Math.max(0, limit - used),
+    paid: data.paid,
+    tier: data.tier,
   };
 }

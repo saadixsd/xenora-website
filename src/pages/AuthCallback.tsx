@@ -44,7 +44,7 @@ export default function AuthCallback() {
   }, [navigate]);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4">
+    <div className="flex min-h-svh flex-col items-center justify-center bg-background px-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] pt-[env(safe-area-inset-top,0px)]">
       <NeuralMeshBackground />
       <p className="relative z-10 text-sm text-muted-foreground">Signing you in…</p>
     </div>

@@ -1,10 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { NORA_VOICE_TTS_KEY, isNoraVoiceTtsEnabled } from '@/lib/noraTts';
+import { createPortalSession } from '@/lib/stripeEdge';
+import {
+  STRIPE_PAYMENT_LINK_PLUS,
+  STRIPE_PAYMENT_LINK_PRO,
+  buildStripePaymentLinkUrl,
+} from '@/config/stripePaymentLinks';
+import { isPaidNoraSubscription, type BillingSubscriptionRow } from '@/lib/billing';
 
 function csvEscape(s: string): string {
   const t = s.replace(/"/g, '""');
@@ -12,8 +20,9 @@ function csvEscape(s: string): string {
 }
 
 const Settings = () => {
-  const { user } = useAuth();
+  const { user, session } = useAuth();
   const { toast } = useToast();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [preferredTone, setPreferredTone] = useState('professional');
@@ -21,6 +30,12 @@ const Settings = () => {
   const [saving, setSaving] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [voiceReadAloud, setVoiceReadAloud] = useState(() => isNoraVoiceTtsEnabled());
+  const [billingRow, setBillingRow] = useState<BillingSubscriptionRow | null>(null);
+  const [chatsUsedMonth, setChatsUsedMonth] = useState<number | null>(null);
+  const [runsUsedMonth, setRunsUsedMonth] = useState<number | null>(null);
+  const [billingLoading, setBillingLoading] = useState(false);
+  const [checkoutBusy, setCheckoutBusy] = useState<'plus' | 'pro' | null>(null);
+  const [portalBusy, setPortalBusy] = useState(false);
 
   const persistVoiceTts = useCallback((on: boolean) => {
     try {
@@ -47,6 +62,42 @@ const Settings = () => {
         }
       });
   }, [user]);
+
+  const loadBilling = useCallback(async () => {
+    if (!user?.id) return;
+    setBillingLoading(true);
+    try {
+      const [billRes, chatsRes, runsRes] = await Promise.all([
+        supabase.from('billing_subscriptions').select('*').eq('user_id', user.id).maybeSingle(),
+        supabase.rpc('get_nora_chat_usage_this_month', { p_user_id: user.id }),
+        supabase.rpc('get_workflow_run_count_this_month', { p_user_id: user.id }),
+      ]);
+      setBillingRow(billRes.data ?? null);
+      setChatsUsedMonth(typeof chatsRes.data === 'number' ? chatsRes.data : null);
+      setRunsUsedMonth(typeof runsRes.data === 'number' ? runsRes.data : null);
+    } finally {
+      setBillingLoading(false);
+    }
+  }, [user?.id]);
+
+  useEffect(() => {
+    void loadBilling();
+  }, [loadBilling]);
+
+  const billingCallback = searchParams.get('billing');
+  useEffect(() => {
+    if (billingCallback === 'success') {
+      toast({
+        title: 'Subscription updated',
+        description: 'Thanks — Stripe may take a few seconds to sync. Refresh usage below if needed.',
+      });
+      void loadBilling();
+      setSearchParams({}, { replace: true });
+    } else if (billingCallback === 'canceled') {
+      toast({ title: 'Checkout canceled' });
+      setSearchParams({}, { replace: true });
+    }
+  }, [billingCallback, setSearchParams, toast, loadBilling]);
 
   const handleSave = async () => {
     if (!user) return;
@@ -160,6 +211,39 @@ const Settings = () => {
     toast({ title: 'CSV downloaded' });
   };
 
+  const startCheckout = (plan: 'plus' | 'pro') => {
+    if (!user?.id) {
+      toast({ title: 'Sign in required', variant: 'destructive' });
+      return;
+    }
+    setCheckoutBusy(plan);
+    const base = plan === 'pro' ? STRIPE_PAYMENT_LINK_PRO : STRIPE_PAYMENT_LINK_PLUS;
+    const url = buildStripePaymentLinkUrl(base, user.id, user.email ?? null);
+    window.location.href = url;
+    window.setTimeout(() => setCheckoutBusy(null), 12_000);
+  };
+
+  const openPortal = async () => {
+    const token = session?.access_token;
+    if (!token) {
+      toast({ title: 'Sign in required', variant: 'destructive' });
+      return;
+    }
+    setPortalBusy(true);
+    try {
+      const url = await createPortalSession(token);
+      window.location.href = url;
+    } catch (e) {
+      toast({
+        title: 'Could not open billing portal',
+        description: e instanceof Error ? e.message : 'Try again later.',
+        variant: 'destructive',
+      });
+    } finally {
+      setPortalBusy(false);
+    }
+  };
+
   const handlePrintSummary = async () => {
     if (!user) return;
     setExporting(true);
@@ -237,6 +321,80 @@ const Settings = () => {
               </p>
             </div>
           </div>
+        </div>
+
+        <div className="surface-panel p-5">
+          <h2 className="text-sm font-medium text-foreground">Billing</h2>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Free tier: 5 workflow runs and 3 Ask Nora messages per calendar month (UTC). Nora Plus and Nora Pro remove those caps (fair use applies).
+          </p>
+          {billingLoading ? (
+            <p className="mt-4 text-sm text-muted-foreground">Loading billing…</p>
+          ) : (
+            <div className="mt-4 space-y-3 text-sm">
+              <p>
+                <span className="text-muted-foreground">Current plan: </span>
+                <span className="font-medium text-foreground">
+                  {isPaidNoraSubscription(billingRow)
+                    ? billingRow!.plan === 'pro'
+                      ? 'Nora Pro'
+                      : 'Nora Plus'
+                    : 'Free'}
+                </span>
+                {billingRow && (
+                  <span className="text-muted-foreground">
+                    {' '}
+                    — status: {billingRow.status}
+                  </span>
+                )}
+              </p>
+              {!isPaidNoraSubscription(billingRow) && (
+                <p className="text-xs text-muted-foreground">
+                  Usage this month (UTC):{' '}
+                  {chatsUsedMonth !== null && runsUsedMonth !== null
+                    ? `${chatsUsedMonth}/3 Ask Nora messages · ${runsUsedMonth}/5 workflow runs (non-failed)`
+                    : '—'}
+                </p>
+              )}
+              <div className="flex flex-col gap-2 pt-2 sm:flex-row sm:flex-wrap">
+                {!isPaidNoraSubscription(billingRow) && (
+                  <>
+                    <Button
+                      type="button"
+                      size="sm"
+                      disabled={checkoutBusy !== null}
+                      onClick={() => void startCheckout('plus')}
+                    >
+                      {checkoutBusy === 'plus' ? 'Redirecting…' : 'Upgrade — Nora Plus ($13.99/mo)'}
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="secondary"
+                      disabled={checkoutBusy !== null}
+                      onClick={() => void startCheckout('pro')}
+                    >
+                      {checkoutBusy === 'pro' ? 'Redirecting…' : 'Upgrade — Nora Pro ($19.99/mo)'}
+                    </Button>
+                  </>
+                )}
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  disabled={portalBusy || !billingRow?.stripe_customer_id}
+                  onClick={() => void openPortal()}
+                >
+                  {portalBusy ? 'Opening…' : 'Manage billing (Stripe portal)'}
+                </Button>
+              </div>
+              {!billingRow?.stripe_customer_id && (
+                <p className="text-[11px] text-muted-foreground">
+                  Manage billing unlocks after you start checkout once (Stripe customer is created on first upgrade).
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="surface-panel p-5">

@@ -139,7 +139,7 @@ export const NoraWaitlistForm = () => {
       {serverError && <p className="text-center text-sm text-error">{serverError}</p>}
 
       <button type="submit" disabled={loading} className="btn btn-primary btn-block min-h-[44px]">
-        {loading ? 'Joining...' : 'Secure My Spot'}
+        {loading ? 'Sending...' : 'Try Nora'}
       </button>
     </form>
   );

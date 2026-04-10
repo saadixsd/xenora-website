@@ -194,12 +194,26 @@ const Dashboard = () => {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
+            apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
           },
           body: JSON.stringify({
             run_id: run.id,
             input_text: `Automated run for ${agent.type} agent`,
           }),
-        }).catch(console.error);
+        })
+          .then(async (resp) => {
+            if (resp.status === 429) {
+              const j = (await resp.json().catch(() => ({}))) as { error?: string; message?: string };
+              if (j.error === 'free_tier_exhausted') {
+                toast({
+                  title: 'Monthly run limit',
+                  description: j.message || 'Upgrade in Settings → Billing.',
+                  variant: 'destructive',
+                });
+              }
+            }
+          })
+          .catch(console.error);
       });
 
       await Promise.allSettled(promises);

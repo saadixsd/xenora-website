@@ -35,11 +35,11 @@ jobs:
       # Do NOT pass CLAUDE_API_KEY here: Vite would embed it in public JS.
       # For Claude on Pages, add a small HTTPS proxy (Worker / Edge Function) that
       # holds the key, then set repo Variables (not Secrets) below.
+      # Never pass private tokens as VITE_* — they are compiled into public JS on GitHub Pages.
       - name: Build Vite site
         env:
           VITE_AI_PROVIDER: ${{ vars.VITE_AI_PROVIDER }}
           VITE_CLAUDE_API_BASE: ${{ vars.VITE_CLAUDE_API_BASE }}
-          VITE_NORA_APP_TOKEN: ${{ secrets.VITE_NORA_APP_TOKEN }}
         run: npm run build
 
       # React Router uses client-side routing; Pages must serve index.html

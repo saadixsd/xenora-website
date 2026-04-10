@@ -4,6 +4,7 @@
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { isNoraQuotaExemptEmail } from "../_shared/noraQuota.ts";
+import { fetchBillingRow, FREE_MONTHLY_RUNS, isPaidNoraAccess } from "../_shared/billing.ts";
 
 const corsHeaders: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
@@ -302,6 +303,37 @@ Deno.serve(async (req) => {
     return jsonRes({ error: "Run is not in a runnable state" }, 400);
   }
 
+  const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+
+  if (!isNoraQuotaExemptEmail(user.email)) {
+    const billingRow = await fetchBillingRow(supabaseAdmin, user.id);
+    if (!isPaidNoraAccess(billingRow)) {
+      const { data: runCount, error: cntErr } = await supabaseAdmin.rpc(
+        "get_workflow_run_count_this_month",
+        { p_user_id: user.id },
+      );
+      if (cntErr) {
+        console.error("get_workflow_run_count_this_month", cntErr);
+        return jsonRes({ error: "Could not verify usage." }, 500);
+      }
+      const n = typeof runCount === "number" ? runCount : 0;
+      if (n > FREE_MONTHLY_RUNS) {
+        await supabaseAdmin
+          .from("workflow_runs")
+          .update({ status: "failed", current_step: "quota_exceeded" })
+          .eq("id", runId);
+        return jsonRes(
+          {
+            error: "free_tier_exhausted",
+            message:
+              "You've used all free workflow runs for this calendar month (UTC). Upgrade to Nora Plus or Nora Pro in Settings to continue.",
+          },
+          429,
+        );
+      }
+    }
+  }
+
   const { data: templateRow } = await supabaseUser
     .from("workflow_templates")
     .select("name")
@@ -310,8 +342,6 @@ Deno.serve(async (req) => {
 
   const templateName = templateRow?.name || "Content Agent";
   const agentKind = classifyTemplate(templateName);
-
-  const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
   const agentId = (run as { agent_id?: string }).agent_id || null;
   const goal = typeof body.goal === "string" ? body.goal.trim() : "";

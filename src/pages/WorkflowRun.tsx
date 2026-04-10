@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { ArrowLeft, Play, Archive, Trash2, ArchiveRestore, Plus, Bot } from 'lucide-react';
 import { ROUTES, dashboardRunPath } from '@/config/routes';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 interface Template {
   id: string;
@@ -67,6 +68,7 @@ const WorkflowRun = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { toast } = useToast();
 
   const isNew = id === 'new';
   const preselectedTemplate = searchParams.get('template');
@@ -279,6 +281,24 @@ const WorkflowRun = () => {
 
       if (!resp.ok) {
         const errText = await resp.text();
+        let parsed: { error?: string; message?: string } = {};
+        try {
+          parsed = JSON.parse(errText) as { error?: string; message?: string };
+        } catch {
+          /* plain text */
+        }
+        if (resp.status === 429 && parsed.error === 'free_tier_exhausted') {
+          await supabase.from('workflow_runs').update({ status: 'failed' }).eq('id', run.id);
+          setStatus('failed');
+          setError(parsed.message || 'Free tier workflow limit reached for this month.');
+          toast({
+            title: 'Monthly run limit',
+            description: parsed.message || 'Upgrade in Settings → Billing to continue.',
+            variant: 'destructive',
+          });
+          setRunning(false);
+          return;
+        }
         throw new Error(errText || `Error ${resp.status}`);
       }
 

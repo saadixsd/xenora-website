@@ -98,7 +98,10 @@ export function DashboardLayout() {
       </aside>
 
       <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-        <header className="grid min-h-14 shrink-0 grid-cols-[44px_1fr_44px] items-center border-b border-border px-2 py-2 lg:hidden" aria-label="Dashboard">
+        <header
+          className="grid min-h-14 shrink-0 grid-cols-[44px_1fr_44px] items-center border-b border-border px-2 py-2 pt-[env(safe-area-inset-top,0px)] lg:hidden"
+          aria-label="Dashboard"
+        >
           <button
             type="button"
             onClick={() => setSidebarOpen(true)}
@@ -147,7 +150,7 @@ export function DashboardLayout() {
             aria-hidden
             onClick={() => setNoraOpen(false)}
           />
-          <div className="fixed inset-y-0 right-0 z-[95] flex w-full min-w-0 max-w-[min(28rem,100vw)] max-h-[100dvh] flex-col border-l border-border bg-background shadow-2xl">
+          <div className="fixed inset-y-0 right-0 z-[95] flex h-[100dvh] max-h-[100dvh] w-full min-w-0 max-w-[min(28rem,100vw)] flex-col border-l border-border bg-background pt-[env(safe-area-inset-top,0px)] shadow-2xl">
             <NoraChatPanel variant="sheet" onClose={() => setNoraOpen(false)} />
           </div>
         </>

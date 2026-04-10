@@ -52,8 +52,23 @@ const comparisonRows = [
   ['DIY automation wiring', 'Nora: observe → adapt → execute — built for founder workflows'],
 ];
 
-const starterFeatures = ['Content Agent access', 'Up to 100 workflow runs/month', 'Visible step-by-step execution', 'Dashboard + history'];
-const proFeatures = ['All agents (incl. beta Lead Agent)', 'Unlimited runs', 'Integrations coming soon', 'Priority support'];
+const freeTierFeatures = [
+  '5 workflow runs / month (UTC)',
+  '3 Ask Nora messages / month (UTC)',
+  'Content + beta Lead + Research templates',
+  'Dashboard, history, visible steps',
+];
+const plusFeatures = [
+  'Unlimited workflow runs (fair use)',
+  'Unlimited Ask Nora (fair use)',
+  'All agents including beta Lead',
+  'Billing via Stripe — cancel anytime in portal',
+];
+const proFeatures = [
+  'Everything in Nora Plus',
+  'Deeper Ask Nora answers (Pro model & limits)',
+  'Same workflow engine — upgraded chat experience',
+];
 
 const Index = () => {
   const { scrollYProgress } = useScroll();
@@ -68,7 +83,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-base-100 text-base-content">
+    <div className="min-h-svh bg-base-100 text-base-content">
       <NeuralMeshBackground />
 
       <motion.div
@@ -79,11 +94,16 @@ const Index = () => {
         <XenoraLogo decorative className="h-[min(36vh,280px)] w-auto max-w-[82vw] opacity-[0.14] sm:h-[min(44vh,320px)] lg:h-[min(52vh,420px)]" />
       </motion.div>
 
-      <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 backdrop-blur-xl">
-        <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between gap-2 px-3 py-2 sm:px-6">
-          <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2 sm:gap-2.5 cursor-pointer" aria-label="XenoraAI home">
-            <XenoraLogo decorative className="h-10 w-10 sm:h-14 sm:w-14" />
-            <span className="text-base font-semibold text-base-content sm:text-xl">XenoraAI</span>
+      <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">
+        <div className="mx-auto flex min-h-14 max-w-5xl flex-wrap items-center justify-between gap-x-2 gap-y-2 px-3 py-2 sm:min-h-16 sm:flex-nowrap sm:px-6">
+          <Link
+            to="/"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="flex min-w-0 shrink-0 cursor-pointer items-center gap-2 sm:gap-2.5"
+            aria-label="XenoraAI home"
+          >
+            <XenoraLogo decorative className="h-9 w-9 shrink-0 sm:h-14 sm:w-14" />
+            <span className="truncate text-base font-semibold text-base-content sm:max-w-none sm:text-xl">XenoraAI</span>
           </Link>
           <SiteNav />
         </div>
@@ -94,21 +114,21 @@ const Index = () => {
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 2, duration: 0.5 }}
-        className="fixed bottom-4 left-0 right-0 z-50 flex items-center justify-center sm:bottom-6"
+        className="fixed bottom-[max(1rem,env(safe-area-inset-bottom,0px))] left-0 right-0 z-50 flex items-center justify-center px-4 sm:bottom-6"
       >
         <button
           type="button"
-          onClick={() => scrollToSection('waitlist')}
-          className="flex min-h-[44px] items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-[0_8px_30px_rgba(0,212,255,0.2)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_12px_40px_rgba(0,212,255,0.28)] sm:px-6 sm:py-3"
+          onClick={() => scrollToSection('try-nora')}
+          className="flex min-h-[48px] max-w-[calc(100vw-2rem)] items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-[0_8px_30px_rgba(0,212,255,0.2)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_12px_40px_rgba(0,212,255,0.28)] sm:max-w-none sm:px-6 sm:py-3"
         >
-          Join the waitlist
+          Try Nora
           <ArrowRight className="h-4 w-4" />
         </button>
       </motion.div>
 
       <main className="relative z-10">
         {/* ── HERO ── */}
-        <section className="flex min-h-[100svh] flex-col items-center justify-center px-4 pb-16 pt-24 sm:px-8 sm:pb-20 sm:pt-28">
+        <section className="flex min-h-svh flex-col items-center justify-center px-4 pb-20 pt-[max(5.5rem,calc(env(safe-area-inset-top,0px)+4.5rem))] sm:px-8 sm:pb-24 sm:pt-28">
           <div className="w-full max-w-3xl text-center">
             <Reveal>
               <p className="font-playfair text-[12px] sm:text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
@@ -134,10 +154,10 @@ const Index = () => {
                   <button
                     type="button"
                     className="group relative min-h-[44px] w-full overflow-hidden rounded-lg bg-primary px-10 py-3.5 text-base font-medium text-primary-foreground shadow-[0_10px_30px_rgba(0,212,255,0.12)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(0,212,255,0.2)] sm:w-auto"
-                    onClick={() => scrollToSection('waitlist')}
+                    onClick={() => scrollToSection('try-nora')}
                   >
                     <span className="relative z-10 flex items-center justify-center gap-2">
-                      Join the Waitlist
+                      Try Nora
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                     </span>
                   </button>
@@ -256,7 +276,7 @@ const Index = () => {
               </h2>
             </Reveal>
 
-            <div className="mt-10 grid gap-4 sm:grid-cols-3 sm:gap-5">
+            <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
               {agents.map((a, i) => (
                 <Reveal key={a.name} delay={0.08 * i}>
                   <div className={`surface-panel relative flex h-full flex-col p-6 transition-all duration-300 ${a.active ? 'hover:-translate-y-1 hover:border-primary/30' : 'opacity-60'}`}>
@@ -284,10 +304,10 @@ const Index = () => {
               <div className="mt-8 text-center">
                 <button
                   type="button"
-                  onClick={() => scrollToSection('waitlist')}
+                  onClick={() => scrollToSection('try-nora')}
                   className="inline-flex items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-primary/80"
                 >
-                  Join the waitlist
+                  Try Nora
                   <ArrowRight className="h-3.5 w-3.5" />
                 </button>
               </div>
@@ -332,8 +352,8 @@ const Index = () => {
             </Reveal>
 
             <Reveal delay={0.08}>
-              <div className="surface-panel mt-10 overflow-hidden">
-                <div className="grid grid-cols-2 border-b border-border/50">
+              <div className="surface-panel mt-10 overflow-x-auto overflow-y-hidden">
+                <div className="grid min-w-[280px] grid-cols-2 border-b border-border/50">
                   <div className="px-4 py-3 sm:px-5">
                     <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-base-content/35">Without Nora</p>
                   </div>
@@ -366,18 +386,18 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.06}>
               <p className="mx-auto mt-3 max-w-xl text-center text-sm text-base-content/55 leading-relaxed">
-                Free during beta — no card required. First 50 waitlist signups lock founding-member pricing.
+                Start free, then upgrade in-app with Stripe. Free tier resets each calendar month (UTC).
               </p>
             </Reveal>
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 sm:gap-5">
-              <Reveal delay={0.08}>
+            <div className="mx-auto mt-10 grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+              <Reveal delay={0.06}>
                 <article className="surface-panel flex h-full flex-col p-6 text-left">
-                  <h3 className="text-base font-semibold text-base-content">Starter</h3>
+                  <h3 className="text-base font-semibold text-base-content">Free</h3>
                   <p className="mt-2 font-dm-serif text-3xl text-base-content">
-                    $29<span className="text-base font-normal text-base-content/50">/mo</span>
+                    $0<span className="text-base font-normal text-base-content/50">/mo</span>
                   </p>
                   <ul className="mt-4 space-y-2 text-sm text-base-content/55">
-                    {starterFeatures.map((f) => (
+                    {freeTierFeatures.map((f) => (
                       <li key={f} className="flex gap-2">
                         <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary/70" />
                         <span>{f}</span>
@@ -386,11 +406,27 @@ const Index = () => {
                   </ul>
                 </article>
               </Reveal>
-              <Reveal delay={0.12}>
+              <Reveal delay={0.1}>
                 <article className="surface-panel flex h-full flex-col border-primary/25 p-6 text-left ring-1 ring-primary/15">
-                  <h3 className="text-base font-semibold text-base-content">Pro</h3>
+                  <h3 className="text-base font-semibold text-base-content">Nora Plus</h3>
                   <p className="mt-2 font-dm-serif text-3xl text-base-content">
-                    $79<span className="text-base font-normal text-base-content/50">/mo</span>
+                    $13.99<span className="text-base font-normal text-base-content/50">/mo</span>
+                  </p>
+                  <ul className="mt-4 space-y-2 text-sm text-base-content/55">
+                    {plusFeatures.map((f) => (
+                      <li key={f} className="flex gap-2">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary/70" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              </Reveal>
+              <Reveal delay={0.14}>
+                <article className="surface-panel flex h-full flex-col p-6 text-left">
+                  <h3 className="text-base font-semibold text-base-content">Nora Pro</h3>
+                  <p className="mt-2 font-dm-serif text-3xl text-base-content">
+                    $19.99<span className="text-base font-normal text-base-content/50">/mo</span>
                   </p>
                   <ul className="mt-4 space-y-2 text-sm text-base-content/55">
                     {proFeatures.map((f) => (
@@ -407,10 +443,10 @@ const Index = () => {
               <div className="mt-8 text-center">
                 <button
                   type="button"
-                  onClick={() => scrollToSection('waitlist')}
+                  onClick={() => scrollToSection('try-nora')}
                   className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
                 >
-                  Join the waitlist
+                  Try Nora
                   <ArrowRight className="h-4 w-4" />
                 </button>
               </div>
@@ -418,11 +454,11 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ── WAITLIST ── */}
-        <section id="waitlist" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-14 sm:px-8 sm:py-20">
+        {/* ── TRY NORA (signup) ── */}
+        <section id="try-nora" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-14 sm:px-8 sm:py-20">
           <div className="mx-auto max-w-md">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">Join the waitlist</h2>
+              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">Try Nora</h2>
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mt-2 text-center text-sm text-base-content/45">

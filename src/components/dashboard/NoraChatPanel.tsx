@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { Send, X, History } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -9,7 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import {
   checkClaudeBackend,
   sendClaudeChat,
-  DailyQueryLimitError,
+  FreeTierExhaustedError,
   CHAT_LIMIT_RESPONSE_UNEXPECTED,
   type ChatMessage,
   type NoraChatKind,
@@ -31,7 +31,7 @@ import {
 import { describeElementUnderCursor } from '@/lib/noraPointerContext';
 import { ChatHistorySidebar } from './ChatHistorySidebar';
 
-const DAILY_LIMIT = 3;
+const FREE_MONTHLY_CHAT_LIMIT = 3;
 const MAX_STORE_CHARS = 30_000;
 
 const SUGGESTIONS_GENERAL = [
@@ -71,8 +71,9 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   const [typingReply, setTypingReply] = useState(false);
   const [backendOk, setBackendOk] = useState<boolean | null>(null);
   const [lastError, setLastError] = useState('');
-  const [queriesUsedToday, setQueriesUsedToday] = useState<number | null>(null);
-  const [dailyLimitReached, setDailyLimitReached] = useState(false);
+  const [queriesUsedThisMonth, setQueriesUsedThisMonth] = useState<number | null>(null);
+  const [freeTierBlocked, setFreeTierBlocked] = useState(false);
+  const [billingPaid, setBillingPaid] = useState(false);
   const [sessionExpired, setSessionExpired] = useState(false);
   const [deployedKeys, setDeployedKeys] = useState<Record<string, true>>({});
   const [deployingKey, setDeployingKey] = useState<string | null>(null);
@@ -95,24 +96,45 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   const token = session?.access_token;
   const quotaExempt = isNoraQuotaExemptEmail(user?.email);
   const remaining =
-    quotaExempt
+    quotaExempt || billingPaid
       ? null
-      : queriesUsedToday === null
+      : queriesUsedThisMonth === null
         ? null
-        : Math.max(0, DAILY_LIMIT - queriesUsedToday);
+        : Math.max(0, FREE_MONTHLY_CHAT_LIMIT - queriesUsedThisMonth);
 
   const loadQueryCount = useCallback(async () => {
     if (!user?.id) return;
     if (isNoraQuotaExemptEmail(user.email)) {
-      setQueriesUsedToday(0);
-      setDailyLimitReached(false);
+      setBillingPaid(false);
+      setQueriesUsedThisMonth(0);
+      setFreeTierBlocked(false);
       return;
     }
-    const { data, error } = await supabase.rpc('get_daily_query_count' as any, { p_user_id: user.id });
-    if (error) { console.error(error); return; }
+    const { data: bill } = await supabase
+      .from('billing_subscriptions')
+      .select('plan,status')
+      .eq('user_id', user.id)
+      .maybeSingle();
+    const paid =
+      bill &&
+      (bill.plan === 'plus' || bill.plan === 'pro') &&
+      (bill.status === 'active' || bill.status === 'trialing');
+    setBillingPaid(Boolean(paid));
+    if (paid) {
+      setQueriesUsedThisMonth(0);
+      setFreeTierBlocked(false);
+      return;
+    }
+    const { data, error } = await supabase.rpc('get_nora_chat_usage_this_month' as never, {
+      p_user_id: user.id,
+    });
+    if (error) {
+      console.error(error);
+      return;
+    }
     if (typeof data === 'number') {
-      setQueriesUsedToday(data);
-      if (data >= DAILY_LIMIT) setDailyLimitReached(true);
+      setQueriesUsedThisMonth(data);
+      if (data >= FREE_MONTHLY_CHAT_LIMIT) setFreeTierBlocked(true);
     }
   }, [user?.id, user?.email]);
 
@@ -278,7 +300,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
 
   const send = async (text: string, opts?: { speakAfter?: boolean }) => {
     const trimmed = text.trim();
-    if (!trimmed || sending || typingReply || (dailyLimitReached && !quotaExempt)) {
+    if (!trimmed || sending || typingReply || (freeTierBlocked && !quotaExempt && !billingPaid)) {
       if (opts?.speakAfter) setNoraVoiceUiPhase('idle');
       return;
     }
@@ -319,8 +341,14 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
         clientContext: describeNoraAppRoute(location.pathname),
       });
       if (!isNoraQuotaExemptEmail(user?.email)) {
-        setQueriesUsedToday(result.queries_used);
-        if (result.queries_remaining <= 0) setDailyLimitReached(true);
+        if (result.paid) {
+          setBillingPaid(true);
+          setFreeTierBlocked(false);
+          setQueriesUsedThisMonth(0);
+        } else {
+          setQueriesUsedThisMonth(result.queries_used);
+          if (result.queries_remaining <= 0) setFreeTierBlocked(true);
+        }
       }
       await animateAssistantReply(result.content);
 
@@ -340,10 +368,16 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
     } catch (e) {
       if (opts?.speakAfter) setNoraVoiceUiPhase('idle');
       if (insertedUserRowId) await supabase.from('nora_chat_messages' as any).delete().eq('id', insertedUserRowId);
-      if (e instanceof DailyQueryLimitError) {
-        setDailyLimitReached(true);
-        setQueriesUsedToday(e.queries_used);
-        const limitMsg = "You've used all 3 of your queries for today. Come back tomorrow — your limit resets at midnight UTC. While you wait, browse what Nora can do on the dashboard.";
+      if (e instanceof FreeTierExhaustedError) {
+        setFreeTierBlocked(true);
+        setQueriesUsedThisMonth(e.queries_used);
+        toast({
+          title: 'Free Ask Nora limit reached',
+          description: 'Upgrade in Settings → Billing to keep chatting.',
+          variant: 'destructive',
+        });
+        const limitMsg =
+          "You've used all 3 free Ask Nora messages for this calendar month (UTC). Upgrade to **Nora Plus** or **Nora Pro** in [Settings → Billing](/dashboard/settings) to keep chatting.";
         setMessages((prev) => [...prev, { role: 'assistant', content: limitMsg }]);
         setBackendOk(true);
       } else if (e instanceof Error && e.message === CHAT_LIMIT_RESPONSE_UNEXPECTED) {
@@ -408,7 +442,8 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   const onSubmit = (e: React.FormEvent) => { e.preventDefault(); void send(input); };
 
   const chatActive = messages.length > 0;
-  const inputDisabled = sending || typingReply || (dailyLimitReached && !quotaExempt) || sessionExpired;
+  const inputDisabled =
+    sending || typingReply || (freeTierBlocked && !quotaExempt && !billingPaid) || sessionExpired;
   inputDisabledRef.current = inputDisabled;
 
   useEffect(() => {
@@ -609,11 +644,16 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
                 </button>
                 <h1 className="text-center font-dm-serif text-xl text-foreground sm:text-2xl">Ask Nora</h1>
               </div>
+              {billingPaid && !quotaExempt && (
+                <p className="mt-1 text-center text-[11px] text-muted-foreground">
+                  Nora Plus / Pro — Ask Nora included with your plan
+                </p>
+              )}
               {remaining !== null && (
                 <p className="mt-1 text-center text-[11px] text-muted-foreground">
                   {remaining === 0
-                    ? 'No queries remaining today — resets at midnight UTC'
-                    : `${remaining} ${remaining === 1 ? 'query' : 'queries'} remaining today`}
+                    ? 'No free Ask Nora messages left this month — resets on the 1st (UTC)'
+                    : `${remaining} free ${remaining === 1 ? 'message' : 'messages'} left this month (UTC)`}
                 </p>
               )}
               <p className="mt-2 max-w-md text-center text-sm text-muted-foreground">
@@ -627,7 +667,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
             <p className="mb-4 max-w-md text-center text-sm text-muted-foreground">
               {chatKind === 'agent_builder'
                 ? 'Agent builder mode — saved threads resume when you return.'
-                : 'Signed-in chat with history. Same daily limits as the full page.'}
+                : 'Signed-in chat with history. Same monthly free tier as the full page.'}
             </p>
           )}
 
@@ -660,8 +700,13 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
                 <Send className="h-4 w-4" />
               </button>
             </div>
-            {dailyLimitReached && (
-              <p className="mt-1.5 text-center text-[11px] text-muted-foreground">Resets tomorrow (midnight UTC)</p>
+            {freeTierBlocked && !billingPaid && (
+              <p className="mt-1.5 text-center text-[11px] text-muted-foreground">
+                <Link to={ROUTES.dashboard.settings} className="text-primary underline-offset-4 hover:underline">
+                  Settings → Billing
+                </Link>{' '}
+                to upgrade
+              </p>
             )}
           </form>
 
@@ -707,9 +752,13 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
                 <History className="h-4 w-4" />
               </button>
               <span className="min-w-0 truncate text-[10px] text-muted-foreground">
-                {remaining !== null && remaining > 0
-                  ? `${remaining} ${remaining === 1 ? 'query' : 'queries'} left`
-                  : remaining === 0 ? 'No queries left today' : ''}
+                {billingPaid && !quotaExempt
+                  ? 'Plus/Pro — included'
+                  : remaining !== null && remaining > 0
+                    ? `${remaining} free ${remaining === 1 ? 'message' : 'messages'} left`
+                    : remaining === 0
+                      ? 'No free messages left this month'
+                      : ''}
               </span>
             </div>
             <div className="flex min-w-0 flex-wrap items-center justify-end gap-2 sm:gap-3">
@@ -812,8 +861,12 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
                   <Send className="h-4 w-4" />
                 </button>
               </div>
-              {dailyLimitReached && (
-                <p className="mt-1.5 text-center text-[11px] text-muted-foreground">Resets tomorrow (midnight UTC)</p>
+              {freeTierBlocked && !billingPaid && (
+                <p className="mt-1.5 text-center text-[11px] text-muted-foreground">
+                  <Link to={ROUTES.dashboard.settings} className="text-primary underline-offset-4 hover:underline">
+                    Upgrade in Billing
+                  </Link>
+                </p>
               )}
             </form>
           </div>

@@ -11,7 +11,7 @@ const sections = [
   {
     title: 'What Data We Collect',
     content:
-      'For waitlist and beta access, we collect your name and email. When you use Nora, we store workflow inputs you provide, generated outputs, and your preferences (tone, audience). We do not collect data beyond what you explicitly submit.',
+      'When you sign up to try Nora (beta), we collect your name and email. When you use Nora, we store workflow inputs you provide, generated outputs, and your preferences (tone, audience). We do not collect data beyond what you explicitly submit.',
   },
   {
     title: 'How Data Is Used',
@@ -42,6 +42,11 @@ const sections = [
     title: 'Third-Party Services',
     content:
       'We use secure infrastructure providers for hosting, authentication, and AI processing. We do not share your personal data with advertisers or data brokers.',
+  },
+  {
+    title: 'Payments (Stripe)',
+    content:
+      'If you subscribe to Nora Plus or Nora Pro, payments are processed by Stripe. We receive subscription status and billing identifiers (such as Stripe customer and subscription IDs) to unlock features in your account. Stripe’s handling of card data is governed by their policies; manage payment methods and cancellation through the billing portal linked from Settings.',
   },
   {
     title: 'Contact',
@@ -80,18 +85,23 @@ const Privacy = () => {
   const smoothTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 
   return (
-    <div className="min-h-screen bg-base-100 text-base-content">
+    <div className="min-h-svh bg-base-100 text-base-content">
       <NeuralMeshBackground />
 
       <div className="pointer-events-none fixed inset-0 z-[1] flex items-center justify-center" aria-hidden>
         <XenoraLogo decorative className="h-[min(44vh,320px)] w-auto max-w-[82vw] opacity-[0.14] sm:h-[min(50vh,400px)]" />
       </div>
 
-      <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 backdrop-blur-xl">
-        <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between gap-2 px-3 py-2 sm:px-6">
-          <Link to="/" onClick={smoothTop} className="flex items-center gap-2 sm:gap-2.5 cursor-pointer" aria-label="Nora home">
-            <XenoraLogo decorative className="h-10 w-10 sm:h-14 sm:w-14" />
-            <span className="text-base font-semibold text-base-content sm:text-xl">Nora</span>
+      <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">
+        <div className="mx-auto flex min-h-14 max-w-5xl flex-wrap items-center justify-between gap-x-2 gap-y-2 px-3 py-2 sm:min-h-16 sm:flex-nowrap sm:px-6">
+          <Link
+            to="/"
+            onClick={smoothTop}
+            className="flex min-w-0 shrink-0 cursor-pointer items-center gap-2 sm:gap-2.5"
+            aria-label="Nora home"
+          >
+            <XenoraLogo decorative className="h-9 w-9 shrink-0 sm:h-14 sm:w-14" />
+            <span className="truncate text-base font-semibold text-base-content sm:max-w-none sm:text-xl">Nora</span>
           </Link>
           <SiteNav />
         </div>
