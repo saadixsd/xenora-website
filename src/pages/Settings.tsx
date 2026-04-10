@@ -68,11 +68,11 @@ const Settings = () => {
     setBillingLoading(true);
     try {
       const [billRes, chatsRes, runsRes] = await Promise.all([
-        supabase.from('billing_subscriptions').select('*').eq('user_id', user.id).maybeSingle(),
-        supabase.rpc('get_nora_chat_usage_this_month', { p_user_id: user.id }),
-        supabase.rpc('get_workflow_run_count_this_month', { p_user_id: user.id }),
+        supabase.from('billing_subscriptions' as any).select('*').eq('user_id', user.id).maybeSingle(),
+        supabase.rpc('get_nora_chat_usage_this_month' as any, { p_user_id: user.id }),
+        supabase.rpc('get_workflow_run_count_this_month' as any, { p_user_id: user.id }),
       ]);
-      setBillingRow(billRes.data ?? null);
+      setBillingRow((billRes.data as BillingSubscriptionRow | null) ?? null);
       setChatsUsedMonth(typeof chatsRes.data === 'number' ? chatsRes.data : null);
       setRunsUsedMonth(typeof runsRes.data === 'number' ? runsRes.data : null);
     } finally {

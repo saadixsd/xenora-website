@@ -48,11 +48,11 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
   useEffect(() => {
     if (!user?.id) return;
     void supabase
-      .from('billing_subscriptions')
+      .from('billing_subscriptions' as any)
       .select('plan,status')
       .eq('user_id', user.id)
       .maybeSingle()
-      .then(({ data }) => {
+      .then(({ data }: any) => {
         setPlanTag(planLabel(data?.plan, data?.status));
       });
   }, [user?.id]);
