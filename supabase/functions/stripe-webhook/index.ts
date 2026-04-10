@@ -27,8 +27,9 @@ function dbStatus(stripeStatus: string): string {
   return map[stripeStatus] ?? "inactive";
 }
 
+// deno-lint-ignore no-explicit-any
 async function resolveUserId(
-  admin: ReturnType<typeof createClient>,
+  admin: any,
   stripe: Stripe,
   customerId: string,
   subscription: Stripe.Subscription,
@@ -52,8 +53,9 @@ async function resolveUserId(
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
+// deno-lint-ignore no-explicit-any
 async function syncSubscription(
-  admin: ReturnType<typeof createClient>,
+  admin: any,
   stripe: Stripe,
   sub: Stripe.Subscription,
   pricePlus: string,

@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      billing_subscriptions: {
+        Row: {
+          created_at: string
+          current_period_end: string | null
+          id: string
+          plan: string
+          status: string
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          plan?: string
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          plan?: string
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       nora_chat_messages: {
         Row: {
           content: string
@@ -121,36 +157,6 @@ export type Database = {
           id?: string
           preferred_tone?: string | null
           user_id?: string
-        }
-        Relationships: []
-      }
-      billing_subscriptions: {
-        Row: {
-          user_id: string
-          stripe_customer_id: string
-          stripe_subscription_id: string | null
-          plan: string
-          status: string
-          current_period_end: string | null
-          updated_at: string
-        }
-        Insert: {
-          user_id: string
-          stripe_customer_id: string
-          stripe_subscription_id?: string | null
-          plan?: string
-          status?: string
-          current_period_end?: string | null
-          updated_at?: string
-        }
-        Update: {
-          user_id?: string
-          stripe_customer_id?: string
-          stripe_subscription_id?: string | null
-          plan?: string
-          status?: string
-          current_period_end?: string | null
-          updated_at?: string
         }
         Relationships: []
       }
@@ -344,8 +350,14 @@ export type Database = {
     }
     Functions: {
       get_daily_query_count: { Args: { p_user_id: string }; Returns: number }
-      get_nora_chat_usage_this_month: { Args: { p_user_id: string }; Returns: number }
-      get_workflow_run_count_this_month: { Args: { p_user_id: string }; Returns: number }
+      get_nora_chat_usage_this_month: {
+        Args: { p_user_id: string }
+        Returns: number
+      }
+      get_workflow_run_count_this_month: {
+        Args: { p_user_id: string }
+        Returns: number
+      }
     }
     Enums: {
       [_ in never]: never
