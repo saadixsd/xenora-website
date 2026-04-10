@@ -1,16 +1,21 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { Instagram, Linkedin } from 'lucide-react';
 import { Reveal } from '@/components/motion/Reveal';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
 import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackground';
 import { cn } from '@/lib/utils';
+import { ROUTES } from '@/config/routes';
 
-const faqs = [
+const faqs: { q: string; a: ReactNode }[] = [
   {
     q: 'What is Nora?',
-    a: 'Nora is XenoraAI’s workflow engine for solo founders and small teams — not a chatbot and not a generic automation tool. The Content Agent is live: raw input in, X post, 3 hooks, LinkedIn post, and CTA out, with every step visible and nothing published until you approve. The Lead Agent is in beta (reply drafts and follow-ups; you approve before send). Research Agent is coming soon.',
+    a: (
+      <>
+        You bring the idea. Nora handles the execution. Nora is XenoraAI&apos;s workflow engine for solo founders and small teams: not a generic chatbot, but structured runs with visible steps. Content, Lead, and Research agents are all available in the app. Nothing publishes or sends until you approve.
+      </>
+    ),
   },
   {
     q: 'How is this different from ChatGPT or other AI tools?',
@@ -18,7 +23,7 @@ const faqs = [
   },
   {
     q: 'What workflows are available?',
-    a: 'Content Agent — live. Lead Agent — beta (scoring, draft replies, ~48h follow-up queue; approve before send). Research Agent — coming soon (pain signals and angles from real conversations).',
+    a: 'Content Agent: X post, hooks, LinkedIn draft, and CTA from one input. Lead Agent: scoring, draft replies, and optional ~48h follow-up queue; you approve before send. Research Agent: notes plus optional URLs → pain signals, angles, and relevance. All three are live and ready from the dashboard.',
   },
   {
     q: 'What does the Content Agent produce?',
@@ -36,9 +41,25 @@ const faqs = [
     q: 'Who is Nora built for?',
     a: 'Solo founders, indie hackers, and creators building in public. People who need to ship content consistently but hate spending hours on repetitive work.',
   },
+  {
+    q: 'How do I try Nora?',
+    a: (
+      <>
+        Tap <Link to={ROUTES.tryNora} className="text-primary underline-offset-4 hover:underline">Try Nora</Link> on the home page. After you sign in, you land in the app where you can run workflows and use Ask Nora from the dashboard.
+      </>
+    ),
+  },
+  {
+    q: 'How do I get product updates by email?',
+    a: (
+      <>
+        On the home page, open the <Link to={`${ROUTES.home}#product-updates`} className="text-primary underline-offset-4 hover:underline">Product updates</Link> section and subscribe. We send release notes and shipping news. Unsubscribe anytime.
+      </>
+    ),
+  },
 ];
 
-function FaqItem({ q, a, delay }: { q: string; a: string; delay: number }) {
+function FaqItem({ q, a, delay }: { q: string; a: ReactNode; delay: number }) {
   const [open, setOpen] = useState(false);
   return (
     <Reveal delay={delay}>
@@ -57,7 +78,7 @@ function FaqItem({ q, a, delay }: { q: string; a: string; delay: number }) {
           <span className="block py-4 pl-1 pr-2">{q}</span>
         </button>
         <div className="collapse-content bg-transparent text-base-content/60">
-          <p className="pb-4 pl-1 pr-2 text-sm leading-relaxed">{a}</p>
+          <div className="pb-4 pl-1 pr-2 text-sm leading-relaxed">{a}</div>
         </div>
       </div>
     </Reveal>
@@ -95,7 +116,9 @@ const FAQ = () => {
           <h1 className="premium-heading text-3xl font-medium sm:text-4xl">Frequently Asked Questions</h1>
         </Reveal>
         <Reveal delay={0.05}>
-          <p className="mt-3 text-sm text-base-content/55">Everything you need to know about Nora's AI workflows and the beta.</p>
+          <p className="mt-3 text-sm text-base-content/55">
+            You bring the idea. Nora handles the execution. Quick answers on workflows, pricing, and getting started.
+          </p>
         </Reveal>
 
         <div className="mt-10 space-y-3">
@@ -108,7 +131,7 @@ const FAQ = () => {
       <footer className="relative z-10 border-t border-base-content/[0.07] px-4 py-10 sm:px-8">
         <div className="mx-auto grid max-w-5xl gap-6 text-center sm:grid-cols-3 sm:text-left">
           <div className="flex flex-col items-center gap-3 sm:items-start">
-            <p className="text-sm font-medium text-base-content/60">Nora by XenoraAI</p>
+            <p className="text-sm font-medium text-base-content/60">XenoraAI</p>
             <div className="flex items-center gap-3 text-base-content/50">
               <a href="https://www.linkedin.com/company/xenoraai" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="transition-colors hover:text-base-content/85">
                 <Linkedin className="h-4 w-4" />

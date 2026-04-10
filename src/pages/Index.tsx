@@ -3,7 +3,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion
 import { Instagram, Linkedin, PenLine, Search, Zap, ArrowRight, Check, X as XIcon, Users, Rocket, Mic, Target } from 'lucide-react';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
-import { NoraWaitlistForm } from '@/components/nora-landing/NoraWaitlistForm';
+import { ProductEmailUpdatesForm } from '@/components/nora-landing/ProductEmailUpdatesForm';
 import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackground';
 import { Reveal } from '@/components/motion/Reveal';
 import { ROUTES } from '@/config/routes';
@@ -27,13 +27,13 @@ const agents = [
     icon: Zap, name: 'Lead Agent',
     body: 'Inbound form or DM → Nora scores, drafts a personalized reply, and queues follow-up after 48h if needed. You approve before send.',
     outputs: ['Lead score', 'Draft reply', 'Follow-up queue'],
-    tag: 'Beta', active: true,
+    tag: 'Live', active: true,
   },
   {
     icon: Search, name: 'Research Agent',
-    body: 'Planned: notes plus optional public URLs for pain signals, angles, and relevance. On the roadmap after Content and Lead mature.',
+    body: 'Notes plus optional public URLs (e.g. Reddit threads) → pain signals, content angles, and relevance you can act on. Same visible steps and review flow.',
     outputs: ['Pain signals', 'Content angles', 'Relevance notes'],
-    tag: 'Soon', active: false,
+    tag: 'Live', active: true,
   },
 ];
 
@@ -55,13 +55,13 @@ const comparisonRows = [
 const freeTierFeatures = [
   '5 workflow runs / month (UTC)',
   '3 Ask Nora messages / month (UTC)',
-  'Content + beta Lead + Research templates',
+  'Content, Lead, and Research agents',
   'Dashboard, history, visible steps',
 ];
 const plusFeatures = [
   'Unlimited workflow runs (fair use)',
   'Unlimited Ask Nora (fair use)',
-  'All agents including beta Lead',
+  'All agents: Content, Lead, Research',
   'Billing via Stripe — cancel anytime in portal',
 ];
 const proFeatures = [
@@ -109,21 +109,20 @@ const Index = () => {
         </div>
       </header>
 
-      {/* ── STICKY WAITLIST CTA ── */}
+      {/* Sticky CTA → dashboard (Nora) */}
       <motion.div
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 2, duration: 0.5 }}
         className="fixed bottom-[max(1rem,env(safe-area-inset-bottom,0px))] left-0 right-0 z-50 flex items-center justify-center px-4 sm:bottom-6"
       >
-        <button
-          type="button"
-          onClick={() => scrollToSection('try-nora')}
+        <Link
+          to={ROUTES.tryNora}
           className="flex min-h-[48px] max-w-[calc(100vw-2rem)] items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-[0_8px_30px_rgba(0,212,255,0.2)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_12px_40px_rgba(0,212,255,0.28)] sm:max-w-none sm:px-6 sm:py-3"
         >
           Try Nora
           <ArrowRight className="h-4 w-4" />
-        </button>
+        </Link>
       </motion.div>
 
       <main className="relative z-10">
@@ -144,30 +143,22 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-4 max-w-2xl text-sm text-base-content/65 leading-relaxed sm:mt-6 sm:text-base lg:text-lg">
-                Nora is XenoraAI&apos;s workflow engine — not a chatbot, not a generic tool. Drop a rough idea and get back posts ready to publish, with every step visible. You approve before anything goes out.
+                You bring the idea. Nora handles the execution.
               </p>
             </Reveal>
 
             <Reveal delay={0.2}>
               <div className="mt-8 flex flex-col items-center gap-3 sm:mt-10">
                 <div className="flex flex-col items-center gap-3 sm:flex-row">
-                  <button
-                    type="button"
-                    className="group relative min-h-[44px] w-full overflow-hidden rounded-lg bg-primary px-10 py-3.5 text-base font-medium text-primary-foreground shadow-[0_10px_30px_rgba(0,212,255,0.12)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(0,212,255,0.2)] sm:w-auto"
-                    onClick={() => scrollToSection('try-nora')}
+                  <Link
+                    to={ROUTES.tryNora}
+                    className="group relative min-h-[44px] w-full overflow-hidden rounded-lg bg-primary px-10 py-3.5 text-center text-base font-medium text-primary-foreground shadow-[0_10px_30px_rgba(0,212,255,0.12)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(0,212,255,0.2)] sm:w-auto"
                   >
                     <span className="relative z-10 flex items-center justify-center gap-2">
                       Try Nora
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                     </span>
-                  </button>
-                  <button
-                    type="button"
-                    className="min-h-[44px] w-full rounded-lg border border-base-content/15 px-8 py-3 text-base text-base-content/70 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:text-primary sm:w-auto"
-                    onClick={() => scrollToSection('workflow-demo')}
-                  >
-                    Watch demo
-                  </button>
+                  </Link>
                   <button
                     type="button"
                     className="min-h-[44px] w-full rounded-lg border border-base-content/10 px-8 py-3 text-base text-base-content/60 transition-all duration-300 hover:border-base-content/20 hover:text-base-content sm:w-auto"
@@ -176,7 +167,6 @@ const Index = () => {
                     How it works
                   </button>
                 </div>
-                <p className="text-xs text-base-content/35">Free during beta — no card required.</p>
                 <p className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-base-content/45">
                   <Link
                     to={ROUTES.login}
@@ -193,45 +183,6 @@ const Index = () => {
                   </Link>
                 </p>
               </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ── WORKFLOW EXECUTION VIDEO ── */}
-        <section id="workflow-demo" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-12 sm:px-8 sm:py-14">
-          <div className="mx-auto max-w-4xl">
-            <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">
-                Watch a workflow execute
-              </h2>
-            </Reveal>
-            <Reveal delay={0.05}>
-              <p className="mx-auto mt-3 max-w-xl text-center text-sm text-base-content/45">
-                Real run: input in, steps on the timeline, structured outputs — nothing ships until you approve.
-              </p>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <figure className="mt-10 overflow-hidden rounded-2xl border border-base-content/10 bg-base-300/40 shadow-[0_24px_60px_rgba(0,0,0,0.35)]">
-                <div className="aspect-video w-full bg-black/90">
-                  <video
-                    className="h-full w-full object-contain"
-                    controls
-                    playsInline
-                    preload="metadata"
-                    aria-label="Nora workflow execution demo video"
-                  >
-                    <source src="/videos/nora-workflow-execution.mp4" type="video/mp4" />
-                    Your browser does not support embedded video.{' '}
-                    <a className="text-primary underline" href="/videos/nora-workflow-execution.mp4">
-                      Download the demo
-                    </a>
-                    .
-                  </video>
-                </div>
-                <figcaption className="border-t border-base-content/10 px-4 py-3 text-center text-xs text-base-content/45">
-                  Execution demo — timeline progress and packaged outputs from a Content Agent run.
-                </figcaption>
-              </figure>
             </Reveal>
           </div>
         </section>
@@ -272,7 +223,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.03}>
               <h2 className="premium-heading mt-3 text-center text-2xl font-medium sm:text-3xl">
-                Content live, Lead in beta, Research on the roadmap.
+                Three agents, all live. Pick one and run.
               </h2>
             </Reveal>
 
@@ -302,14 +253,13 @@ const Index = () => {
 
             <Reveal delay={0.3}>
               <div className="mt-8 text-center">
-                <button
-                  type="button"
-                  onClick={() => scrollToSection('try-nora')}
+                <Link
+                  to={ROUTES.tryNora}
                   className="inline-flex items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-primary/80"
                 >
                   Try Nora
                   <ArrowRight className="h-3.5 w-3.5" />
-                </button>
+                </Link>
               </div>
             </Reveal>
           </div>
@@ -441,33 +391,32 @@ const Index = () => {
             </div>
             <Reveal delay={0.16}>
               <div className="mt-8 text-center">
-                <button
-                  type="button"
-                  onClick={() => scrollToSection('try-nora')}
+                <Link
+                  to={ROUTES.tryNora}
                   className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
                 >
                   Try Nora
                   <ArrowRight className="h-4 w-4" />
-                </button>
+                </Link>
               </div>
             </Reveal>
           </div>
         </section>
 
-        {/* ── TRY NORA (signup) ── */}
-        <section id="try-nora" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-14 sm:px-8 sm:py-20">
+        {/* Product email list (marketing; stored in waitlist table) */}
+        <section id="product-updates" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-14 sm:px-8 sm:py-20">
           <div className="mx-auto max-w-md">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">Try Nora</h2>
+              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">Product updates</h2>
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mt-2 text-center text-sm text-base-content/45">
-                We&apos;ll reach out personally. Founding pricing for the first 50 signups.
+                Get on our email list for release notes and what we ship next. Unsubscribe anytime.
               </p>
             </Reveal>
             <Reveal delay={0.1}>
               <div className="surface-panel mt-6 border-primary/20 p-6 shadow-[0_0_40px_rgba(14,165,164,0.08)]">
-                <NoraWaitlistForm />
+                <ProductEmailUpdatesForm />
               </div>
             </Reveal>
           </div>

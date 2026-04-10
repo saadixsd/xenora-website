@@ -23,29 +23,29 @@ export function StatsCards({
   onPostsClick,
   onFollowupsClick,
 }: StatsCardsProps) {
-  const emptyHint = 'Run your first workflow to start tracking';
+  const emptyHint = 'Run a workflow to start tracking';
 
   const cards = [
     {
-      label: 'Hours Saved',
+      label: 'Hours saved',
       value: hoursSaved,
       hint: isEmpty ? emptyHint : 'This month from completed runs',
       onClick: onHoursClick,
     },
     {
-      label: 'Leads Processed',
+      label: 'Leads processed',
       value: String(leadsProcessed),
       hint: isEmpty ? emptyHint : 'Classified and scored by Leads Agent',
       onClick: onLeadsClick,
     },
     {
-      label: 'Posts Generated',
+      label: 'Posts generated',
       value: String(postsGenerated),
       hint: isEmpty ? emptyHint : 'X posts, hooks, and LinkedIn drafts',
       onClick: onPostsClick,
     },
     {
-      label: 'Follow-ups Queued',
+      label: 'Follow-ups queued',
       value: String(followupsQueued),
       hint: isEmpty ? emptyHint : 'Awaiting your approval',
       onClick: onFollowupsClick,
@@ -57,15 +57,17 @@ export function StatsCards({
       {cards.map((c) => {
         const interactive = Boolean(c.onClick);
         const className = cn(
-          'min-w-0 rounded-xl border border-border bg-card p-3 sm:p-4 text-left',
+          'dash-panel min-w-0 p-3 text-left sm:p-4',
           interactive &&
-            'cursor-pointer transition-colors hover:border-primary/35 hover:bg-muted/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40',
+            'cursor-pointer transition-colors hover:border-[#00c896]/35 hover:bg-[#00c896]/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c896]/40',
         );
         const inner = (
           <>
-            <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.5px] text-muted-foreground truncate">{c.label}</p>
-            <p className="mt-0.5 sm:mt-1 font-dm-serif text-[22px] sm:text-[26px] tracking-tight text-foreground">{c.value}</p>
-            <p className="mt-0.5 break-words text-[10px] sm:text-[11px] text-muted-foreground line-clamp-2">{c.hint}</p>
+            <p className="dash-label truncate">{c.label}</p>
+            <p className="mt-1 font-syne text-[22px] font-semibold tracking-tight text-[#f0f4f8] sm:text-[26px]">
+              {c.value}
+            </p>
+            <p className="mt-0.5 line-clamp-2 break-words text-[10px] text-[#8a9bb0] sm:text-[11px]">{c.hint}</p>
           </>
         );
         return interactive ? (

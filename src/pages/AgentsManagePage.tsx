@@ -33,20 +33,18 @@ const BUILTIN_AGENTS = [
     type: 'leads',
     label: 'Lead Agent',
     description: 'Score leads, draft replies, queue follow-ups. You approve before send.',
-    status: 'beta' as const,
+    status: 'active' as const,
   },
   {
     type: 'research',
     label: 'Research Agent',
     description: 'Pain signals and angles from notes plus optional URLs.',
-    status: 'coming_soon' as const,
+    status: 'active' as const,
   },
 ];
 
 const STATUS_BADGE: Record<string, { label: string; className: string }> = {
   active: { label: 'Live', className: 'bg-emerald-500/15 text-emerald-600' },
-  beta: { label: 'Beta', className: 'bg-amber-500/15 text-amber-600' },
-  coming_soon: { label: 'Coming soon', className: 'bg-zinc-500/15 text-zinc-500' },
 };
 
 export default function AgentsManagePage() {
@@ -183,7 +181,6 @@ export default function AgentsManagePage() {
                 <div className="flex shrink-0 gap-2 self-end sm:self-center">
                   <Button
                     size="sm"
-                    disabled={a.status === 'coming_soon'}
                     onClick={() => navigate(`${ROUTES.dashboard.runNew}?agent_type=${a.type}`)}
                   >
                     Run

@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -155,9 +156,9 @@
     @apply bg-card/60;
   }
   .premium-heading {
-    @apply tracking-[-0.01em] leading-[1.06];
+    @apply tracking-[-0.02em] leading-[1.06];
     text-wrap: balance;
-    font-family: 'Playfair Display', ui-serif, Georgia, serif;
+    font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
   }
 
   .font-playfair {
@@ -176,5 +177,29 @@
   }
   .font-dm-sans {
     font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  }
+
+  /* App shell: command center (dark + emerald accent) */
+  .dashboard-app {
+    --dash-accent: #00c896;
+    --dash-accent-dim: rgba(0, 200, 150, 0.12);
+    --dash-bg: #07090b;
+    --dash-surface: #0c0f12;
+    --dash-border: rgba(255, 255, 255, 0.06);
+    --dash-muted: #8a9bb0;
+    --dash-faint: #3f5060;
+  }
+
+  .dash-panel {
+    @apply rounded-lg border bg-[#0c0f12];
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+
+  .dash-label {
+    @apply font-space-mono text-[9px] uppercase tracking-[0.14em] text-[#3f5060];
+  }
+
+  .dash-breadcrumb {
+    @apply font-space-mono text-[10px] tracking-[0.06em] text-[#3f5060];
   }
 }

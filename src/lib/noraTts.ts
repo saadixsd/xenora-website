@@ -48,6 +48,13 @@ function pickCanadianVoice(): SpeechSynthesisVoice | null {
   return enAll[0] ?? null;
 }
 
+/** Short spoken status before the main reply (e.g. “One moment.”). Cancels any prior utterance. */
+export function speakNoraStatus(text: string): Promise<void> {
+  const plain = stripForSpeech(text).slice(0, 200);
+  if (!plain) return Promise.resolve();
+  return speakNoraReply(plain);
+}
+
 /** Device-local readback via Web Speech API — Canadian English voice (no API keys). */
 export function speakNoraReply(text: string): Promise<void> {
   if (typeof window === 'undefined' || !window.speechSynthesis) {

@@ -20,7 +20,7 @@ import { ROUTES } from '@/config/routes';
 import { isNoraQuotaExemptEmail } from '@/config/noraQuota';
 import { NORA_CHAT_SESSIONS_CHANGED, type NoraChatSessionsChangedDetail } from '@/lib/noraChatSession';
 import { describeNoraAppRoute } from '@/lib/noraRouteContext';
-import { isNoraVoiceTtsEnabled, speakNoraReply } from '@/lib/noraTts';
+import { isNoraVoiceTtsEnabled, speakNoraReply, speakNoraStatus } from '@/lib/noraTts';
 import {
   getSpeechRecognitionCtor,
   NORA_VOICE_AMBIENT_RESUME,
@@ -78,6 +78,8 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   const [deployedKeys, setDeployedKeys] = useState<Record<string, true>>({});
   const [deployingKey, setDeployingKey] = useState<string | null>(null);
   const [historyOpen, setHistoryOpen] = useState(false);
+  /** Live assistant voice: mic is on; we do not mirror speech into the composer. */
+  const [voiceAssistantListening, setVoiceAssistantListening] = useState(false);
 
   const transcriptRef = useRef<HTMLDivElement>(null);
   const typingTimerRef = useRef<number | null>(null);
@@ -332,6 +334,11 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       if (ins.data?.id) insertedUserRowId = ins.data.id;
       await touchSession(sid);
 
+      if (opts?.speakAfter && isNoraVoiceTtsEnabled()) {
+        setNoraVoiceUiPhase('thinking');
+        await speakNoraStatus('One moment.');
+      }
+
       const apiSlice = nextHistory.slice(-28);
       const result = await sendClaudeChat({
         messages: apiSlice,
@@ -350,7 +357,12 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
           if (result.queries_remaining <= 0) setFreeTierBlocked(true);
         }
       }
-      await animateAssistantReply(result.content);
+      if (opts?.speakAfter) {
+        setMessages((prev) => [...prev, { role: 'assistant', content: result.content }]);
+        setTypingReply(false);
+      } else {
+        await animateAssistantReply(result.content);
+      }
 
       await supabase.from('nora_chat_messages' as any).insert({ session_id: sid, role: 'assistant', content: result.content.slice(0, MAX_STORE_CHARS) });
       await touchSession(sid);
@@ -443,7 +455,11 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
 
   const chatActive = messages.length > 0;
   const inputDisabled =
-    sending || typingReply || (freeTierBlocked && !quotaExempt && !billingPaid) || sessionExpired;
+    sending ||
+    typingReply ||
+    (freeTierBlocked && !quotaExempt && !billingPaid) ||
+    sessionExpired ||
+    voiceAssistantListening;
   inputDisabledRef.current = inputDisabled;
 
   useEffect(() => {
@@ -492,15 +508,17 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
           line += e.results[i]![0]!.transcript;
         }
         latest = line.trim();
-        if (latest) setInput(latest);
+        if (!assistantMode && latest) setInput(latest);
       };
       r.onerror = () => {
         dictationRef.current = null;
+        setVoiceAssistantListening(false);
         resumeAmbient();
         setNoraVoiceUiPhase('idle');
       };
       r.onend = () => {
         dictationRef.current = null;
+        setVoiceAssistantListening(false);
         const run = latest.trim();
         if (run) {
           // Capture what the user was pointing at during voice
@@ -527,11 +545,18 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
         setNoraVoiceUiPhase('idle');
       };
       try {
+        if (assistantMode) {
+          setInput('');
+          setVoiceAssistantListening(true);
+        }
         setNoraVoiceUiPhase('listening');
         r.start();
         dictationRef.current = r;
-        requestAnimationFrame(() => inputRef.current?.focus());
+        if (!assistantMode) {
+          requestAnimationFrame(() => inputRef.current?.focus());
+        }
       } catch {
+        setVoiceAssistantListening(false);
         toast({ title: 'Could not start microphone', variant: 'destructive' });
         resumeAmbient();
         setNoraVoiceUiPhase('idle');
@@ -546,6 +571,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
         /* */
       }
       dictationRef.current = null;
+      setVoiceAssistantListening(false);
       resumeAmbient();
       setNoraVoiceUiPhase('idle');
     };
@@ -679,12 +705,14 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
             <div className="flex min-w-0 items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 focus-within:border-primary/30 sm:px-4">
               <input
                 ref={inputRef}
-                value={input}
+                value={voiceAssistantListening ? '' : input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={
-                  chatKind === 'agent_builder'
-                    ? 'Or tap "Start agent interview" below…'
-                    : 'Ask about workflows, agents, or getting started...'
+                  voiceAssistantListening
+                    ? 'Listening… speak now'
+                    : chatKind === 'agent_builder'
+                      ? 'Or tap "Start agent interview" below…'
+                      : 'Ask about workflows, agents, or getting started...'
                 }
                 autoComplete="off"
                 autoCorrect="off"
@@ -843,9 +871,9 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
               <div className="flex min-w-0 items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 focus-within:border-primary/30 sm:px-4">
                 <input
                   ref={inputRef}
-                  value={input}
+                  value={voiceAssistantListening ? '' : input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Follow up..."
+                  placeholder={voiceAssistantListening ? 'Listening… speak now' : 'Follow up...'}
                   autoComplete="off"
                   autoCorrect="off"
                   className="min-h-[44px] min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground"

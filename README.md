@@ -7,11 +7,12 @@ Marketing site and app shell for **XenoraAI**. **Nora** is the product: an agent
 - Tailwind CSS + DaisyUI
 - Framer Motion (page polish/animations)
 - React Router (pages: Home, FAQ, Privacy, 404)
-- Supabase (Try Nora signup stored in `public.waitlist`)
+- Supabase (product email list stored in `public.waitlist`)
 
-## Try Nora signup / Supabase
-- The landing “Try Nora” form collects: `name`, `email`, `role`, and optional `biggest_pain`.
+## Product email list / Supabase
+- The landing “Product updates” form collects `name`, `email`, optional note; inserts use `role: "Product updates"` plus optional `biggest_pain` for the note.
 - Data is written to the Supabase table `public.waitlist` using the anon/public client.
+- **`/try-nora`** (Try Nora) redirects signed-in users to **`/dashboard/nora`**; guests are sent to sign in first.
 - Row Level Security is enabled; insert access is allowed while reads are intentionally restricted for security.
 
 ## Local development

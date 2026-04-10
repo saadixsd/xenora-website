@@ -40,7 +40,7 @@ const App = () => (
           <Route
             path={ROUTES.tryNora}
             element={
-              <ProtectedRoute loginMessage="Sign in to access Nora.">
+              <ProtectedRoute loginMessage="Sign in to open Nora in your dashboard.">
                 <Navigate to={ROUTES.dashboard.nora} replace />
               </ProtectedRoute>
             }

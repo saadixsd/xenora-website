@@ -21,7 +21,7 @@ function formatMinutes(m: number): string {
 }
 
 const BAR_COLORS: Record<string, string> = {
-  content: 'bg-emerald-500',
+  content: 'bg-[#00c896]',
   leads: 'bg-amber-500',
   research: 'bg-teal-500',
 };
@@ -30,23 +30,25 @@ export function HoursSavedBreakdown({ breakdown, totalMinutes }: HoursSavedBreak
   const max = Math.max(...breakdown.map((b) => b.minutes), 1);
 
   return (
-    <div className="min-w-0 rounded-xl border border-border bg-card p-3 sm:p-4">
-      <div className="flex items-baseline justify-between mb-2.5 sm:mb-3 gap-2">
-        <p className="text-[12px] sm:text-[13px] font-medium text-foreground">Hours Saved This Month</p>
-        <p className="text-[11px] sm:text-[12px] text-muted-foreground shrink-0">{formatMinutes(totalMinutes)} total</p>
+    <div className="dash-panel min-w-0 p-3 sm:p-4">
+      <div className="mb-2.5 flex items-baseline justify-between gap-2 sm:mb-3">
+        <p className="dash-label">Time saved (month)</p>
+        <p className="shrink-0 font-space-mono text-[10px] text-[#8a9bb0] sm:text-[11px]">{formatMinutes(totalMinutes)} total</p>
       </div>
       <div className="space-y-2.5 sm:space-y-3">
         {breakdown.map((item) => {
           const pct = totalMinutes > 0 ? Math.round((item.minutes / max) * 100) : 0;
           return (
             <div key={item.type}>
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-[11px] sm:text-[12px] text-foreground truncate mr-2">{item.label}</span>
-                <span className="text-[10px] sm:text-[11px] text-muted-foreground shrink-0">{formatMinutes(item.minutes)}</span>
+              <div className="mb-1 flex items-center justify-between">
+                <span className="truncate text-[11px] text-[#f0f4f8] sm:text-[12px]">{item.label}</span>
+                <span className="shrink-0 font-space-mono text-[10px] text-[#3f5060] sm:text-[11px]">
+                  {formatMinutes(item.minutes)}
+                </span>
               </div>
-              <div className="h-1.5 sm:h-2 w-full rounded-full bg-muted">
+              <div className="h-1.5 w-full rounded-full bg-white/[0.06] sm:h-2">
                 <div
-                  className={cn('h-1.5 sm:h-2 rounded-full transition-all duration-500', BAR_COLORS[item.type] || 'bg-primary')}
+                  className={cn('h-1.5 rounded-full transition-all duration-500 sm:h-2', BAR_COLORS[item.type] || 'bg-[#00c896]')}
                   style={{ width: `${pct}%` }}
                 />
               </div>
@@ -55,8 +57,8 @@ export function HoursSavedBreakdown({ breakdown, totalMinutes }: HoursSavedBreak
         })}
       </div>
       {totalMinutes === 0 && (
-        <p className="mt-3 text-center text-[11px] sm:text-[12px] text-muted-foreground">
-          Complete runs to see your time saved breakdown.
+        <p className="mt-3 text-center text-[11px] text-[#3f5060] sm:text-[12px]">
+          Finish a few runs to see how time stacks by agent.
         </p>
       )}
     </div>

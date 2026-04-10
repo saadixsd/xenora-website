@@ -11,7 +11,7 @@ const sections = [
   {
     title: 'What Data We Collect',
     content:
-      'When you sign up to try Nora (beta), we collect your name and email. When you use Nora, we store workflow inputs you provide, generated outputs, and your preferences (tone, audience). We do not collect data beyond what you explicitly submit.',
+      'When you sign up for XenoraAI, we collect your name and email. When you use Nora, we store workflow inputs you provide, generated outputs, and your preferences (tone, audience). We do not collect data beyond what you explicitly submit.',
   },
   {
     title: 'How Data Is Used',

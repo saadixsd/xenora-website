@@ -21,25 +21,27 @@ interface ConnectionRow {
 const AGENT_META: Record<string, { label: string; description: string; platforms: string[] }> = {
   content: {
     label: 'Content Agent',
-    description: 'Raw thoughts in. X posts, hooks, LinkedIn drafts, and CTAs out -- ready to review.',
+    description:
+      'Turn rough notes into drafts: X posts, hooks, LinkedIn copy, and CTAs. You review before anything ships.',
     platforms: ['x', 'instagram', 'linkedin'],
   },
   leads: {
     label: 'Leads Agent',
-    description: 'Scores inbound, drafts a reply, queues follow-up after ~48h. You approve before send.',
+    description:
+      'Scores inbound, drafts a reply, and can queue a follow-up after about 48h. You approve before send.',
     platforms: ['gmail'],
   },
   research: {
     label: 'Research Agent',
-    description: 'Fetches public signals from Reddit and X, returns pain themes and content angles.',
+    description: 'Pulls public signals from Reddit and X, then returns pain themes and angles you can use.',
     platforms: ['x'],
   },
 };
 
 const DOT_STYLE: Record<string, string> = {
-  active: 'bg-emerald-500',
+  active: 'bg-[#00c896]',
   running: 'bg-amber-500 animate-pulse',
-  paused: 'bg-zinc-400',
+  paused: 'bg-zinc-500',
 };
 
 const STATUS_LABEL: Record<string, string> = {
@@ -118,59 +120,57 @@ export function AgentCards() {
         return (
           <div
             key={agent.id}
-            className="min-w-0 rounded-xl border border-border bg-card p-3 sm:p-4 transition-all duration-200 hover:border-primary/40 hover:shadow-[0_2px_12px_rgba(45,90,61,0.08)]"
+            className="dash-panel min-w-0 p-3 transition-all duration-200 hover:border-[#00c896]/35 hover:shadow-[0_2px_24px_rgba(0,200,150,0.08)] sm:p-4"
           >
-            <div className="flex items-center justify-between mb-2">
+            <div className="mb-2 flex items-center justify-between">
               <div className="flex items-center gap-1.5 sm:gap-2">
-                <span className={cn('h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full shrink-0', DOT_STYLE[agent.status] || DOT_STYLE.paused)} />
-                <span className="text-[10px] sm:text-[11px] font-medium text-muted-foreground">
+                <span className={cn('h-2 w-2 shrink-0 rounded-full sm:h-2.5 sm:w-2.5', DOT_STYLE[agent.status] || DOT_STYLE.paused)} />
+                <span className="text-[10px] font-medium text-[#8a9bb0] sm:text-[11px]">
                   {STATUS_LABEL[agent.status] || 'Unknown'}
                 </span>
               </div>
-              <span className="text-[10px] sm:text-[11px] text-muted-foreground truncate ml-2">
-                {timeAgo(agent.last_run_at)}
-              </span>
+              <span className="ml-2 truncate text-[10px] text-[#3f5060] sm:text-[11px]">{timeAgo(agent.last_run_at)}</span>
             </div>
 
-            <h3 className="text-[13px] sm:text-sm font-medium text-foreground">{meta.label}</h3>
-            <p className="mt-1 text-[11px] sm:text-[12px] leading-relaxed text-muted-foreground line-clamp-2">{meta.description}</p>
+            <h3 className="text-[13px] font-medium text-[#f0f4f8] sm:text-sm">{meta.label}</h3>
+            <p className="mt-1 line-clamp-3 text-[11px] leading-relaxed text-[#8a9bb0] sm:text-[12px]">{meta.description}</p>
 
-            <div className="mt-2 sm:mt-2.5 flex flex-wrap gap-1 sm:gap-1.5">
+            <div className="mt-2 flex flex-wrap gap-1 sm:mt-2.5 sm:gap-1.5">
               {meta.platforms.map((p) => (
                 <span
                   key={p}
                   className={cn(
-                    'rounded-md px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-medium capitalize',
+                    'rounded-md px-1.5 py-0.5 font-space-mono text-[9px] font-medium uppercase tracking-wide sm:px-2 sm:text-[10px]',
                     isConnected(p)
-                      ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
-                      : 'bg-muted text-muted-foreground',
+                      ? 'bg-[#00c896]/15 text-[#00c896]'
+                      : 'bg-white/[0.04] text-[#3f5060]',
                   )}
                 >
                   {p === 'gmail' ? 'Gmail' : p === 'x' ? 'X' : p === 'instagram' ? 'IG' : 'LinkedIn'}
-                  {isConnected(p) ? '' : ' --'}
+                  {!isConnected(p) && ' · off'}
                 </span>
               ))}
             </div>
 
-            <div className="mt-2.5 sm:mt-3 flex flex-wrap gap-1.5 sm:gap-2 border-t border-border pt-2.5 sm:pt-3">
+            <div className="mt-2.5 flex flex-wrap gap-1.5 border-t border-white/[0.06] pt-2.5 sm:mt-3 sm:gap-2">
               <button
                 type="button"
                 onClick={() => navigate(`${ROUTES.dashboard.runNew}?agent_type=${agent.type}`)}
-                className="rounded-md border border-border bg-primary px-2 sm:px-2.5 py-1 text-[10px] sm:text-[11px] font-medium text-primary-foreground transition-colors hover:opacity-90 min-h-[32px] sm:min-h-0"
+                className="min-h-[32px] rounded-md bg-[#00c896] px-2.5 py-1 text-[10px] font-medium text-[#041a12] transition-opacity hover:opacity-90 sm:min-h-0 sm:text-[11px]"
               >
                 Run now
               </button>
               <button
                 type="button"
                 onClick={() => navigate(agentEditPath(agent.id))}
-                className="rounded-md border border-border bg-muted/50 px-2 sm:px-2.5 py-1 text-[10px] sm:text-[11px] text-muted-foreground transition-colors hover:border-primary hover:bg-primary/10 hover:text-primary min-h-[32px] sm:min-h-0"
+                className="min-h-[32px] rounded-md border border-white/[0.08] bg-transparent px-2.5 py-1 text-[10px] text-[#8a9bb0] transition-colors hover:border-[#00c896]/40 hover:text-[#f0f4f8] sm:min-h-0 sm:text-[11px]"
               >
                 Edit
               </button>
               <button
                 type="button"
                 onClick={() => navigate(ROUTES.dashboard.history)}
-                className="rounded-md border border-border bg-muted/50 px-2 sm:px-2.5 py-1 text-[10px] sm:text-[11px] text-muted-foreground transition-colors hover:border-primary hover:bg-primary/10 hover:text-primary min-h-[32px] sm:min-h-0"
+                className="min-h-[32px] rounded-md border border-white/[0.08] bg-transparent px-2.5 py-1 text-[10px] text-[#8a9bb0] transition-colors hover:border-[#00c896]/40 hover:text-[#f0f4f8] sm:min-h-0 sm:text-[11px]"
               >
                 Logs
               </button>

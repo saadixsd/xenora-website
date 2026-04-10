@@ -108,7 +108,7 @@ const Login = () => {
           <p className="mt-4 text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{' '}
             <Link to={ROUTES.signup} className="font-medium text-primary underline-offset-4 hover:underline">
-              Get early access →
+              Create an account
             </Link>
           </p>
         </div>

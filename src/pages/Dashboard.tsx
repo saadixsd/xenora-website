@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { StatsCards } from '@/components/dashboard/StatsCards';
@@ -86,9 +86,7 @@ const Dashboard = () => {
         .eq('user_id', user.id)
         .is('archived_at' as any, null)
         .gte('created_at', monthStart),
-      supabase
-        .from('workflow_templates')
-        .select('id, name'),
+      supabase.from('workflow_templates').select('id, name'),
       supabase
         .from('workflow_outputs')
         .select('output_type', { count: 'exact' })
@@ -229,41 +227,56 @@ const Dashboard = () => {
 
   const isEmpty = runs.length === 0;
 
+  const subtitle =
+    activeCount === 0
+      ? 'No agents live yet. Start a run or connect accounts to see activity.'
+      : lastRunAt
+        ? `${activeCount} agent${activeCount !== 1 ? 's' : ''} active. Last run ${timeAgo(lastRunAt)}.`
+        : `${activeCount} agent${activeCount !== 1 ? 's' : ''} active.`;
+
   return (
-    <div className="mx-auto min-h-0 min-w-0 max-w-5xl px-3 py-4 sm:px-6 sm:py-5 lg:px-8 font-dm-sans">
-      <div className="mb-3 sm:mb-4 flex min-w-0 flex-col gap-3 sm:gap-4 rounded-xl border border-border bg-card px-3 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
-        <div className="min-w-0">
-          <h1 className="font-dm-serif text-lg sm:text-xl tracking-tight text-foreground">
-            Command Center
-          </h1>
-          <p className="text-[11.5px] sm:text-[12.5px] text-muted-foreground mt-0.5">
-            {activeCount} agent{activeCount !== 1 ? 's' : ''} active
-            {lastRunAt ? ` -- last run ${timeAgo(lastRunAt)}` : ''}
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={() => void handleRunAll()}
-            disabled={runningAll}
-            className="min-h-[44px] flex-1 sm:flex-none rounded-lg bg-primary px-3 sm:px-3.5 py-2 text-[12px] sm:text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
-          >
-            {runningAll ? 'Running...' : 'Run all agents'}
-          </button>
-          <button
-            type="button"
-            onClick={() => navigate(ROUTES.dashboard.settings)}
-            className="min-h-[44px] rounded-lg border border-border bg-card px-3 sm:px-3.5 py-2 text-[12px] sm:text-[13px] text-foreground transition-colors hover:bg-muted"
-          >
-            Settings
-          </button>
-          <button
-            type="button"
-            onClick={() => navigate(ROUTES.dashboard.runNew)}
-            className="min-h-[44px] rounded-lg border border-border bg-card px-3 sm:px-3.5 py-2 text-[12px] sm:text-[13px] text-foreground transition-colors hover:bg-muted"
-          >
-            + New workflow
-          </button>
+    <div className="mx-auto min-h-0 min-w-0 max-w-5xl px-3 py-4 sm:px-6 sm:py-6 lg:px-8">
+      <nav className="dash-breadcrumb mb-3 sm:mb-4" aria-label="Breadcrumb">
+        <Link to={ROUTES.dashboard.root} className="text-[#8a9bb0] hover:text-[#f0f4f8]">
+          Workspace
+        </Link>
+        <span className="mx-1.5 text-[#3f5060]">/</span>
+        <span className="text-[#f0f4f8]">Overview</span>
+      </nav>
+
+      <div className="dash-panel mb-4 sm:mb-5 px-4 py-4 sm:px-5 sm:py-5">
+        <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="min-w-0">
+            <p className="dash-label mb-1">Command center</p>
+            <h1 className="font-syne text-[22px] font-semibold tracking-tight text-[#f0f4f8] sm:text-[26px]">
+              Overview
+            </h1>
+            <p className="mt-1 text-[12.5px] leading-relaxed text-[#8a9bb0] sm:text-[13px]">{subtitle}</p>
+          </div>
+          <div className="flex flex-wrap gap-2 sm:justify-end">
+            <button
+              type="button"
+              onClick={() => void handleRunAll()}
+              disabled={runningAll}
+              className="min-h-[44px] flex-1 rounded-lg bg-[#00c896] px-3.5 py-2 text-[12.5px] font-medium text-[#041a12] transition-opacity hover:opacity-90 disabled:opacity-50 sm:flex-none sm:text-[13px]"
+            >
+              {runningAll ? 'Running…' : 'Run all agents'}
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate(ROUTES.dashboard.settings)}
+              className="min-h-[44px] rounded-lg border border-white/[0.08] bg-transparent px-3.5 py-2 text-[12.5px] text-[#f0f4f8] transition-colors hover:bg-white/[0.04] sm:text-[13px]"
+            >
+              Settings
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate(ROUTES.dashboard.runNew)}
+              className="min-h-[44px] rounded-lg border border-white/[0.08] bg-transparent px-3.5 py-2 text-[12.5px] text-[#f0f4f8] transition-colors hover:bg-white/[0.04] sm:text-[13px]"
+            >
+              New workflow
+            </button>
+          </div>
         </div>
       </div>
 
@@ -275,13 +288,13 @@ const Dashboard = () => {
         isEmpty={isEmpty}
       />
 
-      <div className="mt-3 sm:mt-4">
-        <div className="flex items-baseline justify-between mb-2 sm:mb-2.5">
-          <p className="text-[12px] sm:text-[13px] font-medium text-foreground">Your agents</p>
+      <div className="mt-4 sm:mt-5">
+        <div className="mb-2 flex items-baseline justify-between gap-2">
+          <p className="dash-label">Your agents</p>
           <button
             type="button"
             onClick={() => navigate(ROUTES.dashboard.agents.manage)}
-            className="text-[11px] sm:text-[12px] text-primary hover:underline"
+            className="text-[11px] text-[#00c896] hover:underline sm:text-[12px]"
           >
             Manage
           </button>
@@ -289,7 +302,7 @@ const Dashboard = () => {
         <AgentCards />
       </div>
 
-      <div className="mt-3 sm:mt-4 grid min-w-0 gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,320px)]">
+      <div className="mt-4 sm:mt-5 grid min-w-0 gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,320px)]">
         <ActivityFeed />
         <HoursSavedBreakdown breakdown={breakdownData} totalMinutes={totalMinutesSaved} />
       </div>

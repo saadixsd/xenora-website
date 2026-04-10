@@ -57,8 +57,8 @@ const MAX_CUSTOM_AGENTS = 5;
 
 const BUILTIN_AGENT_INFO: Record<string, { label: string; description: string; status: string }> = {
   content: { label: 'Content Agent', description: 'X posts, hooks, LinkedIn drafts, and CTAs.', status: 'Live' },
-  leads: { label: 'Lead Agent', description: 'Score leads, draft replies, queue follow-ups.', status: 'Beta' },
-  research: { label: 'Research Agent', description: 'Pain signals and angles from notes + URLs.', status: 'Coming soon' },
+  leads: { label: 'Lead Agent', description: 'Score leads, draft replies, queue follow-ups.', status: 'Live' },
+  research: { label: 'Research Agent', description: 'Pain signals and angles from notes + URLs.', status: 'Live' },
 };
 
 const AGENT_TYPE_QUERY_VALUES = new Set(['content', 'leads', 'research']);
@@ -410,7 +410,7 @@ const WorkflowRun = () => {
                 {['content', 'leads', 'research'].map((agentType) => {
                   const info = BUILTIN_AGENT_INFO[agentType];
                   const matchingTemplate = templates.find((t) => classifyTemplateKind(t.name) === agentType);
-                  const isDisabled = info.status === 'Coming soon';
+                  const isDisabled = !matchingTemplate;
                   return (
                     <button
                       key={agentType}
@@ -428,12 +428,7 @@ const WorkflowRun = () => {
                     >
                       <div className="flex w-full items-center justify-between">
                         <Bot className="h-5 w-5 text-primary" />
-                        <span className={cn(
-                          'rounded-full px-2 py-0.5 text-[10px] font-medium',
-                          info.status === 'Live' ? 'bg-emerald-500/15 text-emerald-600' :
-                          info.status === 'Beta' ? 'bg-amber-500/15 text-amber-600' :
-                          'bg-muted text-muted-foreground',
-                        )}>
+                        <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-medium text-emerald-600">
                           {info.status}
                         </span>
                       </div>
@@ -558,7 +553,7 @@ const WorkflowRun = () => {
                 <Input
                   value={goal}
                   onChange={(e) => setGoal(e.target.value)}
-                  placeholder="e.g. Drive signups for beta"
+                  placeholder="e.g. Drive signups this month"
                   className="bg-card/50 border-border"
                 />
               </div>

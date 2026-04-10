@@ -36,7 +36,7 @@ export function NoraVoiceBar({
           aria-label="Open Nora and dictate"
           title={
             sttSupported
-              ? 'Dictate into Nora. Full assistant (dictate, send, read reply): Cmd+Shift+N'
+              ? 'Live assistant: speak your question; Nora answers aloud (no typing in the box). Cmd+Shift+N'
               : 'Voice needs a supported browser (Chrome, Edge, Safari)'
           }
           disabled={!sttSupported}

@@ -7,15 +7,14 @@ const iconMap: Record<string, LucideIcon> = {
   Mail,
 };
 
-/** Built-in agents stay runnable even if the remote DB still has status coming_soon (migration not applied). */
+/** Content, Lead, and Research templates stay selectable even if DB status is not yet `active`. */
 export function isWorkflowTemplateSelectable(name: string, status: string): boolean {
   if (status === 'active') return true;
   const n = name.trim().toLowerCase();
-  return (
-    n === 'content agent' ||
-    n === 'research agent' ||
-    n === 'lead follow-up agent'
-  );
+  if (n.includes('lead')) return true;
+  if (n.includes('research')) return true;
+  if (n.includes('content')) return true;
+  return false;
 }
 
 interface TemplateCardProps {

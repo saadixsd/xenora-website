@@ -64,8 +64,7 @@ const About = () => {
               to content generation to output formatting. You see the process, you trust the output, and you ship faster.
             </p>
             <p>
-              We're in beta. Building in public with our first 50 founding users.
-              If you're a solo founder tired of the AI guessing game, I'd love to hear from you.
+              Content, lead, and research workflows are live in the product. If you&apos;re a solo founder tired of the AI guessing game, we&apos;d love to hear from you.
             </p>
           </div>
         </Reveal>
