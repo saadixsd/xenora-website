@@ -291,7 +291,7 @@ Deno.serve(async (req) => {
 
   const { data: run, error: runErr } = await supabaseUser
     .from("workflow_runs")
-    .select("id, user_id, status, template_id, agent_id")
+    .select("id, user_id, status, template_id")
     .eq("id", runId)
     .single();
 
@@ -343,7 +343,7 @@ Deno.serve(async (req) => {
   const templateName = templateRow?.name || "Content Agent";
   const agentKind = classifyTemplate(templateName);
 
-  const agentId = (run as { agent_id?: string }).agent_id || null;
+  const agentId = null;
   const goal = typeof body.goal === "string" ? body.goal.trim() : "";
   const tone = typeof body.tone === "string" && body.tone.trim() ? body.tone.trim() : "professional";
 
