@@ -114,7 +114,7 @@ const Index = () => {
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 2, duration: 0.5 }}
-        className="fixed bottom-[max(1rem,env(safe-area-inset-bottom,0px))] left-0 right-0 z-50 flex items-center justify-center px-4 sm:bottom-6"
+        className="fixed bottom-[max(1rem,env(safe-area-inset-bottom,0px))] left-0 right-0 z-50 flex items-center justify-center pl-[max(1rem,env(safe-area-inset-left,0px))] pr-[max(1rem,env(safe-area-inset-right,0px))] sm:bottom-6"
       >
         <Link
           to={ROUTES.tryNora}
@@ -449,7 +449,8 @@ const Index = () => {
         </footer>
       </main>
 
-      <div className="h-16 sm:h-20" />
+      {/* Spacer so last scroll content clears sticky Try Nora CTA */}
+      <div className="h-24 sm:h-28" aria-hidden />
     </div>
   );
 };

@@ -122,7 +122,7 @@ export function DashboardLayout() {
 
         <main
           data-app-scroll-root
-          className="relative min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-y-contain bg-[#07090b] pb-[env(safe-area-inset-bottom,0px)]"
+          className="relative min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-y-contain bg-[#07090b] pb-[max(6rem,calc(env(safe-area-inset-bottom,0px)+5.25rem))] lg:pb-[max(5.5rem,calc(env(safe-area-inset-bottom,0px)+4.5rem))]"
         >
           <Outlet />
         </main>
@@ -141,7 +141,7 @@ export function DashboardLayout() {
       <button
         type="button"
         onClick={() => setNoraOpen(true)}
-        className="fixed z-[85] flex h-14 w-14 items-center justify-center rounded-full bg-[#00c896] text-[#041a12] shadow-[0_8px_30px_rgba(0,200,150,0.25)] transition-transform hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c896] focus-visible:ring-offset-2 focus-visible:ring-offset-[#07090b] max-[380px]:bottom-4 max-[380px]:right-4 bottom-[max(1.25rem,env(safe-area-inset-bottom,0px))] right-[max(1.25rem,env(safe-area-inset-right,0px))] lg:bottom-[max(2rem,env(safe-area-inset-bottom,0px))] lg:right-[max(2rem,env(safe-area-inset-right,0px))]"
+        className="fixed z-[85] flex h-12 w-12 min-h-[48px] min-w-[48px] items-center justify-center rounded-full bg-[#00c896] text-[#041a12] shadow-[0_8px_30px_rgba(0,200,150,0.25)] transition-transform hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c896] focus-visible:ring-offset-2 focus-visible:ring-offset-[#07090b] sm:h-14 sm:w-14 bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] right-[max(1rem,env(safe-area-inset-right,0px))] lg:bottom-[max(2rem,env(safe-area-inset-bottom,0px))] lg:right-[max(2rem,env(safe-area-inset-right,0px))]"
         aria-label="Ask Nora"
       >
         <MessageCircle className="h-6 w-6" />

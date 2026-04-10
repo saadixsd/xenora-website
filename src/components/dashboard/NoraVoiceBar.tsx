@@ -20,12 +20,12 @@ export function NoraVoiceBar({
 
   return (
     <div
-      className="pointer-events-none fixed inset-x-0 bottom-0 z-[81] flex justify-center px-3 pb-[max(10px,env(safe-area-inset-bottom,0px))] pt-2"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-[81] flex justify-center pb-[max(0.5rem,env(safe-area-inset-bottom,0px))] pt-2 pl-[max(0.75rem,env(safe-area-inset-left,0px))] pr-[max(0.75rem,env(safe-area-inset-right,0px))]"
       aria-label="Nora voice controls"
     >
       <div
         className={cn(
-          'pointer-events-auto flex max-w-full items-center gap-2',
+          'pointer-events-auto flex max-w-[min(100%,calc(100vw-1.5rem))] flex-wrap items-center justify-center gap-1.5 sm:max-w-full sm:gap-2',
           !sttSupported && 'opacity-60',
         )}
       >
@@ -35,7 +35,7 @@ export function NoraVoiceBar({
           onClick={onVoiceButtonClick}
           disabled={!sttSupported}
           className={cn(
-            'flex min-h-[48px] items-center gap-2.5 rounded-full border border-white/[0.12] bg-[#141920]/95 py-1 pl-1 pr-4 shadow-[0_8px_32px_rgba(0,0,0,0.45)] backdrop-blur-md transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:pointer-events-none disabled:opacity-50',
+            'flex min-h-[44px] min-w-0 max-w-full shrink items-center gap-2 rounded-full border border-white/[0.12] bg-[#141920]/95 py-1 pl-1 pr-3 shadow-[0_8px_32px_rgba(0,0,0,0.45)] backdrop-blur-md transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:pointer-events-none disabled:opacity-50 sm:min-h-[48px] sm:gap-2.5 sm:pr-4',
           )}
           aria-label="Open Nora and dictate"
           title={
@@ -45,11 +45,13 @@ export function NoraVoiceBar({
           }
         >
           <span
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--xenora-accent,#00c896)] text-[var(--xenora-accent-foreground,#0a0a0a)] shadow-[0_0_0_1px_rgba(0,0,0,0.2)]"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--xenora-accent,#00c896)] text-[var(--xenora-accent-foreground,#0a0a0a)] shadow-[0_0_0_1px_rgba(0,0,0,0.2)] sm:h-10 sm:w-10"
           >
-            <Mic className="h-[1.15rem] w-[1.15rem]" strokeWidth={2.25} aria-hidden />
+            <Mic className="h-[1.05rem] w-[1.05rem] sm:h-[1.15rem] sm:w-[1.15rem]" strokeWidth={2.25} aria-hidden />
           </span>
-          <span className="pr-0.5 text-[13px] font-medium tracking-tight text-[#9ca3af]">Voice</span>
+          <span className="pr-0.5 text-[12px] font-medium tracking-tight text-[#9ca3af] max-[360px]:hidden sm:text-[13px]">
+            Voice
+          </span>
         </button>
 
         {/* Ambient wake: waveform in its own circle */}
