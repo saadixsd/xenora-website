@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { DashboardSidebar } from './DashboardSidebar';
-import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { Menu, MessageCircle } from 'lucide-react';
 import { NoraChatPanel } from './NoraChatPanel';
 import { NoraVoiceBar } from './NoraVoiceBar';
