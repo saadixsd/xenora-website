@@ -449,6 +449,7 @@ ${goal ? `Goal: ${goal}` : ""}
 Be specific to the user's input. No placeholders like [Name] unless truly unknown — use "there" or omit.`;
 
           const rawContent = await callLovable(LOVABLE_API_KEY, systemPrompt, userContent);
+          console.log("Lead AI raw length:", rawContent.length, "preview:", rawContent.slice(0, 200));
           let parsed: {
             lead_summary: string;
             score_rationale: string;
