@@ -5,21 +5,18 @@ import { cn } from '@/lib/utils';
 import { ROUTES } from '@/config/routes';
 import { useNavigate } from 'react-router-dom';
 
-interface FeedRow {
+interface RunRow {
   id: string;
-  message: string;
-  action_type: string;
-  action_payload: Record<string, unknown> | null;
+  status: string;
+  input_text: string;
   created_at: string;
-  resolved_at: string | null;
-  agent_id: string | null;
+  template_id: string;
 }
 
-const AGENT_LABELS: Record<string, string> = {
-  content: 'Content',
-  leads: 'Leads',
-  research: 'Research',
-};
+interface TemplateRow {
+  id: string;
+  name: string;
+}
 
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -31,73 +28,54 @@ function timeAgo(dateStr: string): string {
   return `${Math.floor(hrs / 24)}d ago`;
 }
 
-const typeStyle: Record<string, string> = {
-  approve: 'bg-amber-500/15 text-amber-400',
-  done: 'bg-[#00c896]/15 text-[#00c896]',
-  info: 'bg-white/[0.06] text-[#8a9bb0]',
+const statusStyle: Record<string, string> = {
+  completed: 'bg-[#00c896]/15 text-[#00c896]',
+  running: 'bg-amber-500/15 text-amber-400',
+  failed: 'bg-red-500/15 text-red-400',
+  pending: 'bg-white/[0.06] text-[#8a9bb0]',
 };
-const typeIcon: Record<string, string> = { approve: '!', done: '\u2713', info: '\u2022' };
+
+const statusIcon: Record<string, string> = {
+  completed: '✓',
+  running: '⟳',
+  failed: '✕',
+  pending: '•',
+};
 
 export function ActivityFeed() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [items, setItems] = useState<FeedRow[]>([]);
-  const [agentTypes, setAgentTypes] = useState<Record<string, string>>({});
+  const [runs, setRuns] = useState<RunRow[]>([]);
+  const [templates, setTemplates] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (!user) return;
 
-    (supabase.from('agents' as any) as any)
-      .select('id, type')
-      .eq('user_id', user.id)
-      .then(({ data }: { data: unknown }) => {
-        if (data) {
-          const map: Record<string, string> = {};
-          for (const a of data as { id: string; type: string }[]) map[a.id] = a.type;
-          setAgentTypes(map);
-        }
-      });
-
-    (supabase.from('feed_items' as any) as any)
-      .select('id, message, action_type, action_payload, created_at, resolved_at, agent_id')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false })
-      .limit(20)
-      .then(({ data }: { data: unknown }) => {
-        if (data) setItems(data as FeedRow[]);
-      });
-
-    const channel = supabase
-      .channel('feed-realtime')
-      .on(
-        'postgres_changes' as any,
-        { event: 'INSERT', schema: 'public', table: 'feed_items', filter: `user_id=eq.${user.id}` },
-        (payload: any) => {
-          const newItem = payload.new as FeedRow;
-          setItems((prev) => [newItem, ...prev].slice(0, 30));
-        },
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    Promise.all([
+      supabase
+        .from('workflow_runs')
+        .select('id, status, input_text, created_at, template_id')
+        .eq('user_id', user.id)
+        .is('archived_at', null)
+        .order('created_at', { ascending: false })
+        .limit(15),
+      supabase.from('workflow_templates').select('id, name'),
+    ]).then(([runsRes, templatesRes]) => {
+      if (runsRes.data) setRuns(runsRes.data);
+      if (templatesRes.data) {
+        const map: Record<string, string> = {};
+        for (const t of templatesRes.data) map[t.id] = t.name;
+        setTemplates(map);
+      }
+    });
   }, [user]);
 
-  const handleResolve = async (id: string, resolved: boolean) => {
-    const resolvedAt = resolved ? new Date().toISOString() : null;
-    await (supabase.from('feed_items' as any) as any).update({ resolved_at: resolvedAt }).eq('id', id);
-    setItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, resolved_at: resolvedAt } : item)),
-    );
-  };
-
-  if (items.length === 0) {
+  if (runs.length === 0) {
     return (
       <div className="dash-panel min-w-0 p-3 sm:p-4">
-        <p className="dash-label mb-3">Workflow feed</p>
+        <p className="dash-label mb-3">Recent runs</p>
         <p className="py-6 text-center text-[11.5px] leading-relaxed text-[#8a9bb0] sm:text-[12.5px]">
-          Nothing here yet. Start a run and updates will stream in as the workflow moves.
+          Nothing here yet. Start a run and results will show up here.
         </p>
       </div>
     );
@@ -106,7 +84,7 @@ export function ActivityFeed() {
   return (
     <div className="dash-panel min-w-0 p-3 sm:p-4">
       <div className="mb-2 flex min-w-0 items-baseline justify-between gap-2">
-        <p className="dash-label">Workflow feed</p>
+        <p className="dash-label">Recent runs</p>
         <button
           type="button"
           onClick={() => navigate(ROUTES.dashboard.history)}
@@ -116,80 +94,38 @@ export function ActivityFeed() {
         </button>
       </div>
       <div className="max-h-[60vh] overflow-y-auto overscroll-y-contain sm:max-h-[50vh]">
-        {items.map((item, i) => {
-          const agentLabel = item.agent_id
-            ? AGENT_LABELS[agentTypes[item.agent_id] || ''] || 'Agent'
-            : '';
-          const isResolved = Boolean(item.resolved_at);
+        {runs.map((run, i) => {
+          const tName = templates[run.template_id] || 'Workflow';
+          const style = statusStyle[run.status] || statusStyle.pending;
+          const icon = statusIcon[run.status] || '•';
 
           return (
-            <div
-              key={item.id}
+            <button
+              key={run.id}
+              type="button"
+              onClick={() => navigate(`${ROUTES.dashboard.root}/run/${run.id}`)}
               className={cn(
-                'flex items-start gap-2 py-2 sm:gap-3 sm:py-2.5',
-                i < items.length - 1 && 'border-b border-white/[0.06]',
-                isResolved && 'opacity-60',
+                'flex w-full items-start gap-2 py-2 text-left sm:gap-3 sm:py-2.5 hover:bg-white/[0.02] rounded-md transition-colors',
+                i < runs.length - 1 && 'border-b border-white/[0.06]',
               )}
             >
               <div
                 className={cn(
                   'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg font-space-mono text-[12px] sm:h-7 sm:w-7 sm:text-[13px]',
-                  typeStyle[item.action_type] || typeStyle.info,
+                  style,
                 )}
               >
-                {typeIcon[item.action_type] || '\u2022'}
+                {icon}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="line-clamp-2 break-words text-[12px] font-medium leading-snug text-[#f0f4f8] sm:text-[13px]">
-                  {item.message}
+                <p className="line-clamp-1 break-words text-[12px] font-medium leading-snug text-[#f0f4f8] sm:text-[13px]">
+                  {run.input_text.slice(0, 120)}
                 </p>
-                <div className="mt-0.5 flex flex-wrap items-center gap-x-1">
-                  <p className="text-[10px] text-[#3f5060] sm:text-[11px]">
-                    {agentLabel && `${agentLabel} · `}
-                    {timeAgo(item.created_at)}
-                    {isResolved && ' · Resolved'}
-                  </p>
-                </div>
-                {item.action_type === 'approve' && !isResolved && (
-                  <div className="mt-1.5 flex gap-1.5 sm:hidden">
-                    <button
-                      type="button"
-                      onClick={() => void handleResolve(item.id, true)}
-                      className="min-h-[28px] rounded-md bg-[#00c896] px-2.5 py-1 text-[10px] font-medium text-[#041a12] transition-opacity hover:opacity-90"
-                    >
-                      Approve
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => void handleResolve(item.id, true)}
-                      className="min-h-[28px] rounded-md border border-white/[0.08] px-2.5 py-1 text-[10px] text-[#8a9bb0] transition-colors hover:border-red-500/40 hover:text-red-400"
-                    >
-                      Dismiss
-                    </button>
-                  </div>
-                )}
+                <p className="mt-0.5 text-[10px] text-[#3f5060] sm:text-[11px]">
+                  {tName} · {timeAgo(run.created_at)} · {run.status}
+                </p>
               </div>
-              <div className="hidden shrink-0 flex-col items-end gap-1 sm:flex">
-                {item.action_type === 'approve' && !isResolved && (
-                  <div className="flex gap-1">
-                    <button
-                      type="button"
-                      onClick={() => void handleResolve(item.id, true)}
-                      className="rounded-md bg-[#00c896] px-2 py-0.5 text-[10px] font-medium text-[#041a12] transition-opacity hover:opacity-90"
-                    >
-                      Approve
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => void handleResolve(item.id, true)}
-                      className="rounded-md border border-white/[0.08] px-2 py-0.5 text-[10px] text-[#8a9bb0] transition-colors hover:border-red-500/40 hover:text-red-400"
-                    >
-                      Dismiss
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
+            </button>
           );
         })}
       </div>

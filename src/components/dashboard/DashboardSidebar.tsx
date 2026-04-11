@@ -105,7 +105,7 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
           aria-label="Dashboard home"
         >
           <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#00c896]" aria-hidden />
-          <span className="font-syne text-[14px] font-bold tracking-[0.08em] text-[#f0f4f8]">XENORA</span>
+          <span className="font-syne text-[14px] font-bold tracking-[0.08em] text-[#f0f4f8]">NORA</span>
         </Link>
         {onClose && (
           <button
@@ -120,6 +120,13 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
       </div>
 
       <nav className="flex-1 overflow-y-auto px-0 py-4" aria-label="Workspace">
+        <Link
+          to={ROUTES.home}
+          onClick={onClose}
+          className="mb-3 flex min-h-[40px] items-center gap-2.5 px-[18px] py-2 text-[12.5px] text-[#3f5060] transition-colors hover:text-[#8a9bb0] sm:min-h-0"
+        >
+          ← Home
+        </Link>
         <p className="dash-label px-[18px] pb-2">Workspace</p>
         <ul className="space-y-0.5">
           {workspaceNav.map((item) => {

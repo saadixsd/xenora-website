@@ -295,7 +295,7 @@ Deno.serve(async (req) => {
   // function can spuriously return 0 rows (JWT/RLS context), which surfaced as 403 Forbidden.
   const { data: run, error: runErr } = await supabaseAdmin
     .from("workflow_runs")
-    .select("id, user_id, status, template_id, agent_id")
+    .select("id, user_id, status, template_id")
     .eq("id", runId)
     .eq("user_id", user.id)
     .maybeSingle();
@@ -346,7 +346,7 @@ Deno.serve(async (req) => {
   const templateName = templateRow?.name || "Content Agent";
   const agentKind = classifyTemplate(templateName);
 
-  const agentId = (run as { agent_id?: string | null }).agent_id ?? null;
+  const agentId = null;
   const goal = typeof body.goal === "string" ? body.goal.trim() : "";
   const tone = typeof body.tone === "string" && body.tone.trim() ? body.tone.trim() : "professional";
 
