@@ -512,7 +512,8 @@ If sources failed or are thin, say so in caveats and still infer carefully from 
         await updateStep(safeStep(agentKind, "formatting"));
         await new Promise((r) => setTimeout(r, 400));
 
-        await supabaseAdmin.from("workflow_outputs").insert(outputRows);
+        const { error: insertErr } = await supabaseAdmin.from("workflow_outputs").insert(outputRows);
+        if (insertErr) console.error("Failed to insert outputs:", insertErr);
 
         await supabaseAdmin
           .from("workflow_runs")
