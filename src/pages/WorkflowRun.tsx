@@ -147,19 +147,9 @@ const WorkflowRun = () => {
     }
   }, [preselectedTemplate, agentTypeFromQuery, templates]);
 
+  // selectedAgentId is no longer used (agents table doesn't exist)
   useEffect(() => {
-    if (!agentTypeFromQuery || !user?.id) {
-      setSelectedAgentId(null);
-      return;
-    }
-    void (async () => {
-      const { data } = await (supabase.from('agents' as any) as any)
-        .select('id')
-        .eq('user_id', user.id)
-        .eq('type', agentTypeFromQuery)
-        .maybeSingle();
-      setSelectedAgentId(data?.id ?? null);
-    })();
+    setSelectedAgentId(null);
   }, [agentTypeFromQuery, user?.id]);
 
   const loadRun = useCallback(async (rid: string) => {
@@ -258,7 +248,6 @@ const WorkflowRun = () => {
         .insert({
           user_id: user.id,
           template_id: selectedTemplate,
-          ...(selectedAgentId ? { agent_id: selectedAgentId } : {}),
           input_text: inputText.trim(),
           goal: goal.trim() || null,
           tone,

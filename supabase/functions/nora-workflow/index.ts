@@ -449,6 +449,7 @@ ${goal ? `Goal: ${goal}` : ""}
 Be specific to the user's input. No placeholders like [Name] unless truly unknown — use "there" or omit.`;
 
           const rawContent = await callLovable(LOVABLE_API_KEY, systemPrompt, userContent);
+          console.log("Lead AI raw length:", rawContent.length, "preview:", rawContent.slice(0, 200));
           let parsed: {
             lead_summary: string;
             score_rationale: string;
@@ -512,7 +513,8 @@ If sources failed or are thin, say so in caveats and still infer carefully from 
         await updateStep(safeStep(agentKind, "formatting"));
         await new Promise((r) => setTimeout(r, 400));
 
-        await supabaseAdmin.from("workflow_outputs").insert(outputRows);
+        const { error: insertErr } = await supabaseAdmin.from("workflow_outputs").insert(outputRows);
+        if (insertErr) console.error("Failed to insert outputs:", insertErr);
 
         await supabaseAdmin
           .from("workflow_runs")

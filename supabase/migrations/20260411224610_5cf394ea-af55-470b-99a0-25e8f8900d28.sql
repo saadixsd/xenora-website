@@ -1,0 +1,1 @@
+ALTER TABLE public.workflow_outputs DROP CONSTRAINT IF EXISTS workflow_outputs_output_type_check;
