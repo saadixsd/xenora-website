@@ -115,7 +115,7 @@ export function DashboardLayout() {
             <Menu className="h-5 w-5" />
           </button>
           <div className="flex min-w-0 justify-center px-1" aria-hidden>
-            <XenoraLogo decorative className="h-7 w-auto max-h-8 max-w-[min(140px,calc(100vw-7rem))] opacity-90" />
+            <span className="font-syne text-[14px] font-bold tracking-[0.08em] text-[#f0f4f8]">NORA</span>
           </div>
           <div aria-hidden className="h-11 w-11 shrink-0" />
         </header>
