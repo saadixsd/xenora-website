@@ -231,9 +231,9 @@
     color: var(--dash-faint);
   }
 
-  /* Logo watermark: near-invisible in light mode */
+  /* Logo watermark: invert + lighten in light mode so dark BG becomes invisible */
   .light .logo-watermark {
-    opacity: 0.04 !important;
-    filter: grayscale(1) brightness(1.5);
+    filter: invert(1) grayscale(1);
+    opacity: 0.06 !important;
   }
 }
