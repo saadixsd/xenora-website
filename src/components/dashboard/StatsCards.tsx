@@ -59,15 +59,15 @@ export function StatsCards({
         const className = cn(
           'dash-panel min-w-0 p-3 text-left sm:p-4',
           interactive &&
-            'cursor-pointer transition-colors hover:border-[#00c896]/35 hover:bg-[#00c896]/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c896]/40',
+            'cursor-pointer transition-colors hover:border-[var(--dash-accent-hover)] hover:bg-[var(--dash-accent-subtle)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dash-accent)]/40',
         );
         const inner = (
           <>
             <p className="dash-label truncate">{c.label}</p>
-            <p className="mt-1 font-syne text-[22px] font-semibold tracking-tight text-[#f0f4f8] sm:text-[26px]">
+            <p className="mt-1 font-syne text-[22px] font-semibold tracking-tight text-[var(--dash-text)] sm:text-[26px]">
               {c.value}
             </p>
-            <p className="mt-0.5 line-clamp-2 break-words text-[10px] text-[#8a9bb0] sm:text-[11px]">{c.hint}</p>
+            <p className="mt-0.5 line-clamp-2 break-words text-[10px] text-[var(--dash-muted)] sm:text-[11px]">{c.hint}</p>
           </>
         );
         return interactive ? (

@@ -29,10 +29,10 @@ function timeAgo(dateStr: string): string {
 }
 
 const statusStyle: Record<string, string> = {
-  completed: 'bg-[#00c896]/15 text-[#00c896]',
+  completed: 'bg-[var(--dash-accent-dim)] text-[var(--dash-accent)]',
   running: 'bg-amber-500/15 text-amber-400',
   failed: 'bg-red-500/15 text-red-400',
-  pending: 'bg-white/[0.06] text-[#8a9bb0]',
+  pending: 'bg-[var(--dash-status-pending-bg)] text-[var(--dash-muted)]',
 };
 
 const statusIcon: Record<string, string> = {
@@ -74,7 +74,7 @@ export function ActivityFeed() {
     return (
       <div className="dash-panel min-w-0 p-3 sm:p-4">
         <p className="dash-label mb-3">Recent runs</p>
-        <p className="py-6 text-center text-[11.5px] leading-relaxed text-[#8a9bb0] sm:text-[12.5px]">
+        <p className="py-6 text-center text-[11.5px] leading-relaxed text-[var(--dash-muted)] sm:text-[12.5px]">
           Nothing here yet. Start a run and results will show up here.
         </p>
       </div>
@@ -88,7 +88,7 @@ export function ActivityFeed() {
         <button
           type="button"
           onClick={() => navigate(ROUTES.dashboard.history)}
-          className="shrink-0 text-[11px] text-[#00c896] hover:underline sm:text-[12px]"
+          className="shrink-0 text-[11px] text-[var(--dash-accent)] hover:underline sm:text-[12px]"
         >
           View all
         </button>
@@ -105,8 +105,8 @@ export function ActivityFeed() {
               type="button"
               onClick={() => navigate(`${ROUTES.dashboard.root}/run/${run.id}`)}
               className={cn(
-                'flex w-full items-start gap-2 py-2 text-left sm:gap-3 sm:py-2.5 hover:bg-white/[0.02] rounded-md transition-colors',
-                i < runs.length - 1 && 'border-b border-white/[0.06]',
+                'flex w-full items-start gap-2 py-2 text-left sm:gap-3 sm:py-2.5 hover:bg-[var(--dash-hover)] rounded-md transition-colors',
+                i < runs.length - 1 && 'border-b border-[var(--dash-border)]',
               )}
             >
               <div
@@ -118,10 +118,10 @@ export function ActivityFeed() {
                 {icon}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="line-clamp-1 break-words text-[12px] font-medium leading-snug text-[#f0f4f8] sm:text-[13px]">
+                <p className="line-clamp-1 break-words text-[12px] font-medium leading-snug text-[var(--dash-text)] sm:text-[13px]">
                   {run.input_text.slice(0, 120)}
                 </p>
-                <p className="mt-0.5 text-[10px] text-[#3f5060] sm:text-[11px]">
+                <p className="mt-0.5 text-[10px] text-[var(--dash-faint)] sm:text-[11px]">
                   {tName} · {timeAgo(run.created_at)} · {run.status}
                 </p>
               </div>

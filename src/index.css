@@ -11,7 +11,7 @@
     min-width: 0;
   }
 
-  /* Dark default: emerald accent (aligned with dashboard command center) */
+  /* Dark default */
   :root {
     --xenora-accent: #00c896;
     --xenora-accent-foreground: #0a0a0a;
@@ -26,7 +26,6 @@
     --popover: 240 20% 7%;
     --popover-foreground: 0 0% 96%;
 
-    /* #00c896 — same green as dashboard + marketing dark theme */
     --primary: 168 100% 39%;
     --primary-foreground: 168 100% 5%;
 
@@ -57,56 +56,92 @@
     --sidebar-border: 240 12% 14%;
     --sidebar-ring: 168 100% 39%;
 
-    /* Theme-aware mesh background */
+    /* Mesh background */
     --mesh-grid: rgba(255, 255, 255, 0.045);
     --mesh-diag: rgba(255, 255, 255, 0.03);
     --mesh-vignette: rgba(10, 10, 15, 0.72);
     --mesh-glow: rgba(0, 200, 150, 0.09);
+
+    /* Dashboard shell — dark command center */
+    --dash-accent: #00c896;
+    --dash-accent-fg: #041a12;
+    --dash-accent-dim: rgba(0, 200, 150, 0.12);
+    --dash-accent-hover: rgba(0, 200, 150, 0.35);
+    --dash-accent-subtle: rgba(0, 200, 150, 0.10);
+    --dash-bg: #07090b;
+    --dash-surface: #0c0f12;
+    --dash-surface-deep: #141920;
+    --dash-border: rgba(255, 255, 255, 0.06);
+    --dash-text: #f0f4f8;
+    --dash-muted: #8a9bb0;
+    --dash-faint: #3f5060;
+    --dash-hover: rgba(255, 255, 255, 0.04);
+    --dash-bar-bg: rgba(255, 255, 255, 0.06);
+    --dash-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    --dash-status-pending-bg: rgba(255, 255, 255, 0.06);
   }
 
   .light {
     --bg-base: #f4f2ee;
-    --background: 36 18% 95%;
-    --foreground: 225 15% 15%;
+    --background: 40 20% 96%;
+    --foreground: 225 18% 13%;
 
-    --card: 36 14% 92%;
-    --card-foreground: 225 15% 15%;
+    --card: 40 16% 93%;
+    --card-foreground: 225 18% 13%;
 
-    --popover: 36 14% 92%;
-    --popover-foreground: 225 15% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 225 18% 13%;
 
-    --primary: 174 65% 32%;
+    --primary: 168 72% 34%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 36 10% 88%;
-    --secondary-foreground: 225 15% 15%;
+    --secondary: 40 12% 90%;
+    --secondary-foreground: 225 18% 13%;
 
-    --muted: 36 10% 90%;
-    --muted-foreground: 225 8% 40%;
+    --muted: 40 10% 91%;
+    --muted-foreground: 225 10% 38%;
 
-    --accent: 260 14% 90%;
-    --accent-foreground: 225 15% 15%;
+    --accent: 260 14% 92%;
+    --accent-foreground: 225 18% 13%;
 
     --destructive: 0 65% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 36 10% 84%;
-    --input: 36 10% 84%;
-    --ring: 174 65% 32%;
+    --border: 40 12% 86%;
+    --input: 40 12% 86%;
+    --ring: 168 72% 34%;
 
-    --sidebar-background: 36 18% 95%;
-    --sidebar-foreground: 225 15% 15%;
-    --sidebar-primary: 174 65% 32%;
+    --sidebar-background: 40 20% 96%;
+    --sidebar-foreground: 225 18% 13%;
+    --sidebar-primary: 168 72% 34%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 36 10% 90%;
-    --sidebar-accent-foreground: 225 15% 15%;
-    --sidebar-border: 36 10% 84%;
-    --sidebar-ring: 174 65% 32%;
+    --sidebar-accent: 40 10% 91%;
+    --sidebar-accent-foreground: 225 18% 13%;
+    --sidebar-border: 40 12% 86%;
+    --sidebar-ring: 168 72% 34%;
 
-    --mesh-grid: rgba(0, 0, 0, 0.04);
-    --mesh-diag: rgba(0, 0, 0, 0.025);
-    --mesh-vignette: rgba(244, 242, 238, 0.6);
-    --mesh-glow: rgba(14, 165, 164, 0.06);
+    --mesh-grid: rgba(0, 0, 0, 0.035);
+    --mesh-diag: rgba(0, 0, 0, 0.02);
+    --mesh-vignette: rgba(244, 242, 238, 0.45);
+    --mesh-glow: rgba(0, 180, 140, 0.045);
+
+    /* Dashboard shell — light mode */
+    --dash-accent: #0d9f7e;
+    --dash-accent-fg: #ffffff;
+    --dash-accent-dim: rgba(13, 159, 126, 0.08);
+    --dash-accent-hover: rgba(13, 159, 126, 0.30);
+    --dash-accent-subtle: rgba(13, 159, 126, 0.07);
+    --dash-bg: #f7f8fa;
+    --dash-surface: #ffffff;
+    --dash-surface-deep: #eef0f4;
+    --dash-border: rgba(0, 0, 0, 0.08);
+    --dash-text: #1a1d23;
+    --dash-muted: #5f6b7a;
+    --dash-faint: #9ca3af;
+    --dash-hover: rgba(0, 0, 0, 0.03);
+    --dash-bar-bg: rgba(0, 0, 0, 0.06);
+    --dash-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    --dash-status-pending-bg: rgba(0, 0, 0, 0.05);
   }
 }
 
@@ -151,12 +186,13 @@
 
 @layer utilities {
   .surface-panel {
-    @apply rounded-xl border border-border bg-card/35 backdrop-blur-sm;
+    @apply rounded-xl border border-border backdrop-blur-sm;
+    background: hsl(var(--card) / 0.45);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
   }
   .light .surface-panel {
-    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04), 0 1px 4px rgba(0, 0, 0, 0.03);
-    @apply bg-card/60;
+    background: hsl(var(--card) / 0.7);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.03);
   }
   .premium-heading {
     @apply tracking-[-0.02em] leading-[1.06];
@@ -172,28 +208,32 @@
     @apply bg-card/40 backdrop-blur-xl border border-border/40;
   }
 
-
-  /* App shell: command center (dark + emerald accent) */
+  /* Dashboard utilities — now theme-aware */
   .dashboard-app {
-    --dash-accent: var(--xenora-accent, #00c896);
-    --dash-accent-dim: rgba(0, 200, 150, 0.12);
-    --dash-bg: #07090b;
-    --dash-surface: #0c0f12;
-    --dash-border: rgba(255, 255, 255, 0.06);
-    --dash-muted: #8a9bb0;
-    --dash-faint: #3f5060;
+    color: var(--dash-text);
+    background: var(--dash-bg);
   }
 
   .dash-panel {
-    @apply rounded-lg border bg-[#0c0f12];
-    border-color: rgba(255, 255, 255, 0.06);
+    @apply rounded-lg border;
+    background: var(--dash-surface);
+    border-color: var(--dash-border);
+    box-shadow: var(--dash-shadow);
   }
 
   .dash-label {
-    @apply font-space-mono text-[9px] uppercase tracking-[0.14em] text-[#3f5060];
+    @apply font-space-mono text-[9px] uppercase tracking-[0.14em];
+    color: var(--dash-faint);
   }
 
   .dash-breadcrumb {
-    @apply font-space-mono text-[10px] tracking-[0.06em] text-[#3f5060];
+    @apply font-space-mono text-[10px] tracking-[0.06em];
+    color: var(--dash-faint);
+  }
+
+  /* Logo watermark: multiply blend so light BG → transparent */
+  .light .logo-watermark {
+    mix-blend-mode: multiply;
+    opacity: 0.08 !important;
   }
 }
