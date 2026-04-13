@@ -46,7 +46,7 @@ export const NeuralMeshBackground = () => {
         }}
       />
 
-      <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse at center, transparent 0%, var(--mesh-vignette) 78%)` }} />
+      <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse 120% 90% at center, transparent 0%, var(--mesh-vignette) 85%)` }} />
     </div>
   );
 };
