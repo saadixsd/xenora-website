@@ -458,7 +458,7 @@ const Index = () => {
         </section>
 
         {/* ── FOOTER ── */}
-        <footer className="border-t border-base-content/[0.07] px-4 py-10 sm:px-8">
+        <footer className="border-t border-base-content/[0.07] px-4 pb-20 pt-10 sm:px-8 sm:pb-10">
           <div className="mx-auto grid max-w-5xl gap-6 text-center sm:grid-cols-3 sm:text-left">
             <div className="flex flex-col items-center gap-3 sm:items-start">
               <p className="text-sm font-medium text-base-content/60">XenoraAI</p>
@@ -485,7 +485,7 @@ const Index = () => {
       </main>
 
       {/* Spacer so last scroll content clears sticky Try Nora CTA */}
-      <div className="h-24 sm:h-28" aria-hidden />
+      <div className="h-28 sm:h-28" aria-hidden />
     </div>
   );
 };
