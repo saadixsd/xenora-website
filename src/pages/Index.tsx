@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { Instagram, Linkedin, FileText, Search, Zap, ArrowRight, Check, X as XIcon, Users, Rocket, Mic, Target } from 'lucide-react';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
