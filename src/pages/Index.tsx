@@ -62,11 +62,13 @@ const plusFeatures = [
   'Unlimited workflow runs (fair use)',
   'Unlimited Ask Nora (fair use)',
   'All agents: Content, Lead, Research',
+  'Connections: link Gmail, X, Instagram, LinkedIn — Nora reads your data via API for smarter analysis',
   'Billing via Stripe — cancel anytime in portal',
 ];
 const proFeatures = [
   'Everything in Nora Plus',
   'Deeper Ask Nora answers (Pro model & limits)',
+  'Priority connections & advanced API analysis',
   'Same workflow engine — upgraded chat experience',
 ];
 
