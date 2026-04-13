@@ -111,34 +111,34 @@ const Dashboard = () => {
   return (
     <div className="mx-auto min-h-0 min-w-0 max-w-5xl px-3 py-4 sm:px-6 sm:py-6 lg:px-8">
       <nav className="dash-breadcrumb mb-3 sm:mb-4" aria-label="Breadcrumb">
-        <Link to={ROUTES.dashboard.root} className="text-[#8a9bb0] hover:text-[#f0f4f8]">
+        <Link to={ROUTES.dashboard.root} className="text-[var(--dash-muted)] hover:text-[var(--dash-text)]">
           Workspace
         </Link>
-        <span className="mx-1.5 text-[#3f5060]">/</span>
-        <span className="text-[#f0f4f8]">Overview</span>
+        <span className="mx-1.5 text-[var(--dash-faint)]">/</span>
+        <span className="text-[var(--dash-text)]">Overview</span>
       </nav>
 
       <div className="dash-panel mb-4 sm:mb-5 px-4 py-4 sm:px-5 sm:py-5">
         <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
             <p className="dash-label mb-1">Command center</p>
-            <h1 className="font-syne text-[22px] font-semibold tracking-tight text-[#f0f4f8] sm:text-[26px]">
+            <h1 className="font-syne text-[22px] font-semibold tracking-tight text-[var(--dash-text)] sm:text-[26px]">
               Overview
             </h1>
-            <p className="mt-1 text-[12.5px] leading-relaxed text-[#8a9bb0] sm:text-[13px]">{subtitle}</p>
+            <p className="mt-1 text-[12.5px] leading-relaxed text-[var(--dash-muted)] sm:text-[13px]">{subtitle}</p>
           </div>
           <div className="flex flex-wrap gap-2 sm:justify-end">
             <button
               type="button"
               onClick={() => navigate(ROUTES.dashboard.runNew)}
-              className="min-h-[44px] flex-1 rounded-lg bg-[#00c896] px-3.5 py-2 text-[12.5px] font-medium text-[#041a12] transition-opacity hover:opacity-90 sm:flex-none sm:text-[13px]"
+              className="min-h-[44px] flex-1 rounded-lg bg-[var(--dash-accent)] px-3.5 py-2 text-[12.5px] font-medium text-[var(--dash-accent-fg)] transition-opacity hover:opacity-90 sm:flex-none sm:text-[13px]"
             >
               New workflow
             </button>
             <button
               type="button"
               onClick={() => navigate(ROUTES.dashboard.settings)}
-              className="min-h-[44px] rounded-lg border border-white/[0.08] bg-transparent px-3.5 py-2 text-[12.5px] text-[#f0f4f8] transition-colors hover:bg-white/[0.04] sm:text-[13px]"
+              className="min-h-[44px] rounded-lg border border-[var(--dash-border)] bg-transparent px-3.5 py-2 text-[12.5px] text-[var(--dash-text)] transition-colors hover:bg-[var(--dash-hover)] sm:text-[13px]"
             >
               Settings
             </button>
@@ -160,7 +160,7 @@ const Dashboard = () => {
           <button
             type="button"
             onClick={() => navigate(ROUTES.dashboard.agents.manage)}
-            className="text-[11px] text-[#00c896] hover:underline sm:text-[12px]"
+            className="text-[11px] text-[var(--dash-accent)] hover:underline sm:text-[12px]"
           >
             Manage
           </button>

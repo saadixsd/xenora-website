@@ -36,7 +36,6 @@ export function DashboardLayout() {
     }
   }, [ambientListening]);
 
-  /** Opens Nora and starts live assistant voice: speak only, no typing in the box; Nora talks status + reply. */
   const openNoraAndDictate = useCallback(() => {
     window.dispatchEvent(new CustomEvent(NORA_VOICE_AMBIENT_PAUSE));
     if (!onDedicatedNoraPage) setNoraOpen(true);
@@ -46,7 +45,6 @@ export function DashboardLayout() {
     );
   }, [onDedicatedNoraPage]);
 
-  /** Full assistant: dictate, send via Claude proxy, read reply with device TTS (no auto-publish). */
   const openNoraVoiceAssistant = useCallback(() => {
     window.dispatchEvent(new CustomEvent(NORA_VOICE_AMBIENT_PAUSE));
     if (!onDedicatedNoraPage) setNoraOpen(true);
@@ -84,7 +82,7 @@ export function DashboardLayout() {
   });
 
   return (
-    <div className="dashboard-app flex h-[100dvh] min-h-0 w-full max-w-[100vw] overflow-hidden bg-[#07090b] text-[#f0f4f8]">
+    <div className="dashboard-app flex h-[100dvh] min-h-0 w-full max-w-[100vw] overflow-hidden">
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/50 lg:hidden"
@@ -93,7 +91,7 @@ export function DashboardLayout() {
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 max-w-[80vw] sm:max-w-[85vw] shrink-0 transform border-r border-white/[0.06] bg-[#0c0f12] pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl transition-transform duration-200 lg:relative lg:z-auto lg:max-w-none lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 max-w-[80vw] sm:max-w-[85vw] shrink-0 transform border-r border-[var(--dash-border)] bg-[var(--dash-surface)] pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl transition-transform duration-200 lg:relative lg:z-auto lg:max-w-none lg:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -102,26 +100,26 @@ export function DashboardLayout() {
 
       <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
         <header
-          className="grid min-h-14 shrink-0 grid-cols-[44px_1fr_44px] items-center border-b border-white/[0.06] bg-[#07090b] px-2 py-2 pt-[env(safe-area-inset-top,0px)] lg:hidden"
+          className="grid min-h-14 shrink-0 grid-cols-[44px_1fr_44px] items-center border-b border-[var(--dash-border)] bg-[var(--dash-bg)] px-2 py-2 pt-[env(safe-area-inset-top,0px)] lg:hidden"
           aria-label="Dashboard"
         >
           <button
             type="button"
             onClick={() => setSidebarOpen(true)}
-            className="flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-[#8a9bb0] transition-colors hover:bg-white/[0.04] hover:text-[#f0f4f8]"
+            className="flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-[var(--dash-muted)] transition-colors hover:bg-[var(--dash-hover)] hover:text-[var(--dash-text)]"
             aria-label="Open menu"
           >
             <Menu className="h-5 w-5" />
           </button>
           <div className="flex min-w-0 justify-center px-1" aria-hidden>
-            <span className="font-syne text-[14px] font-bold tracking-[0.08em] text-[#f0f4f8]">NORA</span>
+            <span className="font-syne text-[14px] font-bold tracking-[0.08em] text-[var(--dash-text)]">NORA</span>
           </div>
           <div aria-hidden className="h-11 w-11 shrink-0" />
         </header>
 
         <main
           data-app-scroll-root
-          className="relative min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-y-contain bg-[#07090b] pb-[max(6rem,calc(env(safe-area-inset-bottom,0px)+5.25rem))] lg:pb-[max(5.5rem,calc(env(safe-area-inset-bottom,0px)+4.5rem))]"
+          className="relative min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-y-contain bg-[var(--dash-bg)] pb-[max(6rem,calc(env(safe-area-inset-bottom,0px)+5.25rem))] lg:pb-[max(5.5rem,calc(env(safe-area-inset-bottom,0px)+4.5rem))]"
         >
           <Outlet />
         </main>
@@ -140,7 +138,7 @@ export function DashboardLayout() {
       <button
         type="button"
         onClick={() => setNoraOpen(true)}
-        className="fixed z-[85] flex h-12 w-12 min-h-[48px] min-w-[48px] items-center justify-center rounded-full bg-[#00c896] text-[#041a12] shadow-[0_8px_30px_rgba(0,200,150,0.25)] transition-transform hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00c896] focus-visible:ring-offset-2 focus-visible:ring-offset-[#07090b] sm:h-14 sm:w-14 bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] right-[max(1rem,env(safe-area-inset-right,0px))] lg:bottom-[max(2rem,env(safe-area-inset-bottom,0px))] lg:right-[max(2rem,env(safe-area-inset-right,0px))]"
+        className="fixed z-[85] flex h-12 w-12 min-h-[48px] min-w-[48px] items-center justify-center rounded-full bg-[var(--dash-accent)] text-[var(--dash-accent-fg)] shadow-[var(--dash-shadow)] transition-transform hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dash-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-bg)] sm:h-14 sm:w-14 bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] right-[max(1rem,env(safe-area-inset-right,0px))] lg:bottom-[max(2rem,env(safe-area-inset-bottom,0px))] lg:right-[max(2rem,env(safe-area-inset-right,0px))]"
         aria-label="Ask Nora"
       >
         <MessageCircle className="h-6 w-6" />
@@ -153,7 +151,7 @@ export function DashboardLayout() {
             aria-hidden
             onClick={() => setNoraOpen(false)}
           />
-          <div className="dark fixed inset-y-0 right-0 z-[95] flex h-[100dvh] max-h-[100dvh] w-full min-w-0 max-w-[min(28rem,100vw)] flex-col border-l border-white/[0.08] bg-[#07090b] pt-[env(safe-area-inset-top,0px)] text-[#f0f4f8] shadow-2xl">
+          <div className="dark fixed inset-y-0 right-0 z-[95] flex h-[100dvh] max-h-[100dvh] w-full min-w-0 max-w-[min(28rem,100vw)] flex-col border-l border-[var(--dash-border)] bg-[var(--dash-bg)] pt-[env(safe-area-inset-top,0px)] text-[var(--dash-text)] shadow-2xl">
             <NoraChatPanel variant="sheet" onClose={() => setNoraOpen(false)} />
           </div>
         </>

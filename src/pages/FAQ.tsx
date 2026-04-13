@@ -93,7 +93,7 @@ const FAQ = () => {
       <NeuralMeshBackground />
 
       <div className="pointer-events-none fixed inset-0 z-[1] flex items-center justify-center" aria-hidden>
-        <XenoraLogo decorative className="h-[min(44vh,320px)] w-auto max-w-[82vw] opacity-[0.14] sm:h-[min(50vh,400px)]" />
+        <XenoraLogo decorative className="logo-watermark h-[min(44vh,320px)] w-auto max-w-[82vw] opacity-[0.14] sm:h-[min(50vh,400px)]" />
       </div>
 
       <header className="fixed left-0 right-0 top-0 z-50 border-b border-base-content/[0.07] bg-base-100/70 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">

@@ -91,27 +91,27 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
     cn(
       'relative flex min-h-[40px] items-center gap-2.5 rounded-md px-[18px] py-2 text-[12.5px] transition-colors sm:min-h-0',
       active
-        ? 'bg-gradient-to-r from-[#00c896]/15 to-transparent text-[#f0f4f8] before:absolute before:inset-y-0 before:left-0 before:w-[1.5px] before:rounded-full before:bg-[#00c896]'
-        : 'text-[#3f5060] hover:text-[#8a9bb0]',
+        ? 'bg-gradient-to-r from-[var(--dash-accent)]/15 to-transparent text-[var(--dash-text)] before:absolute before:inset-y-0 before:left-0 before:w-[1.5px] before:rounded-full before:bg-[var(--dash-accent)]'
+        : 'text-[var(--dash-faint)] hover:text-[var(--dash-muted)]',
     );
 
   return (
     <div className="flex h-full flex-col font-[Inter,system-ui,sans-serif]">
-      <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] px-4 py-4 sm:px-5">
+      <div className="flex items-center justify-between gap-3 border-b border-[var(--dash-border)] px-4 py-4 sm:px-5">
         <Link
           to={ROUTES.dashboard.root}
           className="flex min-w-0 shrink items-center gap-2"
           onClick={onClose}
           aria-label="Dashboard home"
         >
-          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#00c896]" aria-hidden />
-          <span className="font-syne text-[14px] font-bold tracking-[0.08em] text-[#f0f4f8]">NORA</span>
+          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--dash-accent)]" aria-hidden />
+          <span className="font-syne text-[14px] font-bold tracking-[0.08em] text-[var(--dash-text)]">NORA</span>
         </Link>
         {onClose && (
           <button
             type="button"
             onClick={onClose}
-            className="flex h-10 w-10 min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-[#8a9bb0] hover:bg-white/[0.04] hover:text-[#f0f4f8] lg:hidden"
+            className="flex h-10 w-10 min-h-[44px] min-w-[44px] items-center justify-center rounded-lg text-[var(--dash-muted)] hover:bg-[var(--dash-hover)] hover:text-[var(--dash-text)] lg:hidden"
             aria-label="Close menu"
           >
             <X className="h-5 w-5" />
@@ -123,7 +123,7 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
         <Link
           to={ROUTES.home}
           onClick={onClose}
-          className="mb-3 flex min-h-[40px] items-center gap-2.5 px-[18px] py-2 text-[12.5px] text-[#3f5060] transition-colors hover:text-[#8a9bb0] sm:min-h-0"
+          className="mb-3 flex min-h-[40px] items-center gap-2.5 px-[18px] py-2 text-[12.5px] text-[var(--dash-faint)] transition-colors hover:text-[var(--dash-muted)] sm:min-h-0"
         >
           ← Home
         </Link>
@@ -158,15 +158,15 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
         </ul>
       </nav>
 
-      <div className="border-t border-white/[0.06] p-3">
+      <div className="border-t border-[var(--dash-border)] p-3">
         <div className="flex items-center gap-2.5 rounded-lg px-3 py-2">
-          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/[0.15] bg-[#141920] font-space-mono text-[10px] font-medium text-[#00c896]">
+          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[var(--dash-border)] bg-[var(--dash-surface-deep)] font-space-mono text-[10px] font-medium text-[var(--dash-accent)]">
             {initials}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-[12px] text-[#8a9bb0]">
-              <span className="text-[#f0f4f8]">{displayName}</span>
-              <span className="text-[#3f5060]"> · </span>
+            <p className="truncate text-[12px] text-[var(--dash-muted)]">
+              <span className="text-[var(--dash-text)]">{displayName}</span>
+              <span className="text-[var(--dash-faint)]"> · </span>
               {planTag}
             </p>
           </div>
@@ -174,7 +174,7 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
         <button
           type="button"
           onClick={() => void handleSignOut()}
-          className="mt-1 flex min-h-[44px] w-full items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] text-[#3f5060] transition-colors hover:bg-white/[0.04] hover:text-[#8a9bb0]"
+          className="mt-1 flex min-h-[44px] w-full items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] text-[var(--dash-faint)] transition-colors hover:bg-[var(--dash-hover)] hover:text-[var(--dash-muted)]"
         >
           <LogOut className="h-4 w-4" aria-hidden />
           Sign out

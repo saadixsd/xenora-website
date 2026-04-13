@@ -6,7 +6,6 @@ type NoraVoiceBarProps = {
   ambientListening: boolean;
   onToggleAmbient: () => void;
   onVoiceButtonClick: () => void;
-  /** Mic + clap wake active (ambient on and not suspended) */
   ambientActive: boolean;
 };
 
@@ -29,13 +28,12 @@ export function NoraVoiceBar({
           !sttSupported && 'opacity-60',
         )}
       >
-        {/* Pill: green mic disc + Voice label (live assistant) */}
         <button
           type="button"
           onClick={onVoiceButtonClick}
           disabled={!sttSupported}
           className={cn(
-            'flex min-h-[44px] min-w-0 max-w-full shrink items-center gap-2 rounded-full border border-white/[0.12] bg-[#141920]/95 py-1 pl-1 pr-3 shadow-[0_8px_32px_rgba(0,0,0,0.45)] backdrop-blur-md transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:pointer-events-none disabled:opacity-50 sm:min-h-[48px] sm:gap-2.5 sm:pr-4',
+            'flex min-h-[44px] min-w-0 max-w-full shrink items-center gap-2 rounded-full border border-[var(--dash-border)] bg-[var(--dash-surface-deep)]/95 py-1 pl-1 pr-3 shadow-[var(--dash-shadow)] backdrop-blur-md transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:pointer-events-none disabled:opacity-50 sm:min-h-[48px] sm:gap-2.5 sm:pr-4',
           )}
           aria-label="Open Nora and dictate"
           title={
@@ -45,34 +43,33 @@ export function NoraVoiceBar({
           }
         >
           <span
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--xenora-accent,#00c896)] text-[var(--xenora-accent-foreground,#0a0a0a)] shadow-[0_0_0_1px_rgba(0,0,0,0.2)] sm:h-10 sm:w-10"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--dash-accent)] text-[var(--dash-accent-fg)] shadow-[0_0_0_1px_rgba(0,0,0,0.2)] sm:h-10 sm:w-10"
           >
             <Mic className="h-[1.05rem] w-[1.05rem] sm:h-[1.15rem] sm:w-[1.15rem]" strokeWidth={2.25} aria-hidden />
           </span>
-          <span className="pr-0.5 text-[12px] font-medium tracking-tight text-[#9ca3af] max-[360px]:hidden sm:text-[13px]">
+          <span className="pr-0.5 text-[12px] font-medium tracking-tight text-[var(--dash-faint)] max-[360px]:hidden sm:text-[13px]">
             Voice
           </span>
         </button>
 
-        {/* Ambient wake: waveform in its own circle */}
         <button
           type="button"
           onClick={onToggleAmbient}
           disabled={!sttSupported}
           className={cn(
-            'flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/[0.14] bg-[#141920]/95 text-[#8a9bb0] shadow-[0_8px_32px_rgba(0,0,0,0.45)] backdrop-blur-md transition-colors hover:border-white/25 hover:text-[#f0f4f8] disabled:pointer-events-none disabled:opacity-50',
+            'flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--dash-border)] bg-[var(--dash-surface-deep)]/95 text-[var(--dash-muted)] shadow-[var(--dash-shadow)] backdrop-blur-md transition-colors hover:text-[var(--dash-text)] disabled:pointer-events-none disabled:opacity-50',
             ambientListening &&
-              'border-[color:color-mix(in_srgb,var(--xenora-accent,#00c896)_55%,transparent)] bg-[color:color-mix(in_srgb,var(--xenora-accent,#00c896)_12%,transparent)] text-[var(--xenora-accent,#00c896)]',
+              'border-[var(--dash-accent-hover)] bg-[var(--dash-accent-dim)] text-[var(--dash-accent)]',
             ambientActive &&
-              'ring-2 ring-[color:color-mix(in_srgb,var(--xenora-accent,#00c896)_45%,transparent)] ring-offset-2 ring-offset-[#07090b]',
+              'ring-2 ring-[var(--dash-accent-hover)] ring-offset-2 ring-offset-[var(--dash-bg)]',
           )}
           aria-pressed={ambientListening}
           aria-label={ambientListening ? 'Stop listening for Hey Nora and clap' : 'Listen for Hey Nora and double clap'}
           title={
             sttSupported
               ? ambientListening
-                ? 'Listening for “Hey Nora” or two claps'
-                : 'Enable: say “Hey Nora” or clap twice'
+                ? 'Listening for "Hey Nora" or two claps'
+                : 'Enable: say "Hey Nora" or clap twice'
               : 'Not available'
           }
         >
