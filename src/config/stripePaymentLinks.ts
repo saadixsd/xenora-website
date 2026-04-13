@@ -14,12 +14,12 @@ const UUID_RE =
 /** Nora Plus — default from your Stripe Payment Link */
 export const STRIPE_PAYMENT_LINK_PLUS =
   import.meta.env.VITE_STRIPE_PAYMENT_LINK_PLUS?.trim() ||
-  'https://buy.stripe.com/00w9AS4Rc7dE41m7vkdnW01';
+  'https://buy.stripe.com/bJe4gy4RceG67dyaHwdnW03';
 
 /** Nora Pro — default from your Stripe Payment Link */
 export const STRIPE_PAYMENT_LINK_PRO =
   import.meta.env.VITE_STRIPE_PAYMENT_LINK_PRO?.trim() ||
-  'https://buy.stripe.com/dRm7sKbfAeG6cxScPEdnW00';
+  'https://buy.stripe.com/6oUeVcfvQcxY8hCcPEdnW02';
 
 export function buildStripePaymentLinkUrl(
   paymentLinkBase: string,
