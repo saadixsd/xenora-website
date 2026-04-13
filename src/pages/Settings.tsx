@@ -326,7 +326,7 @@ const Settings = () => {
         <div className="surface-panel p-5">
           <h2 className="text-sm font-medium text-foreground">Billing</h2>
           <p className="mt-1 text-xs text-muted-foreground">
-            Free tier: 5 workflow runs and 3 Ask Nora messages per calendar month (UTC). Nora Plus and Nora Pro remove those caps (fair use applies).
+            Free tier: 5 workflow runs and 3 Ask Nora messages per calendar month (UTC). Nora Plus ($49.99/mo) and Nora Pro ($79.99/mo) remove those caps (fair use applies).
           </p>
           {billingLoading ? (
             <p className="mt-4 text-sm text-muted-foreground">Loading billing…</p>
@@ -365,7 +365,7 @@ const Settings = () => {
                       disabled={checkoutBusy !== null}
                       onClick={() => void startCheckout('plus')}
                     >
-                      {checkoutBusy === 'plus' ? 'Redirecting…' : 'Upgrade — Nora Plus ($13.99/mo)'}
+                      {checkoutBusy === 'plus' ? 'Redirecting…' : 'Upgrade — Nora Plus ($49.99/mo)'}
                     </Button>
                     <Button
                       type="button"
@@ -374,7 +374,7 @@ const Settings = () => {
                       disabled={checkoutBusy !== null}
                       onClick={() => void startCheckout('pro')}
                     >
-                      {checkoutBusy === 'pro' ? 'Redirecting…' : 'Upgrade — Nora Pro ($19.99/mo)'}
+                      {checkoutBusy === 'pro' ? 'Redirecting…' : 'Upgrade — Nora Pro ($79.99/mo)'}
                     </Button>
                   </>
                 )}

@@ -360,7 +360,7 @@ const Index = () => {
                 <article className="surface-panel flex h-full flex-col border-primary/25 p-6 text-left ring-1 ring-primary/15">
                   <h3 className="text-base font-semibold text-base-content">Nora Plus</h3>
                   <p className="mt-2 font-dm-serif text-3xl text-base-content">
-                    $13.99<span className="text-base font-normal text-base-content/50">/mo</span>
+                    $49.99<span className="text-base font-normal text-base-content/50">/mo</span>
                   </p>
                   <ul className="mt-4 space-y-2 text-sm text-base-content/55">
                     {plusFeatures.map((f) => (
@@ -376,7 +376,7 @@ const Index = () => {
                 <article className="surface-panel flex h-full flex-col p-6 text-left">
                   <h3 className="text-base font-semibold text-base-content">Nora Pro</h3>
                   <p className="mt-2 font-dm-serif text-3xl text-base-content">
-                    $19.99<span className="text-base font-normal text-base-content/50">/mo</span>
+                    $79.99<span className="text-base font-normal text-base-content/50">/mo</span>
                   </p>
                   <ul className="mt-4 space-y-2 text-sm text-base-content/55">
                     {proFeatures.map((f) => (
