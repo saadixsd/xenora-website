@@ -354,14 +354,24 @@ const Index = () => {
                       </li>
                     ))}
                   </ul>
+                  <div className="mt-auto pt-6">
+                    <Link
+                      to={ROUTES.signUp}
+                      className="flex w-full items-center justify-center gap-2 rounded-lg border border-primary/30 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
+                    >
+                      Get started free
+                    </Link>
+                  </div>
                 </article>
               </Reveal>
               <Reveal delay={0.1}>
-                <article className="surface-panel flex h-full flex-col border-primary/25 p-6 text-left ring-1 ring-primary/15">
+                <article className="surface-panel relative flex h-full flex-col border-primary/25 p-6 text-left ring-1 ring-primary/15">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-0.5 text-xs font-medium text-primary-foreground">Most popular</span>
                   <h3 className="text-base font-semibold text-base-content">Nora Plus</h3>
                   <p className="mt-2 font-dm-serif text-3xl text-base-content">
                     $49.99<span className="text-base font-normal text-base-content/50">/mo</span>
                   </p>
+                  <p className="mt-1 text-xs text-primary/70 font-medium">7-day free trial</p>
                   <ul className="mt-4 space-y-2 text-sm text-base-content/55">
                     {plusFeatures.map((f) => (
                       <li key={f} className="flex gap-2">
@@ -370,6 +380,17 @@ const Index = () => {
                       </li>
                     ))}
                   </ul>
+                  <div className="mt-auto pt-6">
+                    <a
+                      href="https://buy.stripe.com/bJe4gy4RceG67dyaHwdnW03"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                    >
+                      Start free trial
+                      <ArrowRight className="h-4 w-4" />
+                    </a>
+                  </div>
                 </article>
               </Reveal>
               <Reveal delay={0.14}>
@@ -378,6 +399,7 @@ const Index = () => {
                   <p className="mt-2 font-dm-serif text-3xl text-base-content">
                     $79.99<span className="text-base font-normal text-base-content/50">/mo</span>
                   </p>
+                  <p className="mt-1 text-xs text-primary/70 font-medium">7-day free trial</p>
                   <ul className="mt-4 space-y-2 text-sm text-base-content/55">
                     {proFeatures.map((f) => (
                       <li key={f} className="flex gap-2">
@@ -386,6 +408,17 @@ const Index = () => {
                       </li>
                     ))}
                   </ul>
+                  <div className="mt-auto pt-6">
+                    <a
+                      href="https://buy.stripe.com/6oUeVcfvQcxY8hCcPEdnW02"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex w-full items-center justify-center gap-2 rounded-lg border border-primary/30 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
+                    >
+                      Start free trial
+                      <ArrowRight className="h-4 w-4" />
+                    </a>
+                  </div>
                 </article>
               </Reveal>
             </div>
