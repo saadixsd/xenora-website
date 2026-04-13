@@ -336,7 +336,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.06}>
               <p className="mx-auto mt-3 max-w-xl text-center text-sm text-base-content/55 leading-relaxed">
-                Start free, then upgrade in-app with Stripe. Free tier resets each calendar month (UTC).
+                All paid plans include a <strong className="text-base-content/80">7-day free trial</strong>. Cancel anytime — no charge until the trial ends.
               </p>
             </Reveal>
             <div className="mx-auto mt-10 grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
