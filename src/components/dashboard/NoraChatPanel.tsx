@@ -629,7 +629,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
             >
               <History className="h-4 w-4" />
             </button>
-            <h2 className="truncate font-dm-serif text-base text-foreground sm:text-lg">Ask Nora</h2>
+            <h2 className="truncate font-syne text-base font-semibold text-foreground sm:text-lg">Ask Nora</h2>
           </div>
           <button
             type="button"
@@ -668,7 +668,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
                 >
                   <History className="h-5 w-5" />
                 </button>
-                <h1 className="text-center font-dm-serif text-xl text-foreground sm:text-2xl">Ask Nora</h1>
+                <h1 className="text-center font-syne text-xl font-semibold text-foreground sm:text-2xl">Ask Nora</h1>
               </div>
               {billingPaid && !quotaExempt && (
                 <p className="mt-1 text-center text-[11px] text-muted-foreground">

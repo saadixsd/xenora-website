@@ -96,7 +96,7 @@ export default function AgentWorkspacePage() {
         Dashboard
       </button>
 
-      <h1 className="font-dm-serif text-2xl tracking-tight text-foreground">{copy.title}</h1>
+      <h1 className="font-syne text-2xl font-semibold tracking-tight text-foreground">{copy.title}</h1>
       <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{copy.blurb}</p>
 
       <div className="mt-6 flex flex-wrap gap-2">
