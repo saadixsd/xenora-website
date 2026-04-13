@@ -231,9 +231,9 @@
     color: var(--dash-faint);
   }
 
-  /* Logo watermark: multiply blend so light BG → transparent */
+  /* Logo watermark: near-invisible in light mode */
   .light .logo-watermark {
-    mix-blend-mode: multiply;
-    opacity: 0.08 !important;
+    opacity: 0.04 !important;
+    filter: grayscale(1) brightness(1.5);
   }
 }
