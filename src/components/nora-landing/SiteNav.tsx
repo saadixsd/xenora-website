@@ -157,7 +157,7 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
       {user ? (
         <Link
           to={ROUTES.dashboard.root}
-          className="inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-md bg-primary px-3 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90 sm:min-h-0 sm:min-w-0 sm:py-1.5 sm:text-sm"
+          className="inline-flex min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-md bg-primary px-2.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90 sm:min-h-0 sm:min-w-0 sm:px-3 sm:py-1.5 sm:text-sm"
         >
           Dashboard
         </Link>
