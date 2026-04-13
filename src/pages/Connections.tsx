@@ -38,7 +38,7 @@ export default function Connections() {
   const navigate = useNavigate();
 
   return (
-    <div className="mx-auto min-h-0 min-w-0 max-w-2xl px-3 py-4 sm:px-6 sm:py-6 lg:px-8 font-dm-sans">
+    <div className="mx-auto min-h-0 min-w-0 max-w-2xl px-3 py-4 sm:px-6 sm:py-6 lg:px-8">
       <button
         type="button"
         onClick={() => navigate(ROUTES.dashboard.root)}

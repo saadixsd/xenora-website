@@ -1,6 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
 
 @tailwind base;
@@ -166,9 +164,6 @@
     font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
   }
 
-  .font-playfair {
-    font-family: 'Playfair Display', ui-serif, Georgia, serif;
-  }
   .muted-copy {
     @apply text-muted-foreground leading-relaxed;
     text-wrap: pretty;
@@ -177,12 +172,6 @@
     @apply bg-card/40 backdrop-blur-xl border border-border/40;
   }
 
-  .font-dm-serif {
-    font-family: 'DM Serif Display', ui-serif, Georgia, serif;
-  }
-  .font-dm-sans {
-    font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
-  }
 
   /* App shell: command center (dark + emerald accent) */
   .dashboard-app {

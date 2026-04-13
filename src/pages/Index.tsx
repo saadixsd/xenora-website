@@ -130,7 +130,7 @@ const Index = () => {
         <section className="flex min-h-svh flex-col items-center justify-center px-4 pb-20 pt-[max(5.5rem,calc(env(safe-area-inset-top,0px)+4.5rem))] sm:px-8 sm:pb-24 sm:pt-28">
           <div className="w-full max-w-3xl text-center">
             <Reveal>
-              <p className="font-playfair text-[12px] sm:text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
+              <p className="font-syne text-[12px] sm:text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
                 Nora · Know Beyond · Observe → Adapt → Execute
               </p>
             </Reveal>
@@ -343,7 +343,7 @@ const Index = () => {
               <Reveal delay={0.06}>
                 <article className="surface-panel flex h-full flex-col p-6 text-left">
                   <h3 className="text-base font-semibold text-base-content">Free</h3>
-                  <p className="mt-2 font-dm-serif text-3xl text-base-content">
+                  <p className="mt-2 font-syne text-3xl font-semibold text-base-content">
                     $0<span className="text-base font-normal text-base-content/50">/mo</span>
                   </p>
                   <ul className="mt-4 space-y-2 text-sm text-base-content/55">
@@ -368,7 +368,7 @@ const Index = () => {
                 <article className="surface-panel relative flex h-full flex-col border-primary/25 p-6 text-left ring-1 ring-primary/15">
                   <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-0.5 text-xs font-medium text-primary-foreground">Most popular</span>
                   <h3 className="text-base font-semibold text-base-content">Nora Plus</h3>
-                  <p className="mt-2 font-dm-serif text-3xl text-base-content">
+                  <p className="mt-2 font-syne text-3xl font-semibold text-base-content">
                     $49.99<span className="text-base font-normal text-base-content/50">/mo</span>
                   </p>
                   <p className="mt-1 text-xs text-primary/70 font-medium">7-day free trial</p>
@@ -396,7 +396,7 @@ const Index = () => {
               <Reveal delay={0.14}>
                 <article className="surface-panel flex h-full flex-col p-6 text-left">
                   <h3 className="text-base font-semibold text-base-content">Nora Pro</h3>
-                  <p className="mt-2 font-dm-serif text-3xl text-base-content">
+                  <p className="mt-2 font-syne text-3xl font-semibold text-base-content">
                     $79.99<span className="text-base font-normal text-base-content/50">/mo</span>
                   </p>
                   <p className="mt-1 text-xs text-primary/70 font-medium">7-day free trial</p>
