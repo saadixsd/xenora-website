@@ -356,7 +356,7 @@ const Index = () => {
                   </ul>
                   <div className="mt-auto pt-6">
                     <Link
-                      to={ROUTES.signUp}
+                      to={ROUTES.signup}
                       className="flex w-full items-center justify-center gap-2 rounded-lg border border-primary/30 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
                     >
                       Get started free
