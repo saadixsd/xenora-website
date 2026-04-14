@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { cn } from '@/lib/utils';
 
 interface BreakdownItem {
@@ -26,7 +27,7 @@ const BAR_COLORS: Record<string, string> = {
   research: 'bg-teal-500',
 };
 
-export function HoursSavedBreakdown({ breakdown, totalMinutes }: HoursSavedBreakdownProps) {
+export const HoursSavedBreakdown = memo(function HoursSavedBreakdown({ breakdown, totalMinutes }: HoursSavedBreakdownProps) {
   const max = Math.max(...breakdown.map((b) => b.minutes), 1);
 
   return (
@@ -63,4 +64,4 @@ export function HoursSavedBreakdown({ breakdown, totalMinutes }: HoursSavedBreak
       )}
     </div>
   );
-}
+});

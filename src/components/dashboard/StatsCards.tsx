@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { cn } from '@/lib/utils';
 
 interface StatsCardsProps {
@@ -12,7 +13,7 @@ interface StatsCardsProps {
   onFollowupsClick?: () => void;
 }
 
-export function StatsCards({
+export const StatsCards = memo(function StatsCards({
   hoursSaved,
   leadsProcessed,
   postsGenerated,
@@ -82,4 +83,4 @@ export function StatsCards({
       })}
     </div>
   );
-}
+});

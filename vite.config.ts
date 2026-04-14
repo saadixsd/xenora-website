@@ -21,4 +21,21 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    // Code-splitting: separate vendor chunks for better caching
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "react-vendor": ["react", "react-dom"],
+          "router": ["react-router-dom"],
+          "supabase": ["@supabase/supabase-js"],
+          "ui": ["framer-motion", "lucide-react"],
+        },
+      },
+    },
+    // Target modern browsers for smaller output
+    target: "es2020",
+    // Reduce chunk size warnings threshold
+    chunkSizeWarningLimit: 600,
+  },
 }));
