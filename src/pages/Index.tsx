@@ -9,67 +9,67 @@ import { Reveal } from '@/components/motion/Reveal';
 import { ROUTES } from '@/config/routes';
 
 const flowSteps = [
-  { step: '01', title: 'Input received', body: 'Nora confirms she got your rough idea, transcript, thread, or lead signal.' },
-  { step: '02', title: 'Classifying', body: 'Nora reads context and routes the job to the right agent — Content, Lead, or Research.' },
-  { step: '03', title: 'Executing', body: 'The agent runs with visible progress. No black box.' },
-  { step: '04', title: 'Formatting', body: 'Outputs are structured — posts, hooks, replies — ready for you to scan.' },
-  { step: '05', title: 'Ready to review', body: 'You approve, edit, or regenerate. Nothing publishes or sends until you say so.' },
+  { step: '01', title: 'Input received', body: 'Paste a rough idea, meeting notes, a thread link, or a lead signal. Nora confirms she has what she needs to start.' },
+  { step: '02', title: 'Classifying', body: 'Nora reads the context and routes the task to the right agent: Content, Lead, or Research. No manual selection required.' },
+  { step: '03', title: 'Executing', body: 'The assigned agent works through each step with visible progress. You see exactly what is happening at every stage.' },
+  { step: '04', title: 'Formatting', body: 'Outputs are structured into ready-to-use formats: posts, replies, summaries. No raw text walls to clean up.' },
+  { step: '05', title: 'Ready to review', body: 'Everything lands in your dashboard for approval. Nothing publishes or sends until you give the green light.' },
 ];
 
 const agents = [
   {
     icon: FileText, name: 'Content Agent',
-    body: 'Drop a rough thought. Get back an X post, 3 hooks, a LinkedIn post, and a CTA — then approve before publish.',
+    body: 'Turn a single rough thought into a full content package. One input produces an X post, three hooks, a LinkedIn post, and a call to action. Review and approve before anything goes live.',
     outputs: ['1 X post', '3 hooks', '1 LinkedIn post', '1 CTA'],
     tag: 'Live', active: true,
   },
   {
     icon: Zap, name: 'Lead Agent',
-    body: 'Inbound form or DM → Nora scores, drafts a personalized reply, and queues follow-up after 48h if needed. You approve before send.',
+    body: 'When a lead comes in through a form or DM, Nora scores the opportunity, drafts a personalized reply, and prepares a follow-up for 48 hours later. You review and approve before anything is sent.',
     outputs: ['Lead score', 'Draft reply', 'Follow-up queue'],
     tag: 'Live', active: true,
   },
   {
     icon: Search, name: 'Research Agent',
-    body: 'Notes plus optional public URLs (e.g. Reddit threads) → pain signals, content angles, and relevance you can act on. Same visible steps and review flow.',
+    body: 'Combine your notes with public URLs such as Reddit threads or blog posts. Nora extracts pain signals, content angles, and relevance analysis you can act on immediately.',
     outputs: ['Pain signals', 'Content angles', 'Relevance notes'],
     tag: 'Live', active: true,
   },
 ];
 
 const personas = [
-  { icon: Rocket, title: 'Solo Indie Hackers', body: 'Building your first product while juggling everything else. Emails and lead chaos eat your build time — Nora handles the workflow.' },
-  { icon: Target, title: 'Micro-SaaS Founders', body: '1–3 people at an ops ceiling. No hire in budget. Nora is your first workflow layer.' },
-  { icon: Mic, title: 'Creator Founders', body: 'Audience 1k–50k. Consistency is the lever. Nora turns ideas into posts while you ship product.' },
-  { icon: Users, title: 'Early Bootstrappers', body: "Side hustle to full-time. Can't afford a VA. Nora replaces repetitive ops with visible, approvable runs." },
+  { icon: Rocket, title: 'Solo Indie Hackers', body: 'You are building your first product while handling everything else. Lead chaos and content gaps eat into your build time. Nora takes those tasks off your plate.' },
+  { icon: Target, title: 'Micro-SaaS Founders', body: 'Running a team of one to three and hitting an operational ceiling. No budget for a new hire. Nora acts as your first workflow layer.' },
+  { icon: Mic, title: 'Creator Founders', body: 'You have an audience between 1,000 and 50,000. Consistency is your biggest lever. Nora turns scattered ideas into polished posts while you focus on product.' },
+  { icon: Users, title: 'Early Bootstrappers', body: 'Transitioning from side project to full-time. A virtual assistant is not in the budget. Nora replaces repetitive operational work with structured, reviewable runs.' },
 ];
 
 const comparisonRows = [
-  ['Hours lost polishing the same posts', 'Content Agent: one input → X + hooks + LinkedIn + CTA'],
-  ['Generic AI chat with no audit trail', 'Every stage visible — you trust what ships'],
-  ['Reinventing the prompt every time', 'Same structured workflow every run'],
-  ['Blank page every time you need content', 'Rough note in, publish-ready bundle out'],
-  ['DIY automation wiring', 'Nora: observe → adapt → execute — built for founder workflows'],
+  ['Spending hours polishing the same posts manually', 'One input produces an X post, hooks, LinkedIn post, and CTA in seconds'],
+  ['Using generic AI chat with no record of what was generated', 'Every stage is visible and logged so you trust what you ship'],
+  ['Starting from scratch and reinventing the prompt each time', 'The same structured workflow runs consistently, every time'],
+  ['Staring at a blank page whenever you need content', 'Drop a rough note in, get a publish-ready content package out'],
+  ['Wiring together your own automation stack', 'Nora observes, adapts, and executes within a purpose-built founder workflow'],
 ];
 
 const freeTierFeatures = [
-  '5 workflow runs / month (UTC)',
-  '3 Ask Nora messages / month (UTC)',
-  'Content, Lead, and Research agents',
-  'Dashboard, history, visible steps',
+  '5 workflow runs per month',
+  '3 Ask Nora messages per month',
+  'Access to Content, Lead, and Research agents',
+  'Full dashboard with run history and visible steps',
 ];
 const plusFeatures = [
   'Unlimited workflow runs (fair use)',
-  'Unlimited Ask Nora (fair use)',
-  'All agents: Content, Lead, Research',
-  'Connections: link Gmail, X, Instagram, LinkedIn — Nora reads your data via API for smarter analysis',
-  'Billing via Stripe — cancel anytime in portal',
+  'Unlimited Ask Nora conversations (fair use)',
+  'All three agents: Content, Lead, Research',
+  'Connections: link Gmail, X, Instagram, and LinkedIn so Nora can analyze your data via API',
+  'Managed billing via Stripe with cancel-anytime flexibility',
 ];
 const proFeatures = [
-  'Everything in Nora Plus',
-  'Deeper Ask Nora answers (Pro model & limits)',
-  'Priority connections & advanced API analysis',
-  'Same workflow engine — upgraded chat experience',
+  'Everything included in Nora Plus',
+  'Enhanced Ask Nora responses with Pro-tier model and higher limits',
+  'Priority connections with advanced API analysis',
+  'Same workflow engine with an upgraded conversational experience',
 ];
 
 const Index = () => {
@@ -133,7 +133,7 @@ const Index = () => {
           <div className="w-full max-w-3xl text-center">
             <Reveal>
               <p className="font-syne text-[12px] sm:text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
-                Nora · Know Beyond · Observe → Adapt → Execute
+                Nora · Know Beyond
               </p>
             </Reveal>
             <Reveal delay={0.05}>
@@ -145,7 +145,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-4 max-w-2xl text-sm text-base-content/65 leading-relaxed sm:mt-6 sm:text-base lg:text-lg">
-                You bring the idea. Nora handles the execution.
+                You bring the idea. Nora handles content, leads, and research so you can focus on what actually moves the needle.
               </p>
             </Reveal>
 
@@ -197,7 +197,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-3 max-w-lg text-center text-sm text-base-content/45">
-                Visible AI, not magic AI — every stage on every run.
+                Every run follows the same transparent pipeline. You see each stage as it happens.
               </p>
             </Reveal>
 
@@ -225,7 +225,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.03}>
               <h2 className="premium-heading mt-3 text-center text-2xl font-medium sm:text-3xl">
-                Three agents, all live. Pick one and run.
+                Three agents. All live. Select one and run.
               </h2>
             </Reveal>
 
@@ -338,7 +338,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.06}>
               <p className="mx-auto mt-3 max-w-xl text-center text-sm text-base-content/55 leading-relaxed">
-                All paid plans include a <strong className="text-base-content/80">7-day free trial</strong>. Cancel anytime — no charge until the trial ends.
+                Every paid plan includes a <strong className="text-base-content/80">7-day free trial</strong>. Cancel anytime before the trial ends and you will not be charged.
               </p>
             </Reveal>
             <div className="mx-auto mt-10 grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
@@ -446,7 +446,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mt-2 text-center text-sm text-base-content/45">
-                Get on our email list for release notes and what we ship next. Unsubscribe anytime.
+                Join our mailing list for release notes and product updates. Unsubscribe anytime.
               </p>
             </Reveal>
             <Reveal delay={0.1}>
