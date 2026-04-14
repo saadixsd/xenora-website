@@ -26,7 +26,27 @@ const FETCH_TIMEOUT_MS = 8_000;
 const MAX_FETCH_BYTES = 120_000;
 const MAX_CONTEXT_CHARS = 24_000;
 
-const MINUTES_BY_AGENT = { content: 15, lead: 10, research: 25 } as const;
+/** Minutes saved per output type — based on realistic manual effort estimates */
+const MINUTES_PER_OUTPUT: Record<string, number> = {
+  x_post: 8,           // crafting a punchy tweet from scratch
+  hook: 4,             // brainstorming a single hook
+  linkedin_post: 12,   // drafting a polished LinkedIn post
+  cta: 3,              // writing a CTA line
+  lead_summary: 6,     // researching + summarizing a lead
+  score_rationale: 5,  // scoring and reasoning
+  lead_reply_draft: 10,// drafting a personalized reply
+  follow_up_48h: 8,    // writing a follow-up message
+  objections_to_watch: 7, // anticipating objections
+  pain_signals: 10,    // reading threads + extracting pain
+  content_angles: 8,   // brainstorming angles from research
+  quotes_evidence: 6,  // pulling quotes from sources
+  relevance_rationale: 5, // writing relevance analysis
+  research_caveats: 3, // noting gaps/caveats
+};
+
+function calculateMinutesSaved(outputRows: Array<{ output_type: string }>): number {
+  return outputRows.reduce((sum, row) => sum + (MINUTES_PER_OUTPUT[row.output_type] ?? 5), 0);
+}
 
 function isRateLimited(userId: string): boolean {
   const now = Date.now();
@@ -365,7 +385,7 @@ Deno.serve(async (req) => {
           .eq("id", runId);
       };
 
-      const minutesSaved = MINUTES_BY_AGENT[agentKind];
+      let minutesSaved = 0; // calculated after outputs are built
 
       try {
         await updateStep(safeStep(agentKind, "input_received"));
@@ -512,6 +532,9 @@ If sources failed or are thin, say so in caveats and still infer carefully from 
 
         await updateStep(safeStep(agentKind, "formatting"));
         await new Promise((r) => setTimeout(r, 400));
+
+        // Calculate minutes saved based on actual outputs produced
+        minutesSaved = calculateMinutesSaved(outputRows);
 
         const { error: insertErr } = await supabaseAdmin.from("workflow_outputs").insert(outputRows);
         if (insertErr) console.error("Failed to insert outputs:", insertErr);
