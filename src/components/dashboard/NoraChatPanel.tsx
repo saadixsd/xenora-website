@@ -20,6 +20,7 @@ import { ROUTES } from '@/config/routes';
 import { isNoraQuotaExemptEmail } from '@/config/noraQuota';
 import { NORA_CHAT_SESSIONS_CHANGED, type NoraChatSessionsChangedDetail } from '@/lib/noraChatSession';
 import { describeNoraAppRoute } from '@/lib/noraRouteContext';
+import { buildNoraPersonalContext } from '@/lib/noraPersonalContext';
 import { isNoraVoiceTtsEnabled, speakNoraReply, speakNoraStatus } from '@/lib/noraTts';
 import {
   getSpeechRecognitionCtor,
