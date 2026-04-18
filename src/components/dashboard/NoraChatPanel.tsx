@@ -341,12 +341,15 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       }
 
       const apiSlice = nextHistory.slice(-28);
+      const personal = user?.id ? await buildNoraPersonalContext(user.id) : '';
+      const routeCtx = describeNoraAppRoute(location.pathname);
+      const clientContext = personal ? `${routeCtx}\n\n${personal}` : routeCtx;
       const result = await sendClaudeChat({
         messages: apiSlice,
         accessToken: t,
         mode: chatKind === 'agent_builder' ? 'agent_builder' : undefined,
         userEmail: user?.email ?? null,
-        clientContext: describeNoraAppRoute(location.pathname),
+        clientContext,
       });
       if (!isNoraQuotaExemptEmail(user?.email)) {
         if (result.paid) {
