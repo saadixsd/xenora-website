@@ -160,6 +160,57 @@ export type Database = {
         }
         Relationships: []
       }
+      user_connections: {
+        Row: {
+          access_token_encrypted: string | null
+          account_label: string | null
+          connected_at: string
+          expires_at: string | null
+          id: string
+          provider: string
+          provider_account_id: string | null
+          refresh_token_encrypted: string | null
+          refresh_token_iv: string | null
+          scopes: string[]
+          status: string
+          token_iv: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          access_token_encrypted?: string | null
+          account_label?: string | null
+          connected_at?: string
+          expires_at?: string | null
+          id?: string
+          provider: string
+          provider_account_id?: string | null
+          refresh_token_encrypted?: string | null
+          refresh_token_iv?: string | null
+          scopes?: string[]
+          status?: string
+          token_iv?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          access_token_encrypted?: string | null
+          account_label?: string | null
+          connected_at?: string
+          expires_at?: string | null
+          id?: string
+          provider?: string
+          provider_account_id?: string | null
+          refresh_token_encrypted?: string | null
+          refresh_token_iv?: string | null
+          scopes?: string[]
+          status?: string
+          token_iv?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_custom_agents: {
         Row: {
           created_at: string
