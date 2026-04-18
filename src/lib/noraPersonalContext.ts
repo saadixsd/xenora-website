@@ -12,7 +12,7 @@ export async function buildNoraPersonalContext(userId: string): Promise<string> 
   try {
     const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
-    const [agentsRes, runsRes] = await Promise.all([
+    const [agentsRes, runs, templates] = await Promise.all([
       supabase
         .from('user_custom_agents' as any)
         .select('name, mission, output_deliverables, created_at')
@@ -25,22 +25,12 @@ export async function buildNoraPersonalContext(userId: string): Promise<string> 
         .eq('user_id', userId)
         .gte('created_at', since)
         .order('created_at', { ascending: false })
-        .limit: undefined as never,
+        .limit(15),
+      supabase
+        .from('workflow_templates' as any)
+        .select('id, name')
+        .limit(50),
     ]);
-
-    // Re-query runs cleanly (the limit chain above is intentionally split for clarity)
-    const runs = await supabase
-      .from('workflow_runs' as any)
-      .select('id, template_id, status, current_step, goal, estimated_minutes_saved, created_at, completed_at')
-      .eq('user_id', userId)
-      .gte('created_at', since)
-      .order('created_at', { ascending: false })
-      .limit(15);
-
-    const templates = await supabase
-      .from('workflow_templates' as any)
-      .select('id, name')
-      .limit(50);
     const tmplMap = new Map<string, string>();
     (templates.data ?? []).forEach((t: any) => tmplMap.set(t.id, t.name));
 
