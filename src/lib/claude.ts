@@ -77,7 +77,7 @@ export async function sendClaudeChat(params: {
     body: JSON.stringify({
       messages: msgs,
       ...(params.mode === 'agent_builder' ? { mode: 'agent_builder' } : {}),
-      ...(params.clientContext?.trim() ? { client_context: params.clientContext.trim().slice(0, 2000) } : {}),
+      ...(params.clientContext?.trim() ? { client_context: params.clientContext.trim().slice(0, 4000) } : {}),
     }),
   });
 

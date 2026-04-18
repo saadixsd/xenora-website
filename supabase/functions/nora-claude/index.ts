@@ -301,9 +301,9 @@ Deno.serve(async (req) => {
   }
   const ctxRaw = typeof body.client_context === "string" ? body.client_context.trim() : "";
   if (ctxRaw) {
-    const ctx = ctxRaw.slice(0, 2000);
+    const ctx = ctxRaw.slice(0, 4000);
     system =
-      `${system}\n\n## Client context (where the user is in the app)\n${ctx}\nTailor examples to this screen. Do not invent data the user did not provide. Never imply publish/send without explicit user approval.\n\n## Pointer context\nWhen a user message starts with [Context: ...], it describes the UI element they are pointing at with their mouse while using voice. Use this to explain what that element does, help them navigate, or answer questions about the specific feature they are looking at. Be specific and helpful about the exact element described.`;
+      `${system}\n\n## Client context (where the user is in the app, plus their personal data)\n${ctx}\nTailor examples to this screen and use the personal data above to answer questions about the user's own agents, runs, and outputs. Cite real numbers from the data; do not invent figures the user did not provide. Never imply publish/send without explicit user approval.\n\n## Pointer context\nWhen a user message starts with [Context: ...], it describes the UI element they are pointing at with their mouse while using voice. Use this to explain what that element does, help them navigate, or answer questions about the specific feature they are looking at. Be specific and helpful about the exact element described.`;
   }
   const rawMsgs = Array.isArray(body.messages) ? body.messages.slice(0, MAX_MESSAGES) : [];
   const messages: AnthropicMessage[] = rawMsgs
