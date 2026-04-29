@@ -592,9 +592,43 @@ const Index = () => {
                   to={ROUTES.tryNora}
                   className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
                 >
-                  Try Nora
+                  Join Beta
                   <ArrowRight className="h-4 w-4" />
                 </Link>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ── FINAL CTA ── */}
+        <section className="border-t border-base-content/[0.07] px-4 py-14 sm:px-8 sm:py-20">
+          <div className="mx-auto max-w-3xl text-center">
+            <Reveal>
+              <h2 className="premium-heading text-2xl font-medium sm:text-3xl md:text-4xl">
+                Stop juggling tabs. Start running workflows.
+              </h2>
+            </Reveal>
+            <Reveal delay={0.05}>
+              <p className="mx-auto mt-3 max-w-xl text-sm text-base-content/55 sm:text-base">
+                Join the Nora beta and put your first workflow live this week. Built in Montreal for founders who ship.
+              </p>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <Link
+                  to={ROUTES.tryNora}
+                  className="group inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-[0_10px_30px_rgba(0,200,150,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(0,200,150,0.26)]"
+                >
+                  Join Beta
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => scrollToSection('see-nora')}
+                  className="inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-base-content/10 px-6 py-3 text-sm text-base-content/70 transition-colors hover:border-base-content/20 hover:text-base-content"
+                >
+                  See Nora demo
+                </button>
               </div>
             </Reveal>
           </div>
