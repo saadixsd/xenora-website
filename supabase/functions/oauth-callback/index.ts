@@ -6,11 +6,29 @@ function redirect(url: string): Response {
   return new Response(null, { status: 302, headers: { Location: url } });
 }
 
+const ALLOWED_FRONTEND_ORIGINS = [
+  'https://xenora-ai-portal.lovable.app',
+  'https://id-preview--cf0b3265-7678-4c8c-b33e-3db7eaeb9c10.lovable.app',
+  'http://localhost:8080',
+  'http://localhost:5173',
+];
+
+function pickFrontendBase(candidate: string | null): string {
+  if (candidate) {
+    try {
+      const u = new URL(candidate);
+      const originOnly = `${u.protocol}//${u.host}`;
+      if (ALLOWED_FRONTEND_ORIGINS.includes(originOnly)) return originOnly;
+    } catch { /* ignore */ }
+  }
+  return ALLOWED_FRONTEND_ORIGINS[0];
+}
+
 Deno.serve(async (req) => {
   const url = new URL(req.url);
-  const origin = req.headers.get('origin') ?? req.headers.get('referer') ?? '';
-  // Best-effort frontend base. Falls back to a relative path the browser resolves.
-  const frontendBase = url.searchParams.get('frontend') || origin || '';
+  const rawOrigin = req.headers.get('origin') ?? req.headers.get('referer') ?? '';
+  const candidate = url.searchParams.get('frontend') || rawOrigin || '';
+  const frontendBase = pickFrontendBase(candidate);
   const successUrl = (provider: string) =>
     `${frontendBase}/dashboard/connections?connected=${provider}`;
   const errorUrl = (msg: string) =>
