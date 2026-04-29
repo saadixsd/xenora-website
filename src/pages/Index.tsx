@@ -144,23 +144,28 @@ const Index = () => {
 
       <main className="relative z-10">
         {/* ── HERO ── */}
+        {/*
+          Headline options (swap freely):
+          A) "Nora turns rough input into reviewable AI workflows." — descriptive, product-led (current).
+          B) "Your workflow problem in. A working agent out." — punchier, founder-brutal.
+        */}
         <section className="flex min-h-svh flex-col items-center justify-center px-4 pb-20 pt-[max(5.5rem,calc(env(safe-area-inset-top,0px)+4.5rem))] sm:px-8 sm:pb-24 sm:pt-28">
           <div className="w-full max-w-3xl text-center">
             <Reveal>
               <p className="font-syne text-[12px] sm:text-[13px] font-medium uppercase tracking-[0.14em] text-base-content/45 leading-none">
-                Nora · Know Beyond
+                XenoraAI · Agentic workflows for founders
               </p>
             </Reveal>
             <Reveal delay={0.05}>
               <h1 className="premium-heading mt-4 text-[1.75rem] font-medium leading-tight sm:text-4xl md:text-5xl lg:text-7xl">
-                Turn raw founder input into{' '}
+                Nora turns rough input into{' '}
                 <br className="hidden sm:block" />
-                approved workflow outputs
+                reviewable AI workflows
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-4 max-w-2xl text-sm text-base-content/65 leading-relaxed sm:mt-6 sm:text-base lg:text-lg">
-                Built for solo SaaS founders. Nora takes rough notes, lead signals, and research prompts and converts them into structured drafts and follow-ups you approve before anything goes live.
+                Built for founders, entrepreneurs, and SMBs. Drop in ideas, notes, transcripts, leads, or URLs. Nora runs visible step-by-step workflows for content, follow-up, research, and operations. You review and approve before anything ships.
               </p>
             </Reveal>
 
@@ -172,16 +177,16 @@ const Index = () => {
                     className="group relative min-h-[44px] w-full overflow-hidden rounded-lg bg-primary px-10 py-3.5 text-center text-base font-medium text-primary-foreground shadow-[0_10px_30px_rgba(0,200,150,0.14)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(0,200,150,0.22)] sm:w-auto"
                   >
                     <span className="relative z-10 flex items-center justify-center gap-2">
-                      Try Nora
+                      Join Beta
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                     </span>
                   </Link>
                   <button
                     type="button"
                     className="min-h-[44px] w-full rounded-lg border border-base-content/10 px-8 py-3 text-base text-base-content/60 transition-all duration-300 hover:border-base-content/20 hover:text-base-content sm:w-auto"
-                    onClick={() => scrollToSection('how-it-works')}
+                    onClick={() => scrollToSection('see-nora')}
                   >
-                    How it works
+                    See Nora demo
                   </button>
                 </div>
                 <p className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-base-content/45">
@@ -200,6 +205,118 @@ const Index = () => {
                   </Link>
                 </p>
               </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ── SEE NORA IN ACTION (visual workflow mockup) ── */}
+        <section id="see-nora" className="scroll-mt-24 border-t border-base-content/[0.07] px-4 py-12 sm:px-8 sm:py-16">
+          <div className="mx-auto max-w-5xl">
+            <Reveal>
+              <p className="text-center text-[11px] font-medium uppercase tracking-[0.14em] text-base-content/35">
+                See Nora in action
+              </p>
+            </Reveal>
+            <Reveal delay={0.04}>
+              <h2 className="premium-heading mt-3 text-center text-2xl font-medium sm:text-3xl">
+                Input → Workflow → Output
+              </h2>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <p className="mx-auto mt-3 max-w-xl text-center text-sm text-base-content/55">
+                One run. Visible steps. Reviewable outputs. This is the core loop founders use every day.
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.12}>
+              <div className="mt-10 grid gap-4 lg:grid-cols-3">
+                <div className="surface-panel flex flex-col p-5">
+                  <div className="flex items-center gap-2">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15">
+                      <Inbox className="h-4 w-4 text-primary" />
+                    </div>
+                    <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-base-content/45">Input</p>
+                  </div>
+                  <p className="mt-3 text-xs text-base-content/45">Founder note</p>
+                  <p className="mt-1.5 text-sm leading-relaxed text-base-content/75">
+                    "Shipped async invites today. Cuts onboarding from 3 days to 4 hours. Want to post about it and reply to the 2 leads from yesterday."
+                  </p>
+                  <div className="mt-auto flex flex-wrap gap-1.5 pt-4">
+                    <span className="rounded-md bg-base-content/[0.06] px-2 py-0.5 text-[11px] text-base-content/55">notes</span>
+                    <span className="rounded-md bg-base-content/[0.06] px-2 py-0.5 text-[11px] text-base-content/55">leads</span>
+                    <span className="rounded-md bg-base-content/[0.06] px-2 py-0.5 text-[11px] text-base-content/55">URLs</span>
+                    <span className="rounded-md bg-base-content/[0.06] px-2 py-0.5 text-[11px] text-base-content/55">transcripts</span>
+                  </div>
+                </div>
+
+                <div className="surface-panel flex flex-col p-5">
+                  <div className="flex items-center gap-2">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15">
+                      <Sparkles className="h-4 w-4 text-primary" />
+                    </div>
+                    <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-base-content/45">Workflow run</p>
+                    <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary ring-1 ring-primary/20">running</span>
+                  </div>
+                  <ul className="mt-4 space-y-2.5">
+                    {[
+                      { label: 'Input received', state: 'done' },
+                      { label: 'Routed to Content Agent', state: 'done' },
+                      { label: 'Drafting hooks + LinkedIn post', state: 'active' },
+                      { label: 'Drafting lead replies', state: 'pending' },
+                      { label: 'Stage for review', state: 'pending' },
+                    ].map((s) => (
+                      <li key={s.label} className="flex items-center gap-2.5">
+                        <span
+                          className={`h-2 w-2 shrink-0 rounded-full ${
+                            s.state === 'done'
+                              ? 'bg-primary'
+                              : s.state === 'active'
+                                ? 'bg-primary animate-pulse'
+                                : 'bg-base-content/20'
+                          }`}
+                        />
+                        <span
+                          className={`text-sm ${
+                            s.state === 'done'
+                              ? 'text-base-content/75'
+                              : s.state === 'active'
+                                ? 'text-base-content font-medium'
+                                : 'text-base-content/40'
+                          }`}
+                        >
+                          {s.label}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="surface-panel flex flex-col p-5">
+                  <div className="flex items-center gap-2">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15">
+                      <FileCheck2 className="h-4 w-4 text-primary" />
+                    </div>
+                    <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-base-content/45">Output (review gate)</p>
+                  </div>
+                  <ul className="mt-4 space-y-2 text-sm text-base-content/70">
+                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary/70" /> 1 X post + 3 hooks</li>
+                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary/70" /> 1 LinkedIn post + CTA</li>
+                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary/70" /> 2 personalized lead replies</li>
+                    <li className="flex items-start gap-2"><Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary/70" /> Follow-up queued for 48h</li>
+                  </ul>
+                  <div className="mt-auto flex flex-wrap gap-1.5 pt-4">
+                    <span className="rounded-md bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary/80">review</span>
+                    <span className="rounded-md bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary/80">edit</span>
+                    <span className="rounded-md bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary/80">rerun</span>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.18}>
+              <p className="mx-auto mt-6 max-w-xl text-center text-xs text-base-content/40">
+                Mockup of a real Nora run. Nothing is sent or published until you approve.
+              </p>
             </Reveal>
           </div>
         </section>
