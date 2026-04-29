@@ -151,7 +151,7 @@ export function DashboardLayout() {
             aria-hidden
             onClick={() => setNoraOpen(false)}
           />
-          <div className="dark fixed inset-y-0 right-0 z-[95] flex h-[100dvh] max-h-[100dvh] w-full min-w-0 max-w-[min(28rem,100vw)] flex-col border-l border-[var(--dash-border)] bg-[var(--dash-bg)] pt-[env(safe-area-inset-top,0px)] text-[var(--dash-text)] shadow-2xl">
+          <div className="fixed inset-y-0 right-0 z-[95] flex h-[100dvh] max-h-[100dvh] w-full min-w-0 max-w-[min(28rem,100vw)] flex-col border-l border-[var(--dash-border)] bg-[var(--dash-bg)] pt-[env(safe-area-inset-top,0px)] text-[var(--dash-text)] shadow-2xl">
             <NoraChatPanel variant="sheet" onClose={() => setNoraOpen(false)} />
           </div>
         </>

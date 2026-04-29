@@ -41,7 +41,7 @@ export function QuickRunInput({ templateId, footerNote }: QuickRunInputProps) {
 
   return (
     <div className="min-w-0 rounded-xl border border-border bg-card p-4 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
-      <p className="text-[13px] font-medium text-foreground mb-2.5">What should Nora handle next?</p>
+      <p className="mb-2.5 text-[13.5px] font-medium text-foreground">What should Nora handle next?</p>
       <textarea
         value={input}
         onChange={(e) => setInput(e.target.value)}
@@ -55,7 +55,7 @@ export function QuickRunInput({ templateId, footerNote }: QuickRunInputProps) {
             key={c.label}
             type="button"
             onClick={() => setInput(c.prompt)}
-            className="min-h-[34px] rounded-full border border-border bg-card px-2.5 py-1 text-[11.5px] text-muted-foreground transition-colors hover:border-primary hover:bg-primary/10 hover:text-primary"
+            className="min-h-[34px] rounded-full border border-border bg-card px-2.5 py-1 text-[12px] text-muted-foreground transition-colors hover:border-primary hover:bg-primary/10 hover:text-primary"
           >
             {c.label}
           </button>
@@ -69,8 +69,8 @@ export function QuickRunInput({ templateId, footerNote }: QuickRunInputProps) {
       >
         Run workflow
       </button>
-      <p className="mt-2 text-center text-[11px] text-muted-foreground">Typical run time: ~2 minutes</p>
-      <p className="mt-1 rounded-md bg-primary/5 px-2 py-1 text-center text-[11px] text-muted-foreground">
+      <p className="mt-2 text-center text-[12px] text-muted-foreground">Typical run time: ~2 minutes</p>
+      <p className="mt-1 rounded-md bg-primary/5 px-2 py-1 text-center text-[12px] text-muted-foreground">
         {footerNote ?? 'Nothing is sent or published until you approve.'}
       </p>
     </div>

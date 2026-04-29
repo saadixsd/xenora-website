@@ -33,7 +33,7 @@
     --secondary-foreground: 0 0% 96%;
 
     --muted: 240 12% 10%;
-    --muted-foreground: 240 8% 46%;
+    --muted-foreground: 240 10% 68%;
 
     --accent: 260 30% 16%;
     --accent-foreground: 0 0% 96%;
@@ -73,8 +73,8 @@
     --dash-surface-deep: #141920;
     --dash-border: rgba(255, 255, 255, 0.06);
     --dash-text: #f0f4f8;
-    --dash-muted: #8a9bb0;
-    --dash-faint: #3f5060;
+    --dash-muted: #a8b6c7;
+    --dash-faint: #6f7f93;
     --dash-hover: rgba(255, 255, 255, 0.04);
     --dash-bar-bg: rgba(255, 255, 255, 0.06);
     --dash-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
@@ -134,10 +134,10 @@
     --dash-bg: #f7f8fa;
     --dash-surface: #ffffff;
     --dash-surface-deep: #eef0f4;
-    --dash-border: rgba(0, 0, 0, 0.08);
+    --dash-border: rgba(0, 0, 0, 0.12);
     --dash-text: #1a1d23;
-    --dash-muted: #5f6b7a;
-    --dash-faint: #9ca3af;
+    --dash-muted: #475569;
+    --dash-faint: #667385;
     --dash-hover: rgba(0, 0, 0, 0.03);
     --dash-bar-bg: rgba(0, 0, 0, 0.06);
     --dash-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
@@ -222,12 +222,12 @@
   }
 
   .dash-label {
-    @apply font-space-mono text-[9px] uppercase tracking-[0.14em];
-    color: var(--dash-faint);
+    @apply font-space-mono text-[10px] uppercase tracking-[0.12em];
+    color: var(--dash-muted);
   }
 
   .dash-breadcrumb {
-    @apply font-space-mono text-[10px] tracking-[0.06em];
+    @apply font-space-mono text-[11px] tracking-[0.05em];
     color: var(--dash-faint);
   }
 

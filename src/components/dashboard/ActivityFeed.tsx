@@ -30,8 +30,8 @@ function timeAgo(dateStr: string): string {
 
 const statusStyle: Record<string, string> = {
   completed: 'bg-[var(--dash-accent-dim)] text-[var(--dash-accent)]',
-  running: 'bg-amber-500/15 text-amber-400',
-  failed: 'bg-red-500/15 text-red-400',
+  running: 'bg-amber-500/15 text-amber-700 dark:text-amber-300',
+  failed: 'bg-red-500/15 text-red-700 dark:text-red-300',
   pending: 'bg-[var(--dash-status-pending-bg)] text-[var(--dash-muted)]',
 };
 
@@ -81,7 +81,7 @@ export function ActivityFeed() {
     return (
       <div className="dash-panel min-w-0 p-3 sm:p-4">
         <p className="dash-label mb-3">Recent runs</p>
-        <p className="py-6 text-center text-[11.5px] leading-relaxed text-[var(--dash-muted)] sm:text-[12.5px]">
+        <p className="py-6 text-center text-[12px] leading-relaxed text-[var(--dash-muted)] sm:text-[13px]">
           Your workflow timeline starts here. Run one workflow and approvals and outputs will appear here.
         </p>
       </div>
@@ -95,7 +95,7 @@ export function ActivityFeed() {
         <button
           type="button"
           onClick={() => navigate(ROUTES.dashboard.history)}
-          className="min-h-[32px] shrink-0 px-1 text-[11px] text-[var(--dash-accent)] hover:underline sm:text-[12px]"
+          className="min-h-[32px] shrink-0 px-1 text-[12px] text-[var(--dash-accent)] hover:underline"
         >
           View all
         </button>
@@ -126,10 +126,10 @@ export function ActivityFeed() {
                 {icon}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="line-clamp-1 break-words text-[12px] font-medium leading-snug text-[var(--dash-text)] sm:text-[13px]">
+                <p className="line-clamp-1 break-words text-[12.5px] font-medium leading-snug text-[var(--dash-text)] sm:text-[13px]">
                   {run.input_text.slice(0, 120)}
                 </p>
-                <p className="mt-0.5 text-[10px] text-[var(--dash-faint)] sm:text-[11px]">
+                <p className="mt-0.5 text-[11px] text-[var(--dash-faint)]">
                   {tName} · {timeAgo(run.created_at)} · {readableStatus}
                 </p>
               </div>
