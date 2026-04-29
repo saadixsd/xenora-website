@@ -137,7 +137,7 @@ const Index = () => {
           to={ROUTES.tryNora}
           className="flex min-h-[48px] max-w-[calc(100vw-2rem)] items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-[0_8px_30px_rgba(0,200,150,0.22)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_12px_40px_rgba(0,200,150,0.3)] sm:max-w-none sm:px-6 sm:py-3"
         >
-          Try Nora
+          Join Beta
           <ArrowRight className="h-4 w-4" />
         </Link>
       </motion.div>
