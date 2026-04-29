@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import { Instagram, Linkedin, FileText, Search, Zap, ArrowRight, Check, X as XIcon, Rocket, Target } from 'lucide-react';
+import { Instagram, Linkedin, FileText, Search, Zap, ArrowRight, Check, X as XIcon, Rocket, Target, Inbox, Sparkles, FileCheck2 } from 'lucide-react';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
 import { ProductEmailUpdatesForm } from '@/components/nora-landing/ProductEmailUpdatesForm';
