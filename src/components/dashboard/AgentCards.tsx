@@ -52,7 +52,7 @@ export function AgentCards() {
   if (templates.length === 0) {
     return (
       <div className="dash-panel p-4 text-center">
-        <p className="text-[12px] text-[var(--dash-muted)]">No agents available yet.</p>
+        <p className="text-[12px] text-[var(--dash-muted)]">No agents loaded yet. Run your first workflow to activate agent history.</p>
       </div>
     );
   }
@@ -71,7 +71,7 @@ export function AgentCards() {
             <div className="mb-2 flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <span className={cn('h-2 w-2 shrink-0 rounded-full', AGENT_COLORS[kind] || 'bg-[var(--dash-accent)]')} />
-                <span className="text-[10px] font-medium text-[var(--dash-muted)] sm:text-[11px]">Live</span>
+                <span className="text-[10px] font-medium text-[var(--dash-muted)] sm:text-[11px]">Ready</span>
               </div>
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--dash-accent-subtle)]">
                 <Icon className="h-4 w-4 text-[var(--dash-accent)]" />
@@ -87,16 +87,16 @@ export function AgentCards() {
               <button
                 type="button"
                 onClick={() => navigate(`${ROUTES.dashboard.runNew}?template=${t.id}`)}
-                className="min-h-[32px] rounded-md bg-[var(--dash-accent)] px-2.5 py-1 text-[10px] font-medium text-[var(--dash-accent-fg)] transition-opacity hover:opacity-90 sm:min-h-0 sm:text-[11px]"
+                className="min-h-[36px] rounded-md bg-[var(--dash-accent)] px-2.5 py-1 text-[10px] font-medium text-[var(--dash-accent-fg)] transition-opacity hover:opacity-90 sm:min-h-0 sm:text-[11px]"
               >
-                Run now
+                Run workflow
               </button>
               <button
                 type="button"
                 onClick={() => navigate(ROUTES.dashboard.history)}
-                className="min-h-[32px] rounded-md border border-[var(--dash-border)] bg-transparent px-2.5 py-1 text-[10px] text-[var(--dash-muted)] transition-colors hover:border-[var(--dash-accent-hover)] hover:text-[var(--dash-text)] sm:min-h-0 sm:text-[11px]"
+                className="min-h-[36px] rounded-md border border-[var(--dash-border)] bg-transparent px-2.5 py-1 text-[10px] text-[var(--dash-muted)] transition-colors hover:border-[var(--dash-accent-hover)] hover:text-[var(--dash-text)] sm:min-h-0 sm:text-[11px]"
               >
-                History
+                Open history
               </button>
             </div>
           </div>

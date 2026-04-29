@@ -6,6 +6,7 @@ import { StatsCards } from '@/components/dashboard/StatsCards';
 import { AgentCards } from '@/components/dashboard/AgentCards';
 import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
 import { HoursSavedBreakdown } from '@/components/dashboard/HoursSavedBreakdown';
+import { QuickRunInput } from '@/components/dashboard/QuickRunInput';
 import { ROUTES } from '@/config/routes';
 
 interface RunRow {
@@ -75,6 +76,7 @@ const Dashboard = () => {
   }, [fetchData]);
 
   const completedRuns = runs.filter((r) => r.status === 'completed');
+  const startedRuns = runs.filter((r) => r.status !== 'pending').length;
   const totalMinutesSaved = completedRuns.reduce((s, r) => s + (r.estimated_minutes_saved ?? 0), 0);
 
   const templateMap = useMemo(() => {
@@ -103,10 +105,17 @@ const Dashboard = () => {
   }, [completedRuns, templateMap]);
 
   const isEmpty = runs.length === 0;
+  const completionRate = startedRuns > 0 ? Math.round((completedRuns.length / startedRuns) * 100) : 0;
+  const defaultTemplateId = templates.find((t) => classifyTemplate(t.name) === 'content')?.id;
+  const displayName =
+    (typeof user?.user_metadata?.full_name === 'string' && user.user_metadata.full_name.trim()) ||
+    (typeof user?.user_metadata?.name === 'string' && user.user_metadata.name.trim()) ||
+    user?.email?.split('@')[0] ||
+    'there';
 
   const subtitle = isEmpty
-    ? 'Start a workflow run to see your stats and activity.'
-    : `${completedRuns.length} completed run${completedRuns.length !== 1 ? 's' : ''} this month.`;
+    ? 'You are one run away from your first approved output.'
+    : `${completedRuns.length} completed run${completedRuns.length !== 1 ? 's' : ''} this month. Keep the momentum going.`;
 
   return (
     <div className="mx-auto min-h-0 min-w-0 max-w-5xl px-3 py-4 sm:px-6 sm:py-6 lg:px-8">
@@ -121,9 +130,9 @@ const Dashboard = () => {
       <div className="dash-panel mb-4 sm:mb-5 px-4 py-4 sm:px-5 sm:py-5">
         <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
-            <p className="dash-label mb-1">Command center</p>
+            <p className="dash-label mb-1">Welcome back, {displayName}</p>
             <h1 className="font-syne text-[22px] font-semibold tracking-tight text-[var(--dash-text)] sm:text-[26px]">
-              Overview
+              Ready to run Nora today?
             </h1>
             <p className="mt-1 text-[12.5px] leading-relaxed text-[var(--dash-muted)] sm:text-[13px]">{subtitle}</p>
           </div>
@@ -133,17 +142,39 @@ const Dashboard = () => {
               onClick={() => navigate(ROUTES.dashboard.runNew)}
               className="min-h-[44px] flex-1 rounded-lg bg-[var(--dash-accent)] px-3.5 py-2 text-[12.5px] font-medium text-[var(--dash-accent-fg)] transition-opacity hover:opacity-90 sm:flex-none sm:text-[13px]"
             >
-              New workflow
+              Run workflow
             </button>
             <button
               type="button"
               onClick={() => navigate(ROUTES.dashboard.settings)}
               className="min-h-[44px] rounded-lg border border-[var(--dash-border)] bg-transparent px-3.5 py-2 text-[12.5px] text-[var(--dash-text)] transition-colors hover:bg-[var(--dash-hover)] sm:text-[13px]"
             >
-              Settings
+              Open settings
             </button>
           </div>
         </div>
+      </div>
+
+      <div className="mb-4 grid gap-3 sm:mb-5 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="dash-panel px-4 py-4 sm:px-5 sm:py-5">
+          <p className="dash-label mb-1">This month&apos;s workflow momentum</p>
+          <h2 className="font-syne text-[20px] font-semibold tracking-tight text-[var(--dash-text)] sm:text-[24px]">
+            {startedRuns} started · {completedRuns.length} completed · {completionRate}% completion
+          </h2>
+          <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-[var(--dash-border)]">
+            <div
+              className="h-full rounded-full bg-[var(--dash-accent)] transition-all duration-500"
+              style={{ width: `${Math.max(6, Math.min(100, completionRate || 0))}%` }}
+            />
+          </div>
+          <p className="mt-1 text-[12px] text-[var(--dash-muted)] sm:text-[13px]">
+            Goal: complete one workflow today and keep completion above 60%.
+          </p>
+        </div>
+        <QuickRunInput
+          templateId={defaultTemplateId}
+          footerNote="Quick start for solo founders: describe outcome, review output, then run."
+        />
       </div>
 
       <StatsCards

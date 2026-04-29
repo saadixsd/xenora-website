@@ -76,6 +76,27 @@ const BUILTIN_AGENT_INFO: Record<string, { label: string; description: string }>
 
 const AGENT_TYPE_QUERY_VALUES = new Set(['content', 'leads', 'research']);
 
+function inferAgentTypeFromInput(raw: string): 'content' | 'leads' | 'research' | null {
+  const text = raw.trim().toLowerCase();
+  if (!text) return null;
+
+  const leadSignals = ['lead', 'reply', 'inbound', 'outreach', 'dm', 'follow-up', 'follow up', 'prospect'];
+  const researchSignals = ['research', 'reddit', 'competitor', 'market', 'url', 'thread', 'analyze', 'analysis'];
+  const contentSignals = ['post', 'linkedin', 'x post', 'tweet', 'hook', 'caption', 'content'];
+
+  if (leadSignals.some((token) => text.includes(token))) return 'leads';
+  if (researchSignals.some((token) => text.includes(token))) return 'research';
+  if (contentSignals.some((token) => text.includes(token))) return 'content';
+  return null;
+}
+
+function expectationTextForTemplate(name: string): string {
+  const kind = classifyTemplateKind(name);
+  if (kind === 'leads') return 'Expected output: lead score, response draft, and queued follow-up.';
+  if (kind === 'research') return 'Expected output: pain signals, angle map, and relevance summary.';
+  return 'Expected output: 1 X post, 3 hooks, 1 LinkedIn draft, and 1 CTA.';
+}
+
 const WorkflowRun = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
@@ -112,6 +133,7 @@ const WorkflowRun = () => {
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [customAgents, setCustomAgents] = useState<CustomAgent[]>([]);
   const [templatesReady, setTemplatesReady] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   useEffect(() => {
     if (!user?.id) return;
@@ -146,6 +168,16 @@ const WorkflowRun = () => {
       setWizardStep(1);
     }
   }, [preselectedTemplate, agentTypeFromQuery, templates]);
+
+  useEffect(() => {
+    if (preselectedTemplate || selectedTemplate || !inputText.trim() || templates.length === 0) return;
+    const inferredAgent = inferAgentTypeFromInput(inputText);
+    if (!inferredAgent) return;
+    const match = resolveBuiltinTemplate(templates, inferredAgent);
+    if (!match) return;
+    setSelectedTemplate(match.id);
+    setWizardStep(1);
+  }, [preselectedTemplate, selectedTemplate, inputText, templates]);
 
   // selectedAgentId is no longer used (agents table doesn't exist)
   useEffect(() => {
@@ -228,6 +260,10 @@ const WorkflowRun = () => {
     [templates, selectedTemplate],
   );
   const isResearchTemplate = selectedTemplateName.toLowerCase().includes('research');
+  const selectedTemplateExpectation = useMemo(
+    () => (selectedTemplateName ? expectationTextForTemplate(selectedTemplateName) : ''),
+    [selectedTemplateName],
+  );
 
   const handleSelectTemplate = (tid: string) => {
     setSelectedTemplate(tid);
@@ -400,7 +436,7 @@ const WorkflowRun = () => {
             Template:{' '}
             <span className="font-medium text-foreground">
               {agentTypeFromQuery === 'leads'
-                ? 'Leads Agent'
+                ? 'Lead Agent'
                 : agentTypeFromQuery === 'research'
                   ? 'Research Agent'
                   : 'Content Agent'}
@@ -533,6 +569,11 @@ const WorkflowRun = () => {
 
         {wizardStep >= 1 && (
           <div className="mt-4 sm:mt-6 space-y-4 sm:space-y-5">
+            {selectedTemplateExpectation && (
+              <div className="rounded-lg border border-primary/20 bg-primary/5 px-3 py-2.5 text-[12px] text-primary/90">
+                {selectedTemplateExpectation}
+              </div>
+            )}
             <div className="surface-panel p-3.5 sm:p-5">
               <label className="mb-2 block text-sm font-medium text-foreground">
                 {isResearchTemplate ? 'Research focus & notes' : 'Your raw idea or thought'}
@@ -550,47 +591,64 @@ const WorkflowRun = () => {
               />
             </div>
 
-            {isResearchTemplate && (
-              <div className="surface-panel p-5">
-                <label className="mb-2 block text-sm font-medium text-foreground">Source URLs (optional, max 5)</label>
-                <p className="mb-2 text-xs text-muted-foreground">
-                  One per line. Reddit thread links are fetched server-side when possible; failures still run on your notes.
-                </p>
-                <textarea
-                  value={researchUrlsRaw}
-                  onChange={(e) => setResearchUrlsRaw(e.target.value)}
-                  placeholder="https://www.reddit.com/r/SomeSub/comments/..."
-                  rows={3}
-                  className="w-full resize-none rounded-lg border border-border bg-card/50 p-3 text-sm text-foreground outline-none placeholder:text-muted-foreground/50 focus:border-primary/30"
-                />
+            <div className="surface-panel p-4 sm:p-5">
+              <button
+                type="button"
+                onClick={() => setShowAdvanced((prev) => !prev)}
+                className="text-[12px] font-medium text-primary hover:underline"
+              >
+                {showAdvanced ? 'Hide advanced options' : 'Show advanced options'}
+              </button>
+              <p className="mt-1 text-[11px] text-muted-foreground">
+                Optional: add run goal, tone, and research URLs.
+              </p>
+            </div>
+
+            {showAdvanced && (
+              <div className="space-y-4">
+                {isResearchTemplate && (
+                  <div className="surface-panel p-5">
+                    <label className="mb-2 block text-sm font-medium text-foreground">Source URLs (optional, max 5)</label>
+                    <p className="mb-2 text-xs text-muted-foreground">
+                      One per line. Reddit thread links are fetched server-side when possible; failures still run on your notes.
+                    </p>
+                    <textarea
+                      value={researchUrlsRaw}
+                      onChange={(e) => setResearchUrlsRaw(e.target.value)}
+                      placeholder="https://www.reddit.com/r/SomeSub/comments/..."
+                      rows={3}
+                      className="w-full resize-none rounded-lg border border-border bg-card/50 p-3 text-sm text-foreground outline-none placeholder:text-muted-foreground/50 focus:border-primary/30"
+                    />
+                  </div>
+                )}
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="surface-panel p-5">
+                    <label className="mb-2 block text-sm font-medium text-foreground">Goal (optional)</label>
+                    <Input
+                      value={goal}
+                      onChange={(e) => setGoal(e.target.value)}
+                      placeholder="e.g. Drive signups this month"
+                      className="bg-card/50 border-border"
+                    />
+                  </div>
+                  <div className="surface-panel p-5">
+                    <label className="mb-2 block text-sm font-medium text-foreground">Tone</label>
+                    <select
+                      value={tone}
+                      onChange={(e) => setTone(e.target.value)}
+                      className="w-full rounded-lg border border-border bg-card/50 px-3 py-2 text-sm text-foreground outline-none focus:border-primary/30"
+                    >
+                      <option value="professional">Professional</option>
+                      <option value="casual">Casual</option>
+                      <option value="bold">Bold</option>
+                      <option value="witty">Witty</option>
+                      <option value="inspirational">Inspirational</option>
+                    </select>
+                  </div>
+                </div>
               </div>
             )}
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="surface-panel p-5">
-                <label className="mb-2 block text-sm font-medium text-foreground">Goal (optional)</label>
-                <Input
-                  value={goal}
-                  onChange={(e) => setGoal(e.target.value)}
-                  placeholder="e.g. Drive signups this month"
-                  className="bg-card/50 border-border"
-                />
-              </div>
-              <div className="surface-panel p-5">
-                <label className="mb-2 block text-sm font-medium text-foreground">Tone</label>
-                <select
-                  value={tone}
-                  onChange={(e) => setTone(e.target.value)}
-                  className="w-full rounded-lg border border-border bg-card/50 px-3 py-2 text-sm text-foreground outline-none focus:border-primary/30"
-                >
-                  <option value="professional">Professional</option>
-                  <option value="casual">Casual</option>
-                  <option value="bold">Bold</option>
-                  <option value="witty">Witty</option>
-                  <option value="inspirational">Inspirational</option>
-                </select>
-              </div>
-            </div>
 
             {error && <p className="text-[13px] sm:text-sm text-destructive">{error}</p>}
 
@@ -654,6 +712,9 @@ const WorkflowRun = () => {
       <div className="surface-panel mt-4 p-4">
         <p className="text-xs text-muted-foreground">Input</p>
         <p className="mt-1 text-sm text-foreground">{inputText}</p>
+        <p className="mt-2 text-[11px] text-muted-foreground">
+          Review gate: nothing is sent or published until you approve outputs.
+        </p>
       </div>
 
       {steps.length > 0 && (
@@ -674,6 +735,9 @@ const WorkflowRun = () => {
       {outputs.length > 0 && (
         <div className="mt-6">
           <h2 className="mb-3 text-sm font-medium text-foreground">Outputs</h2>
+          <p className="mb-3 text-xs text-muted-foreground">
+            Outputs are draft-ready and waiting for your approval workflow.
+          </p>
           <div className="space-y-3">
             {outputs.map((o, idx) => (
               <OutputCard

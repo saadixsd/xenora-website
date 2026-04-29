@@ -105,7 +105,7 @@ export function ChatHistorySidebar({
     try {
       const { error } = await deleteNoraChatSession(sessionId);
       if (error) {
-        toast({ title: 'Could not delete', description: error.message, variant: 'destructive' });
+        toast({ title: 'Could not delete conversation', description: error.message, variant: 'destructive' });
         return;
       }
       dispatchNoraChatSessionsChanged(sessionId);
@@ -113,8 +113,8 @@ export function ChatHistorySidebar({
     } catch (err) {
       console.error(err);
       toast({
-        title: 'Could not delete',
-        description: err instanceof Error ? err.message : 'Something went wrong',
+        title: 'Could not delete conversation',
+        description: err instanceof Error ? err.message : 'Please try again in a moment.',
         variant: 'destructive',
       });
     } finally {

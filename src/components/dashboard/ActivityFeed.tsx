@@ -42,6 +42,13 @@ const statusIcon: Record<string, string> = {
   pending: '•',
 };
 
+const statusText: Record<string, string> = {
+  completed: 'Output ready for review',
+  running: 'Run in progress',
+  failed: 'Run needs retry',
+  pending: 'Queued',
+};
+
 export function ActivityFeed() {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -75,7 +82,7 @@ export function ActivityFeed() {
       <div className="dash-panel min-w-0 p-3 sm:p-4">
         <p className="dash-label mb-3">Recent runs</p>
         <p className="py-6 text-center text-[11.5px] leading-relaxed text-[var(--dash-muted)] sm:text-[12.5px]">
-          Nothing here yet. Start a run and results will show up here.
+          Your workflow timeline starts here. Run one workflow and approvals and outputs will appear here.
         </p>
       </div>
     );
@@ -88,16 +95,17 @@ export function ActivityFeed() {
         <button
           type="button"
           onClick={() => navigate(ROUTES.dashboard.history)}
-          className="shrink-0 text-[11px] text-[var(--dash-accent)] hover:underline sm:text-[12px]"
+          className="min-h-[32px] shrink-0 px-1 text-[11px] text-[var(--dash-accent)] hover:underline sm:text-[12px]"
         >
           View all
         </button>
       </div>
       <div className="max-h-[60vh] overflow-y-auto overscroll-y-contain sm:max-h-[50vh]">
         {runs.map((run, i) => {
-          const tName = templates[run.template_id] || 'Workflow';
+          const tName = templates[run.template_id] || 'Workflow run';
           const style = statusStyle[run.status] || statusStyle.pending;
           const icon = statusIcon[run.status] || '•';
+          const readableStatus = statusText[run.status] || statusText.pending;
 
           return (
             <button
@@ -105,7 +113,7 @@ export function ActivityFeed() {
               type="button"
               onClick={() => navigate(`${ROUTES.dashboard.root}/run/${run.id}`)}
               className={cn(
-                'flex w-full items-start gap-2 py-2 text-left sm:gap-3 sm:py-2.5 hover:bg-[var(--dash-hover)] rounded-md transition-colors',
+                'flex min-h-[54px] w-full items-start gap-2 py-2 text-left sm:gap-3 sm:py-2.5 hover:bg-[var(--dash-hover)] rounded-md transition-colors',
                 i < runs.length - 1 && 'border-b border-[var(--dash-border)]',
               )}
             >
@@ -122,7 +130,7 @@ export function ActivityFeed() {
                   {run.input_text.slice(0, 120)}
                 </p>
                 <p className="mt-0.5 text-[10px] text-[var(--dash-faint)] sm:text-[11px]">
-                  {tName} · {timeAgo(run.created_at)} · {run.status}
+                  {tName} · {timeAgo(run.created_at)} · {readableStatus}
                 </p>
               </div>
             </button>

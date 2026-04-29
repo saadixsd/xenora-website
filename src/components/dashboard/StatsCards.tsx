@@ -24,7 +24,7 @@ export const StatsCards = memo(function StatsCards({
   onPostsClick,
   onFollowupsClick,
 }: StatsCardsProps) {
-  const emptyHint = 'Run a workflow to start tracking';
+  const emptyHint = 'Run your first workflow to unlock this metric';
 
   const cards = [
     {
@@ -36,7 +36,7 @@ export const StatsCards = memo(function StatsCards({
     {
       label: 'Leads processed',
       value: String(leadsProcessed),
-      hint: isEmpty ? emptyHint : 'Classified and scored by Leads Agent',
+      hint: isEmpty ? emptyHint : 'Classified and scored by Lead Agent',
       onClick: onLeadsClick,
     },
     {

@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import { Instagram, Linkedin, FileText, Search, Zap, ArrowRight, Check, X as XIcon, Users, Rocket, Mic, Target } from 'lucide-react';
+import { Instagram, Linkedin, FileText, Search, Zap, ArrowRight, Check, X as XIcon, Rocket, Target } from 'lucide-react';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
 import { ProductEmailUpdatesForm } from '@/components/nora-landing/ProductEmailUpdatesForm';
@@ -9,11 +9,11 @@ import { Reveal } from '@/components/motion/Reveal';
 import { ROUTES } from '@/config/routes';
 
 const flowSteps = [
-  { step: '01', title: 'Input received', body: 'Paste a rough idea, meeting notes, a thread link, or a lead signal. Nora confirms she has what she needs to start.' },
-  { step: '02', title: 'Classifying', body: 'Nora reads the context and routes the task to the right agent: Content, Lead, or Research. No manual selection required.' },
-  { step: '03', title: 'Executing', body: 'The assigned agent works through each step with visible progress. You see exactly what is happening at every stage.' },
-  { step: '04', title: 'Formatting', body: 'Outputs are structured into ready-to-use formats: posts, replies, summaries. No raw text walls to clean up.' },
-  { step: '05', title: 'Ready to review', body: 'Everything lands in your dashboard for approval. Nothing publishes or sends until you give the green light.' },
+  { step: '01', title: 'Input', body: 'Drop rough notes, a lead message, or a research prompt. Nora confirms scope before running.' },
+  { step: '02', title: 'Agent routing', body: 'Nora routes your run to the right workflow: Content Agent, Lead Agent, or Research Agent.' },
+  { step: '03', title: 'Execution', body: 'Each step runs in sequence with visible progress so you can follow exactly what is happening.' },
+  { step: '04', title: 'Review gate', body: 'Outputs are structured and staged for approval. Nothing is sent or published automatically.' },
+  { step: '05', title: 'Approved output', body: 'Once approved, your team gets ready-to-use drafts, tasks, and follow-ups linked to the run.' },
 ];
 
 const agents = [
@@ -38,10 +38,8 @@ const agents = [
 ];
 
 const personas = [
-  { icon: Rocket, title: 'Solo Indie Hackers', body: 'You are building your first product while handling everything else. Lead chaos and content gaps eat into your build time. Nora takes those tasks off your plate.' },
-  { icon: Target, title: 'Micro-SaaS Founders', body: 'Running a team of one to three and hitting an operational ceiling. No budget for a new hire. Nora acts as your first workflow layer.' },
-  { icon: Mic, title: 'Creator Founders', body: 'You have an audience between 1,000 and 50,000. Consistency is your biggest lever. Nora turns scattered ideas into polished posts while you focus on product.' },
-  { icon: Users, title: 'Early Bootstrappers', body: 'Transitioning from side project to full-time. A virtual assistant is not in the budget. Nora replaces repetitive operational work with structured, reviewable runs.' },
+  { icon: Rocket, title: 'Primary: Solo SaaS Founders', body: 'You are building product, running distribution, and handling customer follow-ups alone. Nora turns that repetitive operational load into reviewable workflow runs.' },
+  { icon: Target, title: 'Secondary: Small Founder Teams (2-5)', body: 'You need consistent execution before hiring ops. Nora standardizes content, lead follow-up, and research outputs in one visible system.' },
 ];
 
 const comparisonRows = [
@@ -52,24 +50,42 @@ const comparisonRows = [
   ['Wiring together your own automation stack', 'Nora observes, adapts, and executes within a purpose-built founder workflow'],
 ];
 
+const proofExamples = [
+  {
+    title: 'Launch update workflow',
+    problem: 'Raw build notes from one founder update',
+    outcome: '1 X post, 3 hooks, 1 LinkedIn draft, and a CTA in one reviewed run',
+  },
+  {
+    title: 'Inbound lead workflow',
+    problem: 'New lead DM with limited context',
+    outcome: 'Lead score, personalized response draft, and a queued follow-up ready for approval',
+  },
+  {
+    title: 'Market research workflow',
+    problem: 'Notes plus two public URLs',
+    outcome: 'Pain signals, angle map, and prioritized actions for next content/test cycle',
+  },
+];
+
 const freeTierFeatures = [
-  '5 workflow runs per month',
+  '5 reviewed workflow runs per month',
   '3 Ask Nora messages per month',
-  'Access to Content, Lead, and Research agents',
-  'Full dashboard with run history and visible steps',
+  'Access to Content Agent, Lead Agent, and Research Agent',
+  'Run history + visible progress timeline',
 ];
 const plusFeatures = [
   'Unlimited workflow runs (fair use)',
   'Unlimited Ask Nora conversations (fair use)',
-  'All three agents: Content, Lead, Research',
-  'Connections: link Gmail, X, Instagram, and LinkedIn so Nora can analyze your data via API',
+  'All three agents with higher throughput',
+  'Connections: link Gmail, X, Instagram, and LinkedIn for workflow context',
   'Managed billing via Stripe with cancel-anytime flexibility',
 ];
 const proFeatures = [
   'Everything included in Nora Plus',
   'Enhanced Ask Nora responses with Pro-tier model and higher limits',
-  'Priority connections with advanced API analysis',
-  'Same workflow engine with an upgraded conversational experience',
+  'Priority connections and advanced analysis depth',
+  'Best fit for teams running daily multi-workflow operations',
 ];
 
 const Index = () => {
@@ -138,14 +154,14 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.05}>
               <h1 className="premium-heading mt-4 text-[1.75rem] font-medium leading-tight sm:text-4xl md:text-5xl lg:text-7xl">
-                Stop losing build time{' '}
+                Turn raw founder input into{' '}
                 <br className="hidden sm:block" />
-                to repetitive work
+                approved workflow outputs
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-4 max-w-2xl text-sm text-base-content/65 leading-relaxed sm:mt-6 sm:text-base lg:text-lg">
-                You bring the idea. Nora handles content, leads, and research so you can focus on what actually moves the needle.
+                Built for solo SaaS founders. Nora takes rough notes, lead signals, and research prompts and converts them into structured drafts and follow-ups you approve before anything goes live.
               </p>
             </Reveal>
 
@@ -271,8 +287,8 @@ const Index = () => {
         <section className="border-t border-base-content/[0.07] px-4 py-12 sm:px-8 sm:py-14">
           <div className="mx-auto max-w-4xl">
             <Reveal>
-              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">
-                Built for founders who wear all the hats
+                <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">
+                Built for lean founder teams
               </h2>
             </Reveal>
 
@@ -288,6 +304,36 @@ const Index = () => {
                       <p className="mt-1 text-sm leading-relaxed text-base-content/50">{p.body}</p>
                     </div>
                   </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── PROOF ── */}
+        <section className="border-t border-base-content/[0.07] px-4 py-12 sm:px-8 sm:py-14">
+          <div className="mx-auto max-w-4xl">
+            <Reveal>
+              <h2 className="premium-heading text-center text-2xl font-medium sm:text-3xl">
+                Proof in real workflows
+              </h2>
+            </Reveal>
+            <Reveal delay={0.05}>
+              <p className="mx-auto mt-3 max-w-xl text-center text-sm text-base-content/50">
+                Nora is designed to produce measurable outputs from one run, not vague chat replies.
+              </p>
+            </Reveal>
+
+            <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 sm:gap-4">
+              {proofExamples.map((example, index) => (
+                <Reveal key={example.title} delay={0.08 * index}>
+                  <article className="surface-panel h-full p-5">
+                    <h3 className="text-sm font-semibold text-base-content">{example.title}</h3>
+                    <p className="mt-2 text-xs text-base-content/45">Input</p>
+                    <p className="mt-1 text-sm text-base-content/60">{example.problem}</p>
+                    <p className="mt-3 text-xs text-base-content/45">Output after review</p>
+                    <p className="mt-1 text-sm text-base-content/75">{example.outcome}</p>
+                  </article>
                 </Reveal>
               ))}
             </div>
@@ -338,7 +384,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.06}>
               <p className="mx-auto mt-3 max-w-xl text-center text-sm text-base-content/55 leading-relaxed">
-                Every paid plan includes a <strong className="text-base-content/80">7-day free trial</strong>. Cancel anytime before the trial ends and you will not be charged.
+                Start free, validate one workflow, then scale. Every paid plan includes a <strong className="text-base-content/80">7-day free trial</strong> and can be canceled anytime.
               </p>
             </Reveal>
             <div className="mx-auto mt-10 grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">

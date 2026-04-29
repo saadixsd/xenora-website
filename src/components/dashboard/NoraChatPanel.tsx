@@ -388,8 +388,8 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
         setFreeTierBlocked(true);
         setQueriesUsedThisMonth(e.queries_used);
         toast({
-          title: 'Free Ask Nora limit reached',
-          description: 'Upgrade in Settings → Billing to keep chatting.',
+          title: 'Monthly Ask Nora limit reached',
+          description: 'Upgrade in Settings -> Billing to continue this month.',
           variant: 'destructive',
         });
         const limitMsg =
@@ -433,11 +433,11 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       .insert({ user_id: user.id, chat_kind: chatKind, title: chatKind === 'agent_builder' ? 'Agent builder' : 'Chat' })
       .select('id')
       .single();
-    if (error || !data?.id) { toast({ title: 'Could not start chat', description: error?.message, variant: 'destructive' }); return; }
+    if (error || !data?.id) { toast({ title: 'Could not start conversation', description: error?.message, variant: 'destructive' }); return; }
     setSessionId(data.id);
     setMessages([]);
     setDeployedKeys({});
-    toast({ title: 'New conversation started' });
+    toast({ title: 'New conversation ready' });
   };
 
   const deployAgent = async (spec: NoraAgentSpec, key: string) => {
@@ -450,9 +450,9 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       interview_summary: spec.interview_summary.slice(0, 8000) || null, starter_prompt: spec.starter_prompt.slice(0, 4000) || null,
     });
     setDeployingKey(null);
-    if (error) { toast({ title: 'Deploy failed', description: error.message, variant: 'destructive' }); return; }
+    if (error) { toast({ title: 'Agent deploy failed', description: error.message, variant: 'destructive' }); return; }
     setDeployedKeys((p) => ({ ...p, [key]: true }));
-    toast({ title: 'Agent deployed', description: `${spec.name} is saved. Open Manage agents to run it with the Content workflow.` });
+    toast({ title: 'Agent deployed', description: `${spec.name} is saved. Open Manage agents to run it with a workflow.` });
   };
 
   const onSubmit = (e: React.FormEvent) => { e.preventDefault(); void send(input); };
@@ -486,8 +486,8 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       const Ctor = getSpeechRecognitionCtor();
       if (!Ctor) {
         toast({
-          title: 'Voice not available',
-          description: 'Use Chrome, Edge, or Safari with microphone access.',
+          title: 'Voice is not available',
+          description: 'Use Chrome, Edge, or Safari and allow microphone access.',
           variant: 'destructive',
         });
         resumeAmbient();
@@ -561,7 +561,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
         }
       } catch {
         setVoiceAssistantListening(false);
-        toast({ title: 'Could not start microphone', variant: 'destructive' });
+        toast({ title: 'Could not start microphone', description: 'Check microphone permission and try again.', variant: 'destructive' });
         resumeAmbient();
         setNoraVoiceUiPhase('idle');
       }

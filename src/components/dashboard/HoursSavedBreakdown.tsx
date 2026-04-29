@@ -59,7 +59,7 @@ export const HoursSavedBreakdown = memo(function HoursSavedBreakdown({ breakdown
       </div>
       {totalMinutes === 0 && (
         <p className="mt-3 text-center text-[11px] text-[var(--dash-faint)] sm:text-[12px]">
-          Finish a few runs to see how time stacks by agent.
+          Finish your first workflow to see time saved by agent.
         </p>
       )}
     </div>
