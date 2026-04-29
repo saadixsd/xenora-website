@@ -110,13 +110,47 @@ function normalizeRedditJsonUrl(raw: string): string {
   }
 }
 
+function isPrivateOrReservedHost(hostname: string): boolean {
+  const h = hostname.toLowerCase();
+  if (h === 'localhost' || h.endsWith('.localhost') || h.endsWith('.internal') || h.endsWith('.local')) return true;
+  if (h === 'metadata.google.internal') return true;
+  // IPv6 quick checks
+  if (h === '::1' || h.startsWith('fc') || h.startsWith('fd') || h.startsWith('fe80')) return true;
+  // IPv4 dotted-quad
+  const m = h.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+  if (m) {
+    const [a, b] = [parseInt(m[1], 10), parseInt(m[2], 10)];
+    if (a === 10) return true;
+    if (a === 127) return true;
+    if (a === 0) return true;
+    if (a === 169 && b === 254) return true; // link-local incl. cloud metadata
+    if (a === 172 && b >= 16 && b <= 31) return true;
+    if (a === 192 && b === 168) return true;
+    if (a >= 224) return true; // multicast / reserved
+  }
+  return false;
+}
+
 async function fetchUrlText(url: string): Promise<{ ok: boolean; summary: string; error?: string }> {
   const controller = new AbortController();
   const t = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
   try {
+    let parsed: URL;
+    try {
+      parsed = new URL(url);
+    } catch {
+      return { ok: false, summary: "", error: `${url} → invalid URL` };
+    }
+    if (parsed.protocol !== "https:") {
+      return { ok: false, summary: "", error: `${url} → only https:// URLs are allowed` };
+    }
+    if (isPrivateOrReservedHost(parsed.hostname)) {
+      return { ok: false, summary: "", error: `${url} → host not allowed` };
+    }
     const target = url.includes("reddit.com") ? normalizeRedditJsonUrl(url) : url;
     const res = await fetch(target, {
       signal: controller.signal,
+      redirect: "manual",
       headers: {
         "User-Agent": "NoraResearchBot/1.0 (founder research; contact: support@xenora.ai)",
         Accept: url.includes("reddit.com") ? "application/json" : "text/html, text/plain, */*",
