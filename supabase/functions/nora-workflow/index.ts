@@ -135,9 +135,22 @@ async function fetchUrlText(url: string): Promise<{ ok: boolean; summary: string
   const controller = new AbortController();
   const t = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
   try {
+    let parsed: URL;
+    try {
+      parsed = new URL(url);
+    } catch {
+      return { ok: false, summary: "", error: `${url} → invalid URL` };
+    }
+    if (parsed.protocol !== "https:") {
+      return { ok: false, summary: "", error: `${url} → only https:// URLs are allowed` };
+    }
+    if (isPrivateOrReservedHost(parsed.hostname)) {
+      return { ok: false, summary: "", error: `${url} → host not allowed` };
+    }
     const target = url.includes("reddit.com") ? normalizeRedditJsonUrl(url) : url;
     const res = await fetch(target, {
       signal: controller.signal,
+      redirect: "manual",
       headers: {
         "User-Agent": "NoraResearchBot/1.0 (founder research; contact: support@xenora.ai)",
         Accept: url.includes("reddit.com") ? "application/json" : "text/html, text/plain, */*",
