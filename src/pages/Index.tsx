@@ -8,12 +8,11 @@ import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackgr
 import { Reveal } from '@/components/motion/Reveal';
 import { ROUTES } from '@/config/routes';
 
+// 3-step "How Nora works" — refined for founder clarity (Input → Workflow → Output).
 const flowSteps = [
-  { step: '01', title: 'Input', body: 'Drop rough notes, a lead message, or a research prompt. Nora confirms scope before running.' },
-  { step: '02', title: 'Agent routing', body: 'Nora routes your run to the right workflow: Content Agent, Lead Agent, or Research Agent.' },
-  { step: '03', title: 'Execution', body: 'Each step runs in sequence with visible progress so you can follow exactly what is happening.' },
-  { step: '04', title: 'Review gate', body: 'Outputs are structured and staged for approval. Nothing is sent or published automatically.' },
-  { step: '05', title: 'Approved output', body: 'Once approved, your team gets ready-to-use drafts, tasks, and follow-ups linked to the run.' },
+  { step: '01', title: 'Add rough input', body: 'Drop a note, lead message, transcript, URL, or half-formed idea. No prompt engineering required.' },
+  { step: '02', title: 'Nora runs the workflow', body: 'Nora routes to the right agent and runs visible, step-by-step. You see exactly what is happening.' },
+  { step: '03', title: 'Review and use', body: 'Structured outputs land in a review gate. Edit, approve, copy, or rerun. Nothing ships without you.' },
 ];
 
 const agents = [
