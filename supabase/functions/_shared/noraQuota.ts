@@ -1,5 +1,5 @@
-/** Founder / internal accounts: skip public daily caps (case-insensitive). */
-const BUILT_IN_EXEMPT = ["saadkashif2005@gmail.com"];
+/** Founder / internal accounts: skip public daily caps (case-insensitive). Configured via NORA_UNLIMITED_EMAILS env var. */
+const BUILT_IN_EXEMPT: string[] = [];
 
 export function noraQuotaExemptEmails(): Set<string> {
   const set = new Set(BUILT_IN_EXEMPT.map((e) => e.toLowerCase()));
