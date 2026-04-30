@@ -72,13 +72,6 @@ interface CustomAgent {
   starter_prompt: string | null;
 }
 
-import {
-  FREE_MAX_CUSTOM_AGENTS,
-  PAID_MAX_CUSTOM_AGENTS,
-  isPaidNoraSubscription,
-  type BillingSubscriptionRow,
-} from '@/lib/billing';
-
 const BUILTIN_AGENT_INFO: Record<string, { label: string; description: string }> = {
   content: { label: 'Content Agent', description: 'X posts, hooks, LinkedIn drafts, and CTAs.' },
   leads: { label: 'Lead Agent', description: 'Score leads, draft replies, queue follow-ups.' },
