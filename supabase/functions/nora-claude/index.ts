@@ -1,5 +1,5 @@
 /**
- * Claude proxy for Nora chat — JWT required; free tier 3 Ask Nora messages per UTC calendar month unless paid (Plus/Pro) or exempt emails.
+ * Claude proxy for Nora chat — JWT required; free tier 10 Ask Nora messages per UTC calendar month unless paid (Plus/Pro) or exempt emails.
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { isNoraQuotaExemptEmail } from "../_shared/noraQuota.ts";
@@ -272,7 +272,7 @@ Deno.serve(async (req) => {
         {
           error: "free_tier_exhausted",
           message:
-            "You've used all 3 free Ask Nora messages for this calendar month (UTC). Upgrade to Nora Plus or Nora Pro in Settings → Billing to continue.",
+            `You've used all ${FREE_MONTHLY_CHATS} free Ask Nora messages for this calendar month (UTC). Upgrade to Nora Plus or Nora Pro in Settings → Billing to continue.`,
           queries_used: FREE_MONTHLY_CHATS,
           limit: FREE_MONTHLY_CHATS,
         },
