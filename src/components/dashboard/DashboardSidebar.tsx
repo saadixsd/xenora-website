@@ -15,6 +15,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { ROUTES } from '@/config/routes';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
+import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 
 const RUN_PREFIX = `${ROUTES.dashboard.root}/run`;
 
@@ -80,6 +81,7 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
     .slice(0, 2);
 
   const displayName = user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'User';
+  const firstName = displayName.split(' ')[0];
 
   const handleSignOut = async () => {
     await signOut();
@@ -100,12 +102,14 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
       <div className="flex items-center justify-between gap-3 border-b border-[var(--dash-border)] px-4 py-4 sm:px-5">
         <Link
           to={ROUTES.dashboard.root}
-          className="flex min-w-0 shrink items-center gap-2"
+          className="flex min-w-0 shrink items-center gap-2 sm:gap-2.5"
           onClick={onClose}
           aria-label="Dashboard home"
         >
-          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--dash-accent)]" aria-hidden />
-          <span className="font-syne text-[14px] font-bold tracking-[0.08em] text-[var(--dash-text)]">NORA</span>
+          <XenoraLogo decorative className="h-8 w-8 shrink-0 sm:h-10 sm:w-10" />
+          <span className="truncate text-base font-medium tracking-tight text-[var(--dash-text)] sm:text-lg">
+            {firstName}
+          </span>
         </Link>
         {onClose && (
           <button
