@@ -160,32 +160,54 @@ const Dashboard = () => {
       <div className="mb-4 grid gap-3 sm:mb-5 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="dash-panel px-4 py-4 sm:px-5 sm:py-5">
           <p className="dash-label mb-1">This month&apos;s workflow momentum</p>
-          <h2 className="font-syne text-[20px] font-semibold tracking-tight text-[var(--dash-text)] sm:text-[24px]">
-            {startedRuns} started · {completedRuns.length} completed · {completionRate}% completion
-          </h2>
-          <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-[var(--dash-border)]">
-            <div
-              className="h-full rounded-full bg-[var(--dash-accent)] transition-all duration-500"
-              style={{ width: `${Math.max(6, Math.min(100, completionRate || 0))}%` }}
-            />
-          </div>
-          <p className="mt-1 text-[12px] text-[var(--dash-muted)] sm:text-[13px]">
-            Goal: complete one workflow today and keep completion above 60%.
-          </p>
+          {dataLoading ? (
+            <>
+              <div className="h-7 w-3/4 animate-pulse rounded bg-[var(--dash-border)]" />
+              <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-[var(--dash-border)]" />
+              <div className="mt-2 h-3 w-1/2 animate-pulse rounded bg-[var(--dash-border)]" />
+            </>
+          ) : (
+            <>
+              <h2 className="font-syne text-[20px] font-semibold tracking-tight text-[var(--dash-text)] sm:text-[24px]">
+                {startedRuns} started · {completedRuns.length} completed · {completionRate}% completion
+              </h2>
+              <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-[var(--dash-border)]">
+                <div
+                  className="h-full rounded-full bg-[var(--dash-accent)] transition-all duration-500"
+                  style={{ width: `${Math.max(6, Math.min(100, completionRate || 0))}%` }}
+                />
+              </div>
+              <p className="mt-1 text-[12px] text-[var(--dash-muted)] sm:text-[13px]">
+                Goal: complete one workflow today and keep completion above 60%.
+              </p>
+            </>
+          )}
         </div>
         <QuickRunInput
           templateId={defaultTemplateId}
-          footerNote="Quick start for solo founders: describe outcome, review output, then run."
+          footerNote="Quick start: describe outcome, review output, then run."
         />
       </div>
 
-      <StatsCards
-        hoursSaved={formatHoursSaved(totalMinutesSaved)}
-        leadsProcessed={leadsProcessed}
-        postsGenerated={outputCount}
-        followupsQueued={0}
-        isEmpty={isEmpty}
-      />
+      {dataLoading ? (
+        <div className="grid min-w-0 grid-cols-2 gap-2 sm:gap-3 md:grid-cols-4">
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="dash-panel min-w-0 p-3 sm:p-4">
+              <div className="h-3 w-1/2 animate-pulse rounded bg-[var(--dash-border)]" />
+              <div className="mt-2 h-7 w-2/3 animate-pulse rounded bg-[var(--dash-border)]" />
+              <div className="mt-2 h-2.5 w-3/4 animate-pulse rounded bg-[var(--dash-border)]" />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <StatsCards
+          hoursSaved={formatHoursSaved(totalMinutesSaved)}
+          leadsProcessed={leadsProcessed}
+          postsGenerated={outputCount}
+          followupsQueued={0}
+          isEmpty={isEmpty}
+        />
+      )}
 
       <div className="mt-4 sm:mt-5">
         <div className="mb-2 flex items-baseline justify-between gap-2">
