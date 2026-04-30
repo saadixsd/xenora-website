@@ -701,13 +701,6 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
               )}
             </>
           )}
-          {variant === 'sheet' && (
-            <p className="mb-4 max-w-md text-center text-sm text-muted-foreground">
-              {chatKind === 'agent_builder'
-                ? 'Agent builder mode — saved threads resume when you return.'
-                : 'Signed-in chat with history. Same monthly free tier as the full page.'}
-            </p>
-          )}
 
           {backendOk === false && lastError && (
             <p className="mt-3 max-w-xl text-center text-xs text-amber-600 dark:text-amber-500">{lastError}</p>
