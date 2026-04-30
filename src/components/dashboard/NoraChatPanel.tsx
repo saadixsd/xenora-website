@@ -396,7 +396,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
           variant: 'destructive',
         });
         const limitMsg =
-          "You've used all 3 free Ask Nora messages for this calendar month (UTC). Upgrade to **Nora Plus** or **Nora Pro** in [Settings → Billing](/dashboard/settings) to keep chatting.";
+          `You've used all ${FREE_MONTHLY_CHAT_LIMIT} free Ask Nora messages for this calendar month (UTC). Upgrade to **Nora Plus** or **Nora Pro** in [Settings → Billing](/dashboard/settings) to keep chatting.`;
         setMessages((prev) => [...prev, { role: 'assistant', content: limitMsg }]);
         setBackendOk(true);
       } else if (e instanceof Error && e.message === CHAT_LIMIT_RESPONSE_UNEXPECTED) {
