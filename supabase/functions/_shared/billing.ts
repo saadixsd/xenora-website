@@ -1,7 +1,8 @@
 import type { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 
-export const FREE_MONTHLY_CHATS = 3;
+export const FREE_MONTHLY_CHATS = 10;
 export const FREE_MONTHLY_RUNS = 5;
+export const FREE_MAX_CUSTOM_AGENTS = 3;
 
 export type BillingRow = {
   plan: string;
