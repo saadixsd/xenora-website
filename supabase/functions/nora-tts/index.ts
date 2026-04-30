@@ -4,8 +4,9 @@
  */
 import { createClient } from "npm:@supabase/supabase-js@2.49.1";
 
-const DEFAULT_VOICE_ID = "WeAAwKYcS06VmXw086yZ"; // Victoria — warm, trustworthy, calm female
-const DEFAULT_MODEL = "eleven_multilingual_v2"; // Best fidelity for Victoria's tone
+const DEFAULT_VOICE_ID = "WeAAwKYcS06VmXw086yZ"; // Victoria — warm, trustworthy, calm female (requires eligible ElevenLabs plan)
+const FALLBACK_VOICE_ID = "EXAVITQu4vr4xnSDxMaL"; // Sarah — warm female premade voice available for API fallback
+const DEFAULT_MODEL = "eleven_multilingual_v2"; // Best fidelity for natural conversational tone
 const MAX_TEXT_LENGTH = 2_000;
 
 const corsHeaders = {
@@ -98,28 +99,37 @@ Deno.serve(async (req) => {
       });
     }
 
-    const elevenRes = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream?output_format=mp3_44100_128`,
-      {
-        method: "POST",
-        headers: {
-          "xi-api-key": apiKey,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          text,
-          model_id: DEFAULT_MODEL,
-          voice_settings: {
-            // Tuned for warm, conversational, human-sounding speech
-            stability: 0.45,
-            similarity_boost: 0.85,
-            style: 0.35,
-            use_speaker_boost: true,
-            speed: 1.0,
+    const buildElevenLabsRequest = (selectedVoiceId: string) =>
+      fetch(
+        `https://api.elevenlabs.io/v1/text-to-speech/${selectedVoiceId}/stream?output_format=mp3_44100_128`,
+        {
+          method: "POST",
+          headers: {
+            "xi-api-key": apiKey,
+            "Content-Type": "application/json",
           },
-        }),
-      },
-    );
+          body: JSON.stringify({
+            text,
+            model_id: DEFAULT_MODEL,
+            voice_settings: {
+              // Tuned for warm, conversational, human-sounding speech
+              stability: 0.45,
+              similarity_boost: 0.85,
+              style: 0.35,
+              use_speaker_boost: true,
+              speed: 1.0,
+            },
+          }),
+        },
+      );
+
+    let elevenRes = await buildElevenLabsRequest(voiceId);
+
+    if (elevenRes.status === 402 && voiceId !== FALLBACK_VOICE_ID) {
+      const errText = await elevenRes.text().catch(() => "");
+      console.error("ElevenLabs selected voice unavailable, retrying fallback", errText);
+      elevenRes = await buildElevenLabsRequest(FALLBACK_VOICE_ID);
+    }
 
     if (!elevenRes.ok || !elevenRes.body) {
       const errText = await elevenRes.text().catch(() => "");
