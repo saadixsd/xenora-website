@@ -13,6 +13,8 @@ import {
   buildStripePaymentLinkUrl,
 } from '@/config/stripePaymentLinks';
 import { isPaidNoraSubscription, type BillingSubscriptionRow } from '@/lib/billing';
+import { useTheme } from '@/hooks/useTheme';
+import { Sun, Moon } from 'lucide-react';
 
 function csvEscape(s: string): string {
   const t = s.replace(/"/g, '""');
@@ -21,6 +23,7 @@ function csvEscape(s: string): string {
 
 const Settings = () => {
   const { user, session } = useAuth();
+  const { theme, setTheme } = useTheme();
   const { toast } = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
   const [displayName, setDisplayName] = useState('');
