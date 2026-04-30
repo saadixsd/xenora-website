@@ -33,7 +33,7 @@ import {
 import { describeElementUnderCursor } from '@/lib/noraPointerContext';
 import { ChatHistorySidebar } from './ChatHistorySidebar';
 
-const FREE_MONTHLY_CHAT_LIMIT = 3;
+const FREE_MONTHLY_CHAT_LIMIT = 10;
 const MAX_STORE_CHARS = 30_000;
 
 const SUGGESTIONS_GENERAL = [
@@ -396,7 +396,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
           variant: 'destructive',
         });
         const limitMsg =
-          "You've used all 3 free Ask Nora messages for this calendar month (UTC). Upgrade to **Nora Plus** or **Nora Pro** in [Settings → Billing](/dashboard/settings) to keep chatting.";
+          `You've used all ${FREE_MONTHLY_CHAT_LIMIT} free Ask Nora messages for this calendar month (UTC). Upgrade to **Nora Plus** or **Nora Pro** in [Settings → Billing](/dashboard/settings) to keep chatting.`;
         setMessages((prev) => [...prev, { role: 'assistant', content: limitMsg }]);
         setBackendOk(true);
       } else if (e instanceof Error && e.message === CHAT_LIMIT_RESPONSE_UNEXPECTED) {
@@ -446,6 +446,22 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   const deployAgent = async (spec: NoraAgentSpec, key: string) => {
     if (!user?.id) return;
     setDeployingKey(key);
+    // Enforce free-tier custom-agent cap (3). Paid plans are unrestricted (fair use).
+    if (!billingPaid && !quotaExempt) {
+      const { count } = await supabase
+        .from('user_custom_agents')
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', user.id);
+      if ((count ?? 0) >= 3) {
+        setDeployingKey(null);
+        toast({
+          title: 'Custom agent limit reached',
+          description: 'Free plan supports 3 custom agents. Delete one in Manage Agents or upgrade in Settings → Billing.',
+          variant: 'destructive',
+        });
+        return;
+      }
+    }
     const { error } = await supabase.from('user_custom_agents' as any).insert({
       user_id: user.id, name: spec.name.slice(0, 120), mission: spec.mission.slice(0, 4000),
       target_user: spec.target_user.slice(0, 2000) || null, raw_inputs: spec.raw_inputs.slice(0, 4000) || null,

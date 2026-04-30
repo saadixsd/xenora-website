@@ -11,6 +11,12 @@ import { ArrowLeft, Play, Archive, Trash2, ArchiveRestore, Plus, LayoutTemplate 
 import { ROUTES, dashboardRunPath } from '@/config/routes';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import {
+  FREE_MAX_CUSTOM_AGENTS,
+  PAID_MAX_CUSTOM_AGENTS,
+  isPaidNoraSubscription,
+  type BillingSubscriptionRow,
+} from '@/lib/billing';
 
 interface Template {
   id: string;
@@ -65,8 +71,6 @@ interface CustomAgent {
   mission: string | null;
   starter_prompt: string | null;
 }
-
-const MAX_CUSTOM_AGENTS = 5;
 
 const BUILTIN_AGENT_INFO: Record<string, { label: string; description: string }> = {
   content: { label: 'Content Agent', description: 'X posts, hooks, LinkedIn drafts, and CTAs.' },
@@ -135,6 +139,20 @@ const WorkflowRun = () => {
   const [templatesReady, setTemplatesReady] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
 
+  const [billingRow, setBillingRow] = useState<BillingSubscriptionRow | null>(null);
+  const isPaid = isPaidNoraSubscription(billingRow);
+  const maxCustomAgents = isPaid ? PAID_MAX_CUSTOM_AGENTS : FREE_MAX_CUSTOM_AGENTS;
+
+  useEffect(() => {
+    if (!user?.id) return;
+    void supabase
+      .from('billing_subscriptions' as any)
+      .select('*')
+      .eq('user_id', user.id)
+      .maybeSingle()
+      .then(({ data }) => setBillingRow((data as unknown as BillingSubscriptionRow | null) ?? null));
+  }, [user?.id]);
+
   useEffect(() => {
     if (!user?.id) return;
     supabase
@@ -142,7 +160,7 @@ const WorkflowRun = () => {
       .select('id, name, mission, starter_prompt')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
-      .limit(MAX_CUSTOM_AGENTS)
+      .limit(PAID_MAX_CUSTOM_AGENTS)
       .then(({ data }) => {
         if (data) setCustomAgents(data as CustomAgent[]);
       });
@@ -499,9 +517,9 @@ const WorkflowRun = () => {
             <div>
               <div className="flex items-center justify-between mb-3">
                 <p className="text-[13px] sm:text-sm font-medium text-foreground">
-                  Your Custom Agents ({customAgents.length}/{MAX_CUSTOM_AGENTS})
+                  Your Custom Agents ({customAgents.length}/{maxCustomAgents})
                 </p>
-                {customAgents.length < MAX_CUSTOM_AGENTS && (
+                {customAgents.length < maxCustomAgents && (
                   <Link
                     to={ROUTES.dashboard.noraAgentBuilder}
                     className="flex items-center gap-1 text-[11px] text-primary hover:underline"

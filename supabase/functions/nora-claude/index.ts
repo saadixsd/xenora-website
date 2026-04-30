@@ -1,5 +1,5 @@
 /**
- * Claude proxy for Nora chat — JWT required; free tier 3 Ask Nora messages per UTC calendar month unless paid (Plus/Pro) or exempt emails.
+ * Claude proxy for Nora chat — JWT required; free tier 10 Ask Nora messages per UTC calendar month unless paid (Plus/Pro) or exempt emails.
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { isNoraQuotaExemptEmail } from "../_shared/noraQuota.ts";
@@ -96,9 +96,9 @@ function getSystemPrompt(): string {
 - Tagline: **Know Beyond**. Loop: **Observe → Adapt → Execute**. Visible stages; user reviews before publish/send.
 
 ## Pricing (official)
-- **Free:** up to **5 workflow runs** and **3 Ask Nora chats** per calendar month (UTC), then upgrade.
-- **Nora Plus** **$13.99/mo:** paid via Stripe — full workflow access and Ask Nora without the free-tier caps (fair use and provider limits still apply).
-- **Nora Pro** **$19.99/mo:** everything in Plus with **deeper, senior-engineer style** answers and higher output limits on this endpoint.
+- **Free:** up to **5 workflow runs**, **10 Ask Nora chats**, and **3 custom agents** per calendar month (UTC), then upgrade.
+- **Nora Plus** **$49.99/mo:** paid via Stripe — full workflow access, Ask Nora, and custom agents without the free-tier caps (fair use and provider limits still apply).
+- **Nora Pro** **$79.99/mo:** everything in Plus with **deeper, senior-engineer style** answers and higher output limits on this endpoint.
 - Manage plans and invoices in **Settings → Billing** (Stripe Customer Portal).
 
 ## Links
@@ -144,7 +144,7 @@ Use **valid minified JSON** with these keys (all string values):
 
 ### Important
 - Users can edit their agents later in Manage Agents, so don't try to be perfect — get it built.
-- Maximum 5 custom agents per user. If they have 5, tell them to delete one first.
+- Free tier is capped at 3 custom agents (paid tiers higher). If they're at the cap, tell them to delete one first or upgrade.
 
 ### Voice
 Surgical, founder-to-founder. No filler. Build fast.`;
@@ -272,7 +272,7 @@ Deno.serve(async (req) => {
         {
           error: "free_tier_exhausted",
           message:
-            "You've used all 3 free Ask Nora messages for this calendar month (UTC). Upgrade to Nora Plus or Nora Pro in Settings → Billing to continue.",
+            `You've used all ${FREE_MONTHLY_CHATS} free Ask Nora messages for this calendar month (UTC). Upgrade to Nora Plus or Nora Pro in Settings → Billing to continue.`,
           queries_used: FREE_MONTHLY_CHATS,
           limit: FREE_MONTHLY_CHATS,
         },

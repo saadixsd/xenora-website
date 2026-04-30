@@ -35,7 +35,7 @@ const faqs: { q: string; a: ReactNode }[] = [
   },
   {
     q: 'How much does Nora cost?',
-    a: 'Free tier: 5 workflow runs and 3 Ask Nora messages per calendar month (UTC), no card required. Paid plans: Nora Plus at $49.99/mo and Nora Pro at $79.99/mo — both include a 7-day free trial, cancel anytime. Unlimited runs and Ask Nora within fair use; Pro adds deeper answers and higher limits. Subscribe and manage billing in the app (Settings → Billing).',
+    a: 'Free tier: 5 workflow runs, 10 Ask Nora messages, and 3 custom agents per calendar month (UTC), no card required. Paid plans: Nora Plus at $49.99/mo and Nora Pro at $79.99/mo — both include a 7-day free trial, cancel anytime. Unlimited runs, Ask Nora, and custom agents within fair use; Pro adds deeper answers and higher limits. Subscribe and manage billing in the app (Settings → Billing).',
   },
   {
     q: 'Who is Nora built for?',
