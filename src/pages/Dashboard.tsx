@@ -110,6 +110,7 @@ const Dashboard = () => {
   const completionRate = startedRuns > 0 ? Math.round((completedRuns.length / startedRuns) * 100) : 0;
   const defaultTemplateId = templates.find((t) => classifyTemplate(t.name) === 'content')?.id;
   const displayName =
+    (typeof user?.user_metadata?.display_name === 'string' && user.user_metadata.display_name.trim()) ||
     (typeof user?.user_metadata?.full_name === 'string' && user.user_metadata.full_name.trim()) ||
     (typeof user?.user_metadata?.name === 'string' && user.user_metadata.name.trim()) ||
     user?.email?.split('@')[0] ||
