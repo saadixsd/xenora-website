@@ -675,7 +675,17 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
                 >
                   <History className="h-5 w-5" />
                 </button>
-                <h1 className="text-center font-syne text-xl font-semibold text-foreground sm:text-2xl">Ask Nora</h1>
+                <h1 className="text-center font-syne text-xl font-semibold text-foreground sm:text-2xl">
+                  How can Nora assist you{(() => {
+                    const name =
+                      (typeof user?.user_metadata?.full_name === 'string' && user.user_metadata.full_name.trim()) ||
+                      (typeof user?.user_metadata?.name === 'string' && user.user_metadata.name.trim()) ||
+                      user?.email?.split('@')[0] ||
+                      '';
+                    const first = name.split(' ')[0];
+                    return first ? `, ${first}` : '';
+                  })()}?
+                </h1>
               </div>
               {billingPaid && !quotaExempt && (
                 <p className="mt-1 text-center text-[11px] text-muted-foreground">
@@ -689,11 +699,6 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
                     : `${remaining} free ${remaining === 1 ? 'message' : 'messages'} left this month (UTC)`}
                 </p>
               )}
-              <p className="mt-2 max-w-md text-center text-sm text-muted-foreground">
-                {chatKind === 'agent_builder'
-                  ? 'Nora will interview you with sharp, specific questions, then you can deploy a saved agent to your workspace.'
-                  : 'Founder workflows, agents, and how Nora fits your stack. Your conversations are saved per mode.'}
-              </p>
             </>
           )}
           {variant === 'sheet' && (
