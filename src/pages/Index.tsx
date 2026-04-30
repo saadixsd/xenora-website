@@ -439,7 +439,7 @@ const Index = () => {
           <div className="mx-auto grid max-w-5xl gap-8 text-center sm:grid-cols-3 sm:text-left">
             <div className="flex flex-col items-center gap-3 sm:items-start">
               <p className="text-sm font-medium">XenoraAI</p>
-              <p className="text-xs text-muted-foreground">Built in Montreal</p>
+              
               <div className="flex items-center gap-3 text-muted-foreground">
                 <a href="https://www.linkedin.com/company/xenoraai" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="transition-colors hover:text-foreground"><Linkedin className="h-4 w-4" /></a>
                 <a href="https://www.instagram.com/xenoraai" target="_blank" rel="noreferrer" aria-label="Instagram" className="transition-colors hover:text-foreground"><Instagram className="h-4 w-4" /></a>
