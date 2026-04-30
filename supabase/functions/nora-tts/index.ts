@@ -2,7 +2,7 @@
  * ElevenLabs TTS proxy for Nora's spoken replies.
  * Returns raw MP3 bytes. Auth required (JWT validated in code).
  */
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+import { createClient } from "npm:@supabase/supabase-js@2.49.1";
 
 const DEFAULT_VOICE_ID = "WeAAwKYcS06VmXw086yZ"; // Victoria — warm, trustworthy, calm female
 const DEFAULT_MODEL = "eleven_multilingual_v2"; // Best fidelity for Victoria's tone
