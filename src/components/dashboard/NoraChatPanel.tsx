@@ -678,6 +678,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
                 <h1 className="text-center font-syne text-xl font-semibold text-foreground sm:text-2xl">
                   How can Nora assist you{(() => {
                     const name =
+                      (typeof user?.user_metadata?.display_name === 'string' && user.user_metadata.display_name.trim()) ||
                       (typeof user?.user_metadata?.full_name === 'string' && user.user_metadata.full_name.trim()) ||
                       (typeof user?.user_metadata?.name === 'string' && user.user_metadata.name.trim()) ||
                       user?.email?.split('@')[0] ||
