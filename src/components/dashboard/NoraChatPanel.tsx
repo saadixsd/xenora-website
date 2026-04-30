@@ -21,6 +21,7 @@ import { isNoraQuotaExemptEmail } from '@/config/noraQuota';
 import { NORA_CHAT_SESSIONS_CHANGED, type NoraChatSessionsChangedDetail } from '@/lib/noraChatSession';
 import { describeNoraAppRoute } from '@/lib/noraRouteContext';
 import { buildNoraPersonalContext } from '@/lib/noraPersonalContext';
+import { useAdminRole } from '@/hooks/useAdminRole';
 import { isNoraVoiceTtsEnabled, speakNoraReply, speakNoraStatus } from '@/lib/noraTts';
 import {
   getSpeechRecognitionCtor,
@@ -54,6 +55,7 @@ interface NoraChatPanelProps {
 
 export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps) {
   const { user, session } = useAuth();
+  const { isAdmin } = useAdminRole();
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
@@ -97,7 +99,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   sessionQueryRef.current = sessionQuery;
 
   const token = session?.access_token;
-  const quotaExempt = isNoraQuotaExemptEmail(user?.email);
+  const quotaExempt = isAdmin || isNoraQuotaExemptEmail(user?.email);
   const remaining =
     quotaExempt || billingPaid
       ? null
@@ -107,7 +109,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
 
   const loadQueryCount = useCallback(async () => {
     if (!user?.id) return;
-    if (isNoraQuotaExemptEmail(user.email)) {
+    if (isAdmin || isNoraQuotaExemptEmail(user.email)) {
       setBillingPaid(false);
       setQueriesUsedThisMonth(0);
       setFreeTierBlocked(false);
@@ -349,9 +351,10 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
         accessToken: t,
         mode: chatKind === 'agent_builder' ? 'agent_builder' : undefined,
         userEmail: user?.email ?? null,
+        userIsAdmin: isAdmin,
         clientContext,
       });
-      if (!isNoraQuotaExemptEmail(user?.email)) {
+      if (!isAdmin && !isNoraQuotaExemptEmail(user?.email)) {
         if (result.paid) {
           setBillingPaid(true);
           setFreeTierBlocked(false);

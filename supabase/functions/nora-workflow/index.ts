@@ -308,7 +308,16 @@ Deno.serve(async (req) => {
     return jsonRes({ error: "Unauthorized" }, 401);
   }
 
-  if (!isNoraQuotaExemptEmail(user.email) && isRateLimited(user.id)) {
+  const { data: adminRole } = await supabaseUser
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", user.id)
+    .eq("role", "admin")
+    .maybeSingle();
+  const isAdmin = Boolean(adminRole);
+  const quotaExempt = isAdmin || isNoraQuotaExemptEmail(user.email);
+
+  if (!quotaExempt && isRateLimited(user.id)) {
     return jsonRes({ error: "Too many requests. Please wait a moment." }, 429);
   }
 
@@ -362,7 +371,7 @@ Deno.serve(async (req) => {
     return jsonRes({ error: "Run is not in a runnable state" }, 400);
   }
 
-  if (!isNoraQuotaExemptEmail(user.email)) {
+  if (!quotaExempt) {
     const billingRow = await fetchBillingRow(supabaseAdmin, user.id);
     if (!isPaidNoraAccess(billingRow)) {
       const { data: runCount, error: cntErr } = await supabaseAdmin.rpc(

@@ -28,9 +28,7 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        # package-lock.json and package.json are currently out of sync locally,
-        # so `npm ci` fails. `npm install` will generate a consistent lockfile in CI.
-        run: npm install --no-fund --no-audit
+        run: npm ci --no-fund --no-audit
 
       # Do NOT pass CLAUDE_API_KEY here: Vite would embed it in public JS.
       # For Claude on Pages, add a small HTTPS proxy (Worker / Edge Function) that

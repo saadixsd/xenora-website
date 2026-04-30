@@ -233,6 +233,14 @@ Deno.serve(async (req) => {
     return json({ error: "Unauthorized" }, 401, origin);
   }
 
+  const { data: adminRole } = await userClient
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", user.id)
+    .eq("role", "admin")
+    .maybeSingle();
+  const isAdmin = Boolean(adminRole);
+
   if (!apiKey) {
     return json({ error: "AI backend is not configured." }, 503, origin);
   }
@@ -243,7 +251,7 @@ Deno.serve(async (req) => {
 
   const admin = createClient(supabaseUrl, serviceKey);
 
-  const quotaExempt = isNoraQuotaExemptEmail(user.email);
+  const quotaExempt = isAdmin || isNoraQuotaExemptEmail(user.email);
   const billingRow = await fetchBillingRow(admin, user.id);
   const paidActive = isPaidNoraAccess(billingRow);
   const tier: NoraTier = tierFromBilling(billingRow);

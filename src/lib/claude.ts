@@ -61,6 +61,8 @@ export async function sendClaudeChat(params: {
   mode?: NoraChatKind;
   /** Signed-in email — exempt accounts must not be treated as free_tier_exhausted (client matches server allowlist). */
   userEmail?: string | null;
+  /** Admins should never hit public free-tier caps (mirrors edge logic). */
+  userIsAdmin?: boolean;
   /** App route summary for context-aware replies (edge function appends to system prompt). */
   clientContext?: string;
 }): Promise<ClaudeChatSuccess> {
@@ -98,7 +100,7 @@ export async function sendClaudeChat(params: {
 
   if (res.status === 429) {
     if (data.error === 'free_tier_exhausted') {
-      if (isNoraQuotaExemptEmail(params.userEmail)) {
+      if (params.userIsAdmin || isNoraQuotaExemptEmail(params.userEmail)) {
         throw new Error(CHAT_LIMIT_RESPONSE_UNEXPECTED);
       }
       throw new FreeTierExhaustedError(

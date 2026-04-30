@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { ROUTES } from '@/config/routes';
 
-type LoginLocationState = { message?: string };
+type LoginLocationState = { message?: string; from?: string };
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -21,12 +21,14 @@ const Login = () => {
   const { user, loading: authLoading } = useAuth();
 
   const bannerMessage = (location.state as LoginLocationState | null)?.message;
+  const fromCandidate = (location.state as LoginLocationState | null)?.from;
+  const redirectTo = typeof fromCandidate === 'string' && fromCandidate.startsWith('/') ? fromCandidate : ROUTES.dashboard.nora;
 
   useEffect(() => {
     if (!authLoading && user) {
-      navigate(ROUTES.dashboard.nora, { replace: true });
+      navigate(redirectTo, { replace: true });
     }
-  }, [authLoading, user, navigate]);
+  }, [authLoading, user, navigate, redirectTo]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,7 +37,7 @@ const Login = () => {
     try {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
-      navigate(ROUTES.dashboard.nora);
+      navigate(redirectTo);
     } catch (err: unknown) {
       toast({
         title: 'Error',

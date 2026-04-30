@@ -1,5 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { Instagram, Linkedin, FileText, Search, Zap, ArrowRight, Check, X as XIcon, Rocket, Target, Inbox, Sparkles, FileCheck2 } from 'lucide-react';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
@@ -88,9 +89,14 @@ const proFeatures = [
 ];
 
 const Index = () => {
-  const { scrollYProgress } = useScroll();
+  const { scrollY, scrollYProgress } = useScroll();
   const reduceMotion = useReducedMotion();
   const watermarkY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : -36]);
+  const [showStickyCta, setShowStickyCta] = useState(false);
+
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    setShowStickyCta(latest > 520);
+  });
   const smoothTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   const scrollToSection = (id: string) => {
     smoothTop();
@@ -126,21 +132,23 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Sticky CTA → dashboard (Nora) */}
-      <motion.div
-        initial={{ y: 100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 2, duration: 0.5 }}
-        className="fixed bottom-[max(1rem,env(safe-area-inset-bottom,0px))] left-0 right-0 z-50 flex items-center justify-center pl-[max(1rem,env(safe-area-inset-left,0px))] pr-[max(1rem,env(safe-area-inset-right,0px))] sm:bottom-6"
-      >
-        <Link
-          to={ROUTES.tryNora}
-          className="flex min-h-[48px] max-w-[calc(100vw-2rem)] items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-[0_8px_30px_rgba(0,200,150,0.22)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_12px_40px_rgba(0,200,150,0.3)] sm:max-w-none sm:px-6 sm:py-3"
+      {/* Sticky CTA (appears after hero to reduce first-screen noise) */}
+      {showStickyCta && (
+        <motion.div
+          initial={{ y: 100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.35 }}
+          className="fixed bottom-[max(1rem,env(safe-area-inset-bottom,0px))] left-0 right-0 z-50 flex items-center justify-center pl-[max(1rem,env(safe-area-inset-left,0px))] pr-[max(1rem,env(safe-area-inset-right,0px))] sm:bottom-6"
         >
-          Join Beta
-          <ArrowRight className="h-4 w-4" />
-        </Link>
-      </motion.div>
+          <Link
+            to={ROUTES.tryNora}
+            className="flex min-h-[48px] max-w-[calc(100vw-2rem)] items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-[0_8px_30px_rgba(0,200,150,0.22)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_12px_40px_rgba(0,200,150,0.3)] sm:max-w-none sm:px-6 sm:py-3"
+          >
+            Join Beta
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </motion.div>
+      )}
 
       <main className="relative z-10">
         {/* ── HERO ── */}
@@ -165,7 +173,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-4 max-w-2xl text-sm text-base-content/65 leading-relaxed sm:mt-6 sm:text-base lg:text-lg">
-                Built for founders, entrepreneurs, and SMBs. Drop in ideas, notes, transcripts, leads, or URLs. Nora runs visible step-by-step workflows for content, follow-up, research, and operations. You review and approve before anything ships.
+                Built for solo SaaS founders and small teams. Drop rough notes, lead signals, or URLs. Nora runs visible workflows for content, follow-up, and research—then you approve before anything ships.
               </p>
             </Reveal>
 
@@ -385,17 +393,9 @@ const Index = () => {
               ))}
             </div>
 
-            <Reveal delay={0.3}>
-              <div className="mt-8 text-center">
-                <Link
-                  to={ROUTES.tryNora}
-                  className="inline-flex items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-primary/80"
-                >
-                  Try Nora
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-              </div>
-            </Reveal>
+            <div className="mt-6 text-center text-xs text-base-content/40">
+              Pick an agent, run it once, and decide if Nora fits your workflow.
+            </div>
           </div>
         </section>
 
@@ -586,17 +586,6 @@ const Index = () => {
                 </article>
               </Reveal>
             </div>
-            <Reveal delay={0.16}>
-              <div className="mt-8 text-center">
-                <Link
-                  to={ROUTES.tryNora}
-                  className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-                >
-                  Join Beta
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </Reveal>
           </div>
         </section>
 
@@ -680,7 +669,7 @@ const Index = () => {
         </footer>
       </main>
 
-      {/* Spacer so last scroll content clears sticky Try Nora CTA */}
+      {/* Spacer so last scroll content clears sticky CTA */}
       <div className="h-28 sm:h-28" aria-hidden />
     </div>
   );
