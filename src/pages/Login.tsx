@@ -42,9 +42,8 @@ const Login = () => {
         }
       };
     }
-    if (typeof window === 'undefined') return;
-    const t = window.setTimeout(prefetch, 200);
-    return () => window.clearTimeout(t);
+    const t = setTimeout(prefetch, 200);
+    return () => clearTimeout(t);
   }, []);
 
   useEffect(() => {
