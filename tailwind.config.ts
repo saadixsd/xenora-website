@@ -21,10 +21,11 @@ export default {
     },
     extend: {
       fontFamily: {
-        // 'syne' kept as alias to Instrument Serif so legacy `font-syne` usages render the new typeface.
-        syne: ['"Instrument Serif"', 'ui-serif', 'Georgia', 'serif'],
-        serif: ['"Instrument Serif"', 'ui-serif', 'Georgia', 'serif'],
-        'space-mono': ['"Space Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        // Geist sans is now the project-wide typeface for both display and body.
+        sans: ['Geist', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
+        syne: ['Geist', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        serif: ['Geist', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        'space-mono': ['"Geist Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       colors: {
         border: "hsl(var(--border))",
