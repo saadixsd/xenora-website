@@ -44,7 +44,8 @@ const outcomes = [
 
 const freeTierFeatures = [
   '5 reviewed workflow runs per month',
-  '3 Ask Nora messages per month',
+  '10 Ask Nora messages per month',
+  '3 custom agents',
   'Content, Lead, and Research agents',
   'Run history and visible progress',
 ];

@@ -370,7 +370,7 @@ const Settings = () => {
         <div className="surface-panel p-5">
           <h2 className="text-sm font-medium text-foreground">Billing</h2>
           <p className="mt-1 text-xs text-muted-foreground">
-            Free tier: 5 workflow runs and 3 Ask Nora messages per calendar month (UTC). Nora Plus ($49.99/mo) and Nora Pro ($79.99/mo) remove those caps (fair use applies).
+            Free tier: 5 workflow runs, 10 Ask Nora messages, and 3 custom agents per calendar month (UTC). Nora Plus ($49.99/mo) and Nora Pro ($79.99/mo) remove those caps (fair use applies).
           </p>
           {billingLoading ? (
             <p className="mt-4 text-sm text-muted-foreground">Loading billing…</p>
@@ -396,7 +396,7 @@ const Settings = () => {
                 <p className="text-xs text-muted-foreground">
                   Usage this month (UTC):{' '}
                   {chatsUsedMonth !== null && runsUsedMonth !== null
-                    ? `${chatsUsedMonth}/3 Ask Nora messages · ${runsUsedMonth}/5 workflow runs (non-failed)`
+                    ? `${chatsUsedMonth}/10 Ask Nora messages · ${runsUsedMonth}/5 workflow runs (non-failed)`
                     : '—'}
                 </p>
               )}
