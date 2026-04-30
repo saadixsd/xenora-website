@@ -91,7 +91,7 @@ export function DashboardLayout() {
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 max-w-[80vw] sm:max-w-[85vw] shrink-0 transform border-r border-[var(--dash-border)] bg-[var(--dash-surface)] pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl transition-transform duration-200 lg:relative lg:z-auto lg:max-w-none lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 max-w-[80vw] sm:max-w-[85vw] shrink-0 transform border-r border-[var(--dash-border)] bg-[var(--dash-surface)] pt-[env(safe-area-inset-top,0px)] transition-transform duration-200 lg:relative lg:z-auto lg:max-w-none lg:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -138,7 +138,7 @@ export function DashboardLayout() {
       <button
         type="button"
         onClick={() => setNoraOpen(true)}
-        className="fixed z-[85] flex h-12 w-12 min-h-[48px] min-w-[48px] items-center justify-center rounded-full bg-[var(--dash-accent)] text-[var(--dash-accent-fg)] shadow-[var(--dash-shadow)] transition-transform hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dash-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-bg)] sm:h-14 sm:w-14 bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] right-[max(1rem,env(safe-area-inset-right,0px))] lg:bottom-[max(2rem,env(safe-area-inset-bottom,0px))] lg:right-[max(2rem,env(safe-area-inset-right,0px))]"
+        className="fixed z-[85] flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-[var(--dash-accent)] text-[var(--dash-accent-fg)] transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dash-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-bg)] sm:h-12 sm:w-12 bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] right-[max(1rem,env(safe-area-inset-right,0px))] lg:bottom-[max(2rem,env(safe-area-inset-bottom,0px))] lg:right-[max(2rem,env(safe-area-inset-right,0px))]"
         aria-label="Ask Nora"
       >
         <MessageCircle className="h-6 w-6" />
