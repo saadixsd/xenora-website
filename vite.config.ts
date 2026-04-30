@@ -22,20 +22,20 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    // Code-splitting: separate vendor chunks for better caching
     rollupOptions: {
       output: {
         manualChunks: {
           "react-vendor": ["react", "react-dom"],
           "router": ["react-router-dom"],
           "supabase": ["@supabase/supabase-js"],
-          "ui": ["framer-motion", "lucide-react"],
+          "framer": ["framer-motion"],
+          "icons": ["lucide-react"],
         },
       },
     },
-    // Target modern browsers for smaller output
     target: "es2020",
-    // Reduce chunk size warnings threshold
-    chunkSizeWarningLimit: 600,
+    cssCodeSplit: true,
+    chunkSizeWarningLimit: 700,
+    sourcemap: false,
   },
 }));

@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/app/ThemeProvider";
 import { ScrollManager } from "@/components/app/ScrollManager";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
+import { AuthProvider } from "@/hooks/useAuth";
 import { ROUTES } from "@/config/routes";
 
 // Lazy-loaded pages — splits the bundle so the landing page loads instantly
@@ -36,10 +37,11 @@ const PageLoader = () => (
 
 const App = () => (
   <ThemeProvider>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
         <ScrollManager />
         <Suspense fallback={<PageLoader />}>
           <Routes>
@@ -81,8 +83,9 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
-      </BrowserRouter>
-    </TooltipProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </ThemeProvider>
 );
 

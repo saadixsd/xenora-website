@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
-import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackground';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
@@ -22,7 +21,30 @@ const Login = () => {
 
   const bannerMessage = (location.state as LoginLocationState | null)?.message;
   const fromCandidate = (location.state as LoginLocationState | null)?.from;
-  const redirectTo = typeof fromCandidate === 'string' && fromCandidate.startsWith('/') ? fromCandidate : ROUTES.dashboard.nora;
+  const redirectTo =
+    typeof fromCandidate === 'string' && fromCandidate.startsWith('/') ? fromCandidate : ROUTES.dashboard.nora;
+
+  // Prefetch dashboard chunks the moment the user lands on Login so they're already
+  // in the cache when sign-in completes. Cuts perceived post-login latency.
+  useEffect(() => {
+    const prefetch = () => {
+      void import('@/pages/Dashboard.tsx');
+      void import('@/pages/DashboardNora.tsx');
+      void import('@/components/dashboard/DashboardLayout');
+    };
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      const id = (window as Window & { requestIdleCallback: (cb: () => void) => number }).requestIdleCallback(prefetch);
+      return () => {
+        try {
+          (window as Window & { cancelIdleCallback?: (id: number) => void }).cancelIdleCallback?.(id);
+        } catch {
+          /* ignore */
+        }
+      };
+    }
+    const t = setTimeout(prefetch, 200);
+    return () => clearTimeout(t);
+  }, []);
 
   useEffect(() => {
     if (!authLoading && user) {
@@ -37,7 +59,9 @@ const Login = () => {
     try {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
-      navigate(redirectTo);
+      // Navigate immediately — the AuthProvider listener will update state on next tick
+      // and ProtectedRoute will already see the cached session synchronously.
+      navigate(redirectTo, { replace: true });
     } catch (err: unknown) {
       toast({
         title: 'Error',
@@ -49,19 +73,8 @@ const Login = () => {
     }
   };
 
-  if (authLoading) {
-    return (
-      <div className="flex min-h-svh items-center justify-center bg-background">
-        <NeuralMeshBackground />
-        <span className="relative z-10 text-sm text-muted-foreground">Loading…</span>
-      </div>
-    );
-  }
-
   return (
     <div className="flex min-h-svh flex-col items-center justify-center bg-background px-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] pt-[env(safe-area-inset-top,0px)]">
-      <NeuralMeshBackground />
-
       <div className="relative z-10 w-full max-w-sm">
         <Link to="/" className="mb-8 flex flex-col items-center gap-3">
           <XenoraLogo decorative className="h-14 w-14" />
@@ -85,6 +98,7 @@ const Login = () => {
                 placeholder="you@example.com"
                 required
                 autoComplete="email"
+                inputMode="email"
                 className="min-h-[44px] bg-card/50 text-base border-border md:text-base"
               />
             </div>

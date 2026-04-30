@@ -1,17 +1,16 @@
 import { motion, useInView, useReducedMotion } from 'framer-motion';
-import { useRef } from 'react';
+import { forwardRef, useRef } from 'react';
 
-export function Reveal({
-  children,
-  delay = 0,
-  y = 20,
-  className = '',
-}: {
+/**
+ * Animated reveal wrapper. forwardRef so parents (e.g. radix collapsibles,
+ * route-level Suspense) can attach refs without React warnings.
+ */
+export const Reveal = forwardRef<HTMLDivElement, {
   children: React.ReactNode;
   delay?: number;
   y?: number;
   className?: string;
-}) {
+}>(function Reveal({ children, delay = 0, y = 20, className = '' }, _forwardedRef) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-6% 0px -14% 0px' });
   const reduceMotion = useReducedMotion();
@@ -27,4 +26,4 @@ export function Reveal({
       {children}
     </motion.div>
   );
-}
+});
