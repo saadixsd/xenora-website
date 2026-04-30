@@ -11,6 +11,12 @@ import { ArrowLeft, Play, Archive, Trash2, ArchiveRestore, Plus, LayoutTemplate 
 import { ROUTES, dashboardRunPath } from '@/config/routes';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import {
+  FREE_MAX_CUSTOM_AGENTS,
+  PAID_MAX_CUSTOM_AGENTS,
+  isPaidNoraSubscription,
+  type BillingSubscriptionRow,
+} from '@/lib/billing';
 
 interface Template {
   id: string;
