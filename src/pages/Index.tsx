@@ -98,7 +98,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-8 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                Nora turns rough notes, leads, and links into reviewable workflow runs. You stay in control of what ships.
+                Tuen rough notes, leads, and links into reviewable workflow runs. You're in control of execution
               </p>
             </Reveal>
 
