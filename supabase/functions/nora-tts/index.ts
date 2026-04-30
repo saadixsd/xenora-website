@@ -4,8 +4,8 @@
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 
-const DEFAULT_VOICE_ID = "EXAVITQu4vr4xnSDxMaL"; // Sarah — warm, natural female
-const DEFAULT_MODEL = "eleven_turbo_v2_5";
+const DEFAULT_VOICE_ID = "WeAAwKYcS06VmXw086yZ"; // Victoria — warm, trustworthy, calm female
+const DEFAULT_MODEL = "eleven_multilingual_v2"; // Best fidelity for Victoria's tone
 const MAX_TEXT_LENGTH = 2_000;
 
 const corsHeaders = {
