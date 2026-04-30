@@ -2,7 +2,7 @@
  * Accounts that skip the public daily Nora chat cap in the UI (must match edge logic).
  * Optional: VITE_NORA_UNLIMITED_EMAILS=comma@separated.com
  */
-const BUILT_IN_EXEMPT: string[] = [];
+const BUILT_IN_EXEMPT: string[] = ['saadkashif2005@gmail.com'];
 
 function envExtra(): string[] {
   const raw = import.meta.env.VITE_NORA_UNLIMITED_EMAILS as string | undefined;
