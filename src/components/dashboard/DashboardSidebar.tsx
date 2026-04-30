@@ -81,6 +81,7 @@ export function DashboardSidebar({ onClose }: { onClose?: () => void }) {
     .slice(0, 2);
 
   const displayName = user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'User';
+  const firstName = displayName.split(' ')[0];
 
   const handleSignOut = async () => {
     await signOut();
