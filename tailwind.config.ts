@@ -21,7 +21,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        syne: ['Syne', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        // 'syne' kept as alias to Instrument Serif so legacy `font-syne` usages render the new typeface.
+        syne: ['"Instrument Serif"', 'ui-serif', 'Georgia', 'serif'],
+        serif: ['"Instrument Serif"', 'ui-serif', 'Georgia', 'serif'],
         'space-mono': ['"Space Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       colors: {

@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -11,142 +11,132 @@
     min-width: 0;
   }
 
-  /* Dark default */
+  /* ── DARK (default) ── Quiet, near-black command surface ── */
   :root {
-    --xenora-accent: #00c896;
-    --xenora-accent-foreground: #0a0a0a;
+    --xenora-accent: #10b981;
+    --xenora-accent-foreground: #04130d;
 
-    --bg-base: #0A0A0F;
-    --background: 240 30% 4%;
+    --bg-base: #0B0B0E;
+    --background: 240 10% 5%;
     --foreground: 0 0% 96%;
 
-    --card: 240 20% 7%;
+    --card: 240 8% 9%;
     --card-foreground: 0 0% 96%;
 
-    --popover: 240 20% 7%;
+    --popover: 240 8% 9%;
     --popover-foreground: 0 0% 96%;
 
-    --primary: 168 100% 39%;
-    --primary-foreground: 168 100% 5%;
+    --primary: 160 84% 39%;
+    --primary-foreground: 160 84% 6%;
 
-    --secondary: 240 12% 12%;
+    --secondary: 240 6% 12%;
     --secondary-foreground: 0 0% 96%;
 
-    --muted: 240 12% 10%;
-    --muted-foreground: 240 10% 68%;
+    --muted: 240 6% 11%;
+    --muted-foreground: 240 5% 64%;
 
-    --accent: 260 30% 16%;
+    --accent: 240 6% 14%;
     --accent-foreground: 0 0% 96%;
 
-    --destructive: 0 70% 55%;
+    --destructive: 0 65% 55%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 12% 14%;
-    --input: 240 12% 14%;
-    --ring: 168 100% 39%;
+    --border: 240 6% 14%;
+    --input: 240 6% 14%;
+    --ring: 160 84% 39%;
 
-    --radius: 0.5rem;
+    --radius: 0.625rem;
 
-    --sidebar-background: 240 30% 4%;
+    --sidebar-background: 240 10% 5%;
     --sidebar-foreground: 0 0% 96%;
-    --sidebar-primary: 168 100% 39%;
-    --sidebar-primary-foreground: 168 100% 5%;
-    --sidebar-accent: 240 12% 10%;
+    --sidebar-primary: 160 84% 39%;
+    --sidebar-primary-foreground: 160 84% 6%;
+    --sidebar-accent: 240 6% 11%;
     --sidebar-accent-foreground: 0 0% 96%;
-    --sidebar-border: 240 12% 14%;
-    --sidebar-ring: 168 100% 39%;
+    --sidebar-border: 240 6% 14%;
+    --sidebar-ring: 160 84% 39%;
 
-    /* Mesh background */
-    --mesh-grid: rgba(255, 255, 255, 0.045);
-    --mesh-diag: rgba(255, 255, 255, 0.03);
-    --mesh-vignette: rgba(10, 10, 15, 0.72);
-    --mesh-glow: rgba(0, 200, 150, 0.09);
-
-    /* Dashboard shell — dark command center */
-    --dash-accent: #00c896;
-    --dash-accent-fg: #041a12;
-    --dash-accent-dim: rgba(0, 200, 150, 0.12);
-    --dash-accent-hover: rgba(0, 200, 150, 0.35);
-    --dash-accent-subtle: rgba(0, 200, 150, 0.10);
-    --dash-bg: #07090b;
-    --dash-surface: #0c0f12;
-    --dash-surface-deep: #141920;
-    --dash-border: rgba(255, 255, 255, 0.06);
-    --dash-text: #f0f4f8;
-    --dash-muted: #a8b6c7;
-    --dash-faint: #6f7f93;
+    /* Dashboard shell — deep black with hairline borders */
+    --dash-accent: #10b981;
+    --dash-accent-fg: #04130d;
+    --dash-accent-dim: rgba(16, 185, 129, 0.10);
+    --dash-accent-hover: rgba(16, 185, 129, 0.28);
+    --dash-accent-subtle: rgba(16, 185, 129, 0.08);
+    --dash-bg: #0B0B0E;
+    --dash-surface: #141418;
+    --dash-surface-deep: #1B1B20;
+    --dash-border: rgba(255, 255, 255, 0.08);
+    --dash-text: #F2F2F0;
+    --dash-muted: #B4B4B0;
+    --dash-faint: #76766F;
     --dash-hover: rgba(255, 255, 255, 0.04);
-    --dash-bar-bg: rgba(255, 255, 255, 0.06);
-    --dash-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
-    --dash-status-pending-bg: rgba(255, 255, 255, 0.06);
+    --dash-bar-bg: rgba(255, 255, 255, 0.05);
+    --dash-shadow: none;
+    --dash-status-pending-bg: rgba(255, 255, 255, 0.05);
   }
 
+  /* ── LIGHT ── Warm paper, ink, restrained accent ── */
   .light {
-    --bg-base: #f5f4f1;
-    --background: 40 14% 95%;
-    --foreground: 225 18% 13%;
+    --bg-base: #FAFAF7;
+    --background: 48 25% 97%;
+    --foreground: 240 12% 12%;
 
-    --card: 40 16% 93%;
-    --card-foreground: 225 18% 13%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 12% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 225 18% 13%;
+    --popover-foreground: 240 12% 12%;
 
-    --primary: 168 72% 34%;
+    --primary: 162 79% 31%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 40 12% 90%;
-    --secondary-foreground: 225 18% 13%;
+    --secondary: 48 15% 93%;
+    --secondary-foreground: 240 12% 12%;
 
-    --muted: 40 10% 91%;
-    --muted-foreground: 225 10% 38%;
+    --muted: 48 12% 94%;
+    --muted-foreground: 240 8% 38%;
 
-    --accent: 260 14% 92%;
-    --accent-foreground: 225 18% 13%;
+    --accent: 48 15% 92%;
+    --accent-foreground: 240 12% 12%;
 
     --destructive: 0 65% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 40 12% 86%;
-    --input: 40 12% 86%;
-    --ring: 168 72% 34%;
+    --border: 240 8% 90%;
+    --input: 240 8% 90%;
+    --ring: 162 79% 31%;
 
-    --sidebar-background: 40 20% 96%;
-    --sidebar-foreground: 225 18% 13%;
-    --sidebar-primary: 168 72% 34%;
+    --sidebar-background: 48 20% 96%;
+    --sidebar-foreground: 240 12% 12%;
+    --sidebar-primary: 162 79% 31%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 40 10% 91%;
-    --sidebar-accent-foreground: 225 18% 13%;
-    --sidebar-border: 40 12% 86%;
-    --sidebar-ring: 168 72% 34%;
+    --sidebar-accent: 48 12% 94%;
+    --sidebar-accent-foreground: 240 12% 12%;
+    --sidebar-border: 240 8% 90%;
+    --sidebar-ring: 162 79% 31%;
 
-    --mesh-grid: rgba(0, 0, 0, 0.035);
-    --mesh-diag: rgba(0, 0, 0, 0.02);
-    --mesh-vignette: rgba(244, 242, 238, 0.45);
-    --mesh-glow: rgba(0, 180, 140, 0.045);
-
-    /* Dashboard shell — light mode */
-    --dash-accent: #0d9f7e;
+    /* Dashboard — light */
+    --dash-accent: #0E8F6E;
     --dash-accent-fg: #ffffff;
-    --dash-accent-dim: rgba(13, 159, 126, 0.08);
-    --dash-accent-hover: rgba(13, 159, 126, 0.30);
-    --dash-accent-subtle: rgba(13, 159, 126, 0.07);
-    --dash-bg: #f7f8fa;
-    --dash-surface: #ffffff;
-    --dash-surface-deep: #eef0f4;
-    --dash-border: rgba(0, 0, 0, 0.12);
-    --dash-text: #1a1d23;
-    --dash-muted: #475569;
-    --dash-faint: #667385;
-    --dash-hover: rgba(0, 0, 0, 0.03);
-    --dash-bar-bg: rgba(0, 0, 0, 0.06);
-    --dash-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    --dash-status-pending-bg: rgba(0, 0, 0, 0.05);
+    --dash-accent-dim: rgba(14, 143, 110, 0.08);
+    --dash-accent-hover: rgba(14, 143, 110, 0.25);
+    --dash-accent-subtle: rgba(14, 143, 110, 0.06);
+    --dash-bg: #FAFAF7;
+    --dash-surface: #FFFFFF;
+    --dash-surface-deep: #F2F1ED;
+    --dash-border: rgba(15, 15, 20, 0.08);
+    --dash-text: #18181B;
+    --dash-muted: #4B4B52;
+    --dash-faint: #84847C;
+    --dash-hover: rgba(15, 15, 20, 0.035);
+    --dash-bar-bg: rgba(15, 15, 20, 0.04);
+    --dash-shadow: none;
+    --dash-status-pending-bg: rgba(15, 15, 20, 0.04);
   }
 }
 
 :root[data-theme='xenora-light'] {
-  --bg-base: #f5f4f1;
+  --bg-base: #FAFAF7;
 }
 
 @layer base {
@@ -163,6 +153,8 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
+    letter-spacing: -0.011em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: clip;
@@ -185,45 +177,48 @@
 }
 
 @layer utilities {
+  /* Flat, premium card. Replaces glassy `.surface-panel`. Kept name for compatibility. */
   .surface-panel {
-    @apply rounded-xl border border-border backdrop-blur-sm;
-    background: hsl(var(--card) / 0.45);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    @apply rounded-xl border;
+    background: hsl(var(--card));
+    border-color: hsl(var(--border));
+    box-shadow: none;
   }
-  .light .surface-panel {
-    background: hsl(var(--card) / 0.7);
-    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.03);
-  }
+
   .premium-heading {
-    @apply tracking-[-0.02em] leading-[1.06];
+    font-family: 'Instrument Serif', ui-serif, Georgia, serif;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 1.04;
     text-wrap: balance;
-    font-family: 'Syne', ui-sans-serif, system-ui, sans-serif;
   }
 
   .muted-copy {
     @apply text-muted-foreground leading-relaxed;
     text-wrap: pretty;
   }
+
+  /* Kept for legacy callers; same flat treatment. */
   .glass {
-    @apply bg-card/40 backdrop-blur-xl border border-border/40;
+    @apply bg-card border border-border;
   }
 
-  /* Dashboard utilities — now theme-aware */
+  /* Dashboard utilities — flat, theme-aware */
   .dashboard-app {
     color: var(--dash-text);
     background: var(--dash-bg);
   }
 
   .dash-panel {
-    @apply rounded-lg border;
+    @apply rounded-xl border;
     background: var(--dash-surface);
     border-color: var(--dash-border);
-    box-shadow: var(--dash-shadow);
+    box-shadow: none;
   }
 
   .dash-label {
-    @apply font-space-mono text-[10px] uppercase tracking-[0.12em];
-    color: var(--dash-muted);
+    @apply font-space-mono text-[10px] uppercase tracking-[0.14em];
+    color: var(--dash-faint);
   }
 
   .dash-breadcrumb {
@@ -231,9 +226,8 @@
     color: var(--dash-faint);
   }
 
-  /* Logo watermark: invert + lighten in light mode so dark BG becomes invisible */
-  .light .logo-watermark {
-    filter: invert(1) grayscale(1);
-    opacity: 0.06 !important;
+  /* Hairline divider used across the marketing site. */
+  .hairline {
+    border-color: hsl(var(--border) / 0.7);
   }
 }
