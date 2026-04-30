@@ -33,7 +33,7 @@ import {
 import { describeElementUnderCursor } from '@/lib/noraPointerContext';
 import { ChatHistorySidebar } from './ChatHistorySidebar';
 
-const FREE_MONTHLY_CHAT_LIMIT = 3;
+const FREE_MONTHLY_CHAT_LIMIT = 10;
 const MAX_STORE_CHARS = 30_000;
 
 const SUGGESTIONS_GENERAL = [

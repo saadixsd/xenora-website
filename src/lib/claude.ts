@@ -8,7 +8,7 @@ const EDGE_FN_BASE = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/nora-cla
 /** Thrown when server returns free_tier_exhausted but user is exempt (stale edge deploy). User should retry. */
 export const CHAT_LIMIT_RESPONSE_UNEXPECTED = 'CHAT_LIMIT_RESPONSE_UNEXPECTED';
 
-const FREE_MONTHLY_LIMIT = 3;
+const FREE_MONTHLY_LIMIT = 10;
 
 export class FreeTierExhaustedError extends Error {
   readonly code = 'free_tier_exhausted' as const;
