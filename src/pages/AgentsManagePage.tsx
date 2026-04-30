@@ -144,7 +144,7 @@ export default function AgentsManagePage() {
     loadCustom();
   };
 
-  const atLimit = customAgents.length >= MAX_CUSTOM_AGENTS;
+  const atLimit = customAgents.length >= maxCustomAgents;
 
   return (
     <div className="mx-auto min-h-0 min-w-0 max-w-2xl px-3 py-4 sm:px-6 sm:py-6 lg:px-8">
@@ -199,12 +199,14 @@ export default function AgentsManagePage() {
       <div className="mt-6 sm:mt-8">
         <div className="flex items-center justify-between">
           <h2 className="text-[13px] sm:text-sm font-medium text-foreground">
-            Your custom agents ({customAgents.length}/{MAX_CUSTOM_AGENTS})
+            Your custom agents ({customAgents.length}/{maxCustomAgents})
           </h2>
         </div>
         {atLimit && (
           <p className="mt-1 text-[11px] text-amber-600">
-            You've reached the {MAX_CUSTOM_AGENTS}-agent limit. Delete one to create a new agent.
+            {isPaid
+              ? `You've reached the ${maxCustomAgents}-agent fair-use cap. Delete one to create a new agent.`
+              : `Free plan supports ${maxCustomAgents} custom agents. Delete one or upgrade in Settings → Billing.`}
           </p>
         )}
 
