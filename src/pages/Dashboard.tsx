@@ -132,9 +132,9 @@ const Dashboard = () => {
       <div className="dash-panel mb-4 sm:mb-5 px-4 py-4 sm:px-5 sm:py-5">
         <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
-            <p className="dash-label mb-1">Welcome back, {displayName}</p>
+            <p className="dash-label mb-1">Overview</p>
             <h1 className="font-syne text-[22px] font-semibold tracking-tight text-[var(--dash-text)] sm:text-[26px]">
-              Ready to run Nora today?
+              How can Nora assist you, {displayName.split(' ')[0]}?
             </h1>
             <p className="mt-1 text-[12.5px] leading-relaxed text-[var(--dash-muted)] sm:text-[13px]">{subtitle}</p>
           </div>
