@@ -1,7 +1,7 @@
 /**
  * Claude proxy for Nora chat — JWT required; free tier 10 Ask Nora messages per UTC calendar month unless paid (Plus/Pro) or exempt emails.
  */
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+import { createClient } from "npm:@supabase/supabase-js@2.49.1";
 import { isNoraQuotaExemptEmail } from "../_shared/noraQuota.ts";
 import {
   fetchBillingRow,
