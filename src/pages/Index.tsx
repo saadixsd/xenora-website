@@ -89,11 +89,6 @@ const Index = () => {
         {/* ── HERO ── single sentence, single CTA ── */}
         <section className="flex min-h-svh flex-col items-center justify-center px-4 pb-20 pt-[max(6rem,calc(env(safe-area-inset-top,0px)+5rem))] sm:px-8 sm:pb-24 sm:pt-32">
           <div className="w-full max-w-3xl text-center">
-            <Reveal>
-              <p className="font-space-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-                XenoraAI · Built in Montreal
-              </p>
-            </Reveal>
             <Reveal delay={0.05}>
               <h1 className="premium-heading mt-8 text-[2.25rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5rem]">
                 An operations teammate
