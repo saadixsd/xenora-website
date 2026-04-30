@@ -1,6 +1,7 @@
 /**
  * Nora's spoken voice.
- * Primary path: ElevenLabs TTS (premium female voice "Sarah") via the `nora-tts` edge function.
+ * Primary path: ElevenLabs TTS via the `nora-tts` edge function.
+ * The API key stays in Lovable Cloud secrets; never expose it in browser code.
  * Fallback: device `speechSynthesis` if the network call fails or the user is offline.
  */
 import { supabase } from '@/integrations/supabase/client';
