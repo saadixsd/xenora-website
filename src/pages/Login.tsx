@@ -42,9 +42,9 @@ const Login = () => {
         }
       };
     }
+    if (typeof window === 'undefined') return;
     const t = window.setTimeout(prefetch, 200);
     return () => window.clearTimeout(t);
-  }, []);
 
   useEffect(() => {
     if (!authLoading && user) {
