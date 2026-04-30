@@ -28,3 +28,6 @@ verify_jwt = false
 # Public contact-form endpoint; validates and writes a lead via service role.
 [functions.submit-lead]
 verify_jwt = false
+
+[functions.nora-tts]
+verify_jwt = false
