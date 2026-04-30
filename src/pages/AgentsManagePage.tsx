@@ -60,6 +60,20 @@ export default function AgentsManagePage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<Partial<CustomAgentRow>>({});
   const [saving, setSaving] = useState(false);
+  const [billingRow, setBillingRow] = useState<BillingSubscriptionRow | null>(null);
+
+  const isPaid = isPaidNoraSubscription(billingRow);
+  const maxCustomAgents = isPaid ? PAID_MAX_CUSTOM_AGENTS : FREE_MAX_CUSTOM_AGENTS;
+
+  useEffect(() => {
+    if (!user?.id) return;
+    void supabase
+      .from('billing_subscriptions' as any)
+      .select('*')
+      .eq('user_id', user.id)
+      .maybeSingle()
+      .then(({ data }) => setBillingRow((data as unknown as BillingSubscriptionRow | null) ?? null));
+  }, [user?.id]);
 
   const loadCustom = useCallback(() => {
     if (!user?.id) return;
