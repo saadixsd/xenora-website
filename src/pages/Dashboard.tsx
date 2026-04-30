@@ -45,6 +45,7 @@ const Dashboard = () => {
   const [runs, setRuns] = useState<RunRow[]>([]);
   const [templates, setTemplates] = useState<TemplateRow[]>([]);
   const [outputCount, setOutputCount] = useState(0);
+  const [dataLoading, setDataLoading] = useState(true);
 
   const fetchData = useCallback(async () => {
     if (!user) return;
@@ -69,6 +70,7 @@ const Dashboard = () => {
     if (runsRes.data) setRuns(runsRes.data);
     if (templatesRes.data) setTemplates(templatesRes.data);
     setOutputCount(outputsRes.count ?? 0);
+    setDataLoading(false);
   }, [user]);
 
   useEffect(() => {
