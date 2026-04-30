@@ -7,8 +7,12 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-
-const MAX_CUSTOM_AGENTS = 5;
+import {
+  FREE_MAX_CUSTOM_AGENTS,
+  PAID_MAX_CUSTOM_AGENTS,
+  isPaidNoraSubscription,
+  type BillingSubscriptionRow,
+} from '@/lib/billing';
 
 interface CustomAgentRow {
   id: string;
