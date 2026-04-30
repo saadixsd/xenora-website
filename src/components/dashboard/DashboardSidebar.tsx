@@ -15,6 +15,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { ROUTES } from '@/config/routes';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
+import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 
 const RUN_PREFIX = `${ROUTES.dashboard.root}/run`;
 
