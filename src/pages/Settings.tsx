@@ -327,6 +327,47 @@ const Settings = () => {
         </div>
 
         <div className="surface-panel p-5">
+          <h2 className="text-sm font-medium text-foreground">Appearance</h2>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Choose how Nora looks in your browser. Saved to this device.
+          </p>
+          <div
+            role="radiogroup"
+            aria-label="Theme"
+            className="mt-4 inline-flex rounded-lg border border-border bg-muted/40 p-1"
+          >
+            <button
+              type="button"
+              role="radio"
+              aria-checked={theme === 'light'}
+              onClick={() => setTheme('light')}
+              className={`inline-flex min-h-[36px] items-center gap-2 rounded-md px-3 py-1.5 text-sm transition-colors ${
+                theme === 'light'
+                  ? 'bg-background text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <Sun className="h-4 w-4" />
+              Light
+            </button>
+            <button
+              type="button"
+              role="radio"
+              aria-checked={theme === 'dark'}
+              onClick={() => setTheme('dark')}
+              className={`inline-flex min-h-[36px] items-center gap-2 rounded-md px-3 py-1.5 text-sm transition-colors ${
+                theme === 'dark'
+                  ? 'bg-background text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <Moon className="h-4 w-4" />
+              Dark
+            </button>
+          </div>
+        </div>
+
+        <div className="surface-panel p-5">
           <h2 className="text-sm font-medium text-foreground">Billing</h2>
           <p className="mt-1 text-xs text-muted-foreground">
             Free tier: 5 workflow runs and 3 Ask Nora messages per calendar month (UTC). Nora Plus ($49.99/mo) and Nora Pro ($79.99/mo) remove those caps (fair use applies).
