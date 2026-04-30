@@ -8,20 +8,6 @@ function edgeHeaders(accessToken: string): HeadersInit {
   };
 }
 
-export async function createCheckoutSession(accessToken: string, plan: 'plus' | 'pro'): Promise<string> {
-  const res = await fetch(`${fnBase}/create-checkout-session`, {
-    method: 'POST',
-    headers: edgeHeaders(accessToken),
-    body: JSON.stringify({ plan }),
-  });
-  const data = (await res.json().catch(() => ({}))) as { url?: string; error?: string };
-  if (!res.ok) {
-    throw new Error(data.error || `Checkout failed (${res.status})`);
-  }
-  if (!data.url) throw new Error('No checkout URL returned');
-  return data.url;
-}
-
 export async function createPortalSession(accessToken: string): Promise<string> {
   const res = await fetch(`${fnBase}/create-portal-session`, {
     method: 'POST',
