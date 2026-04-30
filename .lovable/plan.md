@@ -1,92 +1,117 @@
+# Xenora — Jobs-inspired Redesign
 
-
-## Plan: Per-user OAuth connections for Gmail, X, Instagram, LinkedIn
-
-### The honest reality first
-
-These four platforms require **per-user OAuth** (each user authorizes their own account), not workspace-level connectors. That means:
-
-1. **You** must register a developer app with each platform (Google Cloud Console, X Developer Portal, Meta for Developers, LinkedIn Developer Portal) and get OAuth Client IDs + Secrets.
-2. We store those secrets in Lovable Cloud (server-side only, never in the browser).
-3. We build the OAuth flow + encrypted token storage.
-
-There is no shortcut — Lovable's built-in connectors authenticate *one* developer account, not each end-user. Per-user OAuth must be implemented from scratch.
+A focused pass on the marketing site and dashboard guided by one principle: **simplicity is the ultimate sophistication**. Less chrome, more clarity. Outcome-first copy. Quiet, confident surfaces. Type that breathes.
 
 ---
 
-### Architecture
+## 1. Design system reset (foundation)
+
+Before touching pages, retune the system so every screen inherits the new look.
+
+**Typography**
+- Replace `Syne` (display) with **Instrument Serif** for hero / section heads — editorial, calm, unmistakably premium (Jobs-era restraint, not techno-futurism).
+- Keep **Inter** for body but tighten: weights 400/500 only, default tracking `-0.011em`, body size `15px` desktop / `16px` mobile, line-height `1.6`.
+- Drop `Space Mono` from public surfaces; keep only in dashboard for data labels.
+- Headline scale: H1 `clamp(2.5rem, 6vw, 4.75rem)`, H2 `clamp(1.75rem, 3.5vw, 2.5rem)`. Generous `text-wrap: balance`.
+
+**Color & surfaces**
+- Dark: deeper near-black `#0B0B0E`, single elevated surface `#141418`, hairline borders `rgba(255,255,255,0.08)`. No gradients on cards.
+- Light: warm paper `#FAFAF7`, surface `#FFFFFF`, border `rgba(15,15,20,0.08)`.
+- Accent stays Xenora green but desaturated one notch (`#10B981` dark / `#0E8F6E` light) — used sparingly (CTA, single accent line, focus ring only).
+
+**Remove visual noise**
+- Delete `NeuralMeshBackground` from public pages (background mesh + animated grid).
+- Delete the giant centered `XenoraLogo` watermark on `Index`, `Login`, `SignUp`, `FAQ`, `About`, `Contact`, `Privacy`, `AdminLayout`.
+- Remove `.glass` and `backdrop-blur-*` from public surfaces. Replace `surface-panel` with a flat card: `bg-surface border border-hairline rounded-xl`.
+- Header: solid background, no blur, thin bottom border only after scroll.
+
+---
+
+## 2. Marketing site (`src/pages/Index.tsx`)
+
+Rebuild as a quiet, product-led page. Fewer sections, stronger ones.
 
 ```text
-User clicks "Connect Gmail"
-   -> Frontend redirects to /functions/v1/oauth-start?provider=gmail
-   -> Edge function builds provider auth URL with state token, redirects user
-   -> User approves on Google's consent screen
-   -> Google redirects to /functions/v1/oauth-callback?code=...&state=...
-   -> Edge function exchanges code for access+refresh tokens
-   -> Tokens encrypted with NORA_APP_SECRET (AES-GCM) and stored in user_connections
-   -> User redirected back to /dashboard/connections with success toast
+1. Hero            — one sentence, one CTA
+2. Live demo       — the Input → Workflow → Output card (kept, simplified)
+3. The three agents
+4. Why Nora        — 3 outcomes, no comparison table
+5. Pricing         — Free / Plus / Pro, plain cards
+6. Final CTA + footer
 ```
 
-### Database (one new table)
+**Hero rewrite (chosen direction — outcome-led, founder-brutal):**
+> An operations teammate for founders who are doing too much.
+>
+> Nora turns rough notes, leads, and links into reviewable workflow runs. You stay in control of what ships.
+>
+> [ Join the beta → ]   See it run
 
-`public.user_connections`
-- `id uuid pk`
-- `user_id uuid references auth.users` (RLS: owner only)
-- `provider text` (`gmail` | `x` | `instagram` | `linkedin`)
-- `provider_account_id text` (e.g. Gmail address, X handle)
-- `access_token_encrypted text`, `refresh_token_encrypted text`, `token_iv text`
-- `scopes text[]`, `expires_at timestamptz`
-- `status text` (`active` | `revoked` | `expired`)
-- `connected_at`, `updated_at`
-- Unique `(user_id, provider)`
-- RLS: users can only `SELECT`/`DELETE` their own rows. No client `INSERT`/`UPDATE` — only edge functions (service role) write tokens.
+- Single primary CTA. Secondary is a text link, not a button.
+- Kill the "Ask Nora · Dashboard" micro-links under the CTA.
+- Kill the sticky bottom CTA bar (it competes with the hero — Jobs would cut it).
 
-### Edge functions (3 new)
+**Sections trimmed**
+- Remove the long comparison table and the persona cards — they're noise. Fold the strongest line from each into the "Why Nora" section.
+- "How Nora works" merges into the demo section (3 inline labels under the visual, not a separate grid).
+- Footer slims to: logo, three links (Privacy · FAQ · Contact), copyright, and a quiet "Admin" link (instead of the current footer).
 
-1. **`oauth-start`** — validates user JWT, generates signed `state` (HMAC with `NORA_APP_SECRET`), returns the provider auth URL. Frontend does `window.location = url`.
-2. **`oauth-callback`** — verifies `state`, exchanges `code` for tokens per provider, encrypts tokens with AES-GCM (key derived from `NORA_APP_SECRET`), upserts into `user_connections`, redirects to `/dashboard/connections?connected=<provider>`.
-3. **`disconnect-provider`** — revokes token upstream where supported, marks row `revoked`, deletes encrypted tokens.
+---
 
-A shared helper module handles encryption/decryption so other agents (Leads, Content) can later read tokens server-side only.
+## 3. Dashboard refresh
 
-### Frontend changes
+Same design tokens — dashboard already uses `--dash-*` variables, just retune them and remove blur.
 
-- `src/pages/Connections.tsx` — replace disabled buttons with real Connect / Disconnect actions, fetch live status from `user_connections`, show connected account label + connected date, surface OAuth callback success/error toasts via query params.
-- Add "Reconnect" affordance when `status = expired`.
-- Show clear "What this enables" copy and "Revoke any time" reassurance.
+- Sidebar: flat surface, no blur, single hairline border, route labels in Inter 14/medium, accent only on active row (left bar + label color).
+- Header: remove backdrop-blur on mobile bar.
+- Cards (`dash-panel`, stats, activity feed, output cards): flat, no shadow on hover — only border color shift.
+- Floating "Ask Nora" button: shrink to 44px, single solid fill, no glow ring.
+- Voice bar: compress vertical padding; same flat treatment.
 
-### Secrets you'll need to add (I'll request them via the secrets tool when we reach that step)
+---
 
-| Provider | Secrets |
-|----------|---------|
-| Gmail (Google) | `GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_OAUTH_CLIENT_SECRET` |
-| X (Twitter) | `X_OAUTH_CLIENT_ID`, `X_OAUTH_CLIENT_SECRET` |
-| Instagram | `META_APP_ID`, `META_APP_SECRET` (Instagram Graph via Facebook Login) |
-| LinkedIn | `LINKEDIN_CLIENT_ID`, `LINKEDIN_CLIENT_SECRET` |
+## 4. Theme toggle in Settings
 
-For each, the **Authorized Redirect URI** to register on the provider side will be:
-`https://bblzvdfztnxrebfupjtj.supabase.co/functions/v1/oauth-callback`
+Add a "Appearance" section to `src/pages/Settings.tsx` (dashboard settings) with a Light / Dark segmented control wired to the existing `useTheme()` hook. Persists via the existing `xenora-theme-mode` localStorage key. Place it as the second card, right under "Profile". Remove the public-site theme toggle from the marketing nav (the dashboard is where users live; the public site auto-follows system preference).
 
-### Security guarantees
+---
 
-- Tokens never touch the browser. Frontend only sees `{ provider, status, account_label, expires_at }`.
-- AES-GCM encryption at rest using a key derived from `NORA_APP_SECRET` (already in your secrets).
-- Signed `state` parameter prevents CSRF on the OAuth callback.
-- RLS prevents any user from reading another user's connections.
-- Refresh tokens auto-rotated by edge functions when expired (background refresh on agent runs).
-- Disconnect calls provider revoke endpoints (Google revoke, X revoke, LinkedIn revoke) before deleting locally.
+## 5. File cleanup
 
-### Implementation order (one approval = all of this)
+Delete files no longer referenced after the redesign:
+- `src/components/nora-landing/NeuralMeshBackground.tsx`
+- `src/pages/admin/*` and `src/components/admin/AdminLayout.tsx`, `src/components/AdminRoute.tsx`, `src/hooks/useAdminRole.ts`, `src/lib/leads.ts`, `src/pages/Contact.tsx`, `supabase/functions/submit-lead/` — **only if** you confirm the standalone CRM/admin console added in the earlier "leads" pass is no longer wanted. (It is not linked from the new footer plan; if you want to keep it, say so and I'll wire an "Admin" footer link instead.)
+- Unused `glass` / watermark CSS utilities in `src/index.css`.
 
-1. Migration: `user_connections` table + RLS.
-2. Shared encryption helper in `supabase/functions/_shared/crypto.ts`.
-3. `oauth-start` + `oauth-callback` + `disconnect-provider` edge functions (Gmail first, then X, Instagram, LinkedIn — same pattern).
-4. Rewrite `src/pages/Connections.tsx` with real status + actions.
-5. Request the 8 OAuth secrets via the secrets tool, with step-by-step guidance for each provider's developer console.
-6. Test Gmail end-to-end first (most documented), then the others.
+I'll do a final `rg` sweep to remove any orphaned imports.
 
-### What I need from you after approval
+---
 
-- A confirmation that you're willing to register developer apps on Google, X, Meta, and LinkedIn (it's free but takes 10–30 min per provider).
-- We can ship Gmail first and add the others incrementally if you'd prefer to validate the flow before doing all four registrations.
+## 6. Security pass
 
+Run `security--run_security_scan` and `supabase--linter` after the redesign and fix anything that surfaces. Targeted manual checks:
+- Confirm `user_roles` RLS still blocks self-promotion (was hardened previously — re-verify after any admin file deletions).
+- Confirm `submit-lead` edge function (if kept) still rate-limits and validates input.
+- Confirm no new `console.log` of `session` / tokens introduced.
+- Verify the Settings appearance toggle doesn't read/write anything beyond the existing localStorage key (no auth surface).
+
+---
+
+## 7. QA before declaring done
+
+- Build passes (auto), no TS errors.
+- Visit `/`, `/dashboard`, `/dashboard/settings`, `/login` at 375px, 944px, 1440px — no horizontal scroll, no visible glass blur, no giant watermark.
+- Light/dark toggle in Settings flips both dashboard and (next visit) the public site.
+- Console clean on each route.
+
+---
+
+## Technical details (for the implementer)
+
+- Add Instrument Serif via Google Fonts import in `src/index.css`; update `tailwind.config.ts` `fontFamily.serif` and replace `font-syne` usages (search/replace across `src/`).
+- Tighten `--xenora-accent`, refresh `--dash-*` tokens in both `:root` and `.light` blocks.
+- New `<Card>` primitive in `src/components/ui/card.tsx` (or extend existing) — flat variant. Replace `surface-panel` instances on the public pages with it.
+- `Index.tsx`: remove `NeuralMeshBackground`, watermark `motion.div`, sticky CTA, comparison table block, persona block; rewrite hero copy; collapse "How Nora works" into the demo section.
+- `Settings.tsx`: insert Appearance card using `useTheme()`; segmented control = two buttons sharing a parent with `data-active` styling.
+- Delete files listed in §5 only after confirming no imports remain (`rg "from.*<path>" src`).
+- After edits, run security scan + linter; address findings or document why deferred.

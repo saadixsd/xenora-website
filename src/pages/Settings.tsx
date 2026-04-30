@@ -13,6 +13,8 @@ import {
   buildStripePaymentLinkUrl,
 } from '@/config/stripePaymentLinks';
 import { isPaidNoraSubscription, type BillingSubscriptionRow } from '@/lib/billing';
+import { useTheme } from '@/hooks/useTheme';
+import { Sun, Moon } from 'lucide-react';
 
 function csvEscape(s: string): string {
   const t = s.replace(/"/g, '""');
@@ -21,6 +23,7 @@ function csvEscape(s: string): string {
 
 const Settings = () => {
   const { user, session } = useAuth();
+  const { theme, setTheme } = useTheme();
   const { toast } = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
   const [displayName, setDisplayName] = useState('');
@@ -320,6 +323,47 @@ const Settings = () => {
                 Changing email may trigger a confirmation message from your auth provider.
               </p>
             </div>
+          </div>
+        </div>
+
+        <div className="surface-panel p-5">
+          <h2 className="text-sm font-medium text-foreground">Appearance</h2>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Choose how Nora looks in your browser. Saved to this device.
+          </p>
+          <div
+            role="radiogroup"
+            aria-label="Theme"
+            className="mt-4 inline-flex rounded-lg border border-border bg-muted/40 p-1"
+          >
+            <button
+              type="button"
+              role="radio"
+              aria-checked={theme === 'light'}
+              onClick={() => setTheme('light')}
+              className={`inline-flex min-h-[36px] items-center gap-2 rounded-md px-3 py-1.5 text-sm transition-colors ${
+                theme === 'light'
+                  ? 'bg-background text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <Sun className="h-4 w-4" />
+              Light
+            </button>
+            <button
+              type="button"
+              role="radio"
+              aria-checked={theme === 'dark'}
+              onClick={() => setTheme('dark')}
+              className={`inline-flex min-h-[36px] items-center gap-2 rounded-md px-3 py-1.5 text-sm transition-colors ${
+                theme === 'dark'
+                  ? 'bg-background text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <Moon className="h-4 w-4" />
+              Dark
+            </button>
           </div>
         </div>
 

@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useId, useState } from 'react';
-import { ThemeToggle } from '@/components/app/ThemeToggle';
+// ThemeToggle removed from public nav — theme now lives in dashboard Settings → Appearance.
 import { useAuth } from '@/hooks/useAuth';
 import { MARKETING_NAV, ROUTES } from '@/config/routes';
 import { X, Menu } from 'lucide-react';
@@ -140,7 +140,7 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
       {mobileOpen && (
         <div
           id={menuId}
-          className="absolute left-0 right-0 top-full z-[100] border-b border-base-content/10 bg-base-100/95 backdrop-blur-xl p-4 md:hidden"
+          className="absolute left-0 right-0 top-full z-[100] border-b border-border bg-background p-4 md:hidden"
           role="menu"
         >
           <ul className="space-y-1">
@@ -169,7 +169,7 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
           Sign in
         </Link>
       )}
-      <ThemeToggle />
+      
     </nav>
   );
 };
