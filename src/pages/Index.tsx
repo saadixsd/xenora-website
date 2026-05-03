@@ -158,13 +158,14 @@ const Index = () => {
 
             <Reveal delay={0.18}>
               <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-                <Link
-                  to={ROUTES.tryNora}
+                <button
+                  type="button"
+                  onClick={() => scrollToSection('waitlist')}
                   className="group inline-flex min-h-[48px] items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground transition-all duration-200 hover:opacity-90"
                 >
-                  Join the beta
+                  Join Waitlist
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </Link>
+                </button>
                 <button
                   type="button"
                   className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
@@ -340,130 +341,27 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ── PRICING ── */}
-        <section id="pricing" className="scroll-mt-24 border-t border-border/60 px-4 py-20 sm:px-8 sm:py-28">
-          <div className="mx-auto max-w-5xl">
+        {/* ── WAITLIST ── */}
+        <section id="waitlist" className="scroll-mt-24 border-t border-border/60 px-4 py-20 sm:px-8 sm:py-28">
+          <div className="mx-auto max-w-md">
             <Reveal>
-              <h2 className="premium-heading text-center text-3xl sm:text-4xl md:text-5xl">Pricing</h2>
-            </Reveal>
-            <Reveal delay={0.06}>
-              <p className="mx-auto mt-4 max-w-xl text-center text-base text-muted-foreground">
-                Start free. Validate one workflow. Scale when it earns it. Paid plans include a 7-day trial. Cancel anytime.
+              <p className="text-center font-space-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+                Coming soon
               </p>
             </Reveal>
-
-            <div className="mx-auto mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              <Reveal delay={0.06}>
-                <article className="surface-panel flex h-full flex-col p-7 text-left">
-                  <h3 className="text-sm font-medium tracking-wide text-muted-foreground">Free</h3>
-                  <p className="premium-heading mt-3 text-4xl">
-                    $0<span className="text-base text-muted-foreground"> /mo</span>
-                  </p>
-                  <ul className="mt-6 space-y-2.5 text-[14px] text-muted-foreground">
-                    {freeTierFeatures.map((f) => (
-                      <li key={f} className="flex gap-2">
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                        <span>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-auto pt-7">
-                    <Link
-                      to={ROUTES.signup}
-                      className="flex w-full items-center justify-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-primary/40"
-                    >
-                      Get started
-                    </Link>
-                  </div>
-                </article>
-              </Reveal>
-
-              <Reveal delay={0.1}>
-                <article className="surface-panel relative flex h-full flex-col border-primary/30 p-7 text-left ring-1 ring-primary/20">
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-0.5 text-[11px] font-medium text-primary-foreground">Most popular</span>
-                  <h3 className="text-sm font-medium tracking-wide text-muted-foreground">Nora Plus</h3>
-                  <p className="premium-heading mt-3 text-4xl">
-                    $49.99<span className="text-base text-muted-foreground"> /mo</span>
-                  </p>
-                  <p className="mt-1 text-xs text-primary">7-day free trial</p>
-                  <ul className="mt-6 space-y-2.5 text-[14px] text-muted-foreground">
-                    {plusFeatures.map((f) => (
-                      <li key={f} className="flex gap-2">
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                        <span>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-auto pt-7">
-                    <a
-                      href="https://buy.stripe.com/bJe4gy4RceG67dyaHwdnW03"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
-                    >
-                      Start free trial
-                      <ArrowRight className="h-4 w-4" />
-                    </a>
-                  </div>
-                </article>
-              </Reveal>
-
-              <Reveal delay={0.14}>
-                <article className="surface-panel flex h-full flex-col p-7 text-left">
-                  <h3 className="text-sm font-medium tracking-wide text-muted-foreground">Nora Pro</h3>
-                  <p className="premium-heading mt-3 text-4xl">
-                    $79.99<span className="text-base text-muted-foreground"> /mo</span>
-                  </p>
-                  <p className="mt-1 text-xs text-primary">7-day free trial</p>
-                  <ul className="mt-6 space-y-2.5 text-[14px] text-muted-foreground">
-                    {proFeatures.map((f) => (
-                      <li key={f} className="flex gap-2">
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                        <span>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-auto pt-7">
-                    <a
-                      href="https://buy.stripe.com/6oUeVcfvQcxY8hCcPEdnW02"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex w-full items-center justify-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-primary/40"
-                    >
-                      Start free trial
-                      <ArrowRight className="h-4 w-4" />
-                    </a>
-                  </div>
-                </article>
-              </Reveal>
-            </div>
-          </div>
-        </section>
-
-        {/* ── FINAL CTA ── */}
-        <section className="border-t border-border/60 px-4 py-24 sm:px-8 sm:py-32">
-          <div className="mx-auto max-w-3xl text-center">
-            <Reveal>
-              <h2 className="premium-heading text-3xl sm:text-4xl md:text-6xl">
-                Stop juggling tabs.
-                <br className="hidden sm:block" />
-                {' '}Start running workflows.
+            <Reveal delay={0.04}>
+              <h2 className="premium-heading mt-4 text-center text-3xl sm:text-4xl md:text-5xl">
+                Join the waitlist.
               </h2>
             </Reveal>
-            <Reveal delay={0.05}>
-              <p className="mx-auto mt-6 max-w-xl text-base text-muted-foreground">
-                Join the beta and put your first workflow live this week.
+            <Reveal delay={0.08}>
+              <p className="mx-auto mt-4 max-w-sm text-center text-base text-muted-foreground">
+                Be the first to know when we launch.
               </p>
             </Reveal>
-            <Reveal delay={0.1}>
-              <div className="mt-9 flex justify-center">
-                <Link
-                  to={ROUTES.tryNora}
-                  className="group inline-flex min-h-[48px] items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
-                >
-                  Join the beta
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </Link>
+            <Reveal delay={0.12}>
+              <div className="mt-10">
+                <WaitlistForm />
               </div>
             </Reveal>
           </div>

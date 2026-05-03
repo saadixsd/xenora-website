@@ -42,10 +42,10 @@ const faqs: { q: string; a: ReactNode }[] = [
     a: 'Solo founders, indie hackers, and creators building in public. People who need to ship content consistently but hate spending hours on repetitive work.',
   },
   {
-    q: 'How do I try Nora?',
+    q: 'How do I get access?',
     a: (
       <>
-        Tap <Link to={ROUTES.tryNora} className="text-primary underline-offset-4 hover:underline">Try Nora</Link> on the home page. After you sign in, you land in the app where you can run workflows and use Ask Nora from the dashboard.
+        Join the waitlist on the <Link to={ROUTES.home} className="text-primary underline-offset-4 hover:underline">home page</Link>. We&apos;ll reach out as we open access.
       </>
     ),
   },
