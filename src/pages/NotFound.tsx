@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import { ROUTES } from '@/config/routes';
 
 const NotFound = () => {
   const location = useLocation();
@@ -18,7 +19,7 @@ const NotFound = () => {
         </p>
       </div>
       <Link
-        to="/"
+        to={ROUTES.home}
         className="rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
       >
         Home

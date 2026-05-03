@@ -5,8 +5,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/app/ThemeProvider";
 import { ScrollManager } from "@/components/app/ScrollManager";
+import { ROUTES } from "@/config/routes";
 
 const Index = lazy(() => import("./pages/Index.tsx"));
+const FAQ = lazy(() => import("./pages/FAQ.tsx"));
+const Privacy = lazy(() => import("./pages/Privacy.tsx"));
+const About = lazy(() => import("./pages/About.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 const PageLoader = () => (
@@ -24,7 +28,10 @@ const App = () => (
         <ScrollManager />
         <Suspense fallback={<PageLoader />}>
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path={ROUTES.home} element={<Index />} />
+            <Route path={ROUTES.faq} element={<FAQ />} />
+            <Route path={ROUTES.about} element={<About />} />
+            <Route path={ROUTES.privacy} element={<Privacy />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
