@@ -109,7 +109,7 @@ const Index = () => {
                   to={ROUTES.login}
                   className="group inline-flex min-h-[48px] items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground transition-all duration-200 hover:opacity-90"
                 >
-                  Try Nora here
+                  Start for free
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </Link>
                 <button
