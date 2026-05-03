@@ -114,7 +114,7 @@ const Index = () => {
                 </Link>
                 <button
                   type="button"
-                  className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                  className="inline-flex min-h-[48px] items-center rounded-full px-5 py-3 text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
                   onClick={() => scrollToSection('see-nora')}
                 >
                   See it run
