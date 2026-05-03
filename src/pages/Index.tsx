@@ -106,10 +106,10 @@ const Index = () => {
             <Reveal delay={0.18}>
               <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                 <Link
-                  to={ROUTES.login}
+                  to={ROUTES.dashboard.root}
                   className="group inline-flex min-h-[48px] items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground transition-all duration-200 hover:opacity-90"
                 >
-                  Try Nora here
+                  View Dashboard
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </Link>
                 <button
