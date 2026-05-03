@@ -42,10 +42,10 @@ const faqs: { q: string; a: ReactNode }[] = [
     a: 'Solo founders, indie hackers, and creators building in public. People who need to ship content consistently but hate spending hours on repetitive work.',
   },
   {
-    q: 'How do I get access?',
+    q: 'How do I try Nora?',
     a: (
       <>
-        Join the waitlist on the <Link to={ROUTES.home} className="text-primary underline-offset-4 hover:underline">home page</Link>. We&apos;ll reach out as we open access.
+        Tap <Link to={ROUTES.tryNora} className="text-primary underline-offset-4 hover:underline">Try Nora</Link> on the home page. After you sign in, you land in the app where you can run workflows and use Ask Nora from the dashboard.
       </>
     ),
   },
@@ -103,8 +103,8 @@ const FAQ = () => {
             className="flex min-w-0 shrink-0 cursor-pointer items-center gap-2 sm:gap-2.5"
             aria-label="XenoraAI home"
           >
-            <XenoraLogo decorative className="h-8 w-8 shrink-0 sm:h-10 sm:w-10" />
-            <span className="truncate text-base font-medium tracking-tight sm:text-lg">XenoraAI</span>
+            <XenoraLogo decorative className="h-9 w-9 shrink-0 sm:h-14 sm:w-14" />
+            <span className="truncate text-base font-semibold text-base-content sm:max-w-none sm:text-xl">XenoraAI</span>
           </Link>
           <SiteNav />
         </div>

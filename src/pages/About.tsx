@@ -23,8 +23,8 @@ const About = () => {
             className="flex min-w-0 shrink-0 cursor-pointer items-center gap-2 sm:gap-2.5"
             aria-label="Nora home"
           >
-            <XenoraLogo decorative className="h-8 w-8 shrink-0 sm:h-10 sm:w-10" />
-            <span className="truncate text-base font-medium tracking-tight sm:text-lg">XenoraAI</span>
+            <XenoraLogo decorative className="h-9 w-9 shrink-0 sm:h-14 sm:w-14" />
+            <span className="truncate text-base font-semibold text-base-content sm:max-w-none sm:text-xl">Nora</span>
           </Link>
           <SiteNav />
         </div>
@@ -32,71 +32,44 @@ const About = () => {
 
       <main className="relative z-10 mx-auto max-w-2xl px-4 pb-20 pt-28 sm:px-8">
         <Reveal>
-          <h1 className="premium-heading text-3xl font-medium sm:text-4xl">About XenoraAI</h1>
+          <h1 className="premium-heading text-3xl font-medium sm:text-4xl">About</h1>
         </Reveal>
 
         <Reveal delay={0.05}>
-          <p className="mt-8 text-base leading-relaxed text-base-content/70">
-            Founders are drowning in operational noise — the fragmented, repetitive admin work that consumes
-            20+ hours a week and stalls growth. You shouldn&apos;t have to choose between managing your business
-            and building your product.
-          </p>
+          <div className="mt-10 flex flex-col items-center gap-6 sm:flex-row sm:items-start">
+            <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-full border border-base-content/10 bg-base-200/50">
+              <XenoraLogo decorative className="h-16 w-16 rounded-full" />
+            </div>
+            <div className="text-center sm:text-left">
+              <p className="text-lg font-medium text-base-content/85">Nora by XenoraAI</p>
+              <p className="mt-1 text-sm text-base-content/50">AI workflow workspace for founders</p>
+            </div>
+          </div>
         </Reveal>
 
         <Reveal delay={0.1}>
-          <h2 className="premium-heading mt-14 text-xl font-medium sm:text-2xl">Our mission</h2>
-          <p className="mt-4 text-sm leading-relaxed text-base-content/65">
-            As a founder, your most valuable asset is your time — not your manual effort on low-leverage tasks.
-            XenoraAI exists to reclaim that time by providing an infrastructure layer between your tools and your
-            output. We don&apos;t just generate text; we build durable, autonomous workflows that handle the heavy
-            lifting of operations.
-          </p>
+          <div className="mt-8 space-y-4 text-sm leading-relaxed text-base-content/60">
+            <p>
+              I built Nora because I watched founders — including myself — burn hours every week on repetitive work.
+              Writing content, drafting follow-ups, researching competitors. The kind of work that feels productive
+              but eats into the time you should be building.
+            </p>
+            <p>
+              Most AI tools feel like black boxes. You paste something in, hope for the best, and get something back
+              that might work. There's no transparency, no control, no understanding of what just happened.
+            </p>
+            <p>
+              Nora is different. Every workflow shows you exactly what's happening at each step — from input classification
+              to content generation to output formatting. You see the process, you trust the output, and you ship faster.
+            </p>
+            <p>
+              Content, lead, and research workflows are live in the product. If you&apos;re a solo founder tired of the AI guessing game, we&apos;d love to hear from you.
+            </p>
+          </div>
         </Reveal>
 
         <Reveal delay={0.15}>
-          <h2 className="premium-heading mt-12 text-xl font-medium sm:text-2xl">Why Nora is different</h2>
-          <p className="mt-4 text-sm leading-relaxed text-base-content/65">
-            Most AI tools operate like black boxes — you provide an input and hope for a useful output, often
-            with little visibility or control. Nora is built for trust and transparency.
-          </p>
-          <ul className="mt-6 space-y-5 text-sm leading-relaxed text-base-content/65">
-            <li>
-              <p className="font-medium text-base-content/85">Visible workflow logic</p>
-              <p className="mt-1">
-                Every step Nora takes — from research and ingestion to classification and output — is visible,
-                reviewable, and editable in your dashboard.
-              </p>
-            </li>
-            <li>
-              <p className="font-medium text-base-content/85">Adaptive execution</p>
-              <p className="mt-1">
-                Nora acts as an ops co-founder that observes your habits, adapts to your voice, and executes
-                end-to-end tasks like outreach, content creation, and lead qualification.
-              </p>
-            </li>
-            <li>
-              <p className="font-medium text-base-content/85">Founder-first infrastructure</p>
-              <p className="mt-1">
-                We prioritize reliability and accountability, providing a clean audit trail so you remain in
-                control of every business decision your agents carry out.
-              </p>
-            </li>
-          </ul>
-        </Reveal>
-
-        <Reveal delay={0.2}>
-          <h2 className="premium-heading mt-12 text-xl font-medium sm:text-2xl">Solving founder chaos</h2>
-          <p className="mt-4 text-sm leading-relaxed text-base-content/65">
-            XenoraAI transforms the chaotic, fragmented nature of early-stage growth into a streamlined,
-            automated pipeline. Nora bridges the gap between having a business and scaling an operation,
-            allowing solo founders to act with the efficiency of a ten-person team. By automating the repetitive
-            loops of communication and research, we make sure your energy goes to what truly matters: building
-            your vision.
-          </p>
-        </Reveal>
-
-        <Reveal delay={0.25}>
-          <div className="mt-12 flex items-center gap-4">
+          <div className="mt-8 flex items-center gap-4">
             <a
               href="https://x.com/xenoraai"
               target="_blank"

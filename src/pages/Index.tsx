@@ -1,83 +1,10 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { z } from 'zod';
 import { Instagram, Linkedin, FileText, Search, Zap, ArrowRight, Check, Inbox, Sparkles, FileCheck2 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
 import { ProductEmailUpdatesForm } from '@/components/nora-landing/ProductEmailUpdatesForm';
 import { Reveal } from '@/components/motion/Reveal';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-
-const waitlistSchema = z.object({
-  name: z.string().trim().min(1, 'Enter your name').max(255),
-  email: z.string().trim().email('Enter a valid email').max(255),
-});
-
-function WaitlistForm() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [serverError, setServerError] = useState('');
-
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrors({});
-    setServerError('');
-    const result = waitlistSchema.safeParse({ name, email });
-    if (!result.success) {
-      const fe: { name?: string; email?: string } = {};
-      result.error.issues.forEach((i) => {
-        const f = i.path[0] as 'name' | 'email';
-        if (f === 'name' || f === 'email') fe[f] = i.message;
-      });
-      setErrors(fe);
-      return;
-    }
-    setLoading(true);
-    const { error } = await supabase.from('waitlist').insert({ name: result.data.name, email: result.data.email });
-    setLoading(false);
-    if (error) {
-      setServerError(error.code === '23505' ? 'This email is already on the list.' : 'Something went wrong. Try again.');
-      return;
-    }
-    setSuccess(true);
-  };
-
-  if (success) {
-    return (
-      <div className="surface-panel p-8 text-center">
-        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-primary/20 bg-primary/10">
-          <Check className="h-7 w-7 text-primary" />
-        </div>
-        <p className="text-lg font-semibold">You&apos;re on the list.</p>
-        <p className="mt-2 text-sm text-muted-foreground">We&apos;ll be in touch soon.</p>
-      </div>
-    );
-  }
-
-  return (
-    <form onSubmit={onSubmit} className="surface-panel space-y-4 p-6 text-left">
-      <div>
-        <label className="mb-1.5 block text-sm text-muted-foreground">Name</label>
-        <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" autoComplete="name" className="min-h-[44px]" />
-        {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name}</p>}
-      </div>
-      <div>
-        <label className="mb-1.5 block text-sm text-muted-foreground">Email</label>
-        <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email" className="min-h-[44px]" />
-        {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email}</p>}
-      </div>
-      {serverError && <p className="text-center text-sm text-destructive">{serverError}</p>}
-      <Button type="submit" disabled={loading} className="min-h-[48px] w-full rounded-full">
-        {loading ? 'Joining…' : 'Join Waitlist'}
-      </Button>
-    </form>
-  );
-}
+import { ROUTES } from '@/config/routes';
 
 const agents = [
   {
@@ -115,6 +42,26 @@ const outcomes = [
   },
 ];
 
+const freeTierFeatures = [
+  '5 reviewed workflow runs per month',
+  '10 Ask Nora messages per month',
+  '3 custom agents',
+  'Content, Lead, and Research agents',
+  'Run history and visible progress',
+];
+const plusFeatures = [
+  'Unlimited workflow runs (fair use)',
+  'Unlimited Ask Nora conversations (fair use)',
+  'All three agents at higher throughput',
+  'Connections: Gmail, X, Instagram, LinkedIn',
+  'Managed billing, cancel anytime',
+];
+const proFeatures = [
+  'Everything in Nora Plus',
+  'Pro-tier model for Ask Nora with higher limits',
+  'Priority connections and deeper analysis',
+  'For teams running multiple workflows daily',
+];
 
 const Index = () => {
   const smoothTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -158,14 +105,13 @@ const Index = () => {
 
             <Reveal delay={0.18}>
               <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-                <button
-                  type="button"
-                  onClick={() => scrollToSection('waitlist')}
+                <Link
+                  to={ROUTES.tryNora}
                   className="group inline-flex min-h-[48px] items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground transition-all duration-200 hover:opacity-90"
                 >
-                  Join Waitlist
+                  Join the beta
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </button>
+                </Link>
                 <button
                   type="button"
                   className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
@@ -341,27 +287,130 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ── WAITLIST ── */}
-        <section id="waitlist" className="scroll-mt-24 border-t border-border/60 px-4 py-20 sm:px-8 sm:py-28">
-          <div className="mx-auto max-w-md">
+        {/* ── PRICING ── */}
+        <section id="pricing" className="scroll-mt-24 border-t border-border/60 px-4 py-20 sm:px-8 sm:py-28">
+          <div className="mx-auto max-w-5xl">
             <Reveal>
-              <p className="text-center font-space-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-                Coming soon
+              <h2 className="premium-heading text-center text-3xl sm:text-4xl md:text-5xl">Pricing</h2>
+            </Reveal>
+            <Reveal delay={0.06}>
+              <p className="mx-auto mt-4 max-w-xl text-center text-base text-muted-foreground">
+                Start free. Validate one workflow. Scale when it earns it. Paid plans include a 7-day trial. Cancel anytime.
               </p>
             </Reveal>
-            <Reveal delay={0.04}>
-              <h2 className="premium-heading mt-4 text-center text-3xl sm:text-4xl md:text-5xl">
-                Join the waitlist.
+
+            <div className="mx-auto mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <Reveal delay={0.06}>
+                <article className="surface-panel flex h-full flex-col p-7 text-left">
+                  <h3 className="text-sm font-medium tracking-wide text-muted-foreground">Free</h3>
+                  <p className="premium-heading mt-3 text-4xl">
+                    $0<span className="text-base text-muted-foreground"> /mo</span>
+                  </p>
+                  <ul className="mt-6 space-y-2.5 text-[14px] text-muted-foreground">
+                    {freeTierFeatures.map((f) => (
+                      <li key={f} className="flex gap-2">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-auto pt-7">
+                    <Link
+                      to={ROUTES.signup}
+                      className="flex w-full items-center justify-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-primary/40"
+                    >
+                      Get started
+                    </Link>
+                  </div>
+                </article>
+              </Reveal>
+
+              <Reveal delay={0.1}>
+                <article className="surface-panel relative flex h-full flex-col border-primary/30 p-7 text-left ring-1 ring-primary/20">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-0.5 text-[11px] font-medium text-primary-foreground">Most popular</span>
+                  <h3 className="text-sm font-medium tracking-wide text-muted-foreground">Nora Plus</h3>
+                  <p className="premium-heading mt-3 text-4xl">
+                    $49.99<span className="text-base text-muted-foreground"> /mo</span>
+                  </p>
+                  <p className="mt-1 text-xs text-primary">7-day free trial</p>
+                  <ul className="mt-6 space-y-2.5 text-[14px] text-muted-foreground">
+                    {plusFeatures.map((f) => (
+                      <li key={f} className="flex gap-2">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-auto pt-7">
+                    <a
+                      href="https://buy.stripe.com/bJe4gy4RceG67dyaHwdnW03"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+                    >
+                      Start free trial
+                      <ArrowRight className="h-4 w-4" />
+                    </a>
+                  </div>
+                </article>
+              </Reveal>
+
+              <Reveal delay={0.14}>
+                <article className="surface-panel flex h-full flex-col p-7 text-left">
+                  <h3 className="text-sm font-medium tracking-wide text-muted-foreground">Nora Pro</h3>
+                  <p className="premium-heading mt-3 text-4xl">
+                    $79.99<span className="text-base text-muted-foreground"> /mo</span>
+                  </p>
+                  <p className="mt-1 text-xs text-primary">7-day free trial</p>
+                  <ul className="mt-6 space-y-2.5 text-[14px] text-muted-foreground">
+                    {proFeatures.map((f) => (
+                      <li key={f} className="flex gap-2">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-auto pt-7">
+                    <a
+                      href="https://buy.stripe.com/6oUeVcfvQcxY8hCcPEdnW02"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex w-full items-center justify-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-primary/40"
+                    >
+                      Start free trial
+                      <ArrowRight className="h-4 w-4" />
+                    </a>
+                  </div>
+                </article>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* ── FINAL CTA ── */}
+        <section className="border-t border-border/60 px-4 py-24 sm:px-8 sm:py-32">
+          <div className="mx-auto max-w-3xl text-center">
+            <Reveal>
+              <h2 className="premium-heading text-3xl sm:text-4xl md:text-6xl">
+                Stop juggling tabs.
+                <br className="hidden sm:block" />
+                {' '}Start running workflows.
               </h2>
             </Reveal>
-            <Reveal delay={0.08}>
-              <p className="mx-auto mt-4 max-w-sm text-center text-base text-muted-foreground">
-                Be the first to know when we launch.
+            <Reveal delay={0.05}>
+              <p className="mx-auto mt-6 max-w-xl text-base text-muted-foreground">
+                Join the beta and put your first workflow live this week.
               </p>
             </Reveal>
-            <Reveal delay={0.12}>
-              <div className="mt-10">
-                <WaitlistForm />
+            <Reveal delay={0.1}>
+              <div className="mt-9 flex justify-center">
+                <Link
+                  to={ROUTES.tryNora}
+                  className="group inline-flex min-h-[48px] items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+                >
+                  Join the beta
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </Link>
               </div>
             </Reveal>
           </div>
