@@ -38,20 +38,27 @@ function classifyTemplate(name: string): string {
   return 'content';
 }
 
+function monthKey(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+}
+
+function monthLabel(key: string): string {
+  const [y, m] = key.split('-').map(Number);
+  return new Date(y, m - 1, 1).toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+}
+
 const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const [runs, setRuns] = useState<RunRow[]>([]);
+  const [allRuns, setAllRuns] = useState<RunRow[]>([]);
   const [templates, setTemplates] = useState<TemplateRow[]>([]);
   const [outputCount, setOutputCount] = useState(0);
   const [dataLoading, setDataLoading] = useState(true);
+  const [selectedMonth, setSelectedMonth] = useState<string>(() => monthKey(new Date()));
 
   const fetchData = useCallback(async () => {
     if (!user) return;
-
-    const now = new Date();
-    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
 
     const [runsRes, templatesRes, outputsRes] = await Promise.all([
       supabase
@@ -59,7 +66,7 @@ const Dashboard = () => {
         .select('id, status, estimated_minutes_saved, created_at, template_id')
         .eq('user_id', user.id)
         .is('archived_at', null)
-        .gte('created_at', monthStart),
+        .order('created_at', { ascending: false }),
       supabase.from('workflow_templates').select('id, name'),
       supabase
         .from('workflow_outputs')
@@ -67,7 +74,7 @@ const Dashboard = () => {
         .in('output_type', ['x_post', 'linkedin_post', 'hook']),
     ]);
 
-    if (runsRes.data) setRuns(runsRes.data);
+    if (runsRes.data) setAllRuns(runsRes.data);
     if (templatesRes.data) setTemplates(templatesRes.data);
     setOutputCount(outputsRes.count ?? 0);
     setDataLoading(false);
@@ -76,6 +83,18 @@ const Dashboard = () => {
   useEffect(() => {
     void fetchData();
   }, [fetchData]);
+
+  // Available months = current month + every month with runs
+  const availableMonths = useMemo(() => {
+    const set = new Set<string>([monthKey(new Date())]);
+    for (const r of allRuns) set.add(monthKey(new Date(r.created_at)));
+    return Array.from(set).sort((a, b) => (a < b ? 1 : -1));
+  }, [allRuns]);
+
+  const runs = useMemo(
+    () => allRuns.filter((r) => monthKey(new Date(r.created_at)) === selectedMonth),
+    [allRuns, selectedMonth],
+  );
 
   const completedRuns = runs.filter((r) => r.status === 'completed');
   const startedRuns = runs.filter((r) => r.status !== 'pending').length;
@@ -116,9 +135,14 @@ const Dashboard = () => {
     user?.email?.split('@')[0] ||
     'there';
 
+  const isCurrentMonth = selectedMonth === monthKey(new Date());
+  const monthDisplay = monthLabel(selectedMonth);
   const subtitle = isEmpty
-    ? 'You are one run away from your first approved output.'
-    : `${completedRuns.length} completed run${completedRuns.length !== 1 ? 's' : ''} this month. Keep the momentum going.`;
+    ? isCurrentMonth
+      ? 'You are one run away from your first approved output.'
+      : `No runs in ${monthDisplay}.`
+    : `${completedRuns.length} completed run${completedRuns.length !== 1 ? 's' : ''} in ${isCurrentMonth ? 'this month' : monthDisplay}.`;
+
 
   return (
     <div className="mx-auto min-h-0 min-w-0 max-w-5xl px-3 py-4 sm:px-6 sm:py-6 lg:px-8">
