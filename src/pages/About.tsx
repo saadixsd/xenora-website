@@ -42,30 +42,50 @@ const About = () => {
             </div>
             <div className="text-center sm:text-left">
               <p className="text-lg font-medium text-base-content/85">Nora by XenoraAI</p>
-              <p className="mt-1 text-sm text-base-content/50">AI workflow workspace for founders</p>
+              <p className="mt-1 text-sm text-base-content/50">The agentic engine that runs your operations</p>
             </div>
           </div>
         </Reveal>
 
         <Reveal delay={0.1}>
-          <div className="mt-8 space-y-4 text-sm leading-relaxed text-base-content/60">
-            <p>
-              I built Nora because I watched founders — including myself — burn hours every week on repetitive work.
-              Writing content, drafting follow-ups, researching competitors. The kind of work that feels productive
-              but eats into the time you should be building.
+          <section className="mt-10">
+            <h2 className="premium-heading text-xl font-medium text-base-content/85 sm:text-2xl">What XenoraAI is</h2>
+            <p className="mt-3 text-sm leading-relaxed text-base-content/60">
+              XenoraAI is the company building agentic workflow infrastructure for SMBs and founders. Our mission is to remove the 80% of operations work that is repetitive, invisible, and kills momentum.
             </p>
-            <p>
-              Most AI tools feel like black boxes. You paste something in, hope for the best, and get something back
-              that might work. There's no transparency, no control, no understanding of what just happened.
+          </section>
+        </Reveal>
+
+        <Reveal delay={0.14}>
+          <section className="mt-8">
+            <h2 className="premium-heading text-xl font-medium text-base-content/85 sm:text-2xl">What Nora is</h2>
+            <p className="mt-3 text-sm leading-relaxed text-base-content/60">
+              Nora is our agentic AI workflow assistant — the flagship engine that turns messy, real-world operations into autonomous, reviewable runs that actually execute work. Not suggestions. Not templates. Finished output, ready for your sign-off.
             </p>
-            <p>
-              Nora is different. Every workflow shows you exactly what's happening at each step — from input classification
-              to content generation to output formatting. You see the process, you trust the output, and you ship faster.
+          </section>
+        </Reveal>
+
+        <Reveal delay={0.18}>
+          <section className="mt-8">
+            <h2 className="premium-heading text-xl font-medium text-base-content/85 sm:text-2xl">How Nora works</h2>
+            <ol className="mt-4 space-y-4 text-sm leading-relaxed text-base-content/60">
+              <li>
+                <p className="font-medium text-base-content/85">1. Observe</p>
+                <p className="mt-1">Connects to the tools you already use and learns how work gets done today — the patterns, the handoffs, the busywork.</p>
+              </li>
+              <li>
+                <p className="font-medium text-base-content/85">2. Adapt</p>
+                <p className="mt-1">Decides what should happen next based on context, your guardrails, and the outcome you want.</p>
+              </li>
+              <li>
+                <p className="font-medium text-base-content/85">3. Execute</p>
+                <p className="mt-1">Runs end-to-end workflows — resolving tickets, advancing hiring, nudging invoices, drafting outreach. You review; Nora executes.</p>
+              </li>
+            </ol>
+            <p className="mt-6 text-sm leading-relaxed text-base-content/60">
+              Content, lead, and research workflows are live in the product today, with operations, hiring, and finance workflows expanding from there.
             </p>
-            <p>
-              Content, lead, and research workflows are live in the product. If you&apos;re a solo founder tired of the AI guessing game, we&apos;d love to hear from you.
-            </p>
-          </div>
+          </section>
         </Reveal>
 
         <Reveal delay={0.15}>
