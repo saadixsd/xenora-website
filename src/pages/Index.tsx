@@ -92,14 +92,14 @@ const Index = () => {
           <div className="w-full max-w-3xl text-center">
             <Reveal delay={0.05}>
               <h1 className="premium-heading mt-8 text-[2.25rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5rem]">
-                For Builders Who
+                The Agentic Engine
                 <br className="hidden sm:block" />
-                {' '}Demand Simple Wins.
+                {' '}That Runs Your Ops.
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-8 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                Turn rough notes, leads, and links into reviewable workflow runs. You're in control of execution
+                Nora observes how your business operates, adapts to your tools, and autonomously executes the repetitive workflows that drain your day — tickets, outreach, hiring, finance nudges, and more.
               </p>
             </Reveal>
 

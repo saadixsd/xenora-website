@@ -13,9 +13,13 @@ const faqs: { q: string; a: ReactNode }[] = [
     q: 'What is Nora?',
     a: (
       <>
-        You bring the idea. Nora handles the execution. Nora is XenoraAI&apos;s workflow engine for solo founders and small teams: not a generic chatbot, but structured runs with visible steps. Content, Lead, and Research agents are all available in the app. Nothing publishes or sends until you approve.
+        Nora is XenoraAI&apos;s agentic AI engine. It watches how your business operates, then autonomously runs workflows for you instead of just giving suggestions. It follows an observe → adapt → execute loop: it learns patterns from your tools and data, decides what to do next, and takes action — with every run reviewable before it ships.
       </>
     ),
+  },
+  {
+    q: 'How is Nora different from a chatbot or automation builder?',
+    a: 'Chatbots answer questions. Automation builders need you to wire every step yourself. Nora is agentic: it learns your operation, decides what to do, and executes the work end-to-end — leaving you a reviewable run instead of a to-do list.',
   },
   {
     q: 'How is this different from ChatGPT or other AI tools?',
