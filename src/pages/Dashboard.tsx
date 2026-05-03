@@ -184,7 +184,23 @@ const Dashboard = () => {
 
       <div className="mb-4 grid gap-3 sm:mb-5 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="dash-panel px-4 py-4 sm:px-5 sm:py-5">
-          <p className="dash-label mb-1">This month&apos;s workflow momentum</p>
+          <div className="mb-1 flex items-center justify-between gap-2">
+            <p className="dash-label">{isCurrentMonth ? "This month's workflow momentum" : `${monthDisplay} workflow recap`}</p>
+            <label className="sr-only" htmlFor="month-filter">Filter by month</label>
+            <select
+              id="month-filter"
+              value={selectedMonth}
+              onChange={(e) => setSelectedMonth(e.target.value)}
+              className="min-h-[32px] rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-deep)] px-2 py-1 text-[11.5px] text-[var(--dash-text)] focus:outline-none focus:ring-1 focus:ring-[var(--dash-accent)] sm:text-[12px]"
+              aria-label="Filter dashboard by month"
+            >
+              {availableMonths.map((m) => (
+                <option key={m} value={m}>
+                  {monthLabel(m)}
+                </option>
+              ))}
+            </select>
+          </div>
           {dataLoading ? (
             <>
               <div className="h-7 w-3/4 animate-pulse rounded bg-[var(--dash-border)]" />
@@ -203,7 +219,7 @@ const Dashboard = () => {
                 />
               </div>
               <p className="mt-1 text-[12px] text-[var(--dash-muted)] sm:text-[13px]">
-                Goal: complete one workflow today and keep completion above 60%.
+                {formatHoursSaved(totalMinutesSaved)} saved across {completedRuns.length} completed run{completedRuns.length !== 1 ? 's' : ''}.
               </p>
             </>
           )}
