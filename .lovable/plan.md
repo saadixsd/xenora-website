@@ -1,117 +1,61 @@
-# Xenora — Jobs-inspired Redesign
+## Goal
 
-A focused pass on the marketing site and dashboard guided by one principle: **simplicity is the ultimate sophistication**. Less chrome, more clarity. Outcome-first copy. Quiet, confident surfaces. Type that breathes.
+Reposition public-facing copy around Nora as an **agentic AI engine** that observes → adapts → executes workflows, with XenoraAI as the umbrella company and Nora as the flagship product.
 
----
-
-## 1. Design system reset (foundation)
-
-Before touching pages, retune the system so every screen inherits the new look.
-
-**Typography**
-- Replace `Syne` (display) with **Instrument Serif** for hero / section heads — editorial, calm, unmistakably premium (Jobs-era restraint, not techno-futurism).
-- Keep **Inter** for body but tighten: weights 400/500 only, default tracking `-0.011em`, body size `15px` desktop / `16px` mobile, line-height `1.6`.
-- Drop `Space Mono` from public surfaces; keep only in dashboard for data labels.
-- Headline scale: H1 `clamp(2.5rem, 6vw, 4.75rem)`, H2 `clamp(1.75rem, 3.5vw, 2.5rem)`. Generous `text-wrap: balance`.
-
-**Color & surfaces**
-- Dark: deeper near-black `#0B0B0E`, single elevated surface `#141418`, hairline borders `rgba(255,255,255,0.08)`. No gradients on cards.
-- Light: warm paper `#FAFAF7`, surface `#FFFFFF`, border `rgba(15,15,20,0.08)`.
-- Accent stays Xenora green but desaturated one notch (`#10B981` dark / `#0E8F6E` light) — used sparingly (CTA, single accent line, focus ring only).
-
-**Remove visual noise**
-- Delete `NeuralMeshBackground` from public pages (background mesh + animated grid).
-- Delete the giant centered `XenoraLogo` watermark on `Index`, `Login`, `SignUp`, `FAQ`, `About`, `Contact`, `Privacy`, `AdminLayout`.
-- Remove `.glass` and `backdrop-blur-*` from public surfaces. Replace `surface-panel` with a flat card: `bg-surface border border-hairline rounded-xl`.
-- Header: solid background, no blur, thin bottom border only after scroll.
+Tone stays formal/editorial. No competitor names, no location, no founder mentions. No Mac/desktop/Ollama claims yet (those are forward-looking and not yet shipped on the web app).
 
 ---
 
-## 2. Marketing site (`src/pages/Index.tsx`)
+## 1. Landing hero — `src/pages/Index.tsx`
 
-Rebuild as a quiet, product-led page. Fewer sections, stronger ones.
+Replace the current hero headline + subtitle.
 
-```text
-1. Hero            — one sentence, one CTA
-2. Live demo       — the Input → Workflow → Output card (kept, simplified)
-3. The three agents
-4. Why Nora        — 3 outcomes, no comparison table
-5. Pricing         — Free / Plus / Pro, plain cards
-6. Final CTA + footer
-```
+**Headline**
+> The Agentic Engine
+> That Runs Your Ops.
 
-**Hero rewrite (chosen direction — outcome-led, founder-brutal):**
-> An operations teammate for founders who are doing too much.
->
-> Nora turns rough notes, leads, and links into reviewable workflow runs. You stay in control of what ships.
->
-> [ Join the beta → ]   See it run
+**Subtitle**
+> Nora observes how your business operates, adapts to your tools, and autonomously executes the repetitive workflows that drain your day — tickets, outreach, hiring, finance nudges, and more.
 
-- Single primary CTA. Secondary is a text link, not a button.
-- Kill the "Ask Nora · Dashboard" micro-links under the CTA.
-- Kill the sticky bottom CTA bar (it competes with the hero — Jobs would cut it).
-
-**Sections trimmed**
-- Remove the long comparison table and the persona cards — they're noise. Fold the strongest line from each into the "Why Nora" section.
-- "How Nora works" merges into the demo section (3 inline labels under the visual, not a separate grid).
-- Footer slims to: logo, three links (Privacy · FAQ · Contact), copyright, and a quiet "Admin" link (instead of the current footer).
+CTAs unchanged ("View Dashboard" + "See it run").
 
 ---
 
-## 3. Dashboard refresh
+## 2. About page — `src/pages/About.tsx`
 
-Same design tokens — dashboard already uses `--dash-*` variables, just retune them and remove blur.
+Restructure into three short sections:
 
-- Sidebar: flat surface, no blur, single hairline border, route labels in Inter 14/medium, accent only on active row (left bar + label color).
-- Header: remove backdrop-blur on mobile bar.
-- Cards (`dash-panel`, stats, activity feed, output cards): flat, no shadow on hover — only border color shift.
-- Floating "Ask Nora" button: shrink to 44px, single solid fill, no glow ring.
-- Voice bar: compress vertical padding; same flat treatment.
+- **What XenoraAI is** — the umbrella company building agentic workflow infrastructure for SMBs and founders.
+- **What Nora is** — the agentic engine. One-liner: *"Nora is an agentic AI workflow assistant that turns messy, real-world operations into autonomous, reviewable runs that actually execute work."*
+- **How Nora works** — the observe → adapt → execute loop, in three short bullets:
+  1. **Observe** — connects to the tools you already use and learns how work gets done.
+  2. **Adapt** — decides what should happen next based on patterns, context, and your guardrails.
+  3. **Execute** — runs end-to-end workflows: resolves tickets, advances hiring, nudges invoices, drafts outreach. You review; Nora executes.
 
----
-
-## 4. Theme toggle in Settings
-
-Add a "Appearance" section to `src/pages/Settings.tsx` (dashboard settings) with a Light / Dark segmented control wired to the existing `useTheme()` hook. Persists via the existing `xenora-theme-mode` localStorage key. Place it as the second card, right under "Profile". Remove the public-site theme toggle from the marketing nav (the dashboard is where users live; the public site auto-follows system preference).
+Closing line: *"Remove the 80% of operations work that is repetitive, invisible, and kills momentum."*
 
 ---
 
-## 5. File cleanup
+## 3. FAQ — `src/pages/FAQ.tsx`
 
-Delete files no longer referenced after the redesign:
-- `src/components/nora-landing/NeuralMeshBackground.tsx`
-- `src/pages/admin/*` and `src/components/admin/AdminLayout.tsx`, `src/components/AdminRoute.tsx`, `src/hooks/useAdminRole.ts`, `src/lib/leads.ts`, `src/pages/Contact.tsx`, `supabase/functions/submit-lead/` — **only if** you confirm the standalone CRM/admin console added in the earlier "leads" pass is no longer wanted. (It is not linked from the new footer plan; if you want to keep it, say so and I'll wire an "Admin" footer link instead.)
-- Unused `glass` / watermark CSS utilities in `src/index.css`.
+Update (or insert at top) the **"What is Nora?"** entry with the one-liner + core idea condensed:
 
-I'll do a final `rg` sweep to remove any orphaned imports.
+> Nora is XenoraAI's agentic AI engine. It watches how your business operates, then autonomously runs workflows for you instead of just giving suggestions. It follows an observe → adapt → execute loop: it learns patterns from your tools and data, decides what to do next, and takes action — with every run reviewable before it ships.
 
----
+Add a second new entry: **"How is Nora different from a chatbot or automation builder?"**
 
-## 6. Security pass
-
-Run `security--run_security_scan` and `supabase--linter` after the redesign and fix anything that surfaces. Targeted manual checks:
-- Confirm `user_roles` RLS still blocks self-promotion (was hardened previously — re-verify after any admin file deletions).
-- Confirm `submit-lead` edge function (if kept) still rate-limits and validates input.
-- Confirm no new `console.log` of `session` / tokens introduced.
-- Verify the Settings appearance toggle doesn't read/write anything beyond the existing localStorage key (no auth surface).
+> Chatbots answer questions. Automation builders need you to wire every step yourself. Nora is agentic: it learns your operation, decides what to do, and executes the work end-to-end — leaving you a reviewable run instead of a to-do list.
 
 ---
 
-## 7. QA before declaring done
+## 4. Memory
 
-- Build passes (auto), no TS errors.
-- Visit `/`, `/dashboard`, `/dashboard/settings`, `/login` at 375px, 944px, 1440px — no horizontal scroll, no visible glass blur, no giant watermark.
-- Light/dark toggle in Settings flips both dashboard and (next visit) the public site.
-- Console clean on each route.
+Save the canonical positioning to `mem://product/positioning` and reference it in `mem://index.md` so future copy stays consistent. Update Core to note: *Nora = agentic engine (observe → adapt → execute), not a chat or automation builder.*
 
 ---
 
-## Technical details (for the implementer)
+## Out of scope (for now)
 
-- Add Instrument Serif via Google Fonts import in `src/index.css`; update `tailwind.config.ts` `fontFamily.serif` and replace `font-syne` usages (search/replace across `src/`).
-- Tighten `--xenora-accent`, refresh `--dash-*` tokens in both `:root` and `.light` blocks.
-- New `<Card>` primitive in `src/components/ui/card.tsx` (or extend existing) — flat variant. Replace `surface-panel` instances on the public pages with it.
-- `Index.tsx`: remove `NeuralMeshBackground`, watermark `motion.div`, sticky CTA, comparison table block, persona block; rewrite hero copy; collapse "How Nora works" into the demo section.
-- `Settings.tsx`: insert Appearance card using `useTheme()`; segmented control = two buttons sharing a parent with `data-active` styling.
-- Delete files listed in §5 only after confirming no imports remain (`rg "from.*<path>" src`).
-- After edits, run security scan + linter; address findings or document why deferred.
+- Mac desktop / local-first / Ollama messaging — hold until that surface ships.
+- Pricing, dashboard, or auth changes.
+- Visual/layout redesign — copy only.
