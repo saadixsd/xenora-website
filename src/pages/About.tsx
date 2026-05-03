@@ -23,8 +23,8 @@ const About = () => {
             className="flex min-w-0 shrink-0 cursor-pointer items-center gap-2 sm:gap-2.5"
             aria-label="Nora home"
           >
-            <XenoraLogo decorative className="h-9 w-9 shrink-0 sm:h-14 sm:w-14" />
-            <span className="truncate text-base font-semibold text-base-content sm:max-w-none sm:text-xl">Nora</span>
+            <XenoraLogo decorative className="h-8 w-8 shrink-0 sm:h-10 sm:w-10" />
+            <span className="truncate text-base font-medium tracking-tight sm:text-lg">XenoraAI</span>
           </Link>
           <SiteNav />
         </div>
