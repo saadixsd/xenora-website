@@ -1,10 +1,83 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { z } from 'zod';
 import { Instagram, Linkedin, FileText, Search, Zap, ArrowRight, Check, Inbox, Sparkles, FileCheck2 } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
 import { ProductEmailUpdatesForm } from '@/components/nora-landing/ProductEmailUpdatesForm';
 import { Reveal } from '@/components/motion/Reveal';
-import { ROUTES } from '@/config/routes';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+
+const waitlistSchema = z.object({
+  name: z.string().trim().min(1, 'Enter your name').max(255),
+  email: z.string().trim().email('Enter a valid email').max(255),
+});
+
+function WaitlistForm() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [serverError, setServerError] = useState('');
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrors({});
+    setServerError('');
+    const result = waitlistSchema.safeParse({ name, email });
+    if (!result.success) {
+      const fe: { name?: string; email?: string } = {};
+      result.error.issues.forEach((i) => {
+        const f = i.path[0] as 'name' | 'email';
+        if (f === 'name' || f === 'email') fe[f] = i.message;
+      });
+      setErrors(fe);
+      return;
+    }
+    setLoading(true);
+    const { error } = await supabase.from('waitlist').insert({ name: result.data.name, email: result.data.email });
+    setLoading(false);
+    if (error) {
+      setServerError(error.code === '23505' ? 'This email is already on the list.' : 'Something went wrong. Try again.');
+      return;
+    }
+    setSuccess(true);
+  };
+
+  if (success) {
+    return (
+      <div className="surface-panel p-8 text-center">
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-primary/20 bg-primary/10">
+          <Check className="h-7 w-7 text-primary" />
+        </div>
+        <p className="text-lg font-semibold">You&apos;re on the list.</p>
+        <p className="mt-2 text-sm text-muted-foreground">We&apos;ll be in touch soon.</p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={onSubmit} className="surface-panel space-y-4 p-6 text-left">
+      <div>
+        <label className="mb-1.5 block text-sm text-muted-foreground">Name</label>
+        <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" autoComplete="name" className="min-h-[44px]" />
+        {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name}</p>}
+      </div>
+      <div>
+        <label className="mb-1.5 block text-sm text-muted-foreground">Email</label>
+        <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email" className="min-h-[44px]" />
+        {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email}</p>}
+      </div>
+      {serverError && <p className="text-center text-sm text-destructive">{serverError}</p>}
+      <Button type="submit" disabled={loading} className="min-h-[48px] w-full rounded-full">
+        {loading ? 'Joining…' : 'Join Waitlist'}
+      </Button>
+    </form>
+  );
+}
 
 const agents = [
   {
@@ -42,26 +115,6 @@ const outcomes = [
   },
 ];
 
-const freeTierFeatures = [
-  '5 reviewed workflow runs per month',
-  '10 Ask Nora messages per month',
-  '3 custom agents',
-  'Content, Lead, and Research agents',
-  'Run history and visible progress',
-];
-const plusFeatures = [
-  'Unlimited workflow runs (fair use)',
-  'Unlimited Ask Nora conversations (fair use)',
-  'All three agents at higher throughput',
-  'Connections: Gmail, X, Instagram, LinkedIn',
-  'Managed billing, cancel anytime',
-];
-const proFeatures = [
-  'Everything in Nora Plus',
-  'Pro-tier model for Ask Nora with higher limits',
-  'Priority connections and deeper analysis',
-  'For teams running multiple workflows daily',
-];
 
 const Index = () => {
   const smoothTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
