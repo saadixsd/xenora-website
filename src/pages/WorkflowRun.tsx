@@ -749,11 +749,19 @@ const WorkflowRun = () => {
         </p>
       </div>
 
-      {steps.length > 0 && (
+      {(steps.length > 0 || stepMeta.size > 0) && (
         <div className="mt-6">
-          <h2 className="mb-3 text-sm font-medium text-foreground">Progress</h2>
+          <div className="mb-3 flex items-baseline justify-between">
+            <h2 className="text-sm font-medium text-foreground">Step trace</h2>
+            <span className="font-space-mono text-[10.5px] uppercase tracking-wider text-muted-foreground">
+              {status === 'running' ? 'Live' : status === 'completed' ? 'Complete' : status === 'failed' ? 'Failed' : 'Pending'}
+            </span>
+          </div>
           <div className="surface-panel p-5">
-            <WorkflowTimeline steps={steps} currentStep={currentStep} />
+            <StepTrace
+              entries={buildTrace(steps, stepMeta, currentStep, status)}
+              runStatus={status}
+            />
           </div>
         </div>
       )}
