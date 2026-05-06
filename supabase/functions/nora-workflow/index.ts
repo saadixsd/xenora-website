@@ -1,6 +1,11 @@
 /**
- * Nora workflow runner (SSE). Requires verify_jwt = true in config.
- * Template-aware: Content, Lead Follow-up, Research (optional URL fetch).
+ * Nora workflow runner (SSE).
+ *
+ * `verify_jwt = false` in supabase/config.toml so the OPTIONS preflight succeeds without
+ * a token; this function authenticates the caller in code via `getUser(authHeader)` and
+ * enforces per-user + IP rate limits + monthly free-tier caps.
+ *
+ * Templates: Content, Lead Follow-up, Research (optional URL fetch).
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { isNoraQuotaExemptEmail } from "../_shared/noraQuota.ts";

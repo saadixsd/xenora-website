@@ -130,9 +130,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       setFreeTierBlocked(false);
       return;
     }
-    const { data, error } = await supabase.rpc('get_nora_chat_usage_this_month' as never, {
-      p_user_id: user.id,
-    });
+    const { data, error } = await supabase.rpc('my_nora_chat_usage_this_month' as never);
     if (error) {
       console.error(error);
       return;

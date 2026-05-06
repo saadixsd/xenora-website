@@ -35,7 +35,7 @@ export type ClaudeChatSuccess = {
   tier?: string;
 };
 
-/** Health check requires a valid user JWT when the edge function has verify_jwt enabled. */
+/** Health check — function authenticates the caller in code, so we forward the user JWT. */
 export async function checkClaudeBackend(accessToken: string | undefined): Promise<boolean> {
   if (!accessToken) return false;
   try {

@@ -540,6 +540,8 @@ export type Database = {
         }
         Returns: boolean
       }
+      my_nora_chat_usage_this_month: { Args: never; Returns: number }
+      my_workflow_run_count_this_month: { Args: never; Returns: number }
     }
     Enums: {
       app_role: "admin" | "user"

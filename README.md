@@ -1,29 +1,58 @@
-# XenoraAI — Nora
+# XenoraAI / Nora
 
-Marketing site and app shell for **XenoraAI**. **Nora** is the product: an agentic workflow engine for solo founders and small teams (content, lead workflows, and more) — visible steps, approve before publish or send.
+Marketing site and operator dashboard for **XenoraAI**. **Nora** is the product — an agentic
+workflow engine that observes how a business operates, adapts to the operator's tools, and
+autonomously executes repetitive workflows (content, leads, research) with reviewable runs.
 
-## Tech stack
-- React + TypeScript (Vite)
-- Tailwind CSS + DaisyUI
-- Framer Motion (page polish/animations)
-- React Router (pages: Home, FAQ, Privacy, 404)
-- Supabase (product email list stored in `public.waitlist`)
+> For the architectural map (folders, routing, edge functions, RLS, secrets), see
+> [`ARCHITECTURE.md`](./ARCHITECTURE.md).
 
-## Product email list / Supabase
-- The landing “Product updates” form collects `name`, `email`, optional note; inserts use `role: "Product updates"` plus optional `biggest_pain` for the note.
-- Data is written to the Supabase table `public.waitlist` using the anon/public client.
-- **`/try-nora`** (Try Nora) redirects signed-in users to **`/dashboard/nora`**; guests are sent to sign in first.
-- Row Level Security is enabled; insert access is allowed while reads are intentionally restricted for security.
+## Stack
+
+- **Frontend** — React 18 + TypeScript, Vite, Tailwind + shadcn/ui, Framer Motion, React Router.
+- **Backend** — Supabase (Postgres + RLS, Auth, Edge Functions) provisioned via Lovable Cloud.
+- **AI** — Anthropic Claude for chat (`nora-claude`); Lovable AI gateway for workflow generation
+  (`nora-workflow`); ElevenLabs for voice (`nora-tts`).
+- **Billing** — Stripe Checkout + Billing Portal + webhook → `billing_subscriptions`.
+
+## Surfaces
+
+| Route group | Brand | Notes |
+|---|---|---|
+| `/`, `/about`, `/faq`, `/privacy` | XenoraAI (public) | Static marketing |
+| `/login`, `/signup`, `/auth/callback` | — | Email/password + Google OAuth |
+| `/dashboard/*` | Nora (authed) | Quick run, agents, history, settings, connections |
+
+Path constants live in `src/config/routes.ts` — import `ROUTES` instead of hardcoding strings.
 
 ## Local development
-1. `npm install`
-2. Create/update `.env` with:
-   - `VITE_SUPABASE_URL`
-   - `VITE_SUPABASE_PUBLISHABLE_KEY`
-3. `npm run dev` (default [http://localhost:8080](http://localhost:8080))
 
-**Ask Nora (`/dashboard/nora`, signed in)** calls the Supabase Edge Function `nora-claude` with the user’s JWT (the function validates `Authorization` in code; `verify_jwt` is off in `supabase/config.toml` so CORS preflight works—still require a valid session token). Deploy that function, set **`CLAUDE_API_KEY`** (or **`ANTHROPIC_API_KEY`**) in **Supabase Edge secrets** (never in `VITE_*`). Use a `.env` with the same project’s `VITE_SUPABASE_URL` / `VITE_SUPABASE_PUBLISHABLE_KEY` (anon key only). Local dev allows listed origins in the function’s CORS allowlist.
+```bash
+npm install
+npm run dev      # http://localhost:8080
+```
 
-## Notes
-- Page metadata (title/description/OG/Twitter) is in `index.html`.
-- Supabase schema changes live in `supabase/migrations/`.
+`.env` is auto-managed by Lovable Cloud and only contains the Supabase URL + anon key.
+All private keys (Claude, Stripe, ElevenLabs, NORA_APP_SECRET, …) live exclusively in
+Supabase Edge secrets — see [`ARCHITECTURE.md` §7](./ARCHITECTURE.md#7-secrets).
+
+## Edge functions
+
+Deployed automatically on push. Every function authenticates the caller in code via
+`getUser(authHeader)`; `verify_jwt = false` in `supabase/config.toml` is intentional so the
+CORS preflight passes (browsers do not attach Authorization to OPTIONS). Public webhooks
+(`stripe-webhook`, `submit-lead`, `oauth-callback`) skip JWT and authenticate by signature.
+
+## Database
+
+All user-owned tables enforce `auth.uid() = user_id` via RLS. Admin tables (`leads`,
+`lead_notes`, `lead_activities`) use `has_role(auth.uid(), 'admin')`. Roles live in
+`public.user_roles` — never on `profiles`. Schema changes go through `supabase/migrations/`.
+
+## Conventions
+
+- Tailwind semantic tokens only — no hardcoded colors.
+- Geist font everywhere; accent green used sparingly.
+- No competitor names, no location/founder mentions.
+- Lazy-load every page in `App.tsx` to keep landing TTI fast.
+- Workflow status uses 3-second polling, not Supabase Realtime.

@@ -153,8 +153,8 @@ const FAQ = () => {
             <p className="text-xs text-base-content/40">XenoraAI 2026</p>
           </div>
           <div className="flex items-center justify-center gap-5 text-xs text-base-content/45 sm:justify-end">
-            <Link to="/about" onClick={smoothTop} className="transition-colors hover:text-base-content/85">About</Link>
-            <Link to="/privacy" onClick={smoothTop} className="transition-colors hover:text-base-content/85">Privacy</Link>
+            <Link to={ROUTES.about} onClick={smoothTop} className="transition-colors hover:text-base-content/85">About</Link>
+            <Link to={ROUTES.privacy} onClick={smoothTop} className="transition-colors hover:text-base-content/85">Privacy</Link>
           </div>
         </div>
       </footer>
