@@ -1,61 +1,133 @@
-## Goal
+# Make Nora feel agentic — phased dashboard rework
 
-Reposition public-facing copy around Nora as an **agentic AI engine** that observes → adapts → executes workflows, with XenoraAI as the umbrella company and Nora as the flagship product.
+Homepage and marketing pages stay frozen. All work is inside `/dashboard/*`.
 
-Tone stays formal/editorial. No competitor names, no location, no founder mentions. No Mac/desktop/Ollama claims yet (those are forward-looking and not yet shipped on the web app).
+The spec you wrote is good but builds in the wrong order. The kanban and metrics
+strip are visible *consequences* of agency, not the cause of it. Two changes do
+all the heavy lifting on perception:
 
----
+1. A live **step trace** that narrates what Nora is doing in real time.
+2. **Items** that persist across runs and move through stages, instead of
+   one-shot generations that vanish.
 
-## 1. Landing hero — `src/pages/Index.tsx`
-
-Replace the current hero headline + subtitle.
-
-**Headline**
-> The Agentic Engine
-> That Runs Your Ops.
-
-**Subtitle**
-> Nora observes how your business operates, adapts to your tools, and autonomously executes the repetitive workflows that drain your day — tickets, outreach, hiring, finance nudges, and more.
-
-CTAs unchanged ("View Dashboard" + "See it run").
+Everything else (kanban, capture panel, follow-ups tab, metrics) becomes a
+natural surface on top of those primitives.
 
 ---
 
-## 2. About page — `src/pages/About.tsx`
+## Phase 1 — Perception shift (ship first, ~1 session)
 
-Restructure into three short sections:
+Goal: the next time you click "Run", it *reads* as an agent, not a generator.
 
-- **What XenoraAI is** — the umbrella company building agentic workflow infrastructure for SMBs and founders.
-- **What Nora is** — the agentic engine. One-liner: *"Nora is an agentic AI workflow assistant that turns messy, real-world operations into autonomous, reviewable runs that actually execute work."*
-- **How Nora works** — the observe → adapt → execute loop, in three short bullets:
-  1. **Observe** — connects to the tools you already use and learns how work gets done.
-  2. **Adapt** — decides what should happen next based on patterns, context, and your guardrails.
-  3. **Execute** — runs end-to-end workflows: resolves tickets, advances hiring, nudges invoices, drafts outreach. You review; Nora executes.
+1. **Step trace UI on the workflow run page.**
+   `nora-workflow` already streams SSE stages
+   (`input_received → analyzing → drafting → reviewing → finalizing`). Today
+   they're collapsed into a progress bar. Replace it with a vertical timeline
+   that prints each step as it arrives, with timestamp, a one-line description
+   of what Nora did, and the input/output snippet that step produced. Keep
+   completed steps visible — don't replace, append.
 
-Closing line: *"Remove the 80% of operations work that is repetitive, invisible, and kills momentum."*
+2. **Reframe stage names** to read as agent actions, not pipeline labels:
+   - `analyzing` → "Read your input and classified it as a [type]"
+   - `drafting` → "Generated 3 candidate hooks"
+   - `reviewing` → "Picked hook #2 and expanded it into a post"
+   - `finalizing` → "Wrote the CTA and tightened the copy"
+   The edge function already knows what it did at each stage; we just need it
+   to emit a `narration` field in the SSE event.
+
+3. **"Next actions" strip on the dashboard home.** A single horizontal row
+   above the existing stat blocks: 2–3 cards generated from current state
+   (e.g. "Approve 3 drafts from your last run", "Re-run last week's content
+   workflow"). Pulled from existing `workflow_outputs` + `workflow_runs` —
+   no new tables.
+
+After phase 1, no new database tables, no kanban, but Nora visibly *runs steps*
+and the dashboard tells you what to do next. This is enough to change the
+sentence "it's a content generator" to "it's running a workflow."
+
+## Phase 2 — Items that persist (~1–2 sessions)
+
+Goal: stop losing work between runs. An idea you capture today should still be
+sitting in "Drafting" tomorrow.
+
+1. **New table `workflow_items`.** Columns:
+   `id, user_id, workflow_run_id (nullable), type (post | reply | idea),
+    stage (idea | drafting | review | ready | sent), title, input_text,
+    ai_draft, platform, due_date, created_at, updated_at`.
+   RLS scoped by `user_id`. Items can exist without a run (captured ideas)
+   and get linked to a run when Nora processes them.
+
+2. **New table `workflow_step_logs`.** Columns:
+   `id, item_id, step_name, status, narration, timestamp, debug_info jsonb`.
+   This is what powers the step trace per-item (phase 1's trace is per-run;
+   this one is per-item, finer-grained).
+
+3. **Adapt `nora-workflow`** to write items + step logs instead of (or in
+   addition to) the current `workflow_outputs` rows. Keep `workflow_outputs`
+   for backward compatibility with existing UI; new code reads from `items`.
+
+## Phase 3 — Workspace UI (~2 sessions)
+
+Now the kanban actually has something real to render.
+
+1. **Workflow run view at `/dashboard/run/:id`** becomes three columns:
+   - Left: run metadata + list of past runs for the same template.
+   - Middle: stage lanes (Ideas → Drafting → Review → Ready → Sent), each
+     lane lists `workflow_items` filtered by stage.
+   - Right: clicked item detail with input, AI draft, step trace, and
+     buttons (Regenerate, Edit & Save, Mark Ready, Mark Sent).
+
+2. **Idea capture as a side panel**, not a separate route. Triggered from
+   a "Capture" button in the dashboard header. Submits an item with
+   `stage = 'idea'`, no run linked. Toast on success.
+
+3. **Follow-ups tab at `/dashboard/follow-ups`.** Same data model — items
+   with `type = 'reply'`. List view + the same right-panel detail. Mock
+   the "source" field (X, email, call) for now.
+
+## Phase 4 — Metrics + polish (~half session)
+
+The "ideas captured / posts approved / follow-ups drafted" trio on the
+dashboard home, computed from `workflow_items` aggregates. Progress bars on
+workflow cards ("3/5 posts ready") become trivial counts. Empty states are
+copywritten so a brand-new user sees example items, not a void.
 
 ---
 
-## 3. FAQ — `src/pages/FAQ.tsx`
+## What I'd cut from your spec
 
-Update (or insert at top) the **"What is Nora?"** entry with the one-liner + core idea condensed:
+- **Sample/seed data for new users.** Ship without it. A real workflow run
+  takes 30 seconds — better to nudge them to run one than to fake activity.
+- **Cadence/frequency UI.** Out of scope for beta. Add when you have weekly
+  scheduling logic to back it up.
+- **`Workflow` and `WorkflowRun` as new tables.** We already have
+  `workflow_templates` and `workflow_runs`. Don't duplicate.
 
-> Nora is XenoraAI's agentic AI engine. It watches how your business operates, then autonomously runs workflows for you instead of just giving suggestions. It follows an observe → adapt → execute loop: it learns patterns from your tools and data, decides what to do next, and takes action — with every run reviewable before it ships.
+## What changes in the codebase
 
-Add a second new entry: **"How is Nora different from a chatbot or automation builder?"**
+- `supabase/functions/nora-workflow/index.ts` — add `narration` field to SSE
+  events; later, write `workflow_items` + `workflow_step_logs`.
+- New migration for `workflow_items` and `workflow_step_logs` with RLS.
+- `src/pages/WorkflowRun.tsx` — replace progress bar with step trace
+  timeline (phase 1), then three-column layout (phase 3).
+- `src/pages/Dashboard.tsx` — add "Next actions" strip, keep existing layout.
+- New `src/pages/FollowUps.tsx` and route in `src/config/routes.ts` + `App.tsx`.
+- `src/components/dashboard/CaptureSidePanel.tsx` (new).
+- `src/components/dashboard/StepTrace.tsx` (new, used in two places).
+- `mem://product/nora-agentic-loop` (new) — record the loop concept so
+  future copy stays consistent.
 
-> Chatbots answer questions. Automation builders need you to wire every step yourself. Nora is agentic: it learns your operation, decides what to do, and executes the work end-to-end — leaving you a reviewable run instead of a to-do list.
+## What stays untouched
 
----
+- `Index.tsx`, `About.tsx`, `FAQ.tsx`, `Privacy.tsx`, `SiteNav` — all
+  marketing surfaces.
+- Pricing, auth, billing edge functions.
+- The chat panel (`NoraChatPanel`) — that's a separate surface; conflating
+  it with the workflow workspace is what made it feel like a chat tool.
 
-## 4. Memory
+## Recommendation
 
-Save the canonical positioning to `mem://product/positioning` and reference it in `mem://index.md` so future copy stays consistent. Update Core to note: *Nora = agentic engine (observe → adapt → execute), not a chat or automation builder.*
-
----
-
-## Out of scope (for now)
-
-- Mac desktop / local-first / Ollama messaging — hold until that surface ships.
-- Pricing, dashboard, or auth changes.
-- Visual/layout redesign — copy only.
+Approve **phase 1 only** for the next build. It's the smallest change with
+the biggest perception delta, and it lets us see whether the step trace alone
+moves the needle before we invest in new tables and a three-column layout.
+If it lands, we ship phase 2–4 over the following sessions.
