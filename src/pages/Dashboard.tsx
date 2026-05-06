@@ -7,6 +7,7 @@ import { AgentCards } from '@/components/dashboard/AgentCards';
 import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
 import { HoursSavedBreakdown } from '@/components/dashboard/HoursSavedBreakdown';
 import { QuickRunInput } from '@/components/dashboard/QuickRunInput';
+import { NextActions, buildNextActions } from '@/components/dashboard/NextActions';
 import { ROUTES } from '@/config/routes';
 
 interface RunRow {
