@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { WorkflowTimeline } from '@/components/dashboard/WorkflowTimeline';
+import { StepTrace, buildTrace } from '@/components/dashboard/StepTrace';
 import { OutputCard } from '@/components/dashboard/OutputCard';
 import { TemplateCard } from '@/components/dashboard/TemplateCard';
 import { Button } from '@/components/ui/button';
@@ -129,6 +129,8 @@ const WorkflowRun = () => {
   const [steps, setSteps] = useState<string[]>([]);
   const [status, setStatus] = useState('pending');
   const [outputs, setOutputs] = useState<Output[]>([]);
+  /** Per-step narration + timestamp captured from SSE events (key = step name). */
+  const [stepMeta, setStepMeta] = useState<Map<string, { narration?: string; at?: string }>>(new Map());
   const [running, setRunning] = useState(false);
   const [error, setError] = useState('');
   const [archivedAt, setArchivedAt] = useState<string | null>(null);
@@ -231,6 +233,10 @@ const WorkflowRun = () => {
       } else {
         setOutputs([]);
       }
+      // Reload of an existing run — start with an empty narration map; if the run is
+      // still streaming, new SSE events will repopulate it. Past runs simply show the
+      // canonical step labels with fallback narration.
+      setStepMeta(new Map());
     }
   }, []);
 
@@ -292,6 +298,8 @@ const WorkflowRun = () => {
     if (!user || !selectedTemplate || !inputText.trim()) return;
     setRunning(true);
     setError('');
+    setStepMeta(new Map());
+    setOutputs([]);
 
     const template = templates.find((t) => t.id === selectedTemplate);
     if (template) setSteps(template.steps as string[]);
@@ -389,8 +397,20 @@ const WorkflowRun = () => {
                 status?: string;
                 outputs?: Output[];
                 error?: string;
+                narration?: string;
+                at?: string;
               };
-              if (evt.step) setCurrentStep(evt.step);
+              if (evt.step) {
+                setCurrentStep(evt.step);
+                setStepMeta((prev) => {
+                  const next = new Map(prev);
+                  next.set(evt.step!, {
+                    narration: evt.narration ?? prev.get(evt.step!)?.narration,
+                    at: evt.at ?? prev.get(evt.step!)?.at ?? new Date().toISOString(),
+                  });
+                  return next;
+                });
+              }
               if (evt.status) setStatus(evt.status);
               if (evt.outputs) setOutputs(evt.outputs);
               if (evt.error) setError(evt.error);
@@ -735,11 +755,19 @@ const WorkflowRun = () => {
         </p>
       </div>
 
-      {steps.length > 0 && (
+      {(steps.length > 0 || stepMeta.size > 0) && (
         <div className="mt-6">
-          <h2 className="mb-3 text-sm font-medium text-foreground">Progress</h2>
+          <div className="mb-3 flex items-baseline justify-between">
+            <h2 className="text-sm font-medium text-foreground">Step trace</h2>
+            <span className="font-space-mono text-[10.5px] uppercase tracking-wider text-muted-foreground">
+              {status === 'running' ? 'Live' : status === 'completed' ? 'Complete' : status === 'failed' ? 'Failed' : 'Pending'}
+            </span>
+          </div>
           <div className="surface-panel p-5">
-            <WorkflowTimeline steps={steps} currentStep={currentStep} />
+            <StepTrace
+              entries={buildTrace(steps, stepMeta, currentStep, status)}
+              runStatus={status}
+            />
           </div>
         </div>
       )}
