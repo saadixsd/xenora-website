@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { WorkflowTimeline } from '@/components/dashboard/WorkflowTimeline';
+import { StepTrace, buildTrace } from '@/components/dashboard/StepTrace';
 import { OutputCard } from '@/components/dashboard/OutputCard';
 import { TemplateCard } from '@/components/dashboard/TemplateCard';
 import { Button } from '@/components/ui/button';
@@ -129,6 +129,8 @@ const WorkflowRun = () => {
   const [steps, setSteps] = useState<string[]>([]);
   const [status, setStatus] = useState('pending');
   const [outputs, setOutputs] = useState<Output[]>([]);
+  /** Per-step narration + timestamp captured from SSE events (key = step name). */
+  const [stepMeta, setStepMeta] = useState<Map<string, { narration?: string; at?: string }>>(new Map());
   const [running, setRunning] = useState(false);
   const [error, setError] = useState('');
   const [archivedAt, setArchivedAt] = useState<string | null>(null);
