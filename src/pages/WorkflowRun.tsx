@@ -391,8 +391,20 @@ const WorkflowRun = () => {
                 status?: string;
                 outputs?: Output[];
                 error?: string;
+                narration?: string;
+                at?: string;
               };
-              if (evt.step) setCurrentStep(evt.step);
+              if (evt.step) {
+                setCurrentStep(evt.step);
+                setStepMeta((prev) => {
+                  const next = new Map(prev);
+                  next.set(evt.step!, {
+                    narration: evt.narration ?? prev.get(evt.step!)?.narration,
+                    at: evt.at ?? prev.get(evt.step!)?.at ?? new Date().toISOString(),
+                  });
+                  return next;
+                });
+              }
               if (evt.status) setStatus(evt.status);
               if (evt.outputs) setOutputs(evt.outputs);
               if (evt.error) setError(evt.error);
