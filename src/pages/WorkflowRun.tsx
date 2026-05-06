@@ -233,11 +233,10 @@ const WorkflowRun = () => {
       } else {
         setOutputs([]);
       }
-      // Reload of an existing run — start with an empty narration map; new SSE events
-      // (if the run is still streaming) will repopulate it. Past runs simply show the
+      // Reload of an existing run — start with an empty narration map; if the run is
+      // still streaming, new SSE events will repopulate it. Past runs simply show the
       // canonical step labels with fallback narration.
       setStepMeta(new Map());
-      if (false) {
     }
   }, []);
 
