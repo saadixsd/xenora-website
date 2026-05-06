@@ -298,6 +298,8 @@ const WorkflowRun = () => {
     if (!user || !selectedTemplate || !inputText.trim()) return;
     setRunning(true);
     setError('');
+    setStepMeta(new Map());
+    setOutputs([]);
 
     const template = templates.find((t) => t.id === selectedTemplate);
     if (template) setSteps(template.steps as string[]);
