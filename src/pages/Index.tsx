@@ -454,10 +454,9 @@ const Index = () => {
               <a href="mailto:xenoraai@gmail.com" className="text-xs text-muted-foreground transition-colors hover:text-foreground">xenoraai@gmail.com</a>
             </div>
             <div className="flex items-center justify-center gap-5 text-xs text-muted-foreground sm:justify-end">
-              <Link to="/about" onClick={smoothTop} className="transition-colors hover:text-foreground">About</Link>
-              <Link to="/faq" onClick={smoothTop} className="transition-colors hover:text-foreground">FAQ</Link>
-              <Link to="/privacy" onClick={smoothTop} className="transition-colors hover:text-foreground">Privacy</Link>
-              <Link to="/admin" onClick={smoothTop} className="transition-colors hover:text-foreground">Admin</Link>
+              <Link to={ROUTES.about} onClick={smoothTop} className="transition-colors hover:text-foreground">About</Link>
+              <Link to={ROUTES.faq} onClick={smoothTop} className="transition-colors hover:text-foreground">FAQ</Link>
+              <Link to={ROUTES.privacy} onClick={smoothTop} className="transition-colors hover:text-foreground">Privacy</Link>
             </div>
           </div>
         </footer>
