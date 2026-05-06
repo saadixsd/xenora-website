@@ -129,6 +129,18 @@ const Dashboard = () => {
   const isEmpty = runs.length === 0;
   const completionRate = startedRuns > 0 ? Math.round((completedRuns.length / startedRuns) * 100) : 0;
   const defaultTemplateId = templates.find((t) => classifyTemplate(t.name) === 'content')?.id;
+
+  // Use the unfiltered list so suggestions persist when the user scrubs to a past month.
+  const nextActions = useMemo(
+    () =>
+      buildNextActions({
+        recentRuns: allRuns.slice(0, 8),
+        outputCount,
+        templates,
+        defaultTemplateId,
+      }),
+    [allRuns, outputCount, templates, defaultTemplateId],
+  );
   const displayName =
     (typeof user?.user_metadata?.display_name === 'string' && user.user_metadata.display_name.trim()) ||
     (typeof user?.user_metadata?.full_name === 'string' && user.user_metadata.full_name.trim()) ||
