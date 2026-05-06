@@ -195,6 +195,8 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {!dataLoading && <NextActions actions={nextActions} />}
+
       <div className="mb-4 grid gap-3 sm:mb-5 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="dash-panel px-4 py-4 sm:px-5 sm:py-5">
           <div className="mb-1 flex items-center justify-between gap-2">
