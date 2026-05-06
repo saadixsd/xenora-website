@@ -5,6 +5,7 @@ import { Reveal } from '@/components/motion/Reveal';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
 import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackground';
+import { ROUTES } from '@/config/routes';
 import { cn } from '@/lib/utils';
 
 const sections = [
@@ -148,8 +149,8 @@ const Privacy = () => {
             <p className="text-xs text-base-content/40">XenoraAI 2026</p>
           </div>
           <div className="flex items-center justify-center gap-5 text-xs text-base-content/45 sm:justify-end">
-            <Link to="/about" onClick={smoothTop} className="transition-colors hover:text-base-content/85">About</Link>
-            <Link to="/faq" onClick={smoothTop} className="transition-colors hover:text-base-content/85">FAQ</Link>
+            <Link to={ROUTES.about} onClick={smoothTop} className="transition-colors hover:text-base-content/85">About</Link>
+            <Link to={ROUTES.faq} onClick={smoothTop} className="transition-colors hover:text-base-content/85">FAQ</Link>
           </div>
         </div>
       </footer>

@@ -4,6 +4,7 @@ import { Reveal } from '@/components/motion/Reveal';
 import { XenoraLogo } from '@/components/nora-landing/XenoraLogo';
 import { SiteNav } from '@/components/nora-landing/SiteNav';
 import { NeuralMeshBackground } from '@/components/nora-landing/NeuralMeshBackground';
+import { ROUTES } from '@/config/routes';
 
 const About = () => {
   const smoothTop = () => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -140,8 +141,8 @@ const About = () => {
             <p className="text-xs text-base-content/40">XenoraAI 2026</p>
           </div>
           <div className="flex items-center justify-center gap-5 text-xs text-base-content/45 sm:justify-end">
-            <Link to="/faq" onClick={smoothTop} className="transition-colors hover:text-base-content/85">FAQ</Link>
-            <Link to="/privacy" onClick={smoothTop} className="transition-colors hover:text-base-content/85">Privacy</Link>
+            <Link to={ROUTES.faq} onClick={smoothTop} className="transition-colors hover:text-base-content/85">FAQ</Link>
+            <Link to={ROUTES.privacy} onClick={smoothTop} className="transition-colors hover:text-base-content/85">Privacy</Link>
           </div>
         </div>
       </footer>
