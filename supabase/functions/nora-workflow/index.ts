@@ -637,7 +637,13 @@ If sources failed or are thin, say so in caveats and still infer carefully from 
           })
           .eq("id", runId);
 
-        emit({ step: "done", status: "completed", outputs: outputRows });
+        emit({
+          step: "done",
+          status: "completed",
+          outputs: outputRows,
+          narration: narrationFor(agentKind, "done"),
+          at: new Date().toISOString(),
+        });
         emit({ done: true });
       } catch (e) {
         console.error("Workflow error:", e);
