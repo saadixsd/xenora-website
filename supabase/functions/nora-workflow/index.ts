@@ -97,6 +97,41 @@ const STEPS_BY_AGENT: Record<AgentKind, readonly string[]> = {
   research: ["input_received", "researching", "analyzing", "summarizing", "formatting", "done"],
 } as const;
 
+/**
+ * Human-readable narration for each step. Surfaced in the dashboard step trace so users
+ * see Nora narrate its work ("Read your input and classified it…") instead of an opaque
+ * progress bar. Keep these short, declarative, and in past/present tense.
+ */
+const STEP_NARRATION: Record<AgentKind, Record<string, string>> = {
+  content: {
+    input_received: "Received your input and started the run.",
+    classifying: "Read the input and classified it as a content brief.",
+    generating: "Drafted hooks, an X post, a LinkedIn post, and a CTA.",
+    formatting: "Cleaned up tone, length, and structure.",
+    done: "Outputs ready for your review.",
+  },
+  lead: {
+    input_received: "Received the lead context and started the run.",
+    parsing: "Parsed the lead — pulled name, intent, and stage signals.",
+    drafting: "Drafted a first reply and a 48-hour follow-up.",
+    personalizing: "Tightened the tone and removed any placeholder phrasing.",
+    formatting: "Packaged the score rationale, drafts, and objection notes.",
+    done: "Lead pack ready for your review.",
+  },
+  research: {
+    input_received: "Received the brief and started the run.",
+    researching: "Fetched the source URLs and pulled the relevant excerpts.",
+    analyzing: "Extracted pain signals and content angles from the sources.",
+    summarizing: "Wrote a relevance summary and noted the caveats.",
+    formatting: "Packaged the findings into a reviewable report.",
+    done: "Research pack ready for your review.",
+  },
+};
+
+function narrationFor(agentKind: AgentKind, step: string): string {
+  return STEP_NARRATION[agentKind]?.[step] ?? "";
+}
+
 function safeStep(agentKind: AgentKind, step: string): string {
   const allowed = STEPS_BY_AGENT[agentKind];
   return allowed.includes(step) ? step : allowed[0];
@@ -426,7 +461,12 @@ Deno.serve(async (req) => {
       };
 
       const updateStep = async (step: string, status = "running") => {
-        emit({ step, status });
+        emit({
+          step,
+          status,
+          narration: narrationFor(agentKind, step),
+          at: new Date().toISOString(),
+        });
         await supabaseAdmin
           .from("workflow_runs")
           .update({ current_step: step, status })
