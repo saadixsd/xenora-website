@@ -657,8 +657,40 @@ If sources failed or are thin, say so in caveats and still infer carefully from 
         // Calculate minutes saved based on actual outputs produced
         minutesSaved = calculateMinutesSaved(outputRows);
 
-        const { error: insertErr } = await supabaseAdmin.from("workflow_outputs").insert(outputRows);
+        // Insert outputs (legacy table — still drives existing OutputCard UI), then
+        // re-read with their generated ids so we can link each one to a workflow_item.
+        const { data: insertedOutputs, error: insertErr } = await supabaseAdmin
+          .from("workflow_outputs")
+          .insert(outputRows)
+          .select("id, output_type, content, position");
         if (insertErr) console.error("Failed to insert outputs:", insertErr);
+
+        // Project outputs into persistent workflow_items so they survive past this run
+        // and can move through stages (review → ready → sent) on the workspace board.
+        if (insertedOutputs && insertedOutputs.length > 0) {
+          const itemRows = insertedOutputs
+            .map((o) => {
+              const map = OUTPUT_TYPE_TO_ITEM[o.output_type];
+              if (!map) return null;
+              return {
+                user_id: run.user_id,
+                run_id: runId,
+                source_output_id: o.id,
+                type: map.type,
+                stage: map.stage,
+                platform: map.platform ?? null,
+                title: titleForOutput(o.output_type, o.content),
+                input_text: inputText,
+                ai_draft: o.content,
+                metadata: { output_type: o.output_type, agent_kind: agentKind },
+              };
+            })
+            .filter((row): row is NonNullable<typeof row> => row !== null);
+          if (itemRows.length > 0) {
+            const { error: itemsErr } = await supabaseAdmin.from("workflow_items").insert(itemRows);
+            if (itemsErr) console.error("Failed to insert workflow_items:", itemsErr);
+          }
+        }
 
         await supabaseAdmin
           .from("workflow_runs")
