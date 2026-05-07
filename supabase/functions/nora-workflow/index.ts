@@ -132,6 +132,34 @@ function narrationFor(agentKind: AgentKind, step: string): string {
   return STEP_NARRATION[agentKind]?.[step] ?? "";
 }
 
+/**
+ * Maps a generated `output_type` to a persistent `workflow_items` (type, stage) pair.
+ * Posts/replies land in `review` so the user can approve before sending; research notes
+ * are marked `ready` since they're reference material, not pending action.
+ */
+const OUTPUT_TYPE_TO_ITEM: Record<string, { type: string; stage: string; platform?: string }> = {
+  x_post: { type: "post", stage: "review", platform: "x" },
+  hook: { type: "post", stage: "review", platform: "x" },
+  linkedin_post: { type: "post", stage: "review", platform: "linkedin" },
+  cta: { type: "post", stage: "review" },
+  lead_reply_draft: { type: "reply", stage: "review" },
+  follow_up_48h: { type: "follow_up", stage: "review" },
+  lead_summary: { type: "research_note", stage: "ready" },
+  score_rationale: { type: "research_note", stage: "ready" },
+  objections_to_watch: { type: "research_note", stage: "ready" },
+  pain_signals: { type: "research_note", stage: "ready" },
+  content_angles: { type: "research_note", stage: "ready" },
+  quotes_evidence: { type: "research_note", stage: "ready" },
+  relevance_rationale: { type: "research_note", stage: "ready" },
+  research_caveats: { type: "research_note", stage: "ready" },
+};
+
+function titleForOutput(outputType: string, content: string): string {
+  const trimmed = content.replace(/\s+/g, " ").trim();
+  const head = trimmed.length > 80 ? `${trimmed.slice(0, 77)}…` : trimmed;
+  return head || outputType;
+}
+
 function safeStep(agentKind: AgentKind, step: string): string {
   const allowed = STEPS_BY_AGENT[agentKind];
   return allowed.includes(step) ? step : allowed[0];
