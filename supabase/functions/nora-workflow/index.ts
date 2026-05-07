@@ -132,6 +132,34 @@ function narrationFor(agentKind: AgentKind, step: string): string {
   return STEP_NARRATION[agentKind]?.[step] ?? "";
 }
 
+/**
+ * Maps a generated `output_type` to a persistent `workflow_items` (type, stage) pair.
+ * Posts/replies land in `review` so the user can approve before sending; research notes
+ * are marked `ready` since they're reference material, not pending action.
+ */
+const OUTPUT_TYPE_TO_ITEM: Record<string, { type: string; stage: string; platform?: string }> = {
+  x_post: { type: "post", stage: "review", platform: "x" },
+  hook: { type: "post", stage: "review", platform: "x" },
+  linkedin_post: { type: "post", stage: "review", platform: "linkedin" },
+  cta: { type: "post", stage: "review" },
+  lead_reply_draft: { type: "reply", stage: "review" },
+  follow_up_48h: { type: "follow_up", stage: "review" },
+  lead_summary: { type: "research_note", stage: "ready" },
+  score_rationale: { type: "research_note", stage: "ready" },
+  objections_to_watch: { type: "research_note", stage: "ready" },
+  pain_signals: { type: "research_note", stage: "ready" },
+  content_angles: { type: "research_note", stage: "ready" },
+  quotes_evidence: { type: "research_note", stage: "ready" },
+  relevance_rationale: { type: "research_note", stage: "ready" },
+  research_caveats: { type: "research_note", stage: "ready" },
+};
+
+function titleForOutput(outputType: string, content: string): string {
+  const trimmed = content.replace(/\s+/g, " ").trim();
+  const head = trimmed.length > 80 ? `${trimmed.slice(0, 77)}…` : trimmed;
+  return head || outputType;
+}
+
 function safeStep(agentKind: AgentKind, step: string): string {
   const allowed = STEPS_BY_AGENT[agentKind];
   return allowed.includes(step) ? step : allowed[0];
@@ -461,16 +489,21 @@ Deno.serve(async (req) => {
       };
 
       const updateStep = async (step: string, status = "running") => {
-        emit({
-          step,
-          status,
-          narration: narrationFor(agentKind, step),
-          at: new Date().toISOString(),
-        });
+        const narration = narrationFor(agentKind, step);
+        const at = new Date().toISOString();
+        emit({ step, status, narration, at });
         await supabaseAdmin
           .from("workflow_runs")
           .update({ current_step: step, status })
           .eq("id", runId);
+        // Persist a per-run step log so the trace can be reconstructed later (history,
+        // shared links, debugging) without relying on the live SSE stream.
+        await supabaseAdmin.from("workflow_step_logs").insert({
+          run_id: runId,
+          step_name: step,
+          status,
+          narration,
+        });
       };
 
       let minutesSaved = 0; // calculated after outputs are built
@@ -624,8 +657,40 @@ If sources failed or are thin, say so in caveats and still infer carefully from 
         // Calculate minutes saved based on actual outputs produced
         minutesSaved = calculateMinutesSaved(outputRows);
 
-        const { error: insertErr } = await supabaseAdmin.from("workflow_outputs").insert(outputRows);
+        // Insert outputs (legacy table — still drives existing OutputCard UI), then
+        // re-read with their generated ids so we can link each one to a workflow_item.
+        const { data: insertedOutputs, error: insertErr } = await supabaseAdmin
+          .from("workflow_outputs")
+          .insert(outputRows)
+          .select("id, output_type, content, position");
         if (insertErr) console.error("Failed to insert outputs:", insertErr);
+
+        // Project outputs into persistent workflow_items so they survive past this run
+        // and can move through stages (review → ready → sent) on the workspace board.
+        if (insertedOutputs && insertedOutputs.length > 0) {
+          const itemRows = insertedOutputs
+            .map((o) => {
+              const map = OUTPUT_TYPE_TO_ITEM[o.output_type];
+              if (!map) return null;
+              return {
+                user_id: run.user_id,
+                run_id: runId,
+                source_output_id: o.id,
+                type: map.type,
+                stage: map.stage,
+                platform: map.platform ?? null,
+                title: titleForOutput(o.output_type, o.content),
+                input_text: inputText,
+                ai_draft: o.content,
+                metadata: { output_type: o.output_type, agent_kind: agentKind },
+              };
+            })
+            .filter((row): row is NonNullable<typeof row> => row !== null);
+          if (itemRows.length > 0) {
+            const { error: itemsErr } = await supabaseAdmin.from("workflow_items").insert(itemRows);
+            if (itemsErr) console.error("Failed to insert workflow_items:", itemsErr);
+          }
+        }
 
         await supabaseAdmin
           .from("workflow_runs")
