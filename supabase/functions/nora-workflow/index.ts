@@ -489,16 +489,21 @@ Deno.serve(async (req) => {
       };
 
       const updateStep = async (step: string, status = "running") => {
-        emit({
-          step,
-          status,
-          narration: narrationFor(agentKind, step),
-          at: new Date().toISOString(),
-        });
+        const narration = narrationFor(agentKind, step);
+        const at = new Date().toISOString();
+        emit({ step, status, narration, at });
         await supabaseAdmin
           .from("workflow_runs")
           .update({ current_step: step, status })
           .eq("id", runId);
+        // Persist a per-run step log so the trace can be reconstructed later (history,
+        // shared links, debugging) without relying on the live SSE stream.
+        await supabaseAdmin.from("workflow_step_logs").insert({
+          run_id: runId,
+          step_name: step,
+          status,
+          narration,
+        });
       };
 
       let minutesSaved = 0; // calculated after outputs are built
