@@ -401,6 +401,72 @@ export type Database = {
         }
         Relationships: []
       }
+      workflow_items: {
+        Row: {
+          ai_draft: string | null
+          created_at: string
+          due_date: string | null
+          id: string
+          input_text: string | null
+          metadata: Json
+          platform: string | null
+          run_id: string | null
+          source_output_id: string | null
+          stage: string
+          title: string | null
+          type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ai_draft?: string | null
+          created_at?: string
+          due_date?: string | null
+          id?: string
+          input_text?: string | null
+          metadata?: Json
+          platform?: string | null
+          run_id?: string | null
+          source_output_id?: string | null
+          stage?: string
+          title?: string | null
+          type?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ai_draft?: string | null
+          created_at?: string
+          due_date?: string | null
+          id?: string
+          input_text?: string | null
+          metadata?: Json
+          platform?: string | null
+          run_id?: string | null
+          source_output_id?: string | null
+          stage?: string
+          title?: string | null
+          type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_items_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_runs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_items_source_output_id_fkey"
+            columns: ["source_output_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_outputs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       workflow_outputs: {
         Row: {
           content: string
@@ -485,6 +551,54 @@ export type Database = {
             columns: ["template_id"]
             isOneToOne: false
             referencedRelation: "workflow_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workflow_step_logs: {
+        Row: {
+          created_at: string
+          debug_info: Json
+          id: string
+          item_id: string | null
+          narration: string | null
+          run_id: string
+          status: string
+          step_name: string
+        }
+        Insert: {
+          created_at?: string
+          debug_info?: Json
+          id?: string
+          item_id?: string | null
+          narration?: string | null
+          run_id: string
+          status?: string
+          step_name: string
+        }
+        Update: {
+          created_at?: string
+          debug_info?: Json
+          id?: string
+          item_id?: string | null
+          narration?: string | null
+          run_id?: string
+          status?: string
+          step_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_step_logs_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_step_logs_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_runs"
             referencedColumns: ["id"]
           },
         ]
