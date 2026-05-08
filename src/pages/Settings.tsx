@@ -22,7 +22,7 @@ function csvEscape(s: string): string {
 }
 
 const Settings = () => {
-  const { user, session } = useAuth();
+  const { user, session, signOut } = useAuth();
   const { theme, setTheme } = useTheme();
   const { toast } = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -39,6 +39,34 @@ const Settings = () => {
   const [billingLoading, setBillingLoading] = useState(false);
   const [checkoutBusy, setCheckoutBusy] = useState<'plus' | 'pro' | null>(null);
   const [portalBusy, setPortalBusy] = useState(false);
+
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState('');
+  const [deleting, setDeleting] = useState(false);
+
+  const handleDeleteAccount = async () => {
+    if (deleteConfirm.trim().toLowerCase() !== 'delete' || !session?.access_token) return;
+    setDeleting(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('delete-account', {
+        body: { confirm: 'delete' },
+      });
+      if (error || (data as { error?: string })?.error) {
+        throw new Error(error?.message || (data as { error?: string })?.error || 'Delete failed');
+      }
+      toast({ title: 'Account deleted', description: 'Your account and all data have been permanently removed.' });
+      await signOut();
+      window.location.href = '/';
+    } catch (err) {
+      toast({
+        title: 'Could not delete account',
+        description: err instanceof Error ? err.message : 'Please try again.',
+        variant: 'destructive',
+      });
+      setDeleting(false);
+    }
+  };
+
 
 
   useEffect(() => {
@@ -485,6 +513,51 @@ const Settings = () => {
           <Button onClick={() => void handleSave()} disabled={saving}>
             {saving ? 'Saving...' : 'Save Settings'}
           </Button>
+        </div>
+
+        {/* Danger zone */}
+        <div className="surface-panel border-destructive/30 p-5">
+          <h2 className="text-sm font-medium text-destructive">Danger zone</h2>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Permanently delete your account, profile, chats, workflows, and all associated data.
+            This action cannot be undone and your data cannot be recovered.
+          </p>
+          {!deleteOpen ? (
+            <div className="mt-4">
+              <Button variant="destructive" onClick={() => setDeleteOpen(true)}>
+                Delete account
+              </Button>
+            </div>
+          ) : (
+            <div className="mt-4 space-y-3">
+              <p className="text-sm text-foreground">
+                Type <span className="font-mono font-semibold">delete</span> to confirm. This is permanent.
+              </p>
+              <Input
+                value={deleteConfirm}
+                onChange={(e) => setDeleteConfirm(e.target.value)}
+                placeholder="delete"
+                autoComplete="off"
+                className="bg-card/50 border-border max-w-xs"
+              />
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <Button
+                  variant="destructive"
+                  onClick={() => void handleDeleteAccount()}
+                  disabled={deleting || deleteConfirm.trim().toLowerCase() !== 'delete'}
+                >
+                  {deleting ? 'Deleting…' : 'Permanently delete my account'}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => { setDeleteOpen(false); setDeleteConfirm(''); }}
+                  disabled={deleting}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
