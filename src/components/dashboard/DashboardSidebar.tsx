@@ -10,6 +10,7 @@ import {
   MessageCircle,
   Users,
   Plug,
+  Reply,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { ROUTES } from '@/config/routes';
@@ -22,6 +23,7 @@ const RUN_PREFIX = `${ROUTES.dashboard.root}/run`;
 const workspaceNav = [
   { label: 'Overview', to: ROUTES.dashboard.root, icon: LayoutDashboard },
   { label: 'New run', to: ROUTES.dashboard.runNew, icon: List, matchPrefix: RUN_PREFIX },
+  { label: 'Follow-ups', to: ROUTES.dashboard.followUps, icon: Reply },
   { label: 'History', to: ROUTES.dashboard.history, icon: Clock },
 ];
 

@@ -23,6 +23,7 @@ const AuthCallback = lazy(() => import("./pages/AuthCallback.tsx"));
 const Dashboard = lazy(() => import("./pages/Dashboard.tsx"));
 const WorkflowRun = lazy(() => import("./pages/WorkflowRun.tsx"));
 const History = lazy(() => import("./pages/History.tsx"));
+const FollowUps = lazy(() => import("./pages/FollowUps.tsx"));
 const Settings = lazy(() => import("./pages/Settings.tsx"));
 const AgentWorkspacePage = lazy(() => import("./pages/AgentWorkspacePage.tsx"));
 const AgentsManagePage = lazy(() => import("./pages/AgentsManagePage.tsx"));
@@ -73,6 +74,7 @@ const App = () => (
               <Route path="nora" element={<DashboardNora />} />
               <Route path="run/:id" element={<WorkflowRun />} />
               <Route path="history" element={<History />} />
+              <Route path="follow-ups" element={<FollowUps />} />
               <Route path="settings" element={<Settings />} />
               <Route path="agents/manage" element={<AgentsManagePage />} />
               <Route path="agents/:id/edit" element={<AgentEditPage />} />
