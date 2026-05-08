@@ -31,3 +31,6 @@ verify_jwt = false
 
 [functions.nora-tts]
 verify_jwt = false
+
+[functions.delete-account]
+verify_jwt = false
