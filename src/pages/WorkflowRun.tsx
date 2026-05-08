@@ -792,11 +792,32 @@ const WorkflowRun = () => {
         </div>
       )}
 
+      {items.length > 0 && (
+        <div className="mt-6">
+          <div className="mb-3 flex items-baseline justify-between">
+            <h2 className="text-sm font-medium text-foreground">Workspace</h2>
+            <span className="font-space-mono text-[10.5px] uppercase tracking-wider text-muted-foreground">
+              {items.length} item{items.length === 1 ? '' : 's'}
+            </span>
+          </div>
+          <p className="mb-3 text-xs text-muted-foreground">
+            Each output landed in a stage. Click an item to edit its draft, advance the stage, or remove it.
+          </p>
+          <WorkflowItemBoard
+            items={items}
+            selectedId={selectedItemId}
+            onSelect={(it) => setSelectedItemId(it.id)}
+          />
+        </div>
+      )}
+
+      {/* Legacy outputs view kept for runs that pre-date workflow_items, and as a
+          read-only mirror for runs that do have items (familiar OutputCard layout). */}
       {outputs.length > 0 && (
         <div className="mt-6">
           <h2 className="mb-3 text-sm font-medium text-foreground">Outputs</h2>
           <p className="mb-3 text-xs text-muted-foreground">
-            Outputs are draft-ready and waiting for your approval workflow.
+            Raw outputs as Nora produced them. The workspace above is the source of truth for stage and edits.
           </p>
           <div className="space-y-3">
             {outputs.map((o, idx) => (
@@ -811,6 +832,27 @@ const WorkflowRun = () => {
           </div>
         </div>
       )}
+
+      {selectedItemId && (() => {
+        const sel = items.find((i) => i.id === selectedItemId);
+        if (!sel) return null;
+        return (
+          <>
+            <div className="fixed inset-0 z-[80] bg-black/50" aria-hidden onClick={() => setSelectedItemId(null)} />
+            <div className="fixed inset-y-0 right-0 z-[85] flex h-[100dvh] w-full max-w-[min(28rem,100vw)] flex-col border-l border-[var(--dash-border)] shadow-2xl">
+              <WorkflowItemDetail
+                item={sel}
+                onClose={() => setSelectedItemId(null)}
+                onChange={(updated) => setItems((prev) => prev.map((i) => (i.id === updated.id ? updated : i)))}
+                onDelete={(id) => {
+                  setItems((prev) => prev.filter((i) => i.id !== id));
+                  setSelectedItemId(null);
+                }}
+              />
+            </div>
+          </>
+        );
+      })()}
     </div>
   );
 };
