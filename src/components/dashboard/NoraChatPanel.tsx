@@ -22,15 +22,6 @@ import { NORA_CHAT_SESSIONS_CHANGED, type NoraChatSessionsChangedDetail } from '
 import { describeNoraAppRoute } from '@/lib/noraRouteContext';
 import { buildNoraPersonalContext } from '@/lib/noraPersonalContext';
 import { useAdminRole } from '@/hooks/useAdminRole';
-import { isNoraVoiceTtsEnabled, speakNoraReply, speakNoraStatus } from '@/lib/noraTts';
-import {
-  getSpeechRecognitionCtor,
-  NORA_VOICE_AMBIENT_RESUME,
-  NORA_VOICE_START_DICTATION,
-  setNoraVoiceUiPhase,
-  type NoraVoiceDictationDetail,
-} from '@/lib/noraVoice';
-import { describeElementUnderCursor } from '@/lib/noraPointerContext';
 import { ChatHistorySidebar } from './ChatHistorySidebar';
 
 const FREE_MONTHLY_CHAT_LIMIT = 10;
