@@ -54,15 +54,7 @@ export function DashboardLayout() {
         </main>
       </div>
 
-      <NoraListeningOrb />
-      <NoraCursorOrb />
 
-      <NoraVoiceBar
-        ambientListening={ambientListening}
-        onToggleAmbient={() => setAmbientListening((v) => !v)}
-        onVoiceButtonClick={openNoraAndDictate}
-        ambientActive={ambientListening && !noraOpen}
-      />
 
       <button
         type="button"
