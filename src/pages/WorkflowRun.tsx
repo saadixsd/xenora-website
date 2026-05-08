@@ -306,6 +306,7 @@ const WorkflowRun = () => {
 
   const handleSelectTemplate = (tid: string) => {
     setSelectedTemplate(tid);
+    setSelectedCustomAgentId(null);
     setWizardStep(1);
   };
 
