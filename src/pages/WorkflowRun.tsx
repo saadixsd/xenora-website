@@ -143,6 +143,7 @@ const WorkflowRun = () => {
   /** Set when `agent_type` query matches a row in `agents` (Command Center agents). */
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [customAgents, setCustomAgents] = useState<CustomAgent[]>([]);
+  const [selectedCustomAgentId, setSelectedCustomAgentId] = useState<string | null>(null);
   const [templatesReady, setTemplatesReady] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
 
