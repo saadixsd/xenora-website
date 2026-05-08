@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { NORA_VOICE_TTS_KEY, isNoraVoiceTtsEnabled } from '@/lib/noraTts';
+
 import { createPortalSession } from '@/lib/stripeEdge';
 import {
   STRIPE_PAYMENT_LINK_PLUS,
