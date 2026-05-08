@@ -274,12 +274,16 @@ const WorkflowRun = () => {
       if (updated.status === 'completed' || updated.status === 'failed') {
         window.clearInterval(interval);
         if (updated.status === 'completed') {
-          const { data: outData } = await supabase
-            .from('workflow_outputs')
-            .select('*')
-            .eq('run_id', runId)
-            .order('position');
+          const [{ data: outData }, { data: itemRows }] = await Promise.all([
+            supabase.from('workflow_outputs').select('*').eq('run_id', runId).order('position'),
+            supabase
+              .from('workflow_items')
+              .select('*')
+              .eq('run_id', runId)
+              .order('created_at', { ascending: true }),
+          ]);
           if (outData) setOutputs(outData as Output[]);
+          setItems((itemRows ?? []) as WorkflowItem[]);
         }
       }
     }, 3000);
