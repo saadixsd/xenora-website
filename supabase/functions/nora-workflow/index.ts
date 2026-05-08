@@ -432,7 +432,7 @@ Deno.serve(async (req) => {
   // function can spuriously return 0 rows (JWT/RLS context), which surfaced as 403 Forbidden.
   const { data: run, error: runErr } = await supabaseAdmin
     .from("workflow_runs")
-    .select("id, user_id, status, template_id")
+    .select("id, user_id, status, template_id, custom_agent_id")
     .eq("id", runId)
     .eq("user_id", user.id)
     .maybeSingle();
@@ -445,35 +445,6 @@ Deno.serve(async (req) => {
     return jsonRes({ error: "Run is not in a runnable state" }, 400);
   }
 
-  if (!quotaExempt) {
-    const billingRow = await fetchBillingRow(supabaseAdmin, user.id);
-    if (!isPaidNoraAccess(billingRow)) {
-      const { data: runCount, error: cntErr } = await supabaseAdmin.rpc(
-        "get_workflow_run_count_this_month",
-        { p_user_id: user.id },
-      );
-      if (cntErr) {
-        console.error("get_workflow_run_count_this_month", cntErr);
-        return jsonRes({ error: "Could not verify usage." }, 500);
-      }
-      const n = typeof runCount === "number" ? runCount : 0;
-      if (n > FREE_MONTHLY_RUNS) {
-        await supabaseAdmin
-          .from("workflow_runs")
-          .update({ status: "failed", current_step: "quota_exceeded" })
-          .eq("id", runId);
-        return jsonRes(
-          {
-            error: "free_tier_exhausted",
-            message:
-              "You've used all free workflow runs for this calendar month (UTC). Upgrade to Nora Plus or Nora Pro in Settings to continue.",
-          },
-          429,
-        );
-      }
-    }
-  }
-
   const { data: templateRow } = await supabaseAdmin
     .from("workflow_templates")
     .select("name")
@@ -482,6 +453,60 @@ Deno.serve(async (req) => {
 
   const templateName = templateRow?.name || "Content Agent";
   const agentKind = classifyTemplate(templateName);
+
+  if (!quotaExempt) {
+    const billingRow = await fetchBillingRow(supabaseAdmin, user.id);
+    if (!isPaidNoraAccess(billingRow)) {
+      const failQuota = async (message: string) => {
+        await supabaseAdmin
+          .from("workflow_runs")
+          .update({ status: "failed", current_step: "quota_exceeded" })
+          .eq("id", runId);
+        return jsonRes({ error: "free_tier_exhausted", message }, 429);
+      };
+
+      if (run.custom_agent_id) {
+        // Per-custom-agent daily cap.
+        const { data: cnt, error: cntErr } = await supabaseAdmin.rpc(
+          "get_custom_agent_run_count_today",
+          { p_user_id: user.id, p_custom_agent_id: run.custom_agent_id },
+        );
+        if (cntErr) {
+          console.error("get_custom_agent_run_count_today", cntErr);
+          return jsonRes({ error: "Could not verify usage." }, 500);
+        }
+        const n = typeof cnt === "number" ? cnt : 0;
+        // This run already exists; allow exactly the cap.
+        if (n > FREE_DAILY_CUSTOM_AGENT_RUNS) {
+          return await failQuota(
+            `Free tier allows ${FREE_DAILY_CUSTOM_AGENT_RUNS} runs per custom agent per day. Upgrade to Plus or Pro for unlimited runs.`,
+          );
+        }
+      } else if (agentKind === "lead" || agentKind === "content") {
+        const cap = agentKind === "lead" ? FREE_MONTHLY_LEAD_RUNS : FREE_MONTHLY_CONTENT_RUNS;
+        const { data: cnt, error: cntErr } = await supabaseAdmin.rpc(
+          "get_template_run_count_this_month",
+          { p_user_id: user.id, p_template_id: run.template_id },
+        );
+        if (cntErr) {
+          console.error("get_template_run_count_this_month", cntErr);
+          return jsonRes({ error: "Could not verify usage." }, 500);
+        }
+        const n = typeof cnt === "number" ? cnt : 0;
+        if (n > cap) {
+          const label = agentKind === "lead" ? "Lead Agent" : "Content Agent";
+          return await failQuota(
+            `Free tier allows ${cap} ${label} run${cap === 1 ? "" : "s"} per month. Upgrade to Plus or Pro for unlimited runs.`,
+          );
+        }
+      } else {
+        // Research agent isn't in the free tier.
+        return await failQuota(
+          "The Research Agent is available on Plus and Pro. Upgrade in Settings → Billing to use it.",
+        );
+      }
+    }
+  }
 
   const agentId = null;
   const goal = typeof body.goal === "string" ? body.goal.trim() : "";
