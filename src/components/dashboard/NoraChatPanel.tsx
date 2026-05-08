@@ -575,14 +575,12 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
             <div className="flex min-w-0 items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 focus-within:border-primary/30 sm:px-4">
               <input
                 ref={inputRef}
-                value={voiceAssistantListening ? '' : input}
+                value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={
-                  voiceAssistantListening
-                    ? 'Listening… speak now'
-                    : chatKind === 'agent_builder'
-                      ? 'Or tap "Start agent interview" below…'
-                      : 'Ask about workflows, agents, or getting started...'
+                  chatKind === 'agent_builder'
+                    ? 'Or tap "Start agent interview" below…'
+                    : 'Ask about workflows, agents, or getting started...'
                 }
                 autoComplete="off"
                 autoCorrect="off"
