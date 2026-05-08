@@ -1,8 +1,13 @@
 import type { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 
 export const FREE_MONTHLY_CHATS = 10;
-export const FREE_MONTHLY_RUNS = 5;
-export const FREE_MAX_CUSTOM_AGENTS = 3;
+/** Per-built-in-agent monthly run caps for free tier. */
+export const FREE_MONTHLY_LEAD_RUNS = 1;
+export const FREE_MONTHLY_CONTENT_RUNS = 3;
+/** Per-custom-agent daily run cap for free tier. */
+export const FREE_DAILY_CUSTOM_AGENT_RUNS = 2;
+/** Maximum number of saved custom agents on free tier. */
+export const FREE_MAX_CUSTOM_AGENTS = 2;
 
 export type BillingRow = {
   plan: string;
