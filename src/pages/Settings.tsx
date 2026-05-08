@@ -22,7 +22,7 @@ function csvEscape(s: string): string {
 }
 
 const Settings = () => {
-  const { user, session } = useAuth();
+  const { user, session, signOut } = useAuth();
   const { theme, setTheme } = useTheme();
   const { toast } = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -39,6 +39,34 @@ const Settings = () => {
   const [billingLoading, setBillingLoading] = useState(false);
   const [checkoutBusy, setCheckoutBusy] = useState<'plus' | 'pro' | null>(null);
   const [portalBusy, setPortalBusy] = useState(false);
+
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState('');
+  const [deleting, setDeleting] = useState(false);
+
+  const handleDeleteAccount = async () => {
+    if (deleteConfirm.trim().toLowerCase() !== 'delete' || !session?.access_token) return;
+    setDeleting(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('delete-account', {
+        body: { confirm: 'delete' },
+      });
+      if (error || (data as { error?: string })?.error) {
+        throw new Error(error?.message || (data as { error?: string })?.error || 'Delete failed');
+      }
+      toast({ title: 'Account deleted', description: 'Your account and all data have been permanently removed.' });
+      await signOut();
+      window.location.href = '/';
+    } catch (err) {
+      toast({
+        title: 'Could not delete account',
+        description: err instanceof Error ? err.message : 'Please try again.',
+        variant: 'destructive',
+      });
+      setDeleting(false);
+    }
+  };
+
 
 
   useEffect(() => {
