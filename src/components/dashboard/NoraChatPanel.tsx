@@ -290,10 +290,9 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       }, 14);
     });
 
-  const send = async (text: string, opts?: { speakAfter?: boolean }) => {
+  const send = async (text: string) => {
     const trimmed = text.trim();
     if (!trimmed || sending || typingReply || (freeTierBlocked && !quotaExempt && !billingPaid)) {
-      if (opts?.speakAfter) setNoraVoiceUiPhase('idle');
       return;
     }
     setSessionExpired(false);
@@ -301,7 +300,6 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
     const t = session?.access_token;
     if (!t) {
       setSessionExpired(true);
-      if (opts?.speakAfter) setNoraVoiceUiPhase('idle');
       return;
     }
 
@@ -323,11 +321,6 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
         .single();
       if (ins.data?.id) insertedUserRowId = ins.data.id;
       await touchSession(sid);
-
-      if (opts?.speakAfter && isNoraVoiceTtsEnabled()) {
-        setNoraVoiceUiPhase('thinking');
-        await speakNoraStatus('Got it.');
-      }
 
       const apiSlice = nextHistory.slice(-28);
       const personal = user?.id ? await buildNoraPersonalContext(user.id) : '';
@@ -351,28 +344,12 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
           if (result.queries_remaining <= 0) setFreeTierBlocked(true);
         }
       }
-      if (opts?.speakAfter) {
-        setMessages((prev) => [...prev, { role: 'assistant', content: result.content }]);
-        setTypingReply(false);
-      } else {
-        await animateAssistantReply(result.content);
-      }
+      await animateAssistantReply(result.content);
 
       await supabase.from('nora_chat_messages' as any).insert({ session_id: sid, role: 'assistant', content: result.content.slice(0, MAX_STORE_CHARS) });
       await touchSession(sid);
       setBackendOk(true);
-
-      if (opts?.speakAfter) {
-        const reduceMotion =
-          typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (!reduceMotion && isNoraVoiceTtsEnabled()) {
-          setNoraVoiceUiPhase('speaking');
-          await speakNoraReply(result.content);
-        }
-        setNoraVoiceUiPhase('idle');
-      }
     } catch (e) {
-      if (opts?.speakAfter) setNoraVoiceUiPhase('idle');
       if (insertedUserRowId) await supabase.from('nora_chat_messages' as any).delete().eq('id', insertedUserRowId);
       if (e instanceof FreeTierExhaustedError) {
         setFreeTierBlocked(true);
