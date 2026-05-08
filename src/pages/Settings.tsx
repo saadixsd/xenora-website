@@ -32,7 +32,7 @@ const Settings = () => {
   const [defaultAudience, setDefaultAudience] = useState('founders');
   const [saving, setSaving] = useState(false);
   const [exporting, setExporting] = useState(false);
-  const [voiceReadAloud, setVoiceReadAloud] = useState(() => isNoraVoiceTtsEnabled());
+  
   const [billingRow, setBillingRow] = useState<BillingSubscriptionRow | null>(null);
   const [chatsUsedMonth, setChatsUsedMonth] = useState<number | null>(null);
   const [runsUsedMonth, setRunsUsedMonth] = useState<number | null>(null);
