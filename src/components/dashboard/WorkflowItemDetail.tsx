@@ -35,7 +35,9 @@ export function WorkflowItemDetail({ item, onClose, onChange, onDelete }: Props)
 
   const dirty = draft !== (item.ai_draft ?? '') || title !== (item.title ?? '');
 
-  const persist = async (patch: Partial<WorkflowItem>): Promise<WorkflowItem | null> => {
+  const persist = async (
+    patch: Partial<Pick<WorkflowItem, 'ai_draft' | 'title' | 'stage' | 'platform' | 'due_date'>>,
+  ): Promise<WorkflowItem | null> => {
     setSaving(true);
     const { data, error } = await supabase
       .from('workflow_items')
