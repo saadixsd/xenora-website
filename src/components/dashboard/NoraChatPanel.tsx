@@ -72,8 +72,6 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   const [deployedKeys, setDeployedKeys] = useState<Record<string, true>>({});
   const [deployingKey, setDeployingKey] = useState<string | null>(null);
   const [historyOpen, setHistoryOpen] = useState(false);
-  /** Live assistant voice: mic is on; we do not mirror speech into the composer. */
-  const [voiceAssistantListening, setVoiceAssistantListening] = useState(false);
 
   const transcriptRef = useRef<HTMLDivElement>(null);
   const typingTimerRef = useRef<number | null>(null);
