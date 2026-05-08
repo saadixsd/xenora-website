@@ -7,13 +7,18 @@ import { ROUTES } from '@/config/routes';
 /**
  * Handles Supabase email confirmation / magic-link redirects.
  * Add this URL to Supabase Auth → URL Configuration → Redirect URLs:
- *   https://<your-domain>/auth/callback
+ *   https://xenoraai.com/auth/callback
  */
 export default function AuthCallback() {
   const navigate = useNavigate();
   const redirected = useRef(false);
 
   useEffect(() => {
+    if (window.location.hostname !== 'xenoraai.com') {
+      window.location.replace(`https://xenoraai.com${ROUTES.authCallback}${window.location.search}${window.location.hash}`);
+      return;
+    }
+
     const go = (path: string) => {
       if (redirected.current) return;
       redirected.current = true;
@@ -22,12 +27,12 @@ export default function AuthCallback() {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session?.user && (event === 'SIGNED_IN' || event === 'USER_UPDATED')) {
-        go(ROUTES.dashboard.nora);
+        go(ROUTES.dashboard.root);
       }
     });
 
     void supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) go(ROUTES.dashboard.nora);
+      if (session?.user) go(ROUTES.dashboard.root);
     });
 
     const timeout = window.setTimeout(() => {
