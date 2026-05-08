@@ -508,6 +508,7 @@ export type Database = {
           completed_at: string | null
           created_at: string
           current_step: string | null
+          custom_agent_id: string | null
           estimated_minutes_saved: number | null
           goal: string | null
           id: string
@@ -522,6 +523,7 @@ export type Database = {
           completed_at?: string | null
           created_at?: string
           current_step?: string | null
+          custom_agent_id?: string | null
           estimated_minutes_saved?: number | null
           goal?: string | null
           id?: string
@@ -536,6 +538,7 @@ export type Database = {
           completed_at?: string | null
           created_at?: string
           current_step?: string | null
+          custom_agent_id?: string | null
           estimated_minutes_saved?: number | null
           goal?: string | null
           id?: string
@@ -546,6 +549,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "workflow_runs_custom_agent_id_fkey"
+            columns: ["custom_agent_id"]
+            isOneToOne: false
+            referencedRelation: "user_custom_agents"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "workflow_runs_template_id_fkey"
             columns: ["template_id"]
@@ -638,9 +648,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_custom_agent_run_count_today: {
+        Args: { p_custom_agent_id: string; p_user_id: string }
+        Returns: number
+      }
       get_daily_query_count: { Args: { p_user_id: string }; Returns: number }
       get_nora_chat_usage_this_month: {
         Args: { p_user_id: string }
+        Returns: number
+      }
+      get_template_run_count_this_month: {
+        Args: { p_template_id: string; p_user_id: string }
         Returns: number
       }
       get_workflow_run_count_this_month: {
