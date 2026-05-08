@@ -9,14 +9,8 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { ROUTES } from '@/config/routes';
 
-/**
- * Always send email-confirmation links to the production domain so users land
- * on the real dashboard (not a preview/lovable.app URL) after verifying.
- * Override locally with VITE_PUBLIC_SITE_URL if needed.
- */
-const PUBLIC_SITE_URL =
-  (import.meta.env.VITE_PUBLIC_SITE_URL as string | undefined)?.trim() || 'https://xenoraai.com';
-const authCallbackUrl = () => `${PUBLIC_SITE_URL}${ROUTES.authCallback}`;
+/** Always send email-confirmation links to the production domain. */
+const authCallbackUrl = () => `https://xenoraai.com${ROUTES.authCallback}`;
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -60,7 +54,7 @@ const SignUp = () => {
           title: 'Welcome to XenoraAI',
           description: "You're signed in.",
         });
-        navigate(ROUTES.dashboard.nora, { replace: true });
+        navigate(ROUTES.dashboard.root, { replace: true });
       } else {
         setAwaitingEmailConfirmation(true);
       }
