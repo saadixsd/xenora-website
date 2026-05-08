@@ -739,9 +739,9 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
               <div className="flex min-w-0 items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 focus-within:border-primary/30 sm:px-4">
                 <input
                   ref={inputRef}
-                  value={voiceAssistantListening ? '' : input}
+                  value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder={voiceAssistantListening ? 'Listening… speak now' : 'Follow up...'}
+                  placeholder={'Follow up...'}
                   autoComplete="off"
                   autoCorrect="off"
                   className="min-h-[44px] min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground"
