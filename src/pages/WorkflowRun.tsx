@@ -587,6 +587,7 @@ const WorkflowRun = () => {
                         onClick={() => {
                           if (contentTemplate) {
                             handleSelectTemplate(contentTemplate.id);
+                            setSelectedCustomAgentId(a.id);
                             if (a.mission) setGoal(a.mission);
                             if (a.starter_prompt) setInputText(a.starter_prompt);
                           }
