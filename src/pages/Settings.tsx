@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { NORA_VOICE_TTS_KEY, isNoraVoiceTtsEnabled } from '@/lib/noraTts';
+
 import { createPortalSession } from '@/lib/stripeEdge';
 import {
   STRIPE_PAYMENT_LINK_PLUS,
@@ -32,7 +32,7 @@ const Settings = () => {
   const [defaultAudience, setDefaultAudience] = useState('founders');
   const [saving, setSaving] = useState(false);
   const [exporting, setExporting] = useState(false);
-  const [voiceReadAloud, setVoiceReadAloud] = useState(() => isNoraVoiceTtsEnabled());
+  
   const [billingRow, setBillingRow] = useState<BillingSubscriptionRow | null>(null);
   const [chatsUsedMonth, setChatsUsedMonth] = useState<number | null>(null);
   const [runsUsedMonth, setRunsUsedMonth] = useState<number | null>(null);
@@ -40,14 +40,6 @@ const Settings = () => {
   const [checkoutBusy, setCheckoutBusy] = useState<'plus' | 'pro' | null>(null);
   const [portalBusy, setPortalBusy] = useState(false);
 
-  const persistVoiceTts = useCallback((on: boolean) => {
-    try {
-      localStorage.setItem(NORA_VOICE_TTS_KEY, on ? '1' : '0');
-    } catch {
-      /* */
-    }
-    setVoiceReadAloud(on);
-  }, []);
 
   useEffect(() => {
     if (!user) return;
@@ -441,26 +433,6 @@ const Settings = () => {
           )}
         </div>
 
-        <div className="surface-panel p-5">
-          <h2 className="text-sm font-medium text-foreground">Voice</h2>
-          <p className="mt-1 text-xs text-muted-foreground">
-            Read-aloud uses your device&apos;s built-in speech (no extra API). Keyboard shortcut Cmd+Shift+N (Ctrl+Shift+N on Windows) runs dictate, then Nora, then optional readback.
-          </p>
-          <label className="mt-4 flex cursor-pointer items-start gap-3">
-            <input
-              type="checkbox"
-              checked={voiceReadAloud}
-              onChange={(e) => persistVoiceTts(e.target.checked)}
-              className="mt-1 h-4 w-4 rounded border-border text-primary focus:ring-primary/30"
-            />
-            <span>
-              <span className="text-sm font-medium text-foreground">Read Nora replies aloud</span>
-              <span className="mt-0.5 block text-xs text-muted-foreground">
-                When off, voice assistant still transcribes and sends; only the spoken reply is skipped.
-              </span>
-            </span>
-          </label>
-        </div>
 
         <div className="surface-panel p-5">
           <h2 className="text-sm font-medium text-foreground">Preferences</h2>

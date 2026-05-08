@@ -22,15 +22,6 @@ import { NORA_CHAT_SESSIONS_CHANGED, type NoraChatSessionsChangedDetail } from '
 import { describeNoraAppRoute } from '@/lib/noraRouteContext';
 import { buildNoraPersonalContext } from '@/lib/noraPersonalContext';
 import { useAdminRole } from '@/hooks/useAdminRole';
-import { isNoraVoiceTtsEnabled, speakNoraReply, speakNoraStatus } from '@/lib/noraTts';
-import {
-  getSpeechRecognitionCtor,
-  NORA_VOICE_AMBIENT_RESUME,
-  NORA_VOICE_START_DICTATION,
-  setNoraVoiceUiPhase,
-  type NoraVoiceDictationDetail,
-} from '@/lib/noraVoice';
-import { describeElementUnderCursor } from '@/lib/noraPointerContext';
 import { ChatHistorySidebar } from './ChatHistorySidebar';
 
 const FREE_MONTHLY_CHAT_LIMIT = 10;
@@ -81,13 +72,11 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   const [deployedKeys, setDeployedKeys] = useState<Record<string, true>>({});
   const [deployingKey, setDeployingKey] = useState<string | null>(null);
   const [historyOpen, setHistoryOpen] = useState(false);
-  /** Live assistant voice: mic is on; we do not mirror speech into the composer. */
-  const [voiceAssistantListening, setVoiceAssistantListening] = useState(false);
 
   const transcriptRef = useRef<HTMLDivElement>(null);
   const typingTimerRef = useRef<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const dictationRef = useRef<SpeechRecognition | null>(null);
+  
   const inputDisabledRef = useRef(false);
   /** Avoid double-loading when `?session=` updates `chatKind` and re-triggers the effect. */
   const loadedSessionFromUrlRef = useRef<string | null>(null);
@@ -301,10 +290,9 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
       }, 14);
     });
 
-  const send = async (text: string, opts?: { speakAfter?: boolean }) => {
+  const send = async (text: string) => {
     const trimmed = text.trim();
     if (!trimmed || sending || typingReply || (freeTierBlocked && !quotaExempt && !billingPaid)) {
-      if (opts?.speakAfter) setNoraVoiceUiPhase('idle');
       return;
     }
     setSessionExpired(false);
@@ -312,7 +300,6 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
     const t = session?.access_token;
     if (!t) {
       setSessionExpired(true);
-      if (opts?.speakAfter) setNoraVoiceUiPhase('idle');
       return;
     }
 
@@ -334,11 +321,6 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
         .single();
       if (ins.data?.id) insertedUserRowId = ins.data.id;
       await touchSession(sid);
-
-      if (opts?.speakAfter && isNoraVoiceTtsEnabled()) {
-        setNoraVoiceUiPhase('thinking');
-        await speakNoraStatus('Got it.');
-      }
 
       const apiSlice = nextHistory.slice(-28);
       const personal = user?.id ? await buildNoraPersonalContext(user.id) : '';
@@ -362,28 +344,12 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
           if (result.queries_remaining <= 0) setFreeTierBlocked(true);
         }
       }
-      if (opts?.speakAfter) {
-        setMessages((prev) => [...prev, { role: 'assistant', content: result.content }]);
-        setTypingReply(false);
-      } else {
-        await animateAssistantReply(result.content);
-      }
+      await animateAssistantReply(result.content);
 
       await supabase.from('nora_chat_messages' as any).insert({ session_id: sid, role: 'assistant', content: result.content.slice(0, MAX_STORE_CHARS) });
       await touchSession(sid);
       setBackendOk(true);
-
-      if (opts?.speakAfter) {
-        const reduceMotion =
-          typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (!reduceMotion && isNoraVoiceTtsEnabled()) {
-          setNoraVoiceUiPhase('speaking');
-          await speakNoraReply(result.content);
-        }
-        setNoraVoiceUiPhase('idle');
-      }
     } catch (e) {
-      if (opts?.speakAfter) setNoraVoiceUiPhase('idle');
       if (insertedUserRowId) await supabase.from('nora_chat_messages' as any).delete().eq('id', insertedUserRowId);
       if (e instanceof FreeTierExhaustedError) {
         setFreeTierBlocked(true);
@@ -424,8 +390,6 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
     } finally { setSending(false); }
   };
 
-  const sendRef = useRef(send);
-  sendRef.current = send;
 
   const startNewThread = async () => {
     if (!user?.id) return;
@@ -479,124 +443,8 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
     sending ||
     typingReply ||
     (freeTierBlocked && !quotaExempt && !billingPaid) ||
-    sessionExpired ||
-    voiceAssistantListening;
+    sessionExpired;
   inputDisabledRef.current = inputDisabled;
-
-  useEffect(() => {
-    const resumeAmbient = () => {
-      window.dispatchEvent(new CustomEvent(NORA_VOICE_AMBIENT_RESUME));
-    };
-
-    const onDictate = (ev: Event) => {
-      const assistantMode = Boolean((ev as CustomEvent<NoraVoiceDictationDetail>).detail?.assistantMode);
-      if (!user?.id) {
-        resumeAmbient();
-        setNoraVoiceUiPhase('idle');
-        return;
-      }
-      if (inputDisabledRef.current) {
-        resumeAmbient();
-        setNoraVoiceUiPhase('idle');
-        return;
-      }
-      const Ctor = getSpeechRecognitionCtor();
-      if (!Ctor) {
-        toast({
-          title: 'Voice is not available',
-          description: 'Use Chrome, Edge, or Safari and allow microphone access.',
-          variant: 'destructive',
-        });
-        resumeAmbient();
-        setNoraVoiceUiPhase('idle');
-        return;
-      }
-      try {
-        dictationRef.current?.stop();
-      } catch {
-        /* */
-      }
-      dictationRef.current = null;
-
-      let latest = '';
-      const r = new Ctor();
-      r.lang = 'en-US';
-      r.interimResults = true;
-      r.continuous = false;
-      r.onresult = (e: SpeechRecognitionEvent) => {
-        let line = '';
-        for (let i = 0; i < e.results.length; i++) {
-          line += e.results[i]![0]!.transcript;
-        }
-        latest = line.trim();
-        if (!assistantMode && latest) setInput(latest);
-      };
-      r.onerror = () => {
-        dictationRef.current = null;
-        setVoiceAssistantListening(false);
-        resumeAmbient();
-        setNoraVoiceUiPhase('idle');
-      };
-      r.onend = () => {
-        dictationRef.current = null;
-        setVoiceAssistantListening(false);
-        const run = latest.trim();
-        if (run) {
-          // Capture what the user was pointing at during voice
-          const pointerCtx = describeElementUnderCursor();
-          const enrichedRun = pointerCtx
-            ? `[Context: ${pointerCtx}]\n\n${run}`
-            : run;
-
-          if (assistantMode) {
-            setNoraVoiceUiPhase('thinking');
-            void (async () => {
-              try {
-                await sendRef.current(enrichedRun, { speakAfter: true });
-              } finally {
-                resumeAmbient();
-              }
-            })();
-            return;
-          }
-          // Non-assistant: just fill the input with enriched context
-          setInput(enrichedRun);
-        }
-        resumeAmbient();
-        setNoraVoiceUiPhase('idle');
-      };
-      try {
-        if (assistantMode) {
-          setInput('');
-          setVoiceAssistantListening(true);
-        }
-        setNoraVoiceUiPhase('listening');
-        r.start();
-        dictationRef.current = r;
-        if (!assistantMode) {
-          requestAnimationFrame(() => inputRef.current?.focus());
-        }
-      } catch {
-        setVoiceAssistantListening(false);
-        toast({ title: 'Could not start microphone', description: 'Check microphone permission and try again.', variant: 'destructive' });
-        resumeAmbient();
-        setNoraVoiceUiPhase('idle');
-      }
-    };
-    window.addEventListener(NORA_VOICE_START_DICTATION, onDictate);
-    return () => {
-      window.removeEventListener(NORA_VOICE_START_DICTATION, onDictate);
-      try {
-        dictationRef.current?.stop();
-      } catch {
-        /* */
-      }
-      dictationRef.current = null;
-      setVoiceAssistantListening(false);
-      resumeAmbient();
-      setNoraVoiceUiPhase('idle');
-    };
-  }, [user?.id, toast]);
 
   const outerClass = cn(
     'relative flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-background',
@@ -725,14 +573,12 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
             <div className="flex min-w-0 items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 focus-within:border-primary/30 sm:px-4">
               <input
                 ref={inputRef}
-                value={voiceAssistantListening ? '' : input}
+                value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={
-                  voiceAssistantListening
-                    ? 'Listening… speak now'
-                    : chatKind === 'agent_builder'
-                      ? 'Or tap "Start agent interview" below…'
-                      : 'Ask about workflows, agents, or getting started...'
+                  chatKind === 'agent_builder'
+                    ? 'Or tap "Start agent interview" below…'
+                    : 'Ask about workflows, agents, or getting started...'
                 }
                 autoComplete="off"
                 autoCorrect="off"
@@ -891,9 +737,9 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
               <div className="flex min-w-0 items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 focus-within:border-primary/30 sm:px-4">
                 <input
                   ref={inputRef}
-                  value={voiceAssistantListening ? '' : input}
+                  value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder={voiceAssistantListening ? 'Listening… speak now' : 'Follow up...'}
+                  placeholder={'Follow up...'}
                   autoComplete="off"
                   autoCorrect="off"
                   className="min-h-[44px] min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground"

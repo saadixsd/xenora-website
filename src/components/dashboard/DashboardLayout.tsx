@@ -1,87 +1,14 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import { DashboardSidebar } from './DashboardSidebar';
 import { Menu, MessageCircle, Plus } from 'lucide-react';
 import { NoraChatPanel } from './NoraChatPanel';
 import { CaptureSidePanel } from './CaptureSidePanel';
-import { NoraVoiceBar } from './NoraVoiceBar';
-import { useNoraVoiceWake } from '@/hooks/useNoraVoiceWake';
-import {
-  NORA_VOICE_AMBIENT_KEY,
-  NORA_VOICE_AMBIENT_PAUSE,
-  NORA_VOICE_AMBIENT_RESUME,
-  dispatchNoraVoiceStartDictation,
-} from '@/lib/noraVoice';
-import { NoraListeningOrb } from './NoraListeningOrb';
-import { NoraCursorOrb } from './NoraCursorOrb';
-import { ROUTES } from '@/config/routes';
 
 export function DashboardLayout() {
-  const location = useLocation();
-  const onDedicatedNoraPage = location.pathname === ROUTES.dashboard.nora;
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [noraOpen, setNoraOpen] = useState(false);
   const [captureOpen, setCaptureOpen] = useState(false);
-  const [ambientListening, setAmbientListening] = useState(() => {
-    try {
-      return localStorage.getItem(NORA_VOICE_AMBIENT_KEY) === '1';
-    } catch {
-      return false;
-    }
-  });
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(NORA_VOICE_AMBIENT_KEY, ambientListening ? '1' : '0');
-    } catch {
-      /* private mode */
-    }
-  }, [ambientListening]);
-
-  const openNoraAndDictate = useCallback(() => {
-    window.dispatchEvent(new CustomEvent(NORA_VOICE_AMBIENT_PAUSE));
-    if (!onDedicatedNoraPage) setNoraOpen(true);
-    window.setTimeout(
-      () => dispatchNoraVoiceStartDictation({ assistantMode: true }),
-      onDedicatedNoraPage ? 120 : 420,
-    );
-  }, [onDedicatedNoraPage]);
-
-  const openNoraVoiceAssistant = useCallback(() => {
-    window.dispatchEvent(new CustomEvent(NORA_VOICE_AMBIENT_PAUSE));
-    if (!onDedicatedNoraPage) setNoraOpen(true);
-    window.setTimeout(
-      () => dispatchNoraVoiceStartDictation({ assistantMode: true }),
-      onDedicatedNoraPage ? 120 : 420,
-    );
-  }, [onDedicatedNoraPage]);
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (!(e.metaKey || e.ctrlKey) || !e.shiftKey) return;
-      if (e.key !== 'n' && e.key !== 'N') return;
-      const el = e.target as HTMLElement | null;
-      if (el?.closest('input, textarea, [contenteditable="true"]')) return;
-      e.preventDefault();
-      openNoraVoiceAssistant();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [openNoraVoiceAssistant]);
-
-  const prevNoraOpen = useRef(noraOpen);
-  useEffect(() => {
-    if (prevNoraOpen.current && !noraOpen) {
-      window.dispatchEvent(new CustomEvent(NORA_VOICE_AMBIENT_RESUME));
-    }
-    prevNoraOpen.current = noraOpen;
-  }, [noraOpen]);
-
-  useNoraVoiceWake({
-    enabled: ambientListening,
-    suspend: noraOpen,
-    onActivated: openNoraAndDictate,
-  });
 
   return (
     <div className="dashboard-app flex h-[100dvh] min-h-0 w-full max-w-[100vw] overflow-hidden">
@@ -127,15 +54,7 @@ export function DashboardLayout() {
         </main>
       </div>
 
-      <NoraListeningOrb />
-      <NoraCursorOrb />
 
-      <NoraVoiceBar
-        ambientListening={ambientListening}
-        onToggleAmbient={() => setAmbientListening((v) => !v)}
-        onVoiceButtonClick={openNoraAndDictate}
-        ambientActive={ambientListening && !noraOpen}
-      />
 
       <button
         type="button"
