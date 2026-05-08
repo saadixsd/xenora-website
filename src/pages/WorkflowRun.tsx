@@ -229,14 +229,19 @@ const WorkflowRun = () => {
       }
 
       if (run.status === 'completed' || run.status === 'failed') {
-        const { data: outs } = await supabase
-          .from('workflow_outputs')
-          .select('*')
-          .eq('run_id', rid)
-          .order('position');
+        const [{ data: outs }, { data: itemRows }] = await Promise.all([
+          supabase.from('workflow_outputs').select('*').eq('run_id', rid).order('position'),
+          supabase
+            .from('workflow_items')
+            .select('*')
+            .eq('run_id', rid)
+            .order('created_at', { ascending: true }),
+        ]);
         if (outs) setOutputs(outs as Output[]);
+        setItems((itemRows ?? []) as WorkflowItem[]);
       } else {
         setOutputs([]);
+        setItems([]);
       }
       // Reload of an existing run — start with an empty narration map; if the run is
       // still streaming, new SSE events will repopulate it. Past runs simply show the
