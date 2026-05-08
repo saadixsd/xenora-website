@@ -40,14 +40,6 @@ const Settings = () => {
   const [checkoutBusy, setCheckoutBusy] = useState<'plus' | 'pro' | null>(null);
   const [portalBusy, setPortalBusy] = useState(false);
 
-  const persistVoiceTts = useCallback((on: boolean) => {
-    try {
-      localStorage.setItem(NORA_VOICE_TTS_KEY, on ? '1' : '0');
-    } catch {
-      /* */
-    }
-    setVoiceReadAloud(on);
-  }, []);
 
   useEffect(() => {
     if (!user) return;
