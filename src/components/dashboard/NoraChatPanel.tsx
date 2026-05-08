@@ -390,8 +390,6 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
     } finally { setSending(false); }
   };
 
-  const sendRef = useRef(send);
-  sendRef.current = send;
 
   const startNewThread = async () => {
     if (!user?.id) return;
