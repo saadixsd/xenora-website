@@ -325,6 +325,7 @@ const WorkflowRun = () => {
         .insert({
           user_id: user.id,
           template_id: selectedTemplate,
+          custom_agent_id: selectedCustomAgentId,
           input_text: inputText.trim(),
           goal: goal.trim() || null,
           tone,
