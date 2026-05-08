@@ -143,6 +143,7 @@ const WorkflowRun = () => {
   /** Set when `agent_type` query matches a row in `agents` (Command Center agents). */
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [customAgents, setCustomAgents] = useState<CustomAgent[]>([]);
+  const [selectedCustomAgentId, setSelectedCustomAgentId] = useState<string | null>(null);
   const [templatesReady, setTemplatesReady] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
 
@@ -305,6 +306,7 @@ const WorkflowRun = () => {
 
   const handleSelectTemplate = (tid: string) => {
     setSelectedTemplate(tid);
+    setSelectedCustomAgentId(null);
     setWizardStep(1);
   };
 
@@ -324,6 +326,7 @@ const WorkflowRun = () => {
         .insert({
           user_id: user.id,
           template_id: selectedTemplate,
+          custom_agent_id: selectedCustomAgentId,
           input_text: inputText.trim(),
           goal: goal.trim() || null,
           tone,
@@ -584,6 +587,7 @@ const WorkflowRun = () => {
                         onClick={() => {
                           if (contentTemplate) {
                             handleSelectTemplate(contentTemplate.id);
+                            setSelectedCustomAgentId(a.id);
                             if (a.mission) setGoal(a.mission);
                             if (a.starter_prompt) setInputText(a.starter_prompt);
                           }

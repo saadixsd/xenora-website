@@ -4,6 +4,7 @@ import { DashboardSidebar } from './DashboardSidebar';
 import { Menu, MessageCircle, Plus } from 'lucide-react';
 import { NoraChatPanel } from './NoraChatPanel';
 import { CaptureSidePanel } from './CaptureSidePanel';
+import { PlanBadge } from './PlanBadge';
 
 export function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -40,8 +41,9 @@ export function DashboardLayout() {
           >
             <Menu className="h-5 w-5" />
           </button>
-          <div className="flex min-w-0 justify-center px-1" aria-hidden>
+          <div className="flex min-w-0 items-center justify-center gap-2 px-1">
             <span className="font-syne text-[14px] font-bold tracking-[0.08em] text-[var(--dash-text)]">NORA</span>
+            <PlanBadge hideFree />
           </div>
           <div aria-hidden className="h-11 w-11 shrink-0" />
         </header>
