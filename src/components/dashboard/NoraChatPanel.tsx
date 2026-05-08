@@ -145,22 +145,14 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
     setSessionId(sid);
   }, []);
 
+  // Always start a fresh chat when entering the panel without an explicit ?session= URL.
+  // Previous chats remain accessible via the History sidebar.
   const loadThreadForKind = useCallback(
-    async (kind: NoraChatKind) => {
-      if (!user?.id) { setSessionId(null); setMessages([]); return; }
-      const { data: sess } = await supabase
-        .from('nora_chat_sessions' as any)
-        .select('id')
-        .eq('user_id', user.id)
-        .eq('chat_kind', kind)
-        .order('updated_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-      if (!sess?.id) { setSessionId(null); setMessages([]); return; }
-      await loadSessionMessages(sess.id);
+    async (_kind: NoraChatKind) => {
+      setSessionId(null);
+      setMessages([]);
     },
-    [user?.id, loadSessionMessages],
+    [],
   );
 
   useEffect(() => {
