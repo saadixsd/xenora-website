@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { DashboardSidebar } from './DashboardSidebar';
-import { Menu, MessageCircle } from 'lucide-react';
+import { Menu, MessageCircle, Plus } from 'lucide-react';
 import { NoraChatPanel } from './NoraChatPanel';
+import { CaptureSidePanel } from './CaptureSidePanel';
 import { NoraVoiceBar } from './NoraVoiceBar';
 import { useNoraVoiceWake } from '@/hooks/useNoraVoiceWake';
 import {
@@ -20,6 +21,7 @@ export function DashboardLayout() {
   const onDedicatedNoraPage = location.pathname === ROUTES.dashboard.nora;
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [noraOpen, setNoraOpen] = useState(false);
+  const [captureOpen, setCaptureOpen] = useState(false);
   const [ambientListening, setAmbientListening] = useState(() => {
     try {
       return localStorage.getItem(NORA_VOICE_AMBIENT_KEY) === '1';
@@ -137,12 +139,28 @@ export function DashboardLayout() {
 
       <button
         type="button"
+        onClick={() => setCaptureOpen(true)}
+        className="fixed z-[85] flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full border border-[var(--dash-border)] bg-[var(--dash-surface)] text-[var(--dash-text)] transition-colors hover:border-[var(--dash-accent)] hover:text-[var(--dash-accent)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dash-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-bg)] sm:h-12 sm:w-12 bottom-[calc(9rem+env(safe-area-inset-bottom,0px))] right-[max(1rem,env(safe-area-inset-right,0px))] lg:bottom-[max(5.75rem,calc(env(safe-area-inset-bottom,0px)+3.75rem))] lg:right-[max(2rem,env(safe-area-inset-right,0px))]"
+        aria-label="Capture an idea"
+        title="Capture an idea"
+      >
+        <Plus className="h-5 w-5" />
+      </button>
+
+      <button
+        type="button"
         onClick={() => setNoraOpen(true)}
         className="fixed z-[85] flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-[var(--dash-accent)] text-[var(--dash-accent-fg)] transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dash-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-bg)] sm:h-12 sm:w-12 bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] right-[max(1rem,env(safe-area-inset-right,0px))] lg:bottom-[max(2rem,env(safe-area-inset-bottom,0px))] lg:right-[max(2rem,env(safe-area-inset-right,0px))]"
         aria-label="Ask Nora"
       >
         <MessageCircle className="h-6 w-6" />
       </button>
+
+      <CaptureSidePanel
+        open={captureOpen}
+        onClose={() => setCaptureOpen(false)}
+        onCreated={() => window.dispatchEvent(new CustomEvent('nora:items-changed'))}
+      />
 
       {noraOpen && (
         <>

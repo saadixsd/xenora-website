@@ -17,6 +17,7 @@ export const ROUTES = {
     noraAgentBuilder: '/dashboard/nora?mode=builder',
     runNew: '/dashboard/run/new',
     history: '/dashboard/history',
+    followUps: '/dashboard/follow-ups',
     settings: '/dashboard/settings',
     connections: '/dashboard/connections',
     agents: {
