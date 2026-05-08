@@ -17,7 +17,6 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [awaitingEmailConfirmation, setAwaitingEmailConfirmation] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user, loading: authLoading } = useAuth();
@@ -49,15 +48,17 @@ const SignUp = () => {
       });
       if (error) throw error;
 
-      if (data.session) {
-        toast({
-          title: 'Welcome to XenoraAI',
-          description: "You're signed in.",
-        });
-        navigate(ROUTES.dashboard.root, { replace: true });
-      } else {
-        setAwaitingEmailConfirmation(true);
+      // Auto-confirm is enabled — session should exist immediately.
+      if (!data.session) {
+        const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+        if (signInError) throw signInError;
       }
+
+      toast({
+        title: 'Welcome to XenoraAI',
+        description: "You're signed in.",
+      });
+      navigate(ROUTES.dashboard.root, { replace: true });
     } catch (err: unknown) {
       toast({
         title: 'Error',
@@ -89,26 +90,7 @@ const SignUp = () => {
         </Link>
 
         <div className="surface-panel p-6">
-          {awaitingEmailConfirmation ? (
-            <div className="space-y-4 text-center">
-              <p className="text-base font-medium text-foreground leading-snug">
-                Check your email — we sent you a confirmation link. Once confirmed you&apos;ll land straight in your
-                dashboard.
-              </p>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Didn&apos;t get it? Check spam or contact{' '}
-                <a href="mailto:xenoraai@gmail.com" className="text-primary underline-offset-4 hover:underline">
-                  xenoraai@gmail.com
-                </a>
-              </p>
-              <p className="pt-2 text-sm text-muted-foreground">
-                <Link to={ROUTES.login} className="text-primary underline-offset-4 hover:underline">
-                  Back to sign in
-                </Link>
-              </p>
-            </div>
-          ) : (
-            <>
+          <>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label className="mb-1.5 block text-sm text-muted-foreground">Email</label>
