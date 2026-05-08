@@ -9,7 +9,13 @@
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { isNoraQuotaExemptEmail } from "../_shared/noraQuota.ts";
-import { fetchBillingRow, FREE_MONTHLY_RUNS, isPaidNoraAccess } from "../_shared/billing.ts";
+import {
+  fetchBillingRow,
+  FREE_DAILY_CUSTOM_AGENT_RUNS,
+  FREE_MONTHLY_CONTENT_RUNS,
+  FREE_MONTHLY_LEAD_RUNS,
+  isPaidNoraAccess,
+} from "../_shared/billing.ts";
 
 const corsHeaders: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
