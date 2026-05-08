@@ -76,7 +76,7 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   const transcriptRef = useRef<HTMLDivElement>(null);
   const typingTimerRef = useRef<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const dictationRef = useRef<SpeechRecognition | null>(null);
+  
   const inputDisabledRef = useRef(false);
   /** Avoid double-loading when `?session=` updates `chatKind` and re-triggers the effect. */
   const loadedSessionFromUrlRef = useRef<string | null>(null);
