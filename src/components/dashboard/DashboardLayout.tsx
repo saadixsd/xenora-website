@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { DashboardSidebar } from './DashboardSidebar';
-import { Menu, MessageCircle } from 'lucide-react';
+import { Menu, MessageCircle, Plus } from 'lucide-react';
 import { NoraChatPanel } from './NoraChatPanel';
+import { CaptureSidePanel } from './CaptureSidePanel';
 import { NoraVoiceBar } from './NoraVoiceBar';
 import { useNoraVoiceWake } from '@/hooks/useNoraVoiceWake';
 import {
@@ -20,6 +21,7 @@ export function DashboardLayout() {
   const onDedicatedNoraPage = location.pathname === ROUTES.dashboard.nora;
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [noraOpen, setNoraOpen] = useState(false);
+  const [captureOpen, setCaptureOpen] = useState(false);
   const [ambientListening, setAmbientListening] = useState(() => {
     try {
       return localStorage.getItem(NORA_VOICE_AMBIENT_KEY) === '1';
