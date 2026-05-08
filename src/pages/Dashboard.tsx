@@ -174,6 +174,7 @@ const Dashboard = () => {
             <p className="dash-label mb-1">Overview</p>
             <h1 className="font-syne text-[22px] font-semibold tracking-tight text-[var(--dash-text)] sm:text-[26px]">
               How can Nora assist you, {displayName.split(' ')[0]}?
+              <PlanBadge className="ml-2 align-middle" />
             </h1>
             <p className="mt-1 text-[12.5px] leading-relaxed text-[var(--dash-muted)] sm:text-[13px]">{subtitle}</p>
           </div>
