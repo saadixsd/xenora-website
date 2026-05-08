@@ -4,6 +4,7 @@ import { DashboardSidebar } from './DashboardSidebar';
 import { Menu, MessageCircle, Plus } from 'lucide-react';
 import { NoraChatPanel } from './NoraChatPanel';
 import { CaptureSidePanel } from './CaptureSidePanel';
+import { PlanBadge } from './PlanBadge';
 
 export function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
