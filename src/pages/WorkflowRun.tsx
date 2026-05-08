@@ -132,6 +132,8 @@ const WorkflowRun = () => {
   const [steps, setSteps] = useState<string[]>([]);
   const [status, setStatus] = useState('pending');
   const [outputs, setOutputs] = useState<Output[]>([]);
+  const [items, setItems] = useState<WorkflowItem[]>([]);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   /** Per-step narration + timestamp captured from SSE events (key = step name). */
   const [stepMeta, setStepMeta] = useState<Map<string, { narration?: string; at?: string }>>(new Map());
   const [running, setRunning] = useState(false);
