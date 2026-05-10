@@ -768,6 +768,16 @@ const WorkflowRun = () => {
         </p>
       )}
 
+      {status === 'completed' && (
+        <div className="mt-4 rounded-xl border border-primary/30 bg-primary/5 px-4 py-3">
+          <p className="font-space-mono text-[10.5px] uppercase tracking-[0.16em] text-primary">Ready to ship</p>
+          <p className="mt-1 text-[15px] font-medium text-foreground">Your idea, finished.</p>
+          <p className="mt-1 text-[12.5px] leading-relaxed text-muted-foreground">
+            Review the drafts below, edit anything that's off, and ship the ones you're proud of. Nothing leaves Nora until you approve it.
+          </p>
+        </div>
+      )}
+
       <div className="surface-panel mt-4 p-4">
         <p className="text-xs text-muted-foreground">Input</p>
         <p className="mt-1 text-sm text-foreground">{inputText}</p>
