@@ -432,7 +432,7 @@ Deno.serve(async (req) => {
   // function can spuriously return 0 rows (JWT/RLS context), which surfaced as 403 Forbidden.
   const { data: run, error: runErr } = await supabaseAdmin
     .from("workflow_runs")
-    .select("id, user_id, status, template_id, custom_agent_id")
+    .select("id, user_id, workspace_id, status, template_id, custom_agent_id")
     .eq("id", runId)
     .eq("user_id", user.id)
     .maybeSingle();
@@ -705,6 +705,7 @@ If sources failed or are thin, say so in caveats and still infer carefully from 
               if (!map) return null;
               return {
                 user_id: run.user_id,
+                workspace_id: run.workspace_id,
                 run_id: runId,
                 source_output_id: o.id,
                 type: map.type,
