@@ -4,6 +4,7 @@ import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-do
 import ReactMarkdown from 'react-markdown';
 import { Send, X, History } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentWorkspaceId } from '@/lib/currentWorkspace';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import {

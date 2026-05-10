@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentWorkspaceId } from '@/lib/currentWorkspace';
 import { useAuth } from '@/hooks/useAuth';
 import { StepTrace, buildTrace } from '@/components/dashboard/StepTrace';
 import { OutputCard } from '@/components/dashboard/OutputCard';
