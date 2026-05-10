@@ -171,7 +171,7 @@ const Index = () => {
                       <Sparkles className="h-4 w-4 text-primary" />
                     </div>
                     <p className="font-space-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Workflow</p>
-                    <span className="ml-auto rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">running</span>
+                    
                   </div>
                   <ul className="mt-5 space-y-3">
                     {[
