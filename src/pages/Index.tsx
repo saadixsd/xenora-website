@@ -99,7 +99,7 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-8 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                Nora observes how your business operates, adapts to your tools, and autonomously executes the repetitive workflows that drain your day — tickets, outreach, hiring, finance nudges, and more.
+                Nora learns how you work, plugs into your tools, and drafts the repetitive workflows that drain your day, content, outreach, follow-ups, and research so you can review and approve in minutes.
               </p>
             </Reveal>
 
