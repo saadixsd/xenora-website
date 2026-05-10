@@ -126,9 +126,11 @@ export default function AgentEditPage() {
         return;
       }
 
+      const workspaceId = await getCurrentWorkspaceId(user.id);
       const { data: run } = await (supabase.from('workflow_runs') as any)
         .insert({
           user_id: user.id,
+          workspace_id: workspaceId,
           template_id: template.id,
           agent_id: agent.id,
           input_text: `Test run: ${systemPrompt.slice(0, 200)}`,

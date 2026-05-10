@@ -321,10 +321,12 @@ const WorkflowRun = () => {
     if (template) setSteps(template.steps as string[]);
 
     try {
+      const workspaceId = await getCurrentWorkspaceId(user.id);
       const { data: run, error: runErr } = await supabase
         .from('workflow_runs')
         .insert({
           user_id: user.id,
+          workspace_id: workspaceId,
           template_id: selectedTemplate,
           custom_agent_id: selectedCustomAgentId,
           input_text: inputText.trim(),
