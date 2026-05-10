@@ -97,7 +97,7 @@ export function buildNextActions({
       id: 'ask-nora',
       kind: 'capture',
       title: 'Ask Nora what to ship next',
-      description: 'Quick chat — paste this week\u2019s notes and let Nora propose angles.',
+      description: 'Paste this week\u2019s notes and let Nora propose angles.',
       cta: 'Open Nora',
       to: ROUTES.dashboard.nora,
     });
