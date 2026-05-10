@@ -43,7 +43,7 @@ const faqs: { q: string; a: ReactNode }[] = [
   },
   {
     q: 'Who is Nora built for?',
-    a: 'Solo founders, indie hackers, and creators building in public. People who need to ship content consistently but hate spending hours on repetitive work.',
+    a: 'Anyone who runs operations — founders, operators, marketers, agencies, and small teams. If you need to ship work consistently but hate spending hours on repetitive tasks, Nora is for you.',
   },
   {
     q: 'How do I try Nora?',
