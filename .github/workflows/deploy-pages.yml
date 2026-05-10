@@ -36,10 +36,11 @@ jobs:
       # Never pass private tokens as VITE_* — they are compiled into public JS on GitHub Pages.
       - name: Build Vite site
         env:
-          # Required for the app to boot (anon key + project URL). Set as repo Variables:
-          # Settings → Secrets and variables → Actions → Variables
-          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          # Supabase: use Actions *Secrets* or *Variables* with these exact names.
+          # Secrets take precedence if both are set. (VITE_* values are still baked into
+          # public JS — use only the anon/publishable key, never service_role.)
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL || vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY || vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
           VITE_AI_PROVIDER: ${{ vars.VITE_AI_PROVIDER }}
           VITE_CLAUDE_API_BASE: ${{ vars.VITE_CLAUDE_API_BASE }}
         run: npm run build
