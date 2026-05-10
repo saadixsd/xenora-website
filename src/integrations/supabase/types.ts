@@ -193,6 +193,7 @@ export type Database = {
           title: string | null
           updated_at: string
           user_id: string
+          workspace_id: string
         }
         Insert: {
           chat_kind?: string
@@ -201,6 +202,7 @@ export type Database = {
           title?: string | null
           updated_at?: string
           user_id: string
+          workspace_id: string
         }
         Update: {
           chat_kind?: string
@@ -209,8 +211,17 @@ export type Database = {
           title?: string | null
           updated_at?: string
           user_id?: string
+          workspace_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "nora_chat_sessions_workspace_fk"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       nora_query_logs: {
         Row: {
@@ -327,6 +338,7 @@ export type Database = {
           starter_prompt: string | null
           target_user: string | null
           user_id: string
+          workspace_id: string
         }
         Insert: {
           created_at?: string
@@ -340,6 +352,7 @@ export type Database = {
           starter_prompt?: string | null
           target_user?: string | null
           user_id: string
+          workspace_id: string
         }
         Update: {
           created_at?: string
@@ -353,8 +366,17 @@ export type Database = {
           starter_prompt?: string | null
           target_user?: string | null
           user_id?: string
+          workspace_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "user_custom_agents_workspace_fk"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
@@ -417,6 +439,7 @@ export type Database = {
           type: string
           updated_at: string
           user_id: string
+          workspace_id: string
         }
         Insert: {
           ai_draft?: string | null
@@ -433,6 +456,7 @@ export type Database = {
           type?: string
           updated_at?: string
           user_id: string
+          workspace_id: string
         }
         Update: {
           ai_draft?: string | null
@@ -449,6 +473,7 @@ export type Database = {
           type?: string
           updated_at?: string
           user_id?: string
+          workspace_id?: string
         }
         Relationships: [
           {
@@ -463,6 +488,13 @@ export type Database = {
             columns: ["source_output_id"]
             isOneToOne: false
             referencedRelation: "workflow_outputs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_items_workspace_fk"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
             referencedColumns: ["id"]
           },
         ]
@@ -517,6 +549,7 @@ export type Database = {
           template_id: string
           tone: string | null
           user_id: string
+          workspace_id: string
         }
         Insert: {
           archived_at?: string | null
@@ -532,6 +565,7 @@ export type Database = {
           template_id: string
           tone?: string | null
           user_id: string
+          workspace_id: string
         }
         Update: {
           archived_at?: string | null
@@ -547,6 +581,7 @@ export type Database = {
           template_id?: string
           tone?: string | null
           user_id?: string
+          workspace_id?: string
         }
         Relationships: [
           {
@@ -561,6 +596,13 @@ export type Database = {
             columns: ["template_id"]
             isOneToOne: false
             referencedRelation: "workflow_templates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflow_runs_workspace_fk"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
             referencedColumns: ["id"]
           },
         ]
@@ -643,6 +685,112 @@ export type Database = {
         }
         Relationships: []
       }
+      workspace_invites: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          invited_by: string
+          role: Database["public"]["Enums"]["workspace_role"]
+          token: string
+          workspace_id: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          email: string
+          expires_at?: string
+          id?: string
+          invited_by: string
+          role?: Database["public"]["Enums"]["workspace_role"]
+          token?: string
+          workspace_id: string
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          invited_by?: string
+          role?: Database["public"]["Enums"]["workspace_role"]
+          token?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_invites_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_members: {
+        Row: {
+          id: string
+          invited_by: string | null
+          joined_at: string
+          role: Database["public"]["Enums"]["workspace_role"]
+          user_id: string
+          workspace_id: string
+        }
+        Insert: {
+          id?: string
+          invited_by?: string | null
+          joined_at?: string
+          role?: Database["public"]["Enums"]["workspace_role"]
+          user_id: string
+          workspace_id: string
+        }
+        Update: {
+          id?: string
+          invited_by?: string | null
+          joined_at?: string
+          role?: Database["public"]["Enums"]["workspace_role"]
+          user_id?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_members_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspaces: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          owner_id: string
+          plan: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          owner_id: string
+          plan?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          owner_id?: string
+          plan?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -672,11 +820,24 @@ export type Database = {
         }
         Returns: boolean
       }
+      has_workspace_role: {
+        Args: {
+          _roles: Database["public"]["Enums"]["workspace_role"][]
+          _user_id: string
+          _workspace_id: string
+        }
+        Returns: boolean
+      }
+      is_workspace_member: {
+        Args: { _user_id: string; _workspace_id: string }
+        Returns: boolean
+      }
       my_nora_chat_usage_this_month: { Args: never; Returns: number }
       my_workflow_run_count_this_month: { Args: never; Returns: number }
     }
     Enums: {
       app_role: "admin" | "user"
+      workspace_role: "owner" | "editor" | "viewer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -805,6 +966,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      workspace_role: ["owner", "editor", "viewer"],
     },
   },
 } as const
