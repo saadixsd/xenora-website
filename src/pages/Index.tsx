@@ -92,14 +92,14 @@ const Index = () => {
           <div className="w-full max-w-3xl text-center">
             <Reveal delay={0.05}>
               <h1 className="premium-heading mt-8 text-[2.25rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5rem]">
-                An Agentic Engine
+                You had the idea.
                 <br className="hidden sm:block" />
-                {' '}that Automates your Workflows
+                {' '}Nora finishes it.
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-8 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                Nora learns how you work, plugs into your tools, and drafts the repetitive workflows that drain your day, content, outreach, follow-ups, and research so you can review and approve in minutes.
+                The gap between a raw thought and a finished output is where most ideas die. Drop the messy version in. Nora returns a structured draft you can review, edit, and ship before the momentum fades.
               </p>
             </Reveal>
 
