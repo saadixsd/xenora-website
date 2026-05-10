@@ -182,26 +182,8 @@ const Index = () => {
                       { label: 'Stage for review', state: 'pending' },
                     ].map((s) => (
                       <li key={s.label} className="flex items-center gap-2.5">
-                        <span
-                          className={`h-1.5 w-1.5 shrink-0 rounded-full ${
-                            s.state === 'done'
-                              ? 'bg-primary'
-                              : s.state === 'active'
-                                ? 'bg-primary animate-pulse'
-                                : 'bg-muted-foreground/30'
-                          }`}
-                        />
-                        <span
-                          className={`text-[14px] ${
-                            s.state === 'done'
-                              ? 'text-foreground/75'
-                              : s.state === 'active'
-                                ? 'text-foreground font-medium'
-                                : 'text-muted-foreground/60'
-                          }`}
-                        >
-                          {s.label}
-                        </span>
+                        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                        <span className="text-[14px] text-foreground">{s.label}</span>
                       </li>
                     ))}
                   </ul>
