@@ -5,6 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import type { WorkflowItemType } from '@/lib/workflowItems';
+import { getCurrentWorkspaceId } from '@/lib/currentWorkspace';
 
 interface Props {
   open: boolean;
@@ -35,8 +36,17 @@ export function CaptureSidePanel({ open, onClose, onCreated }: Props) {
   const submit = async () => {
     if (!user || !body.trim()) return;
     setSaving(true);
+    let workspaceId: string;
+    try {
+      workspaceId = await getCurrentWorkspaceId(user.id);
+    } catch (e) {
+      setSaving(false);
+      toast({ title: 'Workspace unavailable', description: (e as Error).message, variant: 'destructive' });
+      return;
+    }
     const { error } = await supabase.from('workflow_items').insert({
       user_id: user.id,
+      workspace_id: workspaceId,
       type,
       stage: 'idea',
       title: title.trim() || null,

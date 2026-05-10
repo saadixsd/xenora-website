@@ -4,6 +4,7 @@ import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-do
 import ReactMarkdown from 'react-markdown';
 import { Send, X, History } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { getCurrentWorkspaceId } from '@/lib/currentWorkspace';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -246,9 +247,10 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
   const ensureSession = async (kind: NoraChatKind): Promise<string> => {
     if (!user?.id) throw new Error('Not signed in');
     if (sessionId) return sessionId;
+    const workspaceId = await getCurrentWorkspaceId(user.id);
     const { data, error } = await supabase
       .from('nora_chat_sessions' as any)
-      .insert({ user_id: user.id, chat_kind: kind, title: kind === 'agent_builder' ? 'Agent builder' : 'Chat' })
+      .insert({ user_id: user.id, workspace_id: workspaceId, chat_kind: kind, title: kind === 'agent_builder' ? 'Agent builder' : 'Chat' })
       .select('id')
       .single();
     if (error || !data?.id) throw new Error(error?.message || 'Could not start chat session');
@@ -416,8 +418,9 @@ export function NoraChatPanel({ variant = 'page', onClose }: NoraChatPanelProps)
         return;
       }
     }
+    const workspaceId = await getCurrentWorkspaceId(user.id);
     const { error } = await supabase.from('user_custom_agents' as any).insert({
-      user_id: user.id, name: spec.name.slice(0, 120), mission: spec.mission.slice(0, 4000),
+      user_id: user.id, workspace_id: workspaceId, name: spec.name.slice(0, 120), mission: spec.mission.slice(0, 4000),
       target_user: spec.target_user.slice(0, 2000) || null, raw_inputs: spec.raw_inputs.slice(0, 4000) || null,
       output_deliverables: spec.output_deliverables.slice(0, 4000) || null, guardrails: spec.guardrails.slice(0, 4000) || null,
       interview_summary: spec.interview_summary.slice(0, 8000) || null, starter_prompt: spec.starter_prompt.slice(0, 4000) || null,
