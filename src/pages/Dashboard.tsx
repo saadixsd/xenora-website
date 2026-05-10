@@ -56,13 +56,14 @@ const Dashboard = () => {
   const [allRuns, setAllRuns] = useState<RunRow[]>([]);
   const [templates, setTemplates] = useState<TemplateRow[]>([]);
   const [outputCount, setOutputCount] = useState(0);
+  const [items, setItems] = useState<{ type: string; stage: string; created_at: string }[]>([]);
   const [dataLoading, setDataLoading] = useState(true);
   const [selectedMonth, setSelectedMonth] = useState<string>(() => monthKey(new Date()));
 
   const fetchData = useCallback(async () => {
     if (!user) return;
 
-    const [runsRes, templatesRes, outputsRes] = await Promise.all([
+    const [runsRes, templatesRes, outputsRes, itemsRes] = await Promise.all([
       supabase
         .from('workflow_runs')
         .select('id, status, estimated_minutes_saved, created_at, template_id')
@@ -74,11 +75,16 @@ const Dashboard = () => {
         .from('workflow_outputs')
         .select('output_type', { count: 'exact', head: true })
         .in('output_type', ['x_post', 'linkedin_post', 'hook']),
+      supabase
+        .from('workflow_items')
+        .select('type, stage, created_at')
+        .eq('user_id', user.id),
     ]);
 
     if (runsRes.data) setAllRuns(runsRes.data);
     if (templatesRes.data) setTemplates(templatesRes.data);
     setOutputCount(outputsRes.count ?? 0);
+    if (itemsRes.data) setItems(itemsRes.data);
     setDataLoading(false);
   }, [user]);
 
@@ -108,10 +114,20 @@ const Dashboard = () => {
     return m;
   }, [templates]);
 
-  const leadsProcessed = completedRuns.filter((r) => {
-    const tName = templateMap[r.template_id] || '';
-    return classifyTemplate(tName) === 'leads';
-  }).length;
+  const monthItems = useMemo(
+    () => items.filter((it) => monthKey(new Date(it.created_at)) === selectedMonth),
+    [items, selectedMonth],
+  );
+
+  const ideasCaptured = monthItems.filter((it) => it.type === 'idea').length;
+  const postsApproved = monthItems.filter(
+    (it) => it.type === 'post' && (it.stage === 'ready' || it.stage === 'sent'),
+  ).length;
+  const followupsDrafted = monthItems.filter(
+    (it) =>
+      (it.type === 'reply' || it.type === 'follow_up') &&
+      ['drafting', 'review', 'ready', 'sent'].includes(it.stage),
+  ).length;
 
   const breakdownData = useMemo(() => {
     const byType: Record<string, number> = { content: 0, leads: 0, research: 0 };
@@ -260,10 +276,13 @@ const Dashboard = () => {
       ) : (
         <StatsCards
           hoursSaved={formatHoursSaved(totalMinutesSaved)}
-          leadsProcessed={leadsProcessed}
-          postsGenerated={outputCount}
-          followupsQueued={0}
-          isEmpty={isEmpty}
+          ideasCaptured={ideasCaptured}
+          postsApproved={postsApproved}
+          followupsDrafted={followupsDrafted}
+          isEmpty={isEmpty && monthItems.length === 0}
+          onIdeasClick={() => navigate(ROUTES.dashboard.runNew)}
+          onPostsClick={() => navigate(ROUTES.dashboard.history)}
+          onFollowupsClick={() => navigate(ROUTES.dashboard.followUps)}
         />
       )}
 

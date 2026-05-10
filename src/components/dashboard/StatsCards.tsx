@@ -3,28 +3,28 @@ import { cn } from '@/lib/utils';
 
 interface StatsCardsProps {
   hoursSaved: string;
-  leadsProcessed: number;
-  postsGenerated: number;
-  followupsQueued: number;
+  ideasCaptured: number;
+  postsApproved: number;
+  followupsDrafted: number;
   isEmpty: boolean;
   onHoursClick?: () => void;
-  onLeadsClick?: () => void;
+  onIdeasClick?: () => void;
   onPostsClick?: () => void;
   onFollowupsClick?: () => void;
 }
 
 export const StatsCards = memo(function StatsCards({
   hoursSaved,
-  leadsProcessed,
-  postsGenerated,
-  followupsQueued,
+  ideasCaptured,
+  postsApproved,
+  followupsDrafted,
   isEmpty,
   onHoursClick,
-  onLeadsClick,
+  onIdeasClick,
   onPostsClick,
   onFollowupsClick,
 }: StatsCardsProps) {
-  const emptyHint = 'Run your first workflow to unlock this metric';
+  const emptyHint = 'Capture an idea or run a workflow to populate this metric';
 
   const cards = [
     {
@@ -34,21 +34,21 @@ export const StatsCards = memo(function StatsCards({
       onClick: onHoursClick,
     },
     {
-      label: 'Leads processed',
-      value: String(leadsProcessed),
-      hint: isEmpty ? emptyHint : 'Classified and scored by Lead Agent',
-      onClick: onLeadsClick,
+      label: 'Ideas captured',
+      value: String(ideasCaptured),
+      hint: isEmpty ? 'Use Capture to seed your first idea' : 'Sitting in your board, ready to draft',
+      onClick: onIdeasClick,
     },
     {
-      label: 'Posts generated',
-      value: String(postsGenerated),
-      hint: isEmpty ? emptyHint : 'X posts, hooks, and LinkedIn drafts',
+      label: 'Posts approved',
+      value: String(postsApproved),
+      hint: isEmpty ? emptyHint : 'Marked Ready or Sent on the board',
       onClick: onPostsClick,
     },
     {
-      label: 'Follow-ups queued',
-      value: String(followupsQueued),
-      hint: isEmpty ? emptyHint : 'Awaiting your approval',
+      label: 'Follow-ups drafted',
+      value: String(followupsDrafted),
+      hint: isEmpty ? emptyHint : 'Replies Nora has prepared for you',
       onClick: onFollowupsClick,
     },
   ];
