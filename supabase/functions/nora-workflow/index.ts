@@ -585,7 +585,7 @@ Output EXACTLY this JSON structure (no markdown, no code fences):
 
 Tone: ${tone}
 ${goal ? `Goal: ${goal}` : ""}
-Target audience: solo founders, indie hackers, creators building in public.
+Target audience: founders, operators, marketers, and small teams shipping in public.
 Be direct, sharp, no fluff, no emojis.`;
 
           const rawContent = await callLovable(LOVABLE_API_KEY, systemPrompt, userContent);
