@@ -41,11 +41,11 @@ export function QuickRunInput({ templateId, footerNote }: QuickRunInputProps) {
 
   return (
     <div className="min-w-0 rounded-xl border border-border bg-card p-4 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
-      <p className="mb-2.5 text-[13.5px] font-medium text-foreground">What should Nora handle next?</p>
+      <p className="mb-2.5 text-[13.5px] font-medium text-foreground">What's the idea?</p>
       <textarea
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        placeholder="Describe the outcome you want. Nora routes it to the right workflow."
+        placeholder="Drop the raw thought. Nora drafts it while it's still hot — no setup, no re-prompting."
         className="w-full resize-none rounded-lg border border-border bg-muted/50 p-3 text-[13px] text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:bg-card"
         rows={3}
       />
@@ -67,9 +67,9 @@ export function QuickRunInput({ templateId, footerNote }: QuickRunInputProps) {
         disabled={!input.trim() || !templateId}
         className="mt-3 min-h-[44px] w-full rounded-lg bg-primary py-2.5 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
       >
-        Run workflow
+        Finish this idea
       </button>
-      <p className="mt-2 text-center text-[12px] text-muted-foreground">Typical run time: ~2 minutes</p>
+      <p className="mt-2 text-center text-[12px] text-muted-foreground">From messy thought to reviewable draft in ~2 minutes.</p>
       <p className="mt-1 rounded-md bg-primary/5 px-2 py-1 text-center text-[12px] text-muted-foreground">
         {footerNote ?? 'Nothing is sent or published until you approve.'}
       </p>
