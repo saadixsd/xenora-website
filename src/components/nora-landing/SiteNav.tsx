@@ -170,6 +170,8 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
         </div>
       )}
 
+      <ThemeToggleButton />
+
       {user ? (
         <Link
           to={ROUTES.dashboard.root}
