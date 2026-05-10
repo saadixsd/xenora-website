@@ -114,10 +114,20 @@ const Dashboard = () => {
     return m;
   }, [templates]);
 
-  const leadsProcessed = completedRuns.filter((r) => {
-    const tName = templateMap[r.template_id] || '';
-    return classifyTemplate(tName) === 'leads';
-  }).length;
+  const monthItems = useMemo(
+    () => items.filter((it) => monthKey(new Date(it.created_at)) === selectedMonth),
+    [items, selectedMonth],
+  );
+
+  const ideasCaptured = monthItems.filter((it) => it.type === 'idea').length;
+  const postsApproved = monthItems.filter(
+    (it) => it.type === 'post' && (it.stage === 'ready' || it.stage === 'sent'),
+  ).length;
+  const followupsDrafted = monthItems.filter(
+    (it) =>
+      (it.type === 'reply' || it.type === 'follow_up') &&
+      ['drafting', 'review', 'ready', 'sent'].includes(it.stage),
+  ).length;
 
   const breakdownData = useMemo(() => {
     const byType: Record<string, number> = { content: 0, leads: 0, research: 0 };
