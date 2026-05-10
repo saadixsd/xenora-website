@@ -1,9 +1,25 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useId, useState } from 'react';
-// ThemeToggle removed from public nav — theme now lives in dashboard Settings → Appearance.
 import { useAuth } from '@/hooks/useAuth';
+import { useTheme } from '@/hooks/useTheme';
 import { MARKETING_NAV, ROUTES } from '@/config/routes';
-import { X, Menu } from 'lucide-react';
+import { X, Menu, Sun, Moon } from 'lucide-react';
+
+const ThemeToggleButton = ({ className = '' }: { className?: string }) => {
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === 'dark';
+  return (
+    <button
+      type="button"
+      onClick={toggleTheme}
+      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      title={isDark ? 'Light mode' : 'Dark mode'}
+      className={`inline-flex h-9 w-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 shrink-0 items-center justify-center rounded-md border border-base-content/15 bg-base-100/80 text-base-content/75 transition-colors hover:border-primary/30 hover:text-base-content ${className}`}
+    >
+      {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+    </button>
+  );
+};
 
 type NavItem = (typeof MARKETING_NAV)[number];
 
@@ -153,6 +169,8 @@ export const SiteNav = ({ className = '' }: { className?: string }) => {
           </ul>
         </div>
       )}
+
+      <ThemeToggleButton />
 
       {user ? (
         <Link
