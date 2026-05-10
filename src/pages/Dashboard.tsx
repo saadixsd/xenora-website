@@ -276,10 +276,13 @@ const Dashboard = () => {
       ) : (
         <StatsCards
           hoursSaved={formatHoursSaved(totalMinutesSaved)}
-          leadsProcessed={leadsProcessed}
-          postsGenerated={outputCount}
-          followupsQueued={0}
-          isEmpty={isEmpty}
+          ideasCaptured={ideasCaptured}
+          postsApproved={postsApproved}
+          followupsDrafted={followupsDrafted}
+          isEmpty={isEmpty && monthItems.length === 0}
+          onIdeasClick={() => navigate(ROUTES.dashboard.runNew)}
+          onPostsClick={() => navigate(ROUTES.dashboard.history)}
+          onFollowupsClick={() => navigate(ROUTES.dashboard.followUps)}
         />
       )}
 
