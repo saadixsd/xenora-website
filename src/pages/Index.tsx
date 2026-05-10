@@ -92,9 +92,9 @@ const Index = () => {
           <div className="w-full max-w-3xl text-center">
             <Reveal delay={0.05}>
               <h1 className="premium-heading mt-8 text-[2.25rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5rem]">
-                The Agentic Engine
+                An agentic engine
                 <br className="hidden sm:block" />
-                {' '}That Runs Your Ops.
+                {' '}that automates your workflows
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
