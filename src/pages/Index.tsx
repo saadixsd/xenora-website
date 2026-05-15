@@ -10,35 +10,35 @@ const agents = [
   {
     icon: FileText,
     name: 'Content',
-    body: 'A rough thought becomes a full content package. One X post, three hooks, a LinkedIn draft, a CTA. You review, then ship.',
+    body: 'Weekly brain dump in — structured content pack out. One X post, three hooks, a LinkedIn draft, and a CTA you can edit before anything goes live.',
     outputs: ['1 X post', '3 hooks', '1 LinkedIn post', '1 CTA'],
   },
   {
     icon: Zap,
     name: 'Lead',
-    body: 'A new inquiry comes in. Nora scores it, drafts a personal reply, and queues a follow-up for 48 hours later. You approve before anything sends.',
+    body: 'Paste lead context or an inbound thread. Nora scores it, drafts a personal reply, and queues a follow-up for ~48 hours later. You approve before anything sends.',
     outputs: ['Lead score', 'Draft reply', 'Follow-up queue'],
   },
   {
     icon: Search,
     name: 'Research',
-    body: 'Combine your notes with public URLs. Nora extracts pain signals, content angles, and relevance you can act on today.',
+    body: 'Your notes plus optional public URLs (e.g. Reddit). Nora pulls excerpts where it can, then surfaces pain signals, angles, and relevance you can act on.',
     outputs: ['Pain signals', 'Content angles', 'Relevance notes'],
   },
 ];
 
 const outcomes = [
   {
-    title: 'Hours back',
-    body: 'The repetitive operational work — content drafts, lead replies, research synthesis — runs in the background while you build.',
+    title: 'Ops that execute',
+    body: 'Nora is built for founders and SMB operators who wear too many hats — not enterprise bloat. Repetitive content, lead follow-up, and research synthesis run as structured workflows instead of another tab of chores.',
   },
   {
     title: 'Visible work',
-    body: 'Every run shows its steps. You see exactly what Nora did, not a chat box that maybe replied to something.',
+    body: 'Every run shows its steps. You see exactly what happened — no black box, no “maybe the model replied to something.”',
   },
   {
     title: 'You stay in control',
-    body: 'Nothing ships without your review. Nora drafts and stages. You approve, edit, or rerun.',
+    body: 'Nothing publishes or sends without your review. Nora drafts and stages; you approve, edit, or rerun with clear guardrails.',
   },
 ];
 
@@ -53,13 +53,13 @@ const plusFeatures = [
   'Unlimited workflow runs (fair use)',
   'Unlimited Ask Nora conversations (fair use)',
   'All three agents at higher throughput',
-  'Connections: Gmail, X, Instagram, LinkedIn',
+  'First in line for direct Gmail, X, Instagram, and LinkedIn connections as they ship (roadmap)',
   'Managed billing, cancel anytime',
 ];
 const proFeatures = [
   'Everything in Nora Plus',
   'Pro-tier model for Ask Nora with higher limits',
-  'Priority connections and deeper analysis',
+  'Deeper analysis on workflows and Ask Nora',
   'For teams running multiple workflows daily',
 ];
 
@@ -90,8 +90,13 @@ const Index = () => {
         {/* ── HERO ── single sentence, single CTA ── */}
         <section className="flex min-h-svh flex-col items-center justify-center px-4 pb-20 pt-[max(6rem,calc(env(safe-area-inset-top,0px)+5rem))] sm:px-8 sm:pb-24 sm:pt-32">
           <div className="w-full max-w-3xl text-center">
+            <Reveal delay={0.02}>
+              <p className="mt-8 font-space-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+                Know Beyond manual
+              </p>
+            </Reveal>
             <Reveal delay={0.05}>
-              <h1 className="premium-heading mt-8 text-[2.25rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5rem]">
+              <h1 className="premium-heading mt-4 text-[2.25rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5rem]">
                 You had the idea.
                 <br className="hidden sm:block" />
                 {' '}Nora finishes it.
@@ -99,17 +104,18 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.1}>
               <p className="mx-auto mt-8 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                The gap between a raw thought and a finished output is where most ideas die. Drop the messy version in. Nora returns a structured draft you can review, edit, and ship before the momentum fades.
+                The agentic ops co-founder for solo founders and SMBs: drop a messy brain dump or lead thread, and Nora runs the{' '}
+                <span className="text-foreground/90">Observe → Adapt → Execute</span> loop — visible steps, reviewable outputs, no shipping without you.
               </p>
             </Reveal>
 
             <Reveal delay={0.18}>
               <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                 <Link
-                  to={ROUTES.dashboard.root}
+                  to={ROUTES.signup}
                   className="group inline-flex min-h-[48px] items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground transition-all duration-200 hover:opacity-90"
                 >
-                  View Dashboard
+                  Start free
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </Link>
                 <button
@@ -129,17 +135,17 @@ const Index = () => {
           <div className="mx-auto max-w-5xl">
             <Reveal>
               <p className="text-center font-space-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-                The loop
+                Observe → Adapt → Execute
               </p>
             </Reveal>
             <Reveal delay={0.04}>
               <h2 className="premium-heading mt-4 text-center text-3xl sm:text-4xl md:text-5xl">
-                Input. Workflow. Output.
+                From brain dump to shipped work
               </h2>
             </Reveal>
             <Reveal delay={0.08}>
               <p className="mx-auto mt-4 max-w-xl text-center text-base text-muted-foreground">
-                One run. Visible steps. Reviewable outputs. The same loop, every time.
+                One run: your inputs, routed workflows, staged outputs. The wedge is simple — publishable content plus follow-ups you can run in under thirty minutes a day once it clicks.
               </p>
             </Reveal>
 
@@ -301,7 +307,7 @@ const Index = () => {
                       to={ROUTES.signup}
                       className="flex w-full items-center justify-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-primary/40"
                     >
-                      Get started
+                      Start free
                     </Link>
                   </div>
                 </article>
@@ -381,16 +387,16 @@ const Index = () => {
             </Reveal>
             <Reveal delay={0.05}>
               <p className="mx-auto mt-6 max-w-xl text-base text-muted-foreground">
-                Join the beta and put your first workflow live this week.
+                Start free, run your first visible workflow this week, and keep the messy ops off your plate.
               </p>
             </Reveal>
             <Reveal delay={0.1}>
               <div className="mt-9 flex justify-center">
                 <Link
-                  to={ROUTES.tryNora}
+                  to={ROUTES.signup}
                   className="group inline-flex min-h-[48px] items-center gap-2 rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
                 >
-                  Join the beta
+                  Start free
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </Link>
               </div>

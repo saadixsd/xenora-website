@@ -17,7 +17,7 @@ const sections = [
   {
     title: 'How Data Is Used',
     content:
-      'Your workflow inputs are processed to generate content outputs. Data is used to operate the service, improve reliability, and personalize your experience. We do not sell personal data or use it to train third-party models.',
+      'Your workflow inputs are processed to generate content outputs. Data is used to operate the service, improve reliability, and personalize your in-app experience (for example tone, saved agents, and dashboard context). We do not sell personal data or use it to train third-party models.',
   },
   {
     title: 'AI Processing',

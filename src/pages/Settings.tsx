@@ -390,7 +390,7 @@ const Settings = () => {
         <div className="surface-panel p-5">
           <h2 className="text-sm font-medium text-foreground">Billing</h2>
           <p className="mt-1 text-xs text-muted-foreground">
-            Free tier: 5 workflow runs, 10 Ask Nora messages, and 3 custom agents per calendar month (UTC). Nora Plus ($49.99/mo) and Nora Pro ($79.99/mo) remove those caps (fair use applies).
+            Free tier: 5 workflow runs, 10 Ask Nora messages, and 3 custom agents per calendar month (UTC). Nora Plus ($49.99/mo) and Nora Pro ($79.99/mo) remove those caps (fair use applies). Direct Gmail and social connections are on the roadmap; today&apos;s agents run on what you paste into the dashboard.
           </p>
           {billingLoading ? (
             <p className="mt-4 text-sm text-muted-foreground">Loading billing…</p>

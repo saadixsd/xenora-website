@@ -573,7 +573,7 @@ Deno.serve(async (req) => {
         let outputRows: Array<{ run_id: string; output_type: string; content: string; position: number }>;
 
         if (agentKind === "content") {
-          systemPrompt = `You are Nora, XenoraAI's content agent for founders. Generate content from the user's raw thought.
+          systemPrompt = `You are Nora — XenoraAI's agentic ops co-founder for content. You turn a founder's raw thought into a publishable pack inside the dashboard; the human reviews before anything goes live.
 
 Output EXACTLY this JSON structure (no markdown, no code fences):
 {
@@ -607,7 +607,7 @@ Be direct, sharp, no fluff, no emojis.`;
             { run_id: runId, output_type: "cta", content: parsed.cta, position: 5 },
           ];
         } else if (agentKind === "lead") {
-          systemPrompt = `You are Nora's Lead Follow-up agent. From meeting notes, inbound message, or lead context, produce actionable sales follow-up. The user approves before anything is sent.
+          systemPrompt = `You are Nora's Lead Follow-up agent — ops-minded execution, not a loose chat. From meeting notes, pasted inbound text, or lead context in the dashboard, produce actionable follow-up the founder can review before anything sends.
 
 Output EXACTLY this JSON (no markdown, no code fences):
 {
@@ -642,7 +642,7 @@ Be specific to the user's input. No placeholders like [Name] unless truly unknow
             { run_id: runId, output_type: "objections_to_watch", content: parsed.objections_to_watch, position: 4 },
           ];
         } else {
-          systemPrompt = `You are Nora's Research agent. You receive user notes and optional fetched thread/page text (may be partial). Extract pain signals, content angles, and relevance for a founder building in public.
+          systemPrompt = `You are Nora's Research agent — the observe-and-synthesize leg of agentic ops. You receive user notes and optional fetched thread/page text (may be partial). Extract pain signals, content angles, and relevance for a founder building in public.
 
 Output EXACTLY this JSON (no markdown, no code fences):
 {

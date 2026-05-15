@@ -43,7 +43,7 @@ const About = () => {
             </div>
             <div className="text-center sm:text-left">
               <p className="text-lg font-medium text-base-content/85">Nora by XenoraAI</p>
-              <p className="mt-1 text-sm text-base-content/50">The agentic engine that runs your operations</p>
+              <p className="mt-1 text-sm text-base-content/50">Know Beyond manual · agentic ops for founders who ship</p>
             </div>
           </div>
         </Reveal>
@@ -52,7 +52,7 @@ const About = () => {
           <section className="mt-10">
             <h2 className="premium-heading text-xl font-medium text-base-content/85 sm:text-2xl">What XenoraAI is</h2>
             <p className="mt-3 text-sm leading-relaxed text-base-content/60">
-              XenoraAI is the company building agentic workflow infrastructure for SMBs and founders. Our mission is to remove the 80% of operations work that is repetitive, invisible, and kills momentum.
+              XenoraAI builds Nora — the agentic ops layer for solo founders and SMB operators. The mission is to turn the repetitive 80% of operations (content, follow-ups, research pulls) into autonomous, reviewable runs so momentum does not die in the gap between idea and execution.
             </p>
           </section>
         </Reveal>
@@ -61,7 +61,7 @@ const About = () => {
           <section className="mt-8">
             <h2 className="premium-heading text-xl font-medium text-base-content/85 sm:text-2xl">What Nora is</h2>
             <p className="mt-3 text-sm leading-relaxed text-base-content/60">
-              Nora is our agentic AI workflow assistant — the flagship engine that turns messy, real-world operations into autonomous, reviewable runs that actually execute work. Not suggestions. Not templates. Finished output, ready for your sign-off.
+              Nora is the flagship engine: an ops-minded co-founder in software form. You bring messy inputs — notes, transcripts, pasted lead threads, optional public URLs — and Nora returns structured outputs you can edit and approve. Not a generic chat thread; finished work staged for sign-off.
             </p>
           </section>
         </Reveal>
@@ -72,19 +72,23 @@ const About = () => {
             <ol className="mt-4 space-y-4 text-sm leading-relaxed text-base-content/60">
               <li>
                 <p className="font-medium text-base-content/85">1. Observe</p>
-                <p className="mt-1">Connects to the tools you already use and learns how work gets done today — the patterns, the handoffs, the busywork.</p>
+                <p className="mt-1">
+                  Nora reads what you give it today — notes, goals, pasted lead context, optional links for research — and pulls in public page text only when you supply URLs. Direct integrations (Gmail, X, Instagram, LinkedIn) are on the roadmap; they are not required to get value from the live workflows.
+                </p>
               </li>
               <li>
                 <p className="font-medium text-base-content/85">2. Adapt</p>
-                <p className="mt-1">Decides what should happen next based on context, your guardrails, and the outcome you want.</p>
+                <p className="mt-1">Classifies the job, applies your tone and guardrails, and routes to the right workflow template so the run matches the outcome you want.</p>
               </li>
               <li>
                 <p className="font-medium text-base-content/85">3. Execute</p>
-                <p className="mt-1">Runs end-to-end workflows — resolving tickets, advancing hiring, nudging invoices, drafting outreach. You review; Nora executes.</p>
+                <p className="mt-1">
+                  Runs end-to-end inside the dashboard: content packs (posts, hooks, LinkedIn, CTA), lead scoring with draft replies and a queued follow-up, or research synthesis from notes plus fetched excerpts. You review before anything publishes or sends.
+                </p>
               </li>
             </ol>
             <p className="mt-6 text-sm leading-relaxed text-base-content/60">
-              Content, lead, and research workflows are live in the product today, with operations, hiring, and finance workflows expanding from there.
+              Content, lead follow-up, and research workflows are live now. Broader ops automation (deeper tool wiring, finance, hiring flows) expands from that wedge as we ship.
             </p>
           </section>
         </Reveal>

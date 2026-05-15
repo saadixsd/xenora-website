@@ -13,13 +13,15 @@ const faqs: { q: string; a: ReactNode }[] = [
     q: 'What is Nora?',
     a: (
       <>
-        Nora is XenoraAI&apos;s agentic AI engine. It watches how your business operates, then autonomously runs workflows for you instead of just giving suggestions. It follows an observe → adapt → execute loop: it learns patterns from your tools and data, decides what to do next, and takes action — with every run reviewable before it ships.
+        Nora is XenoraAI&apos;s agentic ops engine — built for solo founders and SMB operators who need execution, not another empty chat. Today she runs structured workflows on{' '}
+        <strong>what you provide</strong>: notes, goals, pasted lead context, and optional public URLs for research. Each run follows{' '}
+        <strong>Observe → Adapt → Execute</strong>: visible stages, staged outputs, and your approval before anything publishes or sends. She does not silently wire into your stack unless and until a listed integration is marked live in the product.
       </>
     ),
   },
   {
     q: 'How is Nora different from a chatbot or automation builder?',
-    a: 'Chatbots answer questions. Automation builders need you to wire every step yourself. Nora is agentic: it learns your operation, decides what to do, and executes the work end-to-end — leaving you a reviewable run instead of a to-do list.',
+    a: 'Chatbots answer questions. Automation builders need you to wire every step yourself. Nora runs opinionated workflow templates end-to-end on your inputs — classify, generate, format — and hands you a reviewable run with clear steps, not a vague to-do list.',
   },
   {
     q: 'How is this different from ChatGPT or other AI tools?',
@@ -43,7 +45,7 @@ const faqs: { q: string; a: ReactNode }[] = [
   },
   {
     q: 'Who is Nora built for?',
-    a: 'Anyone who runs operations — founders, operators, marketers, agencies, and small teams. If you need to ship work consistently but hate spending hours on repetitive tasks, Nora is for you.',
+    a: 'Solo founders, creators, marketers, agencies, and small teams drowning in content, inbox follow-up, and lightweight research pulls — anyone who wants autonomous-feeling execution with guardrails, not enterprise bloat.',
   },
   {
     q: 'How do I try Nora?',
@@ -120,7 +122,7 @@ const FAQ = () => {
         </Reveal>
         <Reveal delay={0.05}>
           <p className="mt-3 text-sm text-base-content/55">
-            You bring the idea. Nora handles the execution. Quick answers on workflows, pricing, and getting started.
+            Agentic ops with a clear loop: what&apos;s live today, what&apos;s next, and how pricing works.
           </p>
         </Reveal>
 
