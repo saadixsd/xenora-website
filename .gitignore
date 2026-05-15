@@ -16,6 +16,8 @@ dist-ssr
 .env
 .env.*
 !.env.example
+.env.local
+.env.*.local
 
 # Supabase CLI cache (may contain paths / version metadata)
 supabase/.temp/
