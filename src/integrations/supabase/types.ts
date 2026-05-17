@@ -331,9 +331,11 @@ export type Database = {
           guardrails: string | null
           id: string
           interview_summary: string | null
+          loopspec_hash: string | null
           mission: string | null
           name: string
           output_deliverables: string | null
+          pattern_name: string | null
           raw_inputs: string | null
           starter_prompt: string | null
           target_user: string | null
@@ -345,9 +347,11 @@ export type Database = {
           guardrails?: string | null
           id?: string
           interview_summary?: string | null
+          loopspec_hash?: string | null
           mission?: string | null
           name: string
           output_deliverables?: string | null
+          pattern_name?: string | null
           raw_inputs?: string | null
           starter_prompt?: string | null
           target_user?: string | null
@@ -359,9 +363,11 @@ export type Database = {
           guardrails?: string | null
           id?: string
           interview_summary?: string | null
+          loopspec_hash?: string | null
           mission?: string | null
           name?: string
           output_deliverables?: string | null
+          pattern_name?: string | null
           raw_inputs?: string | null
           starter_prompt?: string | null
           target_user?: string | null

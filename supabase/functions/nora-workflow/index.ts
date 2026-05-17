@@ -16,6 +16,19 @@ import {
   FREE_MONTHLY_LEAD_RUNS,
   isPaidNoraAccess,
 } from "../_shared/billing.ts";
+import {
+  type AgentKind,
+  buildCustomAgentBlock,
+  buildSystemPrompt,
+  type CustomAgentContext,
+} from "../_shared/agentPrompts.ts";
+import {
+  adaptationHint,
+  buildEvaluatorUserMessage,
+  evaluatorSystemPrompt,
+  parseEvalScore,
+  shouldRetryGeneration,
+} from "../_shared/agentEval.ts";
 
 const corsHeaders: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
@@ -88,8 +101,6 @@ function jsonRes(body: unknown, status: number): Response {
   });
 }
 
-type AgentKind = "content" | "lead" | "research";
-
 function classifyTemplate(name: string): AgentKind {
   const n = name.toLowerCase();
   if (n.includes("lead")) return "lead";
@@ -98,9 +109,9 @@ function classifyTemplate(name: string): AgentKind {
 }
 
 const STEPS_BY_AGENT: Record<AgentKind, readonly string[]> = {
-  content: ["input_received", "classifying", "generating", "formatting", "done"],
-  lead: ["input_received", "parsing", "drafting", "personalizing", "formatting", "done"],
-  research: ["input_received", "researching", "analyzing", "summarizing", "formatting", "done"],
+  content: ["input_received", "classifying", "generating", "evaluating", "refining", "formatting", "done"],
+  lead: ["input_received", "parsing", "drafting", "personalizing", "evaluating", "refining", "formatting", "done"],
+  research: ["input_received", "researching", "analyzing", "summarizing", "evaluating", "refining", "formatting", "done"],
 } as const;
 
 /**
@@ -113,6 +124,8 @@ const STEP_NARRATION: Record<AgentKind, Record<string, string>> = {
     input_received: "Received your input and started the run.",
     classifying: "Read the input and classified it as a content brief.",
     generating: "Drafted hooks, an X post, a LinkedIn post, and a CTA.",
+    evaluating: "Scored the draft against your goal and quality checks.",
+    refining: "Tightened the draft based on the evaluation.",
     formatting: "Cleaned up tone, length, and structure.",
     done: "Outputs ready for your review.",
   },
@@ -121,6 +134,8 @@ const STEP_NARRATION: Record<AgentKind, Record<string, string>> = {
     parsing: "Parsed the lead — pulled name, intent, and stage signals.",
     drafting: "Drafted a first reply and a 48-hour follow-up.",
     personalizing: "Tightened the tone and removed any placeholder phrasing.",
+    evaluating: "Checked the lead pack for evidence and completeness.",
+    refining: "Improved weak sections before staging for review.",
     formatting: "Packaged the score rationale, drafts, and objection notes.",
     done: "Lead pack ready for your review.",
   },
@@ -129,6 +144,8 @@ const STEP_NARRATION: Record<AgentKind, Record<string, string>> = {
     researching: "Fetched the source URLs and pulled the relevant excerpts.",
     analyzing: "Extracted pain signals and content angles from the sources.",
     summarizing: "Wrote a relevance summary and noted the caveats.",
+    evaluating: "Verified grounding and source coverage.",
+    refining: "Filled gaps flagged by the evaluation.",
     formatting: "Packaged the findings into a reviewable report.",
     done: "Research pack ready for your review.",
   },
@@ -349,6 +366,109 @@ async function callLovable(
   return rawContent.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
 }
 
+async function generateWithQualityLoop(
+  apiKey: string,
+  agentKind: AgentKind,
+  systemPrompt: string,
+  userContent: string,
+  goal: string,
+  onStep: (step: string) => Promise<void>,
+): Promise<string> {
+  let raw = await callLovable(apiKey, systemPrompt, userContent);
+
+  await onStep("evaluating");
+  let { score, reason } = parseEvalScore(
+    await callLovable(
+      apiKey,
+      evaluatorSystemPrompt(agentKind),
+      buildEvaluatorUserMessage(agentKind, goal, raw),
+    ),
+  );
+
+  if (shouldRetryGeneration(agentKind, raw, score)) {
+    await onStep("refining");
+    const hint = adaptationHint(reason, agentKind);
+    raw = await callLovable(apiKey, systemPrompt, `${userContent}\n\n---\n${hint}`);
+    const retryEval = parseEvalScore(
+      await callLovable(
+        apiKey,
+        evaluatorSystemPrompt(agentKind),
+        buildEvaluatorUserMessage(agentKind, goal, raw),
+      ),
+    );
+    console.log("Workflow eval retry:", { score: retryEval.score, reason: retryEval.reason });
+  } else {
+    console.log("Workflow eval pass:", { score, reason });
+  }
+
+  return raw;
+}
+
+type OutputRow = { run_id: string; output_type: string; content: string; position: number };
+
+function parseOutputsForKind(
+  agentKind: AgentKind,
+  runId: string,
+  rawContent: string,
+  tone: string,
+): OutputRow[] {
+  if (agentKind === "content") {
+    const parsed = JSON.parse(rawContent) as {
+      x_post: string;
+      hooks: string[];
+      linkedin_post: string;
+      cta: string;
+    };
+    return [
+      { run_id: runId, output_type: "x_post", content: parsed.x_post, position: 0 },
+      ...parsed.hooks.map((h: string, i: number) => ({
+        run_id: runId,
+        output_type: "hook",
+        content: h,
+        position: i + 1,
+      })),
+      { run_id: runId, output_type: "linkedin_post", content: parsed.linkedin_post, position: 4 },
+      { run_id: runId, output_type: "cta", content: parsed.cta, position: 5 },
+    ];
+  }
+  if (agentKind === "lead") {
+    const parsed = JSON.parse(rawContent) as {
+      lead_summary: string;
+      score_rationale: string;
+      reply_draft: string;
+      follow_up_48h: string;
+      objections_to_watch: string;
+    };
+    void tone;
+    return [
+      { run_id: runId, output_type: "lead_summary", content: parsed.lead_summary, position: 0 },
+      { run_id: runId, output_type: "score_rationale", content: parsed.score_rationale, position: 1 },
+      { run_id: runId, output_type: "lead_reply_draft", content: parsed.reply_draft, position: 2 },
+      { run_id: runId, output_type: "follow_up_48h", content: parsed.follow_up_48h, position: 3 },
+      { run_id: runId, output_type: "objections_to_watch", content: parsed.objections_to_watch, position: 4 },
+    ];
+  }
+  const parsed = JSON.parse(rawContent) as {
+    pain_signals: string;
+    content_angles: string;
+    quotes_evidence: string;
+    relevance_score_rationale: string;
+    caveats: string;
+  };
+  return [
+    { run_id: runId, output_type: "pain_signals", content: parsed.pain_signals, position: 0 },
+    { run_id: runId, output_type: "content_angles", content: parsed.content_angles, position: 1 },
+    { run_id: runId, output_type: "quotes_evidence", content: parsed.quotes_evidence, position: 2 },
+    {
+      run_id: runId,
+      output_type: "relevance_rationale",
+      content: parsed.relevance_score_rationale,
+      position: 3,
+    },
+    { run_id: runId, output_type: "research_caveats", content: parsed.caveats, position: 4 },
+  ];
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -508,9 +628,32 @@ Deno.serve(async (req) => {
     }
   }
 
-  const agentId = null;
   const goal = typeof body.goal === "string" ? body.goal.trim() : "";
   const tone = typeof body.tone === "string" && body.tone.trim() ? body.tone.trim() : "professional";
+
+  let customAgentCtx: CustomAgentContext | null = null;
+  if (run.custom_agent_id) {
+    const { data: agentRow, error: agentErr } = await supabaseAdmin
+      .from("user_custom_agents")
+      .select("name, mission, guardrails, starter_prompt, output_deliverables, target_user")
+      .eq("id", run.custom_agent_id)
+      .eq("user_id", user.id)
+      .maybeSingle();
+    if (agentErr) console.error("custom agent load", agentErr);
+    if (agentRow) customAgentCtx = agentRow as CustomAgentContext;
+  }
+
+  const customAgentBlock = customAgentCtx ? buildCustomAgentBlock(customAgentCtx) : "";
+  let userContentBase = inputText;
+  if (customAgentCtx?.starter_prompt?.trim()) {
+    userContentBase = `${customAgentCtx.starter_prompt.trim()}\n\n---\n${userContentBase}`;
+  }
+
+  const systemPrompt = buildSystemPrompt(agentKind, {
+    tone,
+    goal,
+    customAgentBlock: customAgentBlock || undefined,
+  });
 
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
@@ -543,12 +686,15 @@ Deno.serve(async (req) => {
         await updateStep(safeStep(agentKind, "input_received"));
         await new Promise((r) => setTimeout(r, 400));
 
-        let userContent = inputText;
+        let userContent = userContentBase;
 
         if (agentKind === "research") {
           await updateStep(safeStep(agentKind, "researching"));
           await new Promise((r) => setTimeout(r, 500));
-          userContent = await gatherResearchContext(inputText, sourceUrls);
+          const gathered = await gatherResearchContext(inputText, sourceUrls);
+          userContent = customAgentCtx?.starter_prompt?.trim()
+            ? `${customAgentCtx.starter_prompt.trim()}\n\n---\n${gathered}`
+            : gathered;
           await updateStep(safeStep(agentKind, "analyzing"));
           await new Promise((r) => setTimeout(r, 400));
           await updateStep(safeStep(agentKind, "summarizing"));
@@ -569,117 +715,20 @@ Deno.serve(async (req) => {
           await updateStep(safeStep(agentKind, "generating"));
         }
 
-        let systemPrompt: string;
-        let outputRows: Array<{ run_id: string; output_type: string; content: string; position: number }>;
+        const rawContent = await generateWithQualityLoop(
+          LOVABLE_API_KEY,
+          agentKind,
+          systemPrompt,
+          userContent,
+          goal,
+          async (step) => updateStep(safeStep(agentKind, step)),
+        );
 
-        if (agentKind === "content") {
-          systemPrompt = `You are Nora — XenoraAI's agentic ops co-founder for content. You turn a founder's raw thought into a publishable pack inside the dashboard; the human reviews before anything goes live.
-
-Output EXACTLY this JSON structure (no markdown, no code fences):
-{
-  "x_post": "A single X/Twitter post (max 280 chars, punchy, no hashtags)",
-  "hooks": ["Hook 1", "Hook 2", "Hook 3"],
-  "linkedin_post": "A LinkedIn post (2-3 paragraphs, professional, no hashtags)",
-  "cta": "A call-to-action line"
-}
-
-Tone: ${tone}
-${goal ? `Goal: ${goal}` : ""}
-Target audience: founders, operators, marketers, and small teams shipping in public.
-Be direct, sharp, no fluff, no emojis.`;
-
-          const rawContent = await callLovable(LOVABLE_API_KEY, systemPrompt, userContent);
-          let parsed: { x_post: string; hooks: string[]; linkedin_post: string; cta: string };
-          try {
-            parsed = JSON.parse(rawContent);
-          } catch {
-            throw new Error("Failed to parse AI response as JSON");
-          }
-          outputRows = [
-            { run_id: runId, output_type: "x_post", content: parsed.x_post, position: 0 },
-            ...parsed.hooks.map((h: string, i: number) => ({
-              run_id: runId,
-              output_type: "hook",
-              content: h,
-              position: i + 1,
-            })),
-            { run_id: runId, output_type: "linkedin_post", content: parsed.linkedin_post, position: 4 },
-            { run_id: runId, output_type: "cta", content: parsed.cta, position: 5 },
-          ];
-        } else if (agentKind === "lead") {
-          systemPrompt = `You are Nora's Lead Follow-up agent — ops-minded execution, not a loose chat. From meeting notes, pasted inbound text, or lead context in the dashboard, produce actionable follow-up the founder can review before anything sends.
-
-Output EXACTLY this JSON (no markdown, no code fences):
-{
-  "lead_summary": "2-4 sentences: who they are, intent, stage",
-  "score_rationale": "Why this lead is warm/cold and what signals matter",
-  "reply_draft": "A concise first reply email or DM (professional, ${tone})",
-  "follow_up_48h": "What to send ~48h later if they go quiet",
-  "objections_to_watch": "Bullet-style string: likely objections and how to handle"
-}
-${goal ? `Goal: ${goal}` : ""}
-Be specific to the user's input. No placeholders like [Name] unless truly unknown — use "there" or omit.`;
-
-          const rawContent = await callLovable(LOVABLE_API_KEY, systemPrompt, userContent);
-          console.log("Lead AI raw length:", rawContent.length, "preview:", rawContent.slice(0, 200));
-          let parsed: {
-            lead_summary: string;
-            score_rationale: string;
-            reply_draft: string;
-            follow_up_48h: string;
-            objections_to_watch: string;
-          };
-          try {
-            parsed = JSON.parse(rawContent);
-          } catch {
-            throw new Error("Failed to parse AI response as JSON");
-          }
-          outputRows = [
-            { run_id: runId, output_type: "lead_summary", content: parsed.lead_summary, position: 0 },
-            { run_id: runId, output_type: "score_rationale", content: parsed.score_rationale, position: 1 },
-            { run_id: runId, output_type: "lead_reply_draft", content: parsed.reply_draft, position: 2 },
-            { run_id: runId, output_type: "follow_up_48h", content: parsed.follow_up_48h, position: 3 },
-            { run_id: runId, output_type: "objections_to_watch", content: parsed.objections_to_watch, position: 4 },
-          ];
-        } else {
-          systemPrompt = `You are Nora's Research agent — the observe-and-synthesize leg of agentic ops. You receive user notes and optional fetched thread/page text (may be partial). Extract pain signals, content angles, and relevance for a founder building in public.
-
-Output EXACTLY this JSON (no markdown, no code fences):
-{
-  "pain_signals": "Markdown bullet list of distinct pain signals",
-  "content_angles": "Markdown bullet list of hooks or post angles",
-  "quotes_evidence": "Short quotes or paraphrases tied to evidence (or say what was missing)",
-  "relevance_score_rationale": "2-4 sentences: how relevant this is to the user's stated goal and why",
-  "caveats": "Gaps, bias, or fetch failures the user should know"
-}
-${goal ? `User goal: ${goal}` : ""}
-If sources failed or are thin, say so in caveats and still infer carefully from user notes.`;
-
-          const rawContent = await callLovable(LOVABLE_API_KEY, systemPrompt, userContent);
-          let parsed: {
-            pain_signals: string;
-            content_angles: string;
-            quotes_evidence: string;
-            relevance_score_rationale: string;
-            caveats: string;
-          };
-          try {
-            parsed = JSON.parse(rawContent);
-          } catch {
-            throw new Error("Failed to parse AI response as JSON");
-          }
-          outputRows = [
-            { run_id: runId, output_type: "pain_signals", content: parsed.pain_signals, position: 0 },
-            { run_id: runId, output_type: "content_angles", content: parsed.content_angles, position: 1 },
-            { run_id: runId, output_type: "quotes_evidence", content: parsed.quotes_evidence, position: 2 },
-            {
-              run_id: runId,
-              output_type: "relevance_rationale",
-              content: parsed.relevance_score_rationale,
-              position: 3,
-            },
-            { run_id: runId, output_type: "research_caveats", content: parsed.caveats, position: 4 },
-          ];
+        let outputRows: OutputRow[];
+        try {
+          outputRows = parseOutputsForKind(agentKind, runId, rawContent, tone);
+        } catch {
+          throw new Error("Failed to parse AI response as JSON");
         }
 
         await updateStep(safeStep(agentKind, "formatting"));

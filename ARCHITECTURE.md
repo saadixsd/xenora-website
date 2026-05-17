@@ -161,3 +161,18 @@ Nothing private should ever be added with a `VITE_` prefix.
 - **No competitor names**. No location / founder mentions. Tone is formal corporate, not personal.
 - **Auth context only** — never read `localStorage` for session state in components; use `useAuth()`.
 - **Lazy-load every page** in `App.tsx` for landing-page TTI.
+
+## 9. PatternLoop (local pattern lab)
+
+[`patternloop/`](patternloop/) is a **separate Python CLI** for authoring and running **LoopSpecs** (YAML): plan → optional file tools → `FINAL:` answer → evaluator → adapt. It is **not** executed on Supabase Edge in production.
+
+| Layer | Role |
+|---|---|
+| PatternLoop bundled YAML | Source of truth for agent *thinking* (prompts, evaluator, success keywords) |
+| [`scripts/sync-patternloop-prompts.mjs`](scripts/sync-patternloop-prompts.mjs) | Dev/CI script → generates [`supabase/functions/_shared/agentPrompts.ts`](supabase/functions/_shared/agentPrompts.ts) |
+| [`nora-workflow`](supabase/functions/nora-workflow/index.ts) | Cloud runner: Lovable API + Nora JSON output contracts + optional evaluate/retry |
+| Dashboard | Structured outputs, review queue, billing |
+
+After editing `patternloop/src/patternloop/bundled/*.yaml`, run `npm run sync:prompts` and redeploy `nora-workflow`.
+
+Built-in mapping: `content_outline` → Content, `lead_qualifier` → Lead, `research_digest` → Research.

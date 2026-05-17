@@ -1,7 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/config/routes';
-import { ArrowLeft, Trash2, TextCursorInput, Save, X } from 'lucide-react';
+import { ArrowLeft, Trash2, TextCursorInput, Save, X, Upload } from 'lucide-react';
+import { getCurrentWorkspaceId } from '@/lib/currentWorkspace';
+import { parseAgentBundle, parseLoopSpecFile } from '@/lib/patternLoopImport';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -23,6 +25,8 @@ interface CustomAgentRow {
   raw_inputs: string | null;
   output_deliverables: string | null;
   guardrails: string | null;
+  pattern_name: string | null;
+  loopspec_hash: string | null;
   created_at: string;
 }
 
@@ -31,18 +35,21 @@ const BUILTIN_AGENTS = [
     type: 'content',
     label: 'Content Agent',
     description: 'Social and long-form drafts from a single input.',
+    pattern: 'content_outline',
     status: 'active' as const,
   },
   {
     type: 'leads',
     label: 'Lead Agent',
     description: 'Score leads, draft replies, queue follow-ups. You approve before send.',
+    pattern: 'lead_qualifier',
     status: 'active' as const,
   },
   {
     type: 'research',
     label: 'Research Agent',
     description: 'Pain signals and angles from notes plus optional URLs.',
+    pattern: 'research_digest',
     status: 'active' as const,
   },
 ];
@@ -61,6 +68,8 @@ export default function AgentsManagePage() {
   const [editForm, setEditForm] = useState<Partial<CustomAgentRow>>({});
   const [saving, setSaving] = useState(false);
   const [billingRow, setBillingRow] = useState<BillingSubscriptionRow | null>(null);
+  const [importing, setImporting] = useState(false);
+  const importInputRef = useRef<HTMLInputElement>(null);
 
   const isPaid = isPaidNoraSubscription(billingRow);
   const maxCustomAgents = isPaid ? PAID_MAX_CUSTOM_AGENTS : FREE_MAX_CUSTOM_AGENTS;
@@ -79,7 +88,7 @@ export default function AgentsManagePage() {
     if (!user?.id) return;
     void supabase
       .from('user_custom_agents')
-      .select('id, name, mission, starter_prompt, target_user, raw_inputs, output_deliverables, guardrails, created_at')
+      .select('id, name, mission, starter_prompt, target_user, raw_inputs, output_deliverables, guardrails, pattern_name, loopspec_hash, created_at')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .then(({ data, error }) => {
@@ -107,10 +116,53 @@ export default function AgentsManagePage() {
     }
     const p = new URLSearchParams();
     p.set('template', contentTemplateId);
+    p.set('custom_agent', a.id);
     p.set('goal', a.mission || '');
     const input = (a.starter_prompt || `Run my "${a.name}" agent: ${a.mission}`).slice(0, 8000);
     p.set('input', input);
     navigate(`${ROUTES.dashboard.runNew}?${p.toString()}`);
+  };
+
+  const importPatternFile = async (file: File) => {
+    if (!user?.id) return;
+    if (atLimit) {
+      toast({ title: 'Agent limit reached', variant: 'destructive' });
+      return;
+    }
+    setImporting(true);
+    try {
+      const parsed =
+        file.name.endsWith('.agent') || file.name.endsWith('.zip')
+          ? await parseAgentBundle(file)
+          : await parseLoopSpecFile(file);
+      const workspaceId = await getCurrentWorkspaceId(user.id);
+      const { error } = await supabase.from('user_custom_agents' as any).insert({
+        user_id: user.id,
+        workspace_id: workspaceId,
+        name: parsed.name.slice(0, 120),
+        mission: parsed.mission.slice(0, 4000),
+        starter_prompt: parsed.starter_prompt.slice(0, 4000) || null,
+        target_user: parsed.target_user.slice(0, 2000) || null,
+        raw_inputs: parsed.raw_inputs.slice(0, 4000) || null,
+        output_deliverables: parsed.output_deliverables.slice(0, 4000) || null,
+        guardrails: parsed.guardrails.slice(0, 4000) || null,
+        interview_summary: parsed.interview_summary.slice(0, 8000) || null,
+        pattern_name: parsed.pattern_name,
+        loopspec_hash: parsed.loopspec_hash,
+      });
+      if (error) throw error;
+      toast({ title: 'Pattern imported', description: `${parsed.name} is ready to run.` });
+      loadCustom();
+    } catch (e) {
+      toast({
+        title: 'Import failed',
+        description: e instanceof Error ? e.message : 'Could not read pattern file',
+        variant: 'destructive',
+      });
+    } finally {
+      setImporting(false);
+      if (importInputRef.current) importInputRef.current.value = '';
+    }
   };
 
   const deleteCustom = async (id: string) => {
@@ -194,6 +246,7 @@ export default function AgentsManagePage() {
                   <div className="min-w-0">
                     <p className="text-[13px] sm:text-sm font-medium text-foreground">{a.label}</p>
                     <p className="mt-0.5 text-[11px] sm:text-xs text-muted-foreground">{a.description}</p>
+                    <p className="mt-1 text-[10px] font-mono text-muted-foreground/80">pattern: {a.pattern}</p>
                   </div>
                 </div>
                 <div className="flex shrink-0 gap-2 self-end sm:self-center">
@@ -296,6 +349,9 @@ export default function AgentsManagePage() {
                   <div className="min-w-0">
                     <p className="text-[13px] sm:text-sm font-medium text-foreground">{a.name}</p>
                     <p className="mt-0.5 line-clamp-2 text-[11px] sm:text-xs text-muted-foreground">{a.mission}</p>
+                    {a.pattern_name && (
+                      <p className="mt-1 text-[10px] font-mono text-muted-foreground/80">pattern: {a.pattern_name}</p>
+                    )}
                   </div>
                   <div className="flex shrink-0 gap-2 self-end sm:self-center">
                     <Button size="sm" onClick={() => runCustomAgent(a)}>Run</Button>
@@ -314,6 +370,27 @@ export default function AgentsManagePage() {
       </div>
 
       <div className="mt-6 sm:mt-8 flex flex-wrap gap-2 sm:gap-3">
+        <input
+          ref={importInputRef}
+          type="file"
+          accept=".agent,.zip,.yaml,.yml"
+          className="hidden"
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) void importPatternFile(f);
+          }}
+        />
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="gap-1.5 text-[12px] sm:text-sm"
+          disabled={atLimit || importing}
+          onClick={() => importInputRef.current?.click()}
+        >
+          <Upload className="h-3.5 w-3.5" />
+          {importing ? 'Importing…' : 'Import PatternLoop'}
+        </Button>
         <Button variant="outline" size="sm" className="text-[12px] sm:text-sm" asChild>
           <Link to={ROUTES.dashboard.runNew}>New workflow</Link>
         </Button>

@@ -22,6 +22,16 @@ dist-ssr
 # Supabase CLI cache (may contain paths / version metadata)
 supabase/.temp/
 
+# PatternLoop (local pattern lab — nested repo / venv not part of Xenora deploy)
+patternloop/.venv/
+patternloop/**/__pycache__/
+patternloop/.git/
+patternloop/**/*.egg-info/
+patternloop/.pytest_cache/
+patternloop/.ruff_cache/
+patternloop/.DS_Store
+vite.config.ts.timestamp-*.mjs
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

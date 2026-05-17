@@ -11,17 +11,17 @@ const SLUG_COPY: Record<string, { title: string; blurb: string; footer: string }
   content: {
     title: 'Content Agent',
     blurb: 'Turn rough notes into X posts, hooks, LinkedIn drafts, and a CTA. Review and edit outputs on each run.',
-    footer: 'Uses the Content Agent template — same engine as the dashboard quick run.',
+    footer: 'Powered by PatternLoop content_outline — synced into Nora’s workflow prompts.',
   },
   lead: {
     title: 'Lead Agent',
     blurb: 'From notes or inbound context: summary, score rationale, first reply, 48h follow-up, and objections to watch. You approve before send.',
-    footer: 'Uses the Lead Follow-up template.',
+    footer: 'Powered by PatternLoop lead_qualifier — evaluate/refine loop in the cloud runner.',
   },
   research: {
     title: 'Research Agent',
     blurb: 'Combine your notes with optional public URLs (e.g. Reddit threads). Nora fetches what it can server-side and returns pain signals and angles.',
-    footer: 'Uses the Research template. Add URLs on the new-run screen when you are ready.',
+    footer: 'Powered by PatternLoop research_digest. Add URLs on the new-run screen when you are ready.',
   },
 };
 

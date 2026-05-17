@@ -114,6 +114,7 @@ const WorkflowRun = () => {
 
   const isNew = id === 'new';
   const preselectedTemplate = searchParams.get('template');
+  const preselectedCustomAgent = searchParams.get('custom_agent');
   const prefilledInput = searchParams.get('input') || '';
   const prefilledGoal = searchParams.get('goal') || '';
   const rawAgentType = searchParams.get('agent_type')?.trim().toLowerCase() ?? '';
@@ -144,7 +145,9 @@ const WorkflowRun = () => {
   /** Set when `agent_type` query matches a row in `agents` (Command Center agents). */
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [customAgents, setCustomAgents] = useState<CustomAgent[]>([]);
-  const [selectedCustomAgentId, setSelectedCustomAgentId] = useState<string | null>(null);
+  const [selectedCustomAgentId, setSelectedCustomAgentId] = useState<string | null>(
+    preselectedCustomAgent || null,
+  );
   const [templatesReady, setTemplatesReady] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
 
